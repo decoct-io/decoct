@@ -1,0 +1,27 @@
+metadata:
+  name: my-app
+  namespace: default
+  labels:
+    app: my-app
+    version: "1.0"
+  annotations:
+    description: "Test app"
+  managedFields:
+    - manager: kubectl
+      operation: Apply
+  uid: "12345"
+  resourceVersion: "67890"
+  creationTimestamp: "2024-01-01T00:00:00Z"
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+        - name: app
+          image: my-app:1.0
+          ports:
+            - containerPort: 8080
+          uuid: "abc-123"
