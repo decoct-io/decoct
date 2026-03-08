@@ -1,0 +1,11 @@
+name: docker-compose
+schema: schemas/docker-compose.yaml
+assertions:
+  - assertions/docker-services.yaml
+passes:
+  strip-comments:
+  strip-defaults:
+    skip_low_confidence: true
+  drop-fields:
+    patterns:
+      - "**.uuid"
