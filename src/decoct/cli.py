@@ -22,6 +22,7 @@ def cli() -> None:
 @click.option("--stats-only", is_flag=True, help="Show only token statistics.")
 @click.option("--show-removed", is_flag=True, help="Show what was stripped.")
 @click.option("--output", "-o", type=click.Path(), help="Output file.")
+@click.option("--encoding", default="cl100k_base", show_default=True, help="Tiktoken encoding for token counting.")
 def compress(
     files: tuple[str, ...],
     schema: str | None,
@@ -31,6 +32,7 @@ def compress(
     stats_only: bool,
     show_removed: bool,
     output: str | None,
+    encoding: str,
 ) -> None:
     """Compress infrastructure data for LLM context windows."""
     click.echo("decoct compress: not yet implemented", err=True)
