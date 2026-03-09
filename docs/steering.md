@@ -691,7 +691,306 @@ JSON input (Phase 2.4) is the prerequisite for the YANG/RESTCONF path. CLI parse
 
 ---
 
+## 9. Tiered Context Model
+
+### The three tiers
+
+This model borrows from two sources: the progressive YAML context loading scheme (which defines a System → Domain → Resource tier structure for LLM context) and the codified context infrastructure pattern described in [Brachmann 2025](https://arxiv.org/html/2602.20478v1) (which treats project knowledge as load-bearing infrastructure organised in hot/domain/cold tiers).
+
+decoct already has the data objects for this model. Schemas define platform defaults. Assertions define design standards. Classes (planned) define named patterns of conformant configuration. The tiered model organises these into a hierarchy that serves both compression and LLM context loading.
+
+| Tier | What lives here | How an LLM uses it | decoct objects |
+|------|----------------|-------------------|----------------|
+| **A — Architectural** | Architecture, design decisions, system overview, schemas, standards, policies, platform defaults. The "why" and "what should be" at the highest level. | Load one A-level item to understand the overall environment. Provides framing for everything below. | Schemas, architectural constraints, policy prose |
+| **B — Classes** | Named collections of settings that represent a coherent design pattern. A class bundles multiple assertions into a single referenceable unit — "what a conformant instance of this type looks like." | Load one B-level class to understand what a specific type of service/resource should look like. | Classes (and their constituent assertions) |
+| **C — Configs** | Individual service configs, host configs, resource manifests. The actual Docker Compose files, K8s manifests, etc. When compressed, conformant groups of values collapse to class references. | Load one C-level item to troubleshoot or review a specific service. Only deviations and instance-specific values remain. | Compressed config output |
+
+### How classes compress Tier C
+
+Today, decoct strips individual values that match assertions. Classes go further: when an entire *group* of values conforms to a named pattern, the group collapses to a single class reference.
+
+**Before decoct (raw config, ~45 lines):**
+```yaml
+services:
+  web:
+    image: myapp:v2.3.1
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+  db:
+    image: postgres:latest
+    restart: always
+    # ... 20 more lines of defaults and settings
+```
+
+**After decoct with class-based compression (~12 lines):**
+```yaml
+# decoct: 2 deviations from standards
+# [!] no-latest: services.db.image
+# [!] restart-policy: services.db.restart
+services:
+  web:  # class: standard-web-service
+    image: myapp:v2.3.1
+    ports:
+      - "8080:8080"
+  db:  # class: standard-database (2 deviations)
+    image: postgres:latest  # [!] must not use :latest
+    restart: always  # [!] standard: unless-stopped
+```
+
+The `# class: standard-web-service` comment tells the LLM: "this service fully conforms to the standard-web-service pattern. If you need to know what that means, load the class definition." The image and ports remain because they're instance-specific — they don't come from any class or default. Everything else (restart, logging, healthcheck, deploy) was conformant and collapsed.
+
+This is the compression mechanism: **Tier C configs compress by referencing Tier B classes.** The LLM doesn't need to see the 12 standard settings; it sees the class name and can load the class definition if needed.
+
+### The LLM context loading pattern
+
+An LLM troubleshooting a specific service loads three items:
+
+1. **One Tier A item** — the architecture overview. Understands the environment: two hosts, Docker Compose managed by systemd, secrets from Infisical, monitoring via Grafana/Loki/Zabbix.
+2. **One Tier B class** — e.g. `standard-web-service`. Understands what a conformant web service looks like: restart policy, logging config, healthcheck pattern, resource limits.
+3. **One Tier C config** — the compressed config for the specific service. Sees only what's instance-specific (image, ports) + class references + deviations.
+
+Total context: maybe 200 lines instead of 800. And the 200 lines are more informative — the LLM immediately sees what's standard, what's custom, and what's wrong.
+
+### Tier A: what lives at the architectural level
+
+Tier A items are not configs — they're the knowledge that informs how configs should look. Multiple types of object live here:
+
+- **Schemas** — platform defaults (what Docker Compose, Kubernetes, etc. ship out of the box). decoct already has these.
+- **Architectural constraints** — universal principles: "all services must be resilient", "secrets never in config files", "every service gets its own network." These are the top of the assertion hierarchy — they decompose into B-level class definitions.
+- **Design documents** — prose architecture, deployment standards, security policies. These are the human-readable source material from which constraints and classes can be derived.
+- **System overview** — the environment map: what hosts exist, what roles they serve, how they connect. This is the progressive context Tier A item.
+
+An LLM loading a Tier A item gets the "why" — why the environment is structured this way, what principles govern it. It doesn't get individual config values.
+
+### Tier B: classes and their elements
+
+A class is a named bundle of assertions — "what a conformant instance of this type looks like." Classes are the bridge between abstract architectural principles and concrete config evaluation.
+
+```yaml
+id: standard-web-service
+description: "Standard web service deployment pattern"
+domain: containers
+conforms_to:                              # A-level constraints this class satisfies
+  - service-resilience
+  - logging-standard
+  - security-baseline
+elements:                                 # The assertions that make up this class
+  - id: restart-policy
+    path: "services.*.restart"
+    value: unless-stopped
+  - id: logging-driver
+    path: "services.*.logging.driver"
+    value: json-file
+  - id: logging-max-size
+    path: "services.*.logging.options.max-size"
+    value: 10m
+  - id: logging-max-file
+    path: "services.*.logging.options.max-file"
+    value: "3"
+  - id: healthcheck-present
+    path: "services.*.healthcheck"
+    required: true
+  - id: resource-limits
+    path: "services.*.deploy.resources.limits"
+    required: true
+  - id: no-privileged
+    path: "services.*.privileged"
+    value: false
+  - id: security-opt
+    path: "services.*.security_opt"
+    contains: "no-new-privileges:true"
+```
+
+When decoct evaluates a config against a class:
+- Every element matches → service conforms → collapse to `# class: standard-web-service`
+- Most elements match, some deviate → partial conformance → `# class: standard-web-service (2 deviations)` with deviating values annotated
+- Few elements match → no class assignment, individual assertions evaluated as today
+
+Classes are a natural evolution of the existing assertion model. Today's assertions are flat — a list of individual rules. Classes group related assertions into named patterns that can be referenced, compared, and used for compression.
+
+### Bidirectional flow
+
+The tiers work in both directions:
+
+**Bottom-up (C → B → A) — surfacing implicit architecture:**
+
+```
+Many Tier C configs (raw)
+  → decoct strips platform defaults (schema-driven, deterministic)
+  → what remains = intentional configuration (signal)
+  → LLM aggregates signal across configs
+     "10/11 services share these 12 settings"
+  → propose candidate class: standard-web-service
+  → group classes by domain → domain-level design patterns
+  → synthesise across domains → A-level architectural constraints
+     "All services must be resilient" (derived from restart + healthcheck + limits patterns)
+  → generate prose: deployment policy, architecture document
+```
+
+The deterministic pipeline does the mechanical work of separating signal from noise. The LLM does the recognition work — seeing that the signal is consistent, naming the pattern, and articulating the principle behind it.
+
+The heuristic from Brachmann 2025 applies directly: **"if you explained it twice, write it down."** If decoct finds the same non-default values across multiple configs, that's a candidate class. The LLM decides whether the pattern is intentional (codify it as a class) or coincidental (ignore it).
+
+**Top-down (A → B → C) — deriving classes from intent:**
+
+```
+Architecture documents, deployment policies, design standards (Tier A prose)
+  → LLM extracts architectural constraints
+     "The deployment standards doc says services must be resilient"
+  → LLM decomposes constraints into class definitions (Tier B)
+     "resilient web service" = restart: unless-stopped + healthcheck + resource limits + ...
+  → classes instantiate into per-config expectations
+  → decoct evaluates Tier C configs against classes
+  → conformant configs collapse to class references
+  → deviations flagged
+```
+
+Today a human reads the deployment standards doc and hand-writes 12 assertions. The top-down flow has an LLM read the same document and produce a class definition, with the human reviewing and approving it.
+
+**The circular reinforcement:**
+
+1. **Bottom-up** surfaces what the environment *actually does* (implicit classes)
+2. **Top-down** encodes what the environment *should do* (explicit classes)
+3. **The gap** between them is the most valuable output:
+   - "Here's what you do consistently but never wrote down" → codify as a class
+   - "Here's what you wrote down but don't do consistently" → flag as deviations
+   - "Here's what you wrote down AND do consistently" → conformant, compress to class reference
+4. Each iteration tightens the loop — classes become more accurate, documentation becomes more complete, compression improves
+
+### Planned capabilities
+
+**`decoct learn classes`** (bottom-up, LLM-assisted):
+- Input: multiple compressed configs (post strip-defaults), optional existing classes
+- Process: LLM analyses what's consistent across configs, identifies groups of co-occurring values, proposes candidate classes with named elements
+- Output: class YAML file with `confidence: learned` and `observed_in: 10/11` metadata
+- Human reviews, names the class, promotes to `confidence: approved`
+- Depends on: `[llm]` extra, directory/recursive mode (build order item 17)
+
+**`decoct derive classes`** (top-down, LLM-assisted):
+- Input: prose document (architecture doc, deployment policy, design standards), target platform schema
+- Process: LLM extracts principles, decomposes into class definitions with elements appropriate to the platform
+- Output: class YAML file with `confidence: derived` and `source_document` metadata
+- Human reviews and refines element definitions
+- Depends on: `[llm]` extra
+
+**`decoct audit`** (both directions):
+- Input: directory of configs + schema + optional existing classes + optional architecture docs
+- Process: runs both flows, compares results
+- Output: report identifying:
+  - Implicit classes (consistent patterns not captured in any class definition)
+  - Explicit violations (class element failures)
+  - Stale classes (classes that nothing conforms to — dead patterns)
+  - Documentation gaps (classes with no corresponding architectural rationale)
+  - Convergence score: how close is the environment to full class coverage?
+- Depends on: `learn classes` + `derive classes`
+
+### Relationship to existing build order
+
+The existing build order item 34 (`decoct schema learn`) covers LLM-assisted *schema* generation — learning what the platform defaults to. Class learning is the other half: learning what the *environment* standardises on. Both belong under the `[llm]` optional dependency and share infrastructure (LLM API calls, confidence tracking, human-in-the-loop review).
+
+Suggested build order integration:
+
+- Item 34 (`decoct schema learn`) remains — schemas are Tier A objects (platform defaults)
+- New items after 34:
+  - `decoct learn classes` — bottom-up class discovery from compressed configs
+  - `decoct derive classes` — top-down class derivation from architecture/policy prose
+  - `decoct audit` — bidirectional gap analysis
+  - Class-based compression pass — a new pipeline pass that replaces groups of conformant values with class references in the output
+
+These are Phase 3+ capabilities. The deterministic pipeline (Phase 1, complete) and platform expansion (Phase 2, in progress) provide the foundation. Classes extend the existing assertion model — every class element is an assertion, so the current matcher and evaluator work unchanged. The new capability is *grouping* assertions into named classes and using those names in the compressed output.
+
+### Data model extensions
+
+**Class definition** (new object type):
+
+```yaml
+id: standard-web-service
+description: "Standard web service deployment pattern for Docker Compose"
+domain: containers
+conforms_to:
+  - service-resilience                    # A-level constraint references
+  - logging-standard
+  - security-baseline
+confidence: approved                      # approved | derived | learned
+source: deployment-standards.md           # Where this class came from
+elements:
+  - id: restart-policy
+    path: "services.*.restart"
+    value: unless-stopped
+  - id: logging-driver
+    path: "services.*.logging.driver"
+    value: json-file
+  # ... more elements
+```
+
+**Architectural constraint** (new object type):
+
+```yaml
+id: service-resilience
+principle: "All services must be resilient and self-recovering"
+domain: containers
+decomposes_to:
+  - standard-web-service.restart-policy   # Class.element references
+  - standard-web-service.healthcheck-present
+  - standard-web-service.resource-limits
+source: architecture-overview.md
+```
+
+**Assertion model** (additive extensions to existing format):
+
+```yaml
+# Existing fields (unchanged)
+id: restart-policy
+assert: Restart policy must be unless-stopped
+severity: must
+match:
+  path: "services.*.restart"
+  value: unless-stopped
+
+# New fields (optional, additive)
+class: standard-web-service               # Which class this assertion belongs to
+constraint: service-resilience            # Which A-level constraint this serves
+confidence: approved                      # approved | derived | learned | observed
+observed_in: 10/11                        # Bottom-up: how many configs exhibited this pattern
+```
+
+These are additive — the existing assertion format continues to work unchanged. Classes are opt-in. An assertion without a `class` field works exactly as it does today. An assertion *with* a `class` field participates in class-based compression.
+
+---
+
 ## Changelog
+
+### 2026-03-09 — Tiered context model (classes, architectural constraints, compression-by-reference)
+
+**Added Section 9: Tiered Context Model.**
+Defines the three-tier hierarchy for decoct's data model and LLM context loading:
+- **Tier A (Architectural):** Schemas, architectural constraints, design documents, system overview. The "why" and "what should be."
+- **Tier B (Classes):** Named bundles of assertions representing a coherent design pattern. "What a conformant instance of this type looks like." Classes are the compression mechanism — conformant config groups collapse to class references.
+- **Tier C (Configs):** Individual compressed configs with class references and deviation annotations. What an LLM loads to troubleshoot a specific service.
+
+Key additions:
+- **Class-based compression** — groups of conformant values replace with `# class: standard-web-service` references. The LLM sees the class name; loads the class definition only if needed.
+- **LLM context loading pattern** — load one A (architecture overview) + one B (class definition) + one C (compressed config) for full context with minimal tokens.
+- **Bidirectional flow** — bottom-up: aggregate compressed configs → discover classes → surface architectural constraints → generate prose. Top-down: read prose → derive constraints → decompose into classes → evaluate configs.
+- **Planned capabilities:** `decoct learn classes` (bottom-up), `decoct derive classes` (top-down), `decoct audit` (bidirectional gap analysis), class-based compression pass.
+- **Data model extensions:** Class definition (new object), architectural constraint (new object), additive `class`/`constraint`/`confidence`/`observed_in` fields on existing assertions.
+
+References: progressive YAML context loading scheme, [Brachmann 2025](https://arxiv.org/html/2602.20478v1) codified context infrastructure. All LLM-assisted features are `[llm]` optional, Phase 3+.
 
 ### 2026-03-09 — Network operating systems (CLI + YANG)
 

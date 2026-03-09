@@ -33,3 +33,14 @@ Thumbs.db
 
 # decoct
 .decoct/
+
+# Claude Code
+.claude/
+
+# Prompts (local working docs, not shipped)
+docs/prompts/
+
+# Misc
+*.log
+*.bak
+*.tmp
