@@ -118,6 +118,18 @@ class TestLoadInput:
         doc, _raw = load_input(YAML_FIXTURES / "ansible-playbook.yaml")
         assert detect_platform(doc) == "ansible-playbook"
 
+    def test_github_actions_detected(self) -> None:
+        doc, _raw = load_input(YAML_FIXTURES / "github-actions-workflow.yaml")
+        assert detect_platform(doc) == "github-actions"
+
+    def test_traefik_detected(self) -> None:
+        doc, _raw = load_input(YAML_FIXTURES / "traefik-config.yaml")
+        assert detect_platform(doc) == "traefik"
+
+    def test_prometheus_detected(self) -> None:
+        doc, _raw = load_input(YAML_FIXTURES / "prometheus-config.yaml")
+        assert detect_platform(doc) == "prometheus"
+
     def test_tfstate_loads_as_commented_map(self) -> None:
         doc, raw = load_input(JSON_FIXTURES / "tfstate-sample.json")
         assert isinstance(doc, CommentedMap)

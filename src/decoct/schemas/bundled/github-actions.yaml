@@ -1,0 +1,23 @@
+platform: github-actions
+source: GitHub Actions documentation + SchemaStore github-workflow.json schema
+confidence: authoritative
+defaults:
+  # Job-level defaults
+  jobs.*.timeout-minutes: 360
+  jobs.*.continue-on-error: false
+
+  # Step-level defaults
+  jobs.*.steps.*.continue-on-error: false
+
+  # Strategy defaults
+  jobs.*.strategy.fail-fast: true
+
+  # Concurrency defaults
+  concurrency.cancel-in-progress: false
+  jobs.*.concurrency.cancel-in-progress: false
+
+  # Workflow input defaults
+  on.workflow_call.inputs.*.required: false
+  on.workflow_dispatch.inputs.*.required: false
+drop_patterns: []
+system_managed: []

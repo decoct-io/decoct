@@ -69,6 +69,18 @@ def detect_platform(doc: Any) -> str | None:
     if "apiVersion" in doc and "kind" in doc:
         return "kubernetes"
 
+    # GitHub Actions: has "on" (trigger) and "jobs" keys
+    if "on" in doc and "jobs" in doc:
+        return "github-actions"
+
+    # Traefik: has "entryPoints" or ("providers" and ("api" or "log"))
+    if "entryPoints" in doc or ("providers" in doc and ("api" in doc or "log" in doc)):
+        return "traefik"
+
+    # Prometheus: has "scrape_configs" key
+    if "scrape_configs" in doc:
+        return "prometheus"
+
     return None
 
 

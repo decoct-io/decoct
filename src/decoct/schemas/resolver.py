@@ -13,6 +13,9 @@ BUNDLED_SCHEMAS: dict[str, str] = {
     "ansible-playbook": "ansible-playbook.yaml",
     "sshd-config": "sshd-config.yaml",
     "kubernetes": "kubernetes.yaml",
+    "github-actions": "github-actions.yaml",
+    "traefik": "traefik.yaml",
+    "prometheus": "prometheus.yaml",
 }
 
 

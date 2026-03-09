@@ -90,6 +90,48 @@ class TestResolveSchema:
         assert len(schema.defaults) >= 40
         assert len(schema.system_managed) >= 5
 
+    def test_resolve_github_actions_bundled(self) -> None:
+        path = resolve_schema("github-actions")
+        assert path.exists()
+        assert path.name == "github-actions.yaml"
+
+    def test_bundled_github_actions_loads(self) -> None:
+        from decoct.schemas import load_schema
+
+        path = resolve_schema("github-actions")
+        schema = load_schema(path)
+        assert schema.platform == "github-actions"
+        assert schema.confidence == "authoritative"
+        assert len(schema.defaults) >= 8
+
+    def test_resolve_traefik_bundled(self) -> None:
+        path = resolve_schema("traefik")
+        assert path.exists()
+        assert path.name == "traefik.yaml"
+
+    def test_bundled_traefik_loads(self) -> None:
+        from decoct.schemas import load_schema
+
+        path = resolve_schema("traefik")
+        schema = load_schema(path)
+        assert schema.platform == "traefik"
+        assert schema.confidence == "authoritative"
+        assert len(schema.defaults) >= 50
+
+    def test_resolve_prometheus_bundled(self) -> None:
+        path = resolve_schema("prometheus")
+        assert path.exists()
+        assert path.name == "prometheus.yaml"
+
+    def test_bundled_prometheus_loads(self) -> None:
+        from decoct.schemas import load_schema
+
+        path = resolve_schema("prometheus")
+        schema = load_schema(path)
+        assert schema.platform == "prometheus"
+        assert schema.confidence == "authoritative"
+        assert len(schema.defaults) >= 50
+
     def test_all_bundled_schemas_exist(self) -> None:
         for name in BUNDLED_SCHEMAS:
             path = resolve_schema(name)

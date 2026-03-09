@@ -1,0 +1,86 @@
+platform: traefik
+source: Traefik v3 documentation + configuration reference
+confidence: authoritative
+defaults:
+  # Global settings
+  global.checkNewVersion: true
+  global.sendAnonymousUsage: false
+
+  # EntryPoints
+  entryPoints.*.transport.lifeCycle.requestAcceptGraceTimeout: 0s
+  entryPoints.*.transport.lifeCycle.graceTimeOut: 10s
+  entryPoints.*.transport.respondingTimeouts.readTimeout: 60s
+  entryPoints.*.transport.respondingTimeouts.writeTimeout: 0s
+  entryPoints.*.transport.respondingTimeouts.idleTimeout: 180s
+  entryPoints.*.forwardedHeaders.insecure: false
+  entryPoints.*.proxyProtocol.insecure: false
+  entryPoints.*.http2.maxConcurrentStreams: 250
+  entryPoints.*.udp.timeout: 3s
+  entryPoints.*.allowACMEByPass: false
+  entryPoints.*.reusePort: false
+  entryPoints.*.asDefault: false
+
+  # TLS options
+  "tls.options.**.minVersion": VersionTLS12
+  "tls.options.**.sniStrict": false
+
+  # Providers — Docker
+  providers.docker.endpoint: "unix:///var/run/docker.sock"
+  providers.docker.exposedByDefault: true
+  providers.docker.watch: true
+  providers.docker.useBindPortIP: false
+  providers.docker.allowEmptyServices: false
+
+  # Providers — File
+  providers.file.watch: true
+
+  # Providers — global
+  providers.providersThrottleDuration: 2s
+
+  # API
+  api.dashboard: true
+  api.insecure: false
+  api.debug: false
+
+  # Log
+  log.level: ERROR
+  log.format: common
+  log.noColor: false
+  log.maxSize: 100
+  log.maxAge: 0
+  log.maxBackups: 0
+  log.compress: false
+
+  # AccessLog
+  accessLog.format: common
+  accessLog.bufferingSize: 0
+  accessLog.addInternals: false
+  accessLog.filters.retryAttempts: false
+  accessLog.filters.minDuration: 0
+  accessLog.fields.defaultMode: keep
+  accessLog.fields.headers.defaultMode: drop
+
+  # Metrics — Prometheus
+  metrics.prometheus.addEntryPointsLabels: true
+  metrics.prometheus.addRoutersLabels: false
+  metrics.prometheus.addServicesLabels: true
+  metrics.prometheus.entryPoint: traefik
+  metrics.prometheus.manualRouting: false
+  metrics.prometheus.addInternals: false
+
+  # ServersTransport
+  serversTransport.maxIdleConnsPerHost: 200
+  serversTransport.forwardingTimeouts.dialTimeout: 30s
+  serversTransport.forwardingTimeouts.responseHeaderTimeout: 0s
+  serversTransport.forwardingTimeouts.idleConnTimeout: 90s
+  serversTransport.forwardingTimeouts.readIdleTimeout: 0s
+  serversTransport.forwardingTimeouts.pingTimeout: 15s
+  serversTransport.insecureSkipVerify: false
+  serversTransport.disableHTTP2: false
+
+  # Ping
+  ping.entryPoint: traefik
+  ping.terminatingStatusCode: 503
+  ping.manualRouting: false
+drop_patterns: []
+system_managed: []

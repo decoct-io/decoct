@@ -289,6 +289,137 @@ class TestCompressSshd:
         assert "IgnoreRhosts" not in result.output
 
 
+class TestCompressGitHubActions:
+    def test_compress_github_actions_bundled(self) -> None:
+        """GitHub Actions schema strips known defaults."""
+        runner = CliRunner()
+        result = runner.invoke(cli, [
+            "compress",
+            str(YAML_FIXTURES / "github-actions-workflow.yaml"),
+            "--schema", "github-actions",
+        ])
+        assert result.exit_code == 0
+        # Non-default values should remain
+        assert "ubuntu-latest" in result.output
+        assert "actions/checkout@v4" in result.output
+        # Non-default timeout should remain
+        assert "30" in result.output  # test job has timeout-minutes: 30
+        # Default values should be stripped from YAML body
+        yaml_body = "\n".join(
+            line for line in result.output.splitlines() if not line.startswith("#")
+        )
+        # Default timeout-minutes: 360 should be stripped from lint/deploy jobs
+        # Default continue-on-error: false should be stripped
+        assert "continue-on-error" not in yaml_body
+
+    def test_compress_github_actions_auto_detect(self) -> None:
+        """GitHub Actions workflow auto-detected by on + jobs keys."""
+        runner = CliRunner()
+        result = runner.invoke(cli, [
+            "compress",
+            str(YAML_FIXTURES / "github-actions-workflow.yaml"),
+            "--stats",
+        ])
+        assert result.exit_code == 0
+        assert "saved" in result.output or "Tokens:" in result.output
+
+    def test_compress_github_actions_stats(self) -> None:
+        """GitHub Actions compression shows meaningful savings."""
+        runner = CliRunner()
+        result = runner.invoke(cli, [
+            "compress",
+            str(YAML_FIXTURES / "github-actions-workflow.yaml"),
+            "--schema", "github-actions",
+            "--stats",
+        ])
+        assert result.exit_code == 0
+        assert "saved" in result.output or "Tokens:" in result.output
+
+
+class TestCompressTraefik:
+    def test_compress_traefik_bundled(self) -> None:
+        """Traefik schema strips known defaults."""
+        runner = CliRunner()
+        result = runner.invoke(cli, [
+            "compress",
+            str(YAML_FIXTURES / "traefik-config.yaml"),
+            "--schema", "traefik",
+        ])
+        assert result.exit_code == 0
+        # Non-default values should remain
+        assert ":80" in result.output or "web" in result.output
+        assert "traefik" in result.output
+        # Non-default values (custom settings) should remain
+        assert "INFO" in result.output  # log.level: INFO != default ERROR
+        assert "json" in result.output  # accessLog.format: json != default common
+        assert "exposedByDefault" in result.output  # false != default true
+
+    def test_compress_traefik_auto_detect(self) -> None:
+        """Traefik config auto-detected by entryPoints key."""
+        runner = CliRunner()
+        result = runner.invoke(cli, [
+            "compress",
+            str(YAML_FIXTURES / "traefik-config.yaml"),
+            "--stats",
+        ])
+        assert result.exit_code == 0
+        assert "saved" in result.output or "Tokens:" in result.output
+
+    def test_compress_traefik_stats(self) -> None:
+        """Traefik compression shows meaningful savings."""
+        runner = CliRunner()
+        result = runner.invoke(cli, [
+            "compress",
+            str(YAML_FIXTURES / "traefik-config.yaml"),
+            "--schema", "traefik",
+            "--stats",
+        ])
+        assert result.exit_code == 0
+        assert "saved" in result.output or "Tokens:" in result.output
+
+
+class TestCompressPrometheus:
+    def test_compress_prometheus_bundled(self) -> None:
+        """Prometheus schema strips known defaults."""
+        runner = CliRunner()
+        result = runner.invoke(cli, [
+            "compress",
+            str(YAML_FIXTURES / "prometheus-config.yaml"),
+            "--schema", "prometheus",
+        ])
+        assert result.exit_code == 0
+        # Non-default values should remain
+        assert "prometheus" in result.output  # job_name
+        assert "node-exporter" in result.output
+        assert "localhost:9090" in result.output
+        assert "mimir" in result.output  # remote_write URL
+        # Non-default scrape_interval should remain
+        assert "30s" in result.output or "15s" in result.output
+
+    def test_compress_prometheus_auto_detect(self) -> None:
+        """Prometheus config auto-detected by scrape_configs key."""
+        runner = CliRunner()
+        result = runner.invoke(cli, [
+            "compress",
+            str(YAML_FIXTURES / "prometheus-config.yaml"),
+            "--stats",
+        ])
+        assert result.exit_code == 0
+        assert "saved" in result.output or "Tokens:" in result.output
+
+    def test_compress_prometheus_stats(self) -> None:
+        """Prometheus compression shows meaningful savings."""
+        runner = CliRunner()
+        result = runner.invoke(cli, [
+            "compress",
+            str(YAML_FIXTURES / "prometheus-config.yaml"),
+            "--schema", "prometheus",
+            "--stats",
+        ])
+        assert result.exit_code == 0
+        assert "saved" in result.output or "Tokens:" in result.output
+
+
 class TestCompressAutoDetect:
     def test_auto_detect_docker_compose(self) -> None:
         """Auto-applies docker-compose schema without --schema flag."""
