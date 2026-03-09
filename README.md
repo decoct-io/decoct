@@ -50,6 +50,15 @@ decoct compress ./config/ --recursive --stats
 
 # JSON input (terraform state, etc.)
 decoct compress terraform.tfstate --schema terraform-state
+
+# Kubernetes manifests
+decoct compress deployment.yaml --schema kubernetes
+
+# Ansible playbooks
+decoct compress playbook.yaml --schema ansible-playbook
+
+# Derive a schema from example files using Claude (requires decoct[llm])
+decoct schema learn -e nginx.conf.yaml -e haproxy.yaml -o my-schema.yaml
 ```
 
 ## What It Does
@@ -64,8 +73,11 @@ Three-tier compression pipeline, each tier building on the last:
 
 | Schema | Platform | Defaults |
 |--------|----------|----------|
-| `docker-compose` | Docker Compose | ~60 defaults from the Compose spec |
+| `docker-compose` | Docker Compose | ~35 defaults from the Compose spec |
 | `cloud-init` | cloud-init | ~55 defaults from upstream JSON Schema |
+| `ansible-playbook` | Ansible | ~120 defaults from builtin module docs |
+| `kubernetes` | Kubernetes | ~55 defaults + 6 system-managed fields |
+| `sshd-config` | OpenSSH | ~35 defaults from sshd_config(5) |
 | `terraform-state` | Terraform | System-managed envelope fields |
 
 ### Bundled Profiles
@@ -116,6 +128,7 @@ services:
 | `strip-conformant` | Strips values matching assertion expectations |
 | `annotate-deviations` | Adds `[!]` comments on non-conformant values |
 | `deviation-summary` | Appends a summary of all deviations |
+| `emit-classes` | Adds header comment listing stripped default classes |
 | `drop-fields` | Removes fields by glob pattern |
 | `keep-fields` | Keeps only fields matching glob patterns |
 | `prune-empty` | Removes empty dicts/lists left by other passes |
