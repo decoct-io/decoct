@@ -4,7 +4,7 @@ Infrastructure context compression for LLMs.
 
 > **Status: Under active development.** API may change before 1.0.
 
-decoct compresses infrastructure data (YAML, JSON) for LLM context windows --
+decoct compresses infrastructure data (YAML, JSON, INI/config files) for LLM context windows --
 stripping platform defaults, removing noise, and highlighting deviations from
 your design standards. Saves 20-80% of tokens depending on input verbosity,
 while making output more informative, not less.
@@ -51,11 +51,17 @@ decoct compress ./config/ --recursive --stats
 # JSON input (terraform state, etc.)
 decoct compress terraform.tfstate --schema terraform-state
 
+# INI/config file input
+decoct compress postgresql.conf --schema postgresql
+
 # Kubernetes manifests
 decoct compress deployment.yaml --schema kubernetes
 
 # Ansible playbooks
 decoct compress playbook.yaml --schema ansible-playbook
+
+# Learn assertions from a corpus of existing configs
+decoct assertion learn -c config1.yaml -c config2.yaml -o standards.yaml
 
 # Derive a schema from example files using Claude (requires decoct[llm])
 decoct schema learn -e nginx.conf.yaml -e haproxy.yaml -o my-schema.yaml
@@ -69,16 +75,59 @@ Three-tier compression pipeline, each tier building on the last:
 2. **Platform defaults** (~20-55%) -- remove values matching known schema defaults
 3. **Standards conformance** (~30-80%) -- strip values conforming to your assertions, annotate deviations
 
+Input formats: YAML, JSON, and INI/config files (`.ini`, `.conf`, `.cfg`, `.cnf`, `.properties`).
+All input is normalised to YAML for processing.
+
+## Supported Platforms
+
+decoct ships with bundled schemas for 25 platforms. Platforms marked with **(auto)** are
+detected automatically from file content or naming conventions.
+
+**Container/Orchestration** -- Docker Compose **(auto)**, Kubernetes **(auto)**
+
+**Configuration Management** -- Ansible **(auto)**, cloud-init **(auto)**, OpenSSH sshd_config
+
+**Infrastructure as Code** -- Terraform state **(auto)**, AWS CloudFormation, Azure ARM, GCP Resources
+
+**CI/CD** -- GitHub Actions **(auto)**, GitLab CI, Argo CD
+
+**Databases** -- PostgreSQL, MariaDB/MySQL, MongoDB, Redis, Kafka
+
+**Observability** -- Prometheus **(auto)**, Grafana, OpenTelemetry Collector, Fluent Bit
+
+**Networking** -- Traefik **(auto)**
+
+**Identity** -- Keycloak, Entra ID, Intune
+
 ### Bundled Schemas
 
-| Schema | Platform | Defaults |
-|--------|----------|----------|
-| `docker-compose` | Docker Compose | ~35 defaults from the Compose spec |
-| `cloud-init` | cloud-init | ~55 defaults from upstream JSON Schema |
-| `ansible-playbook` | Ansible | ~120 defaults from builtin module docs |
-| `kubernetes` | Kubernetes | ~55 defaults + 6 system-managed fields |
-| `sshd-config` | OpenSSH | ~35 defaults from sshd_config(5) |
-| `terraform-state` | Terraform | System-managed envelope fields |
+| Category | Schema | Platform | Defaults |
+|----------|--------|----------|----------|
+| Container/Orchestration | `docker-compose` | Docker Compose | ~35 defaults from the Compose spec |
+| | `kubernetes` | Kubernetes | ~55 defaults + system-managed fields |
+| Configuration Management | `ansible-playbook` | Ansible | ~120 defaults from builtin module docs |
+| | `cloud-init` | cloud-init | ~55 defaults from upstream JSON Schema |
+| | `sshd-config` | OpenSSH | ~35 defaults from sshd_config(5) |
+| Infrastructure as Code | `terraform-state` | Terraform | System-managed envelope fields |
+| | `aws-cloudformation` | AWS CloudFormation | ~60 defaults from CFN spec |
+| | `azure-arm` | Azure ARM | ~80 defaults from ARM schema |
+| | `gcp-resources` | GCP Resources | ~45 defaults from GCP API schemas |
+| CI/CD | `github-actions` | GitHub Actions | ~10 defaults from workflow spec |
+| | `gitlab-ci` | GitLab CI | ~30 defaults from CI config spec |
+| | `argocd` | Argo CD | ~20 defaults from Argo CD CRDs |
+| Databases | `postgresql` | PostgreSQL | ~150+ defaults from postgresql.conf |
+| | `mariadb-mysql` | MariaDB/MySQL | ~70 defaults from server config |
+| | `mongodb` | MongoDB | ~15 defaults from mongod.conf |
+| | `redis` | Redis | ~60 defaults from redis.conf |
+| | `kafka` | Kafka | ~60 defaults from server.properties |
+| Observability | `prometheus` | Prometheus | ~55 defaults from prometheus.yml spec |
+| | `grafana` | Grafana | ~150+ defaults from grafana.ini |
+| | `opentelemetry-collector` | OpenTelemetry Collector | ~20 defaults from OTel config |
+| | `fluent-bit` | Fluent Bit | ~65 defaults from fluent-bit.conf |
+| Networking | `traefik` | Traefik | ~55 defaults from Traefik config |
+| Identity | `keycloak` | Keycloak | ~80 defaults from Keycloak config |
+| | `entra-id` | Entra ID | ~65 defaults from Entra ID policies |
+| | `intune` | Intune | ~85 defaults from Intune profiles |
 
 ### Bundled Profiles
 
@@ -206,6 +255,25 @@ passes:
 ```bash
 decoct compress config.yaml --profile my-profile.yaml
 ```
+
+## CLI Features
+
+- `decoct compress` -- compress one or more files with optional schema/assertions/profile
+- `decoct schema learn` -- derive a schema from example files using Claude
+- `decoct assertion learn` -- learn assertions from a corpus of existing configs
+- `decoct schema list` -- list bundled schemas
+- `--stats` / `--show-removed` / `--recursive` / `-o` output options
+
+## Documentation
+
+- [Getting Started](docs/getting-started.md)
+- [CLI Reference](docs/cli-reference.md)
+- [User Manual](docs/manual.md)
+- [Schema Authoring](docs/schema-authoring.md)
+- [Assertion Authoring](docs/assertion-authoring.md)
+- [Cookbook](docs/cookbook.md)
+- [API Reference](docs/dev/api-reference.md)
+- [Contributing](CONTRIBUTING.md)
 
 ## Development
 
