@@ -6,8 +6,8 @@ Infrastructure context compression for LLMs.
 
 decoct compresses infrastructure data (YAML, JSON) for LLM context windows --
 stripping platform defaults, removing noise, and highlighting deviations from
-your design standards. Typically saves 40-60% of tokens while making output
-more informative, not less.
+your design standards. Saves 20-80% of tokens depending on input verbosity,
+while making output more informative, not less.
 
 ## Install
 
@@ -65,9 +65,9 @@ decoct schema learn -e nginx.conf.yaml -e haproxy.yaml -o my-schema.yaml
 
 Three-tier compression pipeline, each tier building on the last:
 
-1. **Generic cleanup** (~15% savings) -- strip secrets, comments, empty containers
-2. **Platform defaults** (~45%) -- remove values matching known schema defaults
-3. **Standards conformance** (~60%) -- strip values conforming to your assertions, annotate deviations
+1. **Generic cleanup** (~15%) -- strip secrets, comments, empty containers
+2. **Platform defaults** (~20-55%) -- remove values matching known schema defaults
+3. **Standards conformance** (~30-80%) -- strip values conforming to your assertions, annotate deviations
 
 ### Bundled Schemas
 
@@ -90,7 +90,7 @@ Profiles combine a schema with assertion checks:
 
 ### Example Output
 
-Input (docker-compose.yml with 1,400 tokens):
+Input (docker-compose.yml):
 ```yaml
 services:
   web:
@@ -107,16 +107,21 @@ services:
       driver: json-file      # <-- default, stripped
 ```
 
-Compressed output (~1,200 tokens, 12% saved on well-configured files, up to 60% on verbose configs):
+Compressed output:
 ```yaml
+# decoct: defaults stripped using docker-compose schema
+# @class service-defaults: privileged=false, read_only=false, restart=no, ...
+# @class service-healthcheck-defaults: interval=30s, retries=3, timeout=30s, ...
+# @class service-logging-defaults: driver=json-file
 services:
   web:
     image: nginx:1.25.3
     restart: unless-stopped
     healthcheck:
       test: [CMD, curl, -f, http://localhost]
-    logging: {}
 ```
+
+Savings vary by input: 12-20% on well-configured files (most values are intentional), 50-80% on verbose configs with many redundant defaults.
 
 ## Pipeline Passes
 
@@ -191,6 +196,7 @@ passes:
   strip-secrets:
   strip-comments:
   strip-defaults:
+  emit-classes:
   strip-conformant:
   annotate-deviations:
   deviation-summary:
