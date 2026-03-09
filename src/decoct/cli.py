@@ -267,3 +267,66 @@ def compress(
         saved = total_input_tokens - total_output_tokens
         pct = (saved / total_input_tokens * 100) if total_input_tokens else 0
         click.echo(f"Total: Tokens: {total_input_tokens} → {total_output_tokens} (saved {saved}, {pct:.1f}%)", err=True)
+
+
+@cli.group()
+def schema() -> None:
+    """Schema management commands."""
+
+
+@schema.command()
+@click.option("--example", "-e", "examples", multiple=True, type=click.Path(exists=True), help="Example config files.")
+@click.option("--doc", "-d", "docs", multiple=True, type=click.Path(exists=True), help="Documentation files.")
+@click.option("--platform", "-p", type=str, help="Platform name hint (e.g. 'nginx', 'haproxy').")
+@click.option("--output", "-o", type=click.Path(), help="Output schema file path.")
+@click.option("--merge", "-m", type=click.Path(exists=True), help="Merge into existing schema file.")
+@click.option("--model", default="claude-sonnet-4-20250514", show_default=True, help="Anthropic model to use.")
+def learn(
+    examples: tuple[str, ...],
+    docs: tuple[str, ...],
+    platform: str | None,
+    output: str | None,
+    merge: str | None,
+    model: str,
+) -> None:
+    """Derive a schema from example configs and/or documentation using Claude.
+
+    Requires the anthropic SDK: pip install decoct[llm]
+    """
+    from decoct.learn import learn_schema, merge_schemas
+
+    if not examples and not docs:
+        click.echo("Error: at least one --example or --doc file is required.", err=True)
+        sys.exit(1)
+
+    example_paths = [Path(e) for e in examples] if examples else None
+    doc_paths = [Path(d) for d in docs] if docs else None
+
+    try:
+        click.echo("Analysing input files...", err=True)
+        schema_yaml = learn_schema(
+            examples=example_paths,
+            docs=doc_paths,
+            platform=platform,
+            model=model,
+        )
+    except ImportError as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+    except Exception as e:  # noqa: BLE001
+        click.echo(f"Error generating schema: {e}", err=True)
+        sys.exit(1)
+
+    if merge:
+        try:
+            schema_yaml = merge_schemas(Path(merge), schema_yaml)
+            click.echo(f"Merged into {merge}", err=True)
+        except Exception as e:  # noqa: BLE001
+            click.echo(f"Error merging: {e}", err=True)
+            sys.exit(1)
+
+    if output:
+        Path(output).write_text(schema_yaml + "\n")
+        click.echo(f"Schema written to {output}", err=True)
+    else:
+        click.echo(schema_yaml)
