@@ -16,6 +16,22 @@ BUNDLED_SCHEMAS: dict[str, str] = {
     "github-actions": "github-actions.yaml",
     "traefik": "traefik.yaml",
     "prometheus": "prometheus.yaml",
+    "mongodb": "mongodb.yaml",
+    "opentelemetry-collector": "opentelemetry-collector.yaml",
+    "argocd": "argocd.yaml",
+    "postgresql": "postgresql.yaml",
+    "redis": "redis.yaml",
+    "mariadb-mysql": "mariadb-mysql.yaml",
+    "kafka": "kafka.yaml",
+    "fluent-bit": "fluent-bit.yaml",
+    "gitlab-ci": "gitlab-ci.yaml",
+    "grafana": "grafana.yaml",
+    "keycloak": "keycloak.yaml",
+    "entra-id": "entra-id.yaml",
+    "intune": "intune.yaml",
+    "azure-arm": "azure-arm.yaml",
+    "aws-cloudformation": "aws-cloudformation.yaml",
+    "gcp-resources": "gcp-resources.yaml",
 }
 
 

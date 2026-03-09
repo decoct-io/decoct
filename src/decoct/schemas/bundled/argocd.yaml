@@ -1,0 +1,35 @@
+platform: argocd
+source: ArgoCD CRD spec + official documentation
+confidence: authoritative
+defaults:
+  # Project
+  spec.project: default
+
+  # Source
+  spec.source.targetRevision: HEAD
+  spec.source.helm.passCredentials: false
+  spec.source.helm.skipCrds: false
+  spec.source.helm.ignoreMissingValueFiles: false
+  spec.source.directory.recurse: false
+
+  # Sync policy — automated
+  spec.syncPolicy.automated.prune: false
+  spec.syncPolicy.automated.selfHeal: false
+  spec.syncPolicy.automated.allowEmpty: false
+
+  # Sync policy — retry backoff
+  spec.syncPolicy.retry.limit: 0
+  spec.syncPolicy.retry.backoff.duration: 5s
+  spec.syncPolicy.retry.backoff.factor: 2
+  spec.syncPolicy.retry.backoff.maxDuration: 3m
+
+  # Revision history
+  spec.revisionHistoryLimit: 10
+drop_patterns: []
+system_managed:
+  - metadata.uid
+  - metadata.resourceVersion
+  - metadata.generation
+  - metadata.creationTimestamp
+  - metadata.managedFields
+  - status

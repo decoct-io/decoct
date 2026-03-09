@@ -1,0 +1,123 @@
+platform: azure-arm
+source: Azure ARM/Bicep Template Reference (learn.microsoft.com)
+confidence: authoritative
+defaults:
+  # ── Microsoft.Compute/virtualMachines ──────────────────────────────────
+  # OS configuration
+  "**.properties.osProfile.linuxConfiguration.provisionVMAgent": true
+  "**.properties.osProfile.linuxConfiguration.disablePasswordAuthentication": false
+  "**.properties.osProfile.windowsConfiguration.provisionVMAgent": true
+  "**.properties.osProfile.windowsConfiguration.enableAutomaticUpdates": true
+
+  # VM priority & eviction
+  "**.properties.priority": Regular
+  "**.properties.evictionPolicy": Deallocate
+
+  # Disk
+  "**.properties.storageProfile.osDisk.deleteOption": Detach
+  "**.properties.storageProfile.osDisk.caching": "None"
+  "**.properties.storageProfile.osDisk.writeAcceleratorEnabled": false
+  "**.properties.storageProfile.dataDisks.*.deleteOption": Detach
+  "**.properties.storageProfile.dataDisks.*.caching": "None"
+  "**.properties.storageProfile.dataDisks.*.writeAcceleratorEnabled": false
+
+  # Networking
+  "**.properties.networkProfile.networkInterfaces.*.properties.deleteOption": Detach
+  "**.properties.networkProfile.networkInterfaceConfigurations.*.properties.deleteOption": Detach
+  "**.properties.networkProfile.networkInterfaceConfigurations.*.properties.enableAcceleratedNetworking": false
+  "**.properties.networkProfile.networkInterfaceConfigurations.*.properties.enableIPForwarding": false
+  "**.properties.networkProfile.networkInterfaceConfigurations.*.properties.primary": false
+  "**.properties.networkProfile.networkInterfaceConfigurations.*.properties.enableFpga": false
+  "**.ipConfigurations.*.properties.privateIPAddressVersion": IPv4
+  "**.ipConfigurations.*.properties.publicIPAddressConfiguration.properties.publicIPAddressVersion": IPv4
+
+  # Security
+  "**.properties.securityProfile.encryptionAtHost": false
+  "**.properties.securityProfile.securityType": TrustedLaunch
+
+  # Diagnostics
+  "**.properties.diagnosticsProfile.bootDiagnostics.enabled": false
+
+  # Scheduled events
+  "**.properties.scheduledEventsPolicy.scheduledEventsAdditionalPublishingTargets.eventGridAndResourceGraph.enable": false
+
+  # ── Microsoft.Storage/storageAccounts ──────────────────────────────────
+  "**.properties.allowBlobPublicAccess": false
+  "**.properties.allowCrossTenantReplication": false
+  "**.properties.defaultToOAuthAuthentication": false
+  "**.properties.minimumTlsVersion": TLS1_0
+  "**.properties.supportsHttpsTrafficOnly": true
+  "**.properties.allowSharedKeyAccess": true
+  "**.properties.customDomain.useSubDomainName": false
+  "**.properties.dnsEndpointType": Standard
+  "**.properties.isHnsEnabled": false
+  "**.properties.isNfsV3Enabled": false
+  "**.properties.isSftpEnabled": false
+  "**.properties.isLocalUserEnabled": false
+  "**.properties.largeFileSharesState": Disabled
+  # publicNetworkAccess default (Enabled) — applies to Storage, Web/sites, and others
+  "**.properties.publicNetworkAccess": Enabled
+
+  # Storage encryption
+  "**.properties.encryption.requireInfrastructureEncryption": false
+
+  # ── Microsoft.Network/networkSecurityGroups ────────────────────────────
+  # Security rules (no defaults for direction/access/protocol — all required)
+  # But these are commonly repeated boilerplate
+  "**.properties.securityRules.*.properties.priority": 100
+
+  # ── Microsoft.Web/sites (App Service) ──────────────────────────────────
+  "**.properties.clientAffinityEnabled": true
+  "**.properties.clientAffinityPartitioningEnabled": false
+  "**.properties.clientAffinityProxyEnabled": false
+  "**.properties.clientCertEnabled": false
+  "**.properties.scmSiteAlsoStopped": false
+  "**.properties.enabled": true
+  "**.properties.httpsOnly": false
+  "**.properties.redundancyMode": "None"
+
+  # siteConfig
+  "**.properties.siteConfig.localMySqlEnabled": false
+  "**.properties.siteConfig.http20Enabled": true
+  "**.properties.siteConfig.minTlsVersion": "1.2"
+  "**.properties.siteConfig.ftpsState": FtpsOnly
+  "**.properties.siteConfig.remoteDebuggingEnabled": false
+  "**.properties.siteConfig.webSocketsEnabled": false
+  "**.properties.siteConfig.alwaysOn": false
+  "**.properties.siteConfig.use32BitWorkerProcess": true
+  "**.properties.siteConfig.managedPipelineMode": Integrated
+  "**.properties.siteConfig.loadBalancing": LeastRequests
+  "**.properties.siteConfig.autoHealEnabled": false
+
+  # DNS config
+  "**.properties.siteConfig.dnsConfiguration.dnsMaxCacheTimeout": 30
+  "**.properties.siteConfig.dnsConfiguration.dnsRetryAttemptCount": 3
+  "**.properties.siteConfig.dnsConfiguration.dnsRetryAttemptTimeout": 3
+
+  # Dapr config
+  "**.properties.siteConfig.daprConfig.httpMaxRequestSize": 4
+  "**.properties.siteConfig.daprConfig.httpReadBufferSize": 65
+  "**.properties.siteConfig.daprConfig.logLevel": info
+
+drop_patterns: []
+system_managed:
+  - "**.properties.provisioningState"
+  - "**.properties.resourceGuid"
+  - "**.properties.uniqueId"
+  - "**.properties.defaultHostName"
+  - "**.properties.hostNames"
+  - "**.properties.hostNameSslStates"
+  - "**.properties.outboundIpAddresses"
+  - "**.properties.possibleOutboundIpAddresses"
+  - "**.properties.repositorySiteName"
+  - "**.properties.state"
+  - "**.properties.usageState"
+  - "**.properties.availabilityState"
+  - "**.properties.lastModifiedTimeUtc"
+  - "**.properties.createdTime"
+  - "**.properties.vmId"
+  - "**.properties.primaryEndpoints"
+  - "**.properties.primaryLocation"
+  - "**.properties.statusOfPrimary"
+  - "**.properties.creationTime"
+  - "**.etag"

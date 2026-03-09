@@ -1,0 +1,100 @@
+platform: kafka
+source: Apache Kafka Documentation — Broker Configs (v3.7+)
+confidence: authoritative
+defaults:
+  # Broker identity
+  broker.id: -1
+
+  # Listeners
+  listeners: PLAINTEXT://:9092
+
+  # Log management
+  log.dirs: /tmp/kafka-logs
+  log.segment.bytes: 1073741824
+  log.retention.hours: 168
+  log.retention.bytes: -1
+  log.retention.check.interval.ms: 300000
+  log.cleanup.policy: delete
+  log.flush.interval.messages: 9223372036854775807
+  log.index.size.max.bytes: 10485760
+  log.index.interval.bytes: 4096
+  log.roll.hours: 168
+  log.message.timestamp.type: CreateTime
+  log.preallocate: false
+
+  # Topics
+  num.partitions: 1
+  default.replication.factor: 1
+  auto.create.topics.enable: true
+  delete.topic.enable: true
+  min.insync.replicas: 1
+
+  # Threading
+  num.network.threads: 3
+  num.io.threads: 8
+  background.threads: 10
+  num.recovery.threads.per.data.dir: 1
+  num.replica.fetchers: 1
+
+  # Socket / network
+  socket.send.buffer.bytes: 102400
+  socket.receive.buffer.bytes: 102400
+  socket.request.max.bytes: 104857600
+  connections.max.idle.ms: 600000
+  request.timeout.ms: 30000
+  queued.max.requests: 500
+  max.connections.per.ip: 2147483647
+  max.connection.creation.rate: 2147483647
+
+  # Message size
+  message.max.bytes: 1048588
+  replica.fetch.max.bytes: 1048576
+  fetch.max.bytes: 57671680
+
+  # Replication
+  replica.lag.time.max.ms: 30000
+  replica.socket.timeout.ms: 30000
+  replica.socket.receive.buffer.bytes: 65536
+  replica.high.watermark.checkpoint.interval.ms: 5000
+  unclean.leader.election.enable: false
+  auto.leader.rebalance.enable: true
+  leader.imbalance.check.interval.seconds: 300
+  leader.imbalance.per.broker.percentage: 10
+
+  # Controlled shutdown
+  controlled.shutdown.enable: true
+  controlled.shutdown.max.retries: 3
+  controlled.shutdown.retry.backoff.ms: 5000
+
+  # Compression
+  compression.type: producer
+
+  # Offsets
+  offsets.topic.num.partitions: 50
+  offsets.topic.replication.factor: 3
+  offsets.retention.minutes: 10080
+  offsets.commit.timeout.ms: 5000
+
+  # Transaction state
+  transaction.state.log.replication.factor: 3
+  transaction.state.log.min.isr: 2
+  transaction.state.log.num.partitions: 50
+
+  # Group coordinator
+  group.initial.rebalance.delay.ms: 3000
+  group.max.session.timeout.ms: 1800000
+  group.min.session.timeout.ms: 6000
+
+  # Metrics
+  metrics.num.samples: 2
+  metrics.sample.window.ms: 30000
+
+  # Quota
+  quota.window.num: 11
+  quota.window.size.seconds: 1
+
+  # ZooKeeper (classic mode)
+  zookeeper.session.timeout.ms: 18000
+  zookeeper.connection.timeout.ms: 18000
+drop_patterns: []
+system_managed: []

@@ -1,0 +1,36 @@
+platform: opentelemetry-collector
+source: OpenTelemetry Collector source code (v0.110.0+)
+confidence: authoritative
+defaults:
+  # Service telemetry
+  service.telemetry.metrics.level: normal
+
+  # Batch processor
+  processors.batch.send_batch_size: 8192
+  processors.batch.timeout: 200ms
+  processors.batch.send_batch_max_size: 0
+
+  # Memory limiter processor
+  processors.memory_limiter.check_interval: 0s
+
+  # OTLP receiver (v0.110.0+ localhost default)
+  receivers.otlp.protocols.grpc.endpoint: "localhost:4317"
+  receivers.otlp.protocols.http.endpoint: "localhost:4318"
+
+  # OTLP exporter
+  exporters.otlp.compression: gzip
+  exporters.otlp.timeout: 5s
+  exporters.otlp.retry_on_failure.enabled: true
+  exporters.otlp.retry_on_failure.initial_interval: 5s
+  exporters.otlp.retry_on_failure.max_interval: 30s
+  exporters.otlp.retry_on_failure.max_elapsed_time: 5m
+  exporters.otlp.sending_queue.enabled: true
+  exporters.otlp.sending_queue.num_consumers: 10
+  exporters.otlp.sending_queue.queue_size: 1000
+
+  # Debug exporter (replaced logging exporter in v0.108.0+)
+  exporters.debug.verbosity: basic
+  exporters.debug.sampling_initial: 2
+  exporters.debug.sampling_thereafter: 1
+drop_patterns: []
+system_managed: []

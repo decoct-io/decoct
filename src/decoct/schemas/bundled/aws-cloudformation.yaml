@@ -1,0 +1,95 @@
+platform: aws-cloudformation
+source: AWS CloudFormation Resource Specification + AWS Service Documentation
+confidence: authoritative
+defaults:
+  # --- AWS::EC2::Instance ---
+  "**.Monitoring": false
+  "**.Tenancy": default
+  "**.InstanceInitiatedShutdownBehavior": stop
+  "**.EbsOptimized": false
+  "**.DisableApiTermination": false
+  "**.SourceDestCheck": true
+
+  # --- AWS::S3::Bucket ---
+  "**.AccessControl": Private
+  "**.PublicAccessBlockConfiguration.BlockPublicAcls": true
+  "**.PublicAccessBlockConfiguration.BlockPublicPolicy": true
+  "**.PublicAccessBlockConfiguration.IgnorePublicAcls": true
+  "**.PublicAccessBlockConfiguration.RestrictPublicBuckets": true
+  "**.OwnershipControls.Rules.*.ObjectOwnership": BucketOwnerEnforced
+
+  # --- AWS::RDS::DBInstance ---
+  "**.MultiAZ": false
+  "**.StorageEncrypted": false
+  "**.AutoMinorVersionUpgrade": true
+  "**.BackupRetentionPeriod": 1
+  "**.CopyTagsToSnapshot": false
+  "**.DeletionProtection": false
+  "**.DeleteAutomatedBackups": true
+  "**.EnableIAMDatabaseAuthentication": false
+  "**.EnablePerformanceInsights": false
+  "**.MonitoringInterval": 0
+  "**.PromotionTier": 1
+
+  # --- AWS::Lambda::Function ---
+  "**.Timeout": 3
+  "**.MemorySize": 128
+  "**.EphemeralStorage.Size": 512
+  "**.PackageType": Zip
+  "**.Architectures": ["x86_64"]
+
+  # --- AWS::ECS::Service ---
+  "**.DesiredCount": 1
+  "**.SchedulingStrategy": REPLICA
+  "**.PropagateTags": NONE
+  "**.HealthCheckGracePeriodSeconds": 0
+  "**.PlatformVersion": LATEST
+
+  # --- AWS::ECS::TaskDefinition ---
+  "**.NetworkMode": bridge
+
+  # --- AWS::SQS::Queue ---
+  "**.VisibilityTimeout": 30
+  "**.MessageRetentionPeriod": 345600
+  "**.MaximumMessageSize": 262144
+  "**.DelaySeconds": 0
+  "**.ReceiveMessageWaitTimeSeconds": 0
+  "**.FifoQueue": false
+  "**.SqsManagedSseEnabled": true
+
+  # --- AWS::SNS::Topic ---
+  "**.FifoTopic": false
+  "**.ContentBasedDeduplication": false
+  "**.SignatureVersion": "1"
+  "**.TracingConfig": PassThrough
+
+  # --- AWS::AutoScaling::AutoScalingGroup ---
+  "**.HealthCheckType": EC2
+  "**.HealthCheckGracePeriod": 0
+  "**.Cooldown": "300"
+  "**.DesiredCapacityType": units
+
+  # --- AWS::ElasticLoadBalancingV2::LoadBalancer ---
+  "**.Scheme": internet-facing
+  "**.Type": application
+
+  # --- AWS::ElasticLoadBalancingV2::TargetGroup ---
+  "**.TargetType": instance
+
+  # --- AWS::DynamoDB::Table ---
+  "**.BillingMode": PROVISIONED
+  "**.TableClass": STANDARD
+
+  # --- AWS::CloudWatch::Alarm ---
+  "**.Statistic": Average
+  "**.TreatMissingData": missing
+
+drop_patterns: []
+system_managed:
+  - "**.PhysicalResourceId"
+  - "**.StackId"
+  - "**.LogicalResourceId"
+  - "**.CreationTime"
+  - "**.LastUpdatedTime"
+  - "**.ResourceStatus"
+  - "**.DriftInformation"

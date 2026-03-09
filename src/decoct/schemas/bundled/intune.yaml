@@ -1,0 +1,121 @@
+platform: intune
+source: Microsoft Graph API v1.0 Intune Reference (learn.microsoft.com)
+confidence: authoritative
+defaults:
+  # ── Windows 10 Compliance Policy ───────────────────────────────────────
+  "**.windows10CompliancePolicy.passwordRequired": false
+  "**.windows10CompliancePolicy.passwordBlockSimple": false
+  "**.windows10CompliancePolicy.passwordRequiredToUnlockFromIdle": false
+  "**.windows10CompliancePolicy.passwordRequiredType": deviceDefault
+  "**.windows10CompliancePolicy.requireHealthyDeviceReport": false
+  "**.windows10CompliancePolicy.earlyLaunchAntiMalwareDriverEnabled": false
+  "**.windows10CompliancePolicy.bitLockerEnabled": false
+  "**.windows10CompliancePolicy.secureBootEnabled": false
+  "**.windows10CompliancePolicy.codeIntegrityEnabled": false
+  "**.windows10CompliancePolicy.storageRequireEncryption": false
+
+  # ── iOS Compliance Policy ──────────────────────────────────────────────
+  "**.iosCompliancePolicy.passcodeRequired": false
+  "**.iosCompliancePolicy.passcodeBlockSimple": false
+  "**.iosCompliancePolicy.passcodeRequiredType": deviceDefault
+  "**.iosCompliancePolicy.securityBlockJailbrokenDevices": false
+  "**.iosCompliancePolicy.deviceThreatProtectionEnabled": false
+  "**.iosCompliancePolicy.deviceThreatProtectionRequiredSecurityLevel": unavailable
+  "**.iosCompliancePolicy.managedEmailProfileRequired": false
+
+  # ── Android Compliance Policy ──────────────────────────────────────────
+  "**.androidCompliancePolicy.passwordRequired": false
+  "**.androidCompliancePolicy.passwordRequiredType": deviceDefault
+  "**.androidCompliancePolicy.securityPreventInstallAppsFromUnknownSources": false
+  "**.androidCompliancePolicy.securityDisableUsbDebugging": false
+  "**.androidCompliancePolicy.securityRequireVerifyApps": false
+  "**.androidCompliancePolicy.deviceThreatProtectionEnabled": false
+  "**.androidCompliancePolicy.deviceThreatProtectionRequiredSecurityLevel": unavailable
+  "**.androidCompliancePolicy.securityBlockJailbrokenDevices": false
+  "**.androidCompliancePolicy.storageRequireEncryption": false
+  "**.androidCompliancePolicy.securityRequireSafetyNetAttestationBasicIntegrity": false
+  "**.androidCompliancePolicy.securityRequireSafetyNetAttestationCertifiedDevice": false
+  "**.androidCompliancePolicy.securityRequireGooglePlayServices": false
+  "**.androidCompliancePolicy.securityRequireUpToDateSecurityProviders": false
+  "**.androidCompliancePolicy.securityRequireCompanyPortalAppIntegrity": false
+
+  # ── macOS Compliance Policy ────────────────────────────────────────────
+  "**.macOSCompliancePolicy.passwordRequired": false
+  "**.macOSCompliancePolicy.passwordBlockSimple": false
+  "**.macOSCompliancePolicy.passwordRequiredType": deviceDefault
+  "**.macOSCompliancePolicy.systemIntegrityProtectionEnabled": false
+  "**.macOSCompliancePolicy.deviceThreatProtectionEnabled": false
+  "**.macOSCompliancePolicy.deviceThreatProtectionRequiredSecurityLevel": unavailable
+  "**.macOSCompliancePolicy.storageRequireEncryption": false
+  "**.macOSCompliancePolicy.firewallEnabled": false
+  "**.macOSCompliancePolicy.firewallBlockAllIncoming": false
+  "**.macOSCompliancePolicy.firewallEnableStealthMode": false
+
+  # ── Android General Device Configuration ───────────────────────────────
+  "**.androidGeneralDeviceConfiguration.appsBlockClipboardSharing": false
+  "**.androidGeneralDeviceConfiguration.appsBlockCopyPaste": false
+  "**.androidGeneralDeviceConfiguration.appsBlockYouTube": false
+  "**.androidGeneralDeviceConfiguration.bluetoothBlocked": false
+  "**.androidGeneralDeviceConfiguration.cameraBlocked": false
+  "**.androidGeneralDeviceConfiguration.cellularBlockDataRoaming": false
+  "**.androidGeneralDeviceConfiguration.cellularBlockMessaging": false
+  "**.androidGeneralDeviceConfiguration.cellularBlockVoiceRoaming": false
+  "**.androidGeneralDeviceConfiguration.cellularBlockWiFiTethering": false
+  "**.androidGeneralDeviceConfiguration.diagnosticDataBlockSubmission": false
+  "**.androidGeneralDeviceConfiguration.locationServicesBlocked": false
+  "**.androidGeneralDeviceConfiguration.googleAccountBlockAutoSync": false
+  "**.androidGeneralDeviceConfiguration.googlePlayStoreBlocked": false
+  "**.androidGeneralDeviceConfiguration.nfcBlocked": false
+  "**.androidGeneralDeviceConfiguration.passwordBlockFingerprintUnlock": false
+  "**.androidGeneralDeviceConfiguration.passwordBlockTrustAgents": false
+  "**.androidGeneralDeviceConfiguration.passwordRequired": false
+  "**.androidGeneralDeviceConfiguration.passwordRequiredType": deviceDefault
+  "**.androidGeneralDeviceConfiguration.powerOffBlocked": false
+  "**.androidGeneralDeviceConfiguration.factoryResetBlocked": false
+  "**.androidGeneralDeviceConfiguration.screenCaptureBlocked": false
+  "**.androidGeneralDeviceConfiguration.deviceSharingAllowed": false
+  "**.androidGeneralDeviceConfiguration.storageBlockGoogleBackup": false
+  "**.androidGeneralDeviceConfiguration.storageBlockRemovableStorage": false
+  "**.androidGeneralDeviceConfiguration.storageRequireDeviceEncryption": false
+  "**.androidGeneralDeviceConfiguration.storageRequireRemovableStorageEncryption": false
+  "**.androidGeneralDeviceConfiguration.voiceAssistantBlocked": false
+  "**.androidGeneralDeviceConfiguration.voiceDialingBlocked": false
+  "**.androidGeneralDeviceConfiguration.webBrowserBlockPopups": false
+  "**.androidGeneralDeviceConfiguration.webBrowserBlockAutofill": false
+  "**.androidGeneralDeviceConfiguration.webBrowserBlockJavaScript": false
+  "**.androidGeneralDeviceConfiguration.webBrowserBlocked": false
+  "**.androidGeneralDeviceConfiguration.webBrowserCookieSettings": browserDefault
+  "**.androidGeneralDeviceConfiguration.wiFiBlocked": false
+  "**.androidGeneralDeviceConfiguration.securityRequireVerifyApps": false
+  "**.androidGeneralDeviceConfiguration.compliantAppListType": none
+  "**.androidGeneralDeviceConfiguration.kioskModeBlockSleepButton": false
+  "**.androidGeneralDeviceConfiguration.kioskModeBlockVolumeButtons": false
+
+  # ── App Protection Policy (common defaults) ────────────────────────────
+  "**.allowedDataStorageLocations": []
+  "**.contactSyncBlocked": false
+  "**.dataBackupBlocked": false
+  "**.deviceComplianceRequired": true
+  "**.disableAppPinIfDevicePinIsSet": false
+  "**.fingerprintBlocked": false
+  "**.managedBrowserToOpenLinksRequired": false
+  "**.saveAsBlocked": false
+  "**.simplePinBlocked": false
+  "**.pinRequired": true
+  "**.minimumPinLength": 4
+  "**.periodBeforePinReset": "PT0S"
+  "**.periodOfflineBeforeAccessCheck": "PT720M"
+  "**.periodOfflineBeforeWipeIsEnforced": "P90D"
+  "**.periodOnlineBeforeAccessCheck": "PT30M"
+  "**.printBlocked": false
+  "**.organizationalCredentialsRequired": false
+
+drop_patterns: []
+system_managed:
+  - "**.id"
+  - "**.createdDateTime"
+  - "**.lastModifiedDateTime"
+  - "**.version"
+  - "**.roleScopeTagIds"
+  - "**.'@odata.type'"
+  - "**.'@odata.context'"

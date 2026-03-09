@@ -1,0 +1,104 @@
+platform: entra-id
+source: Microsoft Graph API v1.0 Reference (learn.microsoft.com)
+confidence: authoritative
+defaults:
+  # ── Conditional Access Policy ──────────────────────────────────────────
+  # conditionalAccessSessionControls
+  "**.sessionControls.disableResilienceDefaults": false
+
+  # conditionalAccessGrantControls
+  "**.grantControls.operator": OR
+
+  # ── Application Registration ───────────────────────────────────────────
+  "**.isDeviceOnlyAuthSupported": false
+  "**.isFallbackPublicClient": false
+  "**.oauth2RequiredPostResponse": false
+  "**.signInAudience": AzureADMyOrg
+  "**.nativeAuthenticationApisEnabled": none
+
+  # ── Service Principal ──────────────────────────────────────────────────
+  "**.accountEnabled": true
+  "**.appRoleAssignmentRequired": false
+  "**.servicePrincipalType": Application
+
+  # ── Group ──────────────────────────────────────────────────────────────
+  "**.allowExternalSenders": false
+  "**.autoSubscribeNewMembers": false
+  "**.hideFromAddressLists": false
+  "**.hideFromOutlookClients": false
+  "**.isSubscribedByMail": true
+  "**.isAssignableToRole": false
+
+  # ── User ───────────────────────────────────────────────────────────────
+  # accountEnabled default (true) shared with Service Principal above
+  "**.showInAddressList": true
+
+  # ── Authentication Methods Policy ──────────────────────────────────────
+  "**.registrationEnforcement.authenticationMethodsRegistrationCampaign.state": default
+  "**.registrationEnforcement.authenticationMethodsRegistrationCampaign.snoozeDurationInDays": 1
+
+  # ── Authentication Method Configurations ───────────────────────────────
+  # FIDO2
+  "**.fido2RestrictionEnforcementType": allow
+  "**.isSelfServiceRegistrationAllowed": true
+  "**.isAttestationEnforced": false
+
+  # Microsoft Authenticator
+  "**.featureSettings.displayAppInformationRequiredState.state": default
+  "**.featureSettings.displayLocationInformationRequiredState.state": default
+  "**.featureSettings.companionAppAllowedState.state": default
+  "**.featureSettings.numberMatchingRequiredState.state": default
+
+  # ── Named Locations ────────────────────────────────────────────────────
+  "**.isTrusted": false
+
+  # ── Directory Settings / Group Settings ────────────────────────────────
+  "**.enableGroupCreation": true
+  "**.allowGuestsToAccessGroups": true
+  "**.allowGuestsToBeGroupOwner": false
+  "**.allowToAddGuests": true
+  "**.enableMIPLabels": false
+
+  # ── Tenant Authorization Policy ────────────────────────────────────────
+  "**.allowInvitesFrom": everyone
+  "**.allowedToSignUpEmailBasedSubscriptions": true
+  "**.allowedToUseSelfServicePasswordReset": true
+  "**.allowEmailVerifiedUsersToJoinOrganization": true
+  "**.blockMsolPowerShell": false
+
+  # ── Cross-Tenant Access Settings ───────────────────────────────────────
+  "**.isServiceDefault": false
+  "**.b2bCollaborationInbound.applications.accessType": allowed
+  "**.b2bCollaborationOutbound.applications.accessType": allowed
+  "**.b2bDirectConnectInbound.applications.accessType": blocked
+  "**.b2bDirectConnectOutbound.applications.accessType": blocked
+
+  # ── Identity Protection ────────────────────────────────────────────────
+  "**.isEnabled": true
+
+  # ── Token Lifetime Policy ──────────────────────────────────────────────
+  "**.AccessTokenLifetime": "01:00:00"
+
+drop_patterns: []
+system_managed:
+  - id
+  - "**.id"
+  - createdDateTime
+  - modifiedDateTime
+  - "**.createdDateTime"
+  - "**.modifiedDateTime"
+  - "**.createdByAppId"
+  - "**.deletedDateTime"
+  - "**.renewedDateTime"
+  - "**.onPremisesLastSyncDateTime"
+  - "**.onPremisesSecurityIdentifier"
+  - "**.onPremisesSyncEnabled"
+  - "**.onPremisesProvisioningErrors"
+  - "**.proxyAddresses"
+  - "**.securityIdentifier"
+  - "**.appOwnerOrganizationId"
+  - "**.publisherDomain"
+  - "**.appId"
+  - "**.applicationTemplateId"
+  - "**.servicePrincipalNames"
+  - templateId
