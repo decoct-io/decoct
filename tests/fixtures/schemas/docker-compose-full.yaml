@@ -1,0 +1,64 @@
+platform: docker-compose
+source: Docker Compose specification + compose-go source
+confidence: authoritative
+defaults:
+  # Service-level booleans
+  services.*.restart: "no"
+  services.*.privileged: false
+  services.*.read_only: false
+  services.*.stdin_open: false
+  services.*.tty: false
+  services.*.init: false
+
+  # Network
+  services.*.network_mode: bridge
+
+  # Healthcheck
+  services.*.healthcheck.interval: 30s
+  services.*.healthcheck.timeout: 30s
+  services.*.healthcheck.retries: 3
+  services.*.healthcheck.start_period: 0s
+  services.*.healthcheck.start_interval: 5s
+
+  # Logging
+  services.*.logging.driver: json-file
+
+  # Deploy
+  services.*.deploy.replicas: 1
+  services.*.deploy.restart_policy.condition: any
+  services.*.deploy.restart_policy.max_attempts: 0
+  services.*.deploy.update_config.parallelism: 1
+  services.*.deploy.update_config.order: stop-first
+  services.*.deploy.rollback_config.parallelism: 1
+  services.*.deploy.rollback_config.order: stop-first
+
+  # Ports (long-form)
+  services.*.ports.*.protocol: tcp
+  services.*.ports.*.mode: ingress
+
+  # depends_on (long-form)
+  services.*.depends_on.*.condition: service_started
+  services.*.depends_on.*.required: true
+  services.*.depends_on.*.restart: true
+
+  # Build
+  services.*.build.pull: false
+  services.*.build.no_cache: false
+
+  # Network declarations
+  networks.*.driver: bridge
+  networks.*.external: false
+  networks.*.internal: false
+  networks.*.attachable: false
+  networks.*.enable_ipv6: false
+
+  # Volume declarations
+  volumes.*.external: false
+
+  # Secrets declarations
+  secrets.*.external: false
+
+  # Configs declarations
+  configs.*.external: false
+drop_patterns: []
+system_managed: []

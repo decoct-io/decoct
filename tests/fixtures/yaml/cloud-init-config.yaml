@@ -1,0 +1,83 @@
+#cloud-config
+package_update: false
+package_upgrade: false
+package_reboot_if_required: false
+
+packages:
+  - nginx
+  - postgresql-client
+  - redis-tools
+
+users:
+  - name: deploy
+    groups: sudo, docker
+    shell: /bin/bash
+    lock_passwd: true
+    no_create_home: false
+    no_log_init: false
+    create_groups: true
+    system: false
+    ssh_authorized_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIExampleKeyDataHere deploy@example.com
+
+ssh_deletekeys: true
+allow_public_ssh_keys: true
+disable_root: true
+ssh_quiet_keygen: false
+
+growpart:
+  mode: auto
+  ignore_growroot_disabled: false
+
+manage_etc_hosts: false
+preserve_hostname: false
+manage_resolv_conf: false
+disable_ec2_metadata: false
+
+ntp:
+  enabled: true
+  ntp_client: auto
+  servers:
+    - 192.0.2.10
+    - 192.0.2.11
+
+write_files:
+  - path: /etc/nginx/conf.d/app.conf
+    permissions: "0644"
+    append: false
+    defer: false
+    content: |
+      server {
+          listen 80;
+          server_name app.example.com;
+          location / {
+              proxy_pass http://127.0.0.1:8080;
+          }
+      }
+  - path: /etc/systemd/system/app.service
+    permissions: "0644"
+    append: false
+    defer: false
+    content: |
+      [Unit]
+      Description=Application Service
+      After=network.target
+      [Service]
+      Type=simple
+      ExecStart=/opt/app/bin/start
+      Restart=always
+      [Install]
+      WantedBy=multi-user.target
+
+runcmd:
+  - systemctl enable nginx
+  - systemctl start nginx
+  - systemctl enable app
+  - systemctl start app
+
+power_state:
+  delay: now
+  timeout: 30
+  condition: true
+  mode: reboot
+  message: Rebooting after cloud-init setup
