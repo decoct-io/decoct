@@ -24,6 +24,11 @@ def _parse_match(data: dict[str, Any]) -> Match:
             msg = f"Match 'range' must be a list of [min, max], got: {range_val}"
             raise ValueError(msg)
 
+    exists_val = data.get("exists")
+    if exists_val is not None and not isinstance(exists_val, bool):
+        msg = f"Match 'exists' must be a boolean, got: {exists_val}"
+        raise ValueError(msg)
+
     return Match(
         path=str(data["path"]),
         value=data.get("value"),
@@ -31,6 +36,7 @@ def _parse_match(data: dict[str, Any]) -> Match:
         range=range_val,
         contains=data.get("contains"),
         not_value=data.get("not_value"),
+        exists=exists_val,
     )
 
 

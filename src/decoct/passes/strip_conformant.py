@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from decoct.assertions.matcher import evaluate_match, find_matches
+from decoct.assertions.matcher import _SENTINEL, evaluate_match, find_matches
 from decoct.assertions.models import Assertion
 from decoct.passes.base import BasePass, PassResult, register_pass
 
@@ -13,14 +13,20 @@ def strip_conformant(doc: Any, assertions: list[Assertion]) -> int:
     """Strip conformant values for 'must' assertions with match conditions.
 
     Returns count of fields removed.
+    Skips ``exists`` assertions (nothing to strip for presence/absence checks).
     """
     count = 0
     for assertion in assertions:
         if assertion.match is None or assertion.severity != "must":
             continue
+        # exists assertions don't strip values — they only detect presence/absence
+        if assertion.match.exists is not None:
+            continue
 
         matches = find_matches(doc, "", assertion)
         for _path, value, parent, key in matches:
+            if value is _SENTINEL:
+                continue
             if evaluate_match(assertion.match, value):
                 del parent[key]
                 count += 1

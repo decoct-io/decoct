@@ -1,0 +1,109 @@
+assertions:
+  - id: ens-image-pinned
+    assert: Image tags must be pinned to specific versions, not :latest
+    match:
+      path: services.*.image
+      pattern: "^(?!.*:latest$)(?=.*:.+$)"
+    rationale: Pinned versions ensure reproducible deployments and auditable rollbacks
+    severity: must
+    source: ENS-OPS-DOCKER-001
+    example: "nginx:1.25.3"
+
+  - id: ens-restart-policy
+    assert: Restart policy must be unless-stopped or always
+    match:
+      path: services.*.restart
+      pattern: "^(unless-stopped|always)$"
+    rationale: Services must automatically recover from crashes
+    severity: must
+    source: ENS-OPS-DOCKER-001
+    example: "unless-stopped"
+
+  - id: ens-container-name
+    assert: Container name must be explicitly set
+    match:
+      path: services.*.container_name
+      exists: true
+    rationale: Explicit naming prevents Docker-generated names and aids log correlation
+    severity: must
+    source: ENS-OPS-DOCKER-001
+    example: "hairtrigger-web"
+
+  - id: ens-healthcheck
+    assert: All application containers must have health checks configured
+    match:
+      path: services.*.healthcheck
+      exists: true
+    rationale: Health checks enable proper orchestration, dependency ordering, and monitoring
+    severity: must
+    source: ENS-OPS-DOCKER-001
+    exceptions: Infrastructure-only containers (redis, postgres) may rely on built-in health mechanisms
+
+  - id: ens-logging-driver
+    assert: Logging driver must be json-file
+    match:
+      path: services.*.logging.driver
+      value: json-file
+    rationale: Consistent json-file logging enables centralised log collection
+    severity: must
+    source: ENS-OPS-DOCKER-001
+    example: "json-file"
+
+  - id: ens-logging-max-size
+    assert: Log rotation max-size must be configured
+    match:
+      path: services.*.logging.options.max-size
+      pattern: ".+"
+    rationale: Unbounded logs cause disk exhaustion
+    severity: must
+    source: ENS-OPS-DOCKER-001
+    example: "10m"
+
+  - id: ens-logging-max-file
+    assert: Log rotation max-file must be configured
+    match:
+      path: services.*.logging.options.max-file
+      pattern: ".+"
+    rationale: Log file count must be bounded to prevent disk exhaustion
+    severity: must
+    source: ENS-OPS-DOCKER-001
+    example: "3"
+
+  - id: ens-security-opt
+    assert: Containers should set no-new-privileges security option
+    match:
+      path: services.*.security_opt
+      contains: "no-new-privileges:true"
+    rationale: Prevents privilege escalation via setuid/setgid binaries
+    severity: should
+    source: ENS-OPS-DOCKER-001
+    example: "no-new-privileges:true"
+
+  - id: ens-no-privileged
+    assert: Containers must not run in privileged mode
+    match:
+      path: services.*.privileged
+      value: false
+    rationale: Privileged mode gives full host access, violating container isolation
+    severity: must
+    source: ENS-OPS-DOCKER-001
+
+  - id: ens-resource-limits
+    assert: Production and multi-container stacks should define resource limits
+    rationale: Resource limits prevent runaway containers from exhausting host resources
+    severity: should
+    source: ENS-OPS-DOCKER-001
+    exceptions: Single-container development stacks may omit limits
+
+  - id: ens-named-networks
+    assert: Services should use named networks, not the default bridge
+    rationale: Named networks provide DNS resolution and isolation between stacks
+    severity: should
+    source: ENS-OPS-DOCKER-001
+
+  - id: ens-no-host-0000
+    assert: Ports must not bind to 0.0.0.0; use specific IPs or 127.0.0.1
+    rationale: Binding to all interfaces exposes services beyond intended network boundaries
+    severity: should
+    source: ENS-OPS-DOCKER-001
+    exceptions: Containers behind reverse proxy should bind to 127.0.0.1; management services bind to management IP

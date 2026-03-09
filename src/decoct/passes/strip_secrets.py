@@ -79,6 +79,23 @@ def _check_regex(value: str) -> str | None:
     return None
 
 
+# Paths that should never trigger entropy-based secret detection.
+# These contain commands or values that naturally have high entropy.
+_ENTROPY_EXEMPT_PATHS: list[str] = [
+    "*.healthcheck.test",
+    "*.healthcheck.test.*",
+    "*.command",
+    "*.command.*",
+    "*.entrypoint",
+    "*.entrypoint.*",
+]
+
+
+def _is_entropy_exempt(path: str) -> bool:
+    """Check if a path is exempt from entropy-based detection."""
+    return any(fnmatch(path, p) for p in _ENTROPY_EXEMPT_PATHS)
+
+
 def _detect_secret(
     value: str,
     path: str,
@@ -93,6 +110,9 @@ def _detect_secret(
     regex_match = _check_regex(value)
     if regex_match:
         return f"regex:{regex_match}"
+
+    if _is_entropy_exempt(path):
+        return None
 
     if len(value) >= min_entropy_length and shannon_entropy(value) >= entropy_threshold:
         return "entropy"

@@ -7,7 +7,7 @@ from typing import Any
 
 from ruamel.yaml.comments import CommentedMap
 
-from decoct.assertions.matcher import evaluate_match, find_matches
+from decoct.assertions.matcher import _SENTINEL, evaluate_match, find_matches
 from decoct.assertions.models import Assertion
 from decoct.passes.base import BasePass, PassResult, register_pass
 
@@ -35,12 +35,15 @@ def annotate_deviations(doc: Any, assertions: list[Assertion]) -> list[Deviation
         matches = find_matches(doc, "", assertion)
         for path, value, parent, key in matches:
             if not evaluate_match(assertion.match, value):
-                if assertion.match.value is not None:
+                if value is _SENTINEL:
+                    comment = f" [!] missing: {assertion.assert_}"
+                elif assertion.match.value is not None:
                     comment = f" [!] standard: {assertion.match.value}"
                 else:
                     comment = f" [!] assertion: {assertion.assert_}"
 
-                if isinstance(parent, CommentedMap):
+                # For absent keys, we can't annotate the key itself — skip YAML comment
+                if value is not _SENTINEL and isinstance(parent, CommentedMap):
                     parent.yaml_add_eol_comment(comment, key)
 
                 deviations.append(Deviation(

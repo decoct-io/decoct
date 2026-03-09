@@ -18,6 +18,7 @@ class Match:
     range: list[float | int] | None = None
     contains: Any = None
     not_value: Any = None
+    exists: bool | None = None
 
 
 @dataclass

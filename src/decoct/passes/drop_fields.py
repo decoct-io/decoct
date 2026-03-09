@@ -63,7 +63,7 @@ def _walk_and_drop(node: Any, path: str, patterns: list[str]) -> int:
 
     elif isinstance(node, list):
         for i, child in enumerate(node):
-            child_path = f"{path}[{i}]"
+            child_path = f"{path}.{i}"
             if isinstance(child, (dict, list)):
                 count += _walk_and_drop(child, child_path, patterns)
 

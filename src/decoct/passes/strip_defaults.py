@@ -32,7 +32,7 @@ def _walk_and_strip_defaults(node: Any, path: str, defaults: dict[str, Any]) -> 
 
     elif isinstance(node, list):
         for i, child in enumerate(node):
-            child_path = f"{path}[{i}]"
+            child_path = f"{path}.{i}"
             if isinstance(child, (dict, list)):
                 count += _walk_and_strip_defaults(child, child_path, defaults)
 
