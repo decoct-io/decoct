@@ -83,14 +83,14 @@ tests/
 The project is built incrementally in 9 steps (Phase 1). See `decoct-dev-plan.md` for the full breakdown. Current progress:
 
 - [x] 1.1 Project Skeleton
-- [ ] 1.2 Internal Data Formats (schemas, assertions, profiles)
-- [ ] 1.3 Token Counting
-- [ ] 1.4 Strip-Secrets Pass
-- [ ] 1.5 Pipeline Framework
-- [ ] 1.6 Generic Passes (strip-comments, drop-fields, keep-fields)
-- [ ] 1.7 Schema-Aware Pass (strip-defaults)
-- [ ] 1.8 Assertion-Aware Passes (strip-conformant, annotate-deviations)
-- [ ] 1.9 CLI Integration
+- [x] 1.2 Internal Data Formats (schemas, assertions, profiles)
+- [x] 1.3 Token Counting
+- [x] 1.4 Strip-Secrets Pass
+- [x] 1.5 Pipeline Framework
+- [x] 1.6 Generic Passes (strip-comments, drop-fields, keep-fields)
+- [x] 1.7 Schema-Aware Pass (strip-defaults)
+- [x] 1.8 Assertion-Aware Passes (strip-conformant, annotate-deviations)
+- [x] 1.9 CLI Integration
 
 Each step is independently testable. Proceed in order — later steps depend on earlier ones.
 

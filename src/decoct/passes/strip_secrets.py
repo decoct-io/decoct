@@ -157,3 +157,41 @@ def strip_secrets(
     audit: list[AuditEntry] = []
     _walk_and_redact(doc, "", audit, secret_paths, entropy_threshold, min_entropy_length)
     return audit
+
+
+# ── Pass class ──
+
+from decoct.passes.base import BasePass, PassResult, register_pass  # noqa: E402
+
+
+@register_pass
+class StripSecretsPass(BasePass):
+    """Redact secrets from YAML documents. Must run first in every pipeline."""
+
+    name = "strip-secrets"
+    run_after: list[str] = []
+    run_before: list[str] = []
+
+    def __init__(
+        self,
+        *,
+        secret_paths: list[str] | None = None,
+        entropy_threshold: float = 4.5,
+        min_entropy_length: int = 16,
+    ) -> None:
+        self.secret_paths = secret_paths
+        self.entropy_threshold = entropy_threshold
+        self.min_entropy_length = min_entropy_length
+
+    def run(self, doc: Any, **kwargs: Any) -> PassResult:
+        audit = strip_secrets(
+            doc,
+            secret_paths=self.secret_paths,
+            entropy_threshold=self.entropy_threshold,
+            min_entropy_length=self.min_entropy_length,
+        )
+        return PassResult(
+            name=self.name,
+            items_removed=len(audit),
+            details=[f"{e.path} ({e.detection_method})" for e in audit],
+        )
