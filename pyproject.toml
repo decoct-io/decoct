@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "decoct"
-version = "0.1.0.dev0"
+version = "0.1.0"
 description = "Infrastructure context compression for LLMs"
 readme = "README.md"
 license = "MIT"
@@ -50,6 +50,9 @@ Homepage = "https://decoct.io"
 Repository = "https://github.com/decoct-io/decoct"
 Documentation = "https://decoct.io/docs"
 Issues = "https://github.com/decoct-io/decoct/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/decoct"]
 
 [tool.ruff]
 line-length = 120
