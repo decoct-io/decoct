@@ -1,0 +1,11 @@
+services:
+  web:
+    image: nginx:1.25.3
+    restart: unless-stopped
+    logging:
+      driver: json-file
+  db:
+    image: postgres:latest
+    restart: always
+    logging:
+      driver: syslog
