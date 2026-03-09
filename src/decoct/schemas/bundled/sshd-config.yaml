@@ -1,0 +1,54 @@
+platform: sshd-config
+source: OpenSSH 9.x sshd_config(5) man page
+confidence: authoritative
+defaults:
+  # Connection & network
+  Port: 22
+  AddressFamily: any
+  TCPKeepAlive: yes
+  ClientAliveInterval: 0
+  ClientAliveCountMax: 3
+  LoginGraceTime: 120
+  MaxAuthTries: 6
+  MaxSessions: 10
+  GatewayPorts: no
+  PermitTunnel: no
+
+  # Authentication
+  PermitRootLogin: prohibit-password
+  PasswordAuthentication: yes
+  PubkeyAuthentication: yes
+  PermitEmptyPasswords: no
+  KbdInteractiveAuthentication: yes
+  HostbasedAuthentication: no
+  IgnoreRhosts: yes
+  IgnoreUserKnownHosts: no
+  KerberosAuthentication: no
+  StrictModes: yes
+
+  # Session & environment
+  PrintMotd: yes
+  PrintLastLog: yes
+  PermitUserRC: yes
+  PermitUserEnvironment: no
+
+  # Forwarding
+  AllowTcpForwarding: yes
+  AllowStreamLocalForwarding: yes
+  AllowAgentForwarding: yes
+
+  # X11
+  X11Forwarding: no
+  X11DisplayOffset: 10
+  X11UseLocalhost: yes
+
+  # Logging
+  LogLevel: INFO
+  SyslogFacility: AUTH
+
+  # Crypto & security
+  Compression: yes
+  FingerprintHash: sha256
+  ExposeAuthInfo: no
+drop_patterns: []
+system_managed: []

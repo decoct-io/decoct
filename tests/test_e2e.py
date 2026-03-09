@@ -206,6 +206,83 @@ class TestCompressCloudInit:
         assert "saved" in result.output or "Tokens:" in result.output
 
 
+class TestCompressAnsible:
+    def test_compress_ansible_bundled(self) -> None:
+        """Ansible playbook schema strips module defaults."""
+        runner = CliRunner()
+        result = runner.invoke(cli, [
+            "compress",
+            str(YAML_FIXTURES / "ansible-playbook.yaml"),
+            "--schema", "ansible-playbook",
+        ])
+        assert result.exit_code == 0
+        # Non-default values should remain
+        assert "nginx" in result.output
+        # Module defaults should be stripped
+        assert "purge" not in result.output
+        assert "autoremove" not in result.output
+
+    def test_compress_ansible_stats(self) -> None:
+        """Ansible compression shows savings."""
+        runner = CliRunner()
+        result = runner.invoke(cli, [
+            "compress",
+            str(YAML_FIXTURES / "ansible-playbook.yaml"),
+            "--schema", "ansible-playbook",
+            "--stats",
+        ])
+        assert result.exit_code == 0
+        assert "saved" in result.output or "Tokens:" in result.output
+
+
+class TestCompressKubernetes:
+    def test_compress_kubernetes_bundled(self) -> None:
+        """Kubernetes schema strips API defaults and system-managed fields."""
+        runner = CliRunner()
+        result = runner.invoke(cli, [
+            "compress",
+            str(YAML_FIXTURES / "kubernetes-deployment.yaml"),
+            "--schema", "kubernetes",
+        ])
+        assert result.exit_code == 0
+        # Non-default values should remain
+        assert "web-app" in result.output
+        assert "replicas" in result.output  # 3 is not the default
+        # Defaults should be stripped
+        assert "schedulerName" not in result.output
+        assert "enableServiceLinks" not in result.output
+        assert "terminationMessagePath" not in result.output
+
+    def test_compress_kubernetes_auto_detect(self) -> None:
+        """Kubernetes manifest auto-detected by apiVersion + kind."""
+        runner = CliRunner()
+        result = runner.invoke(cli, [
+            "compress",
+            str(YAML_FIXTURES / "kubernetes-deployment.yaml"),
+            "--stats",
+        ])
+        assert result.exit_code == 0
+        assert "saved" in result.output or "Tokens:" in result.output
+
+
+class TestCompressSshd:
+    def test_compress_sshd_bundled(self) -> None:
+        """SSH config schema strips known defaults."""
+        runner = CliRunner()
+        result = runner.invoke(cli, [
+            "compress",
+            str(YAML_FIXTURES / "sshd-config.yaml"),
+            "--schema", "sshd-config",
+        ])
+        assert result.exit_code == 0
+        # Non-default values should remain (hardened settings)
+        assert "PermitRootLogin" in result.output  # 'no' != default 'prohibit-password'
+        assert "PasswordAuthentication" in result.output  # 'no' != default 'yes'
+        # Defaults should be stripped
+        assert "FingerprintHash" not in result.output
+        assert "IgnoreRhosts" not in result.output
+
+
 class TestCompressAutoDetect:
     def test_auto_detect_docker_compose(self) -> None:
         """Auto-applies docker-compose schema without --schema flag."""

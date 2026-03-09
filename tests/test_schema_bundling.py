@@ -50,6 +50,51 @@ class TestResolveSchema:
         assert schema.confidence == "authoritative"
         assert len(schema.defaults) >= 40
 
+    def test_resolve_ansible_playbook_bundled(self) -> None:
+        path = resolve_schema("ansible-playbook")
+        assert path.exists()
+        assert path.name == "ansible-playbook.yaml"
+
+    def test_bundled_ansible_playbook_loads(self) -> None:
+        from decoct.schemas import load_schema
+
+        path = resolve_schema("ansible-playbook")
+        schema = load_schema(path)
+        assert schema.platform == "ansible-playbook"
+        assert len(schema.defaults) >= 80
+
+    def test_resolve_sshd_config_bundled(self) -> None:
+        path = resolve_schema("sshd-config")
+        assert path.exists()
+        assert path.name == "sshd-config.yaml"
+
+    def test_bundled_sshd_config_loads(self) -> None:
+        from decoct.schemas import load_schema
+
+        path = resolve_schema("sshd-config")
+        schema = load_schema(path)
+        assert schema.platform == "sshd-config"
+        assert len(schema.defaults) >= 30
+
+    def test_resolve_kubernetes_bundled(self) -> None:
+        path = resolve_schema("kubernetes")
+        assert path.exists()
+        assert path.name == "kubernetes.yaml"
+
+    def test_bundled_kubernetes_loads(self) -> None:
+        from decoct.schemas import load_schema
+
+        path = resolve_schema("kubernetes")
+        schema = load_schema(path)
+        assert schema.platform == "kubernetes"
+        assert len(schema.defaults) >= 40
+        assert len(schema.system_managed) >= 5
+
+    def test_all_bundled_schemas_exist(self) -> None:
+        for name in BUNDLED_SCHEMAS:
+            path = resolve_schema(name)
+            assert path.exists(), f"Bundled schema {name} not found at {path}"
+
 
 class TestCliBundledSchema:
     def test_cli_bundled_schema(self) -> None:

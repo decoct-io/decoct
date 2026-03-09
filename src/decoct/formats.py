@@ -43,6 +43,12 @@ def detect_platform(doc: Any) -> str | None:
 
     Returns a bundled schema name or None if unrecognised.
     """
+    # Ansible playbook: list of plays with hosts + tasks/roles
+    if isinstance(doc, list) and len(doc) > 0:
+        first = doc[0]
+        if isinstance(first, dict) and "hosts" in first and ("tasks" in first or "roles" in first):
+            return "ansible-playbook"
+
     if not isinstance(doc, dict):
         return None
 
@@ -54,10 +60,14 @@ def detect_platform(doc: Any) -> str | None:
     if "terraform_version" in doc and "resources" in doc:
         return "terraform-state"
 
-    # cloud-init: has #cloud-config comment or common cloud-init keys
+    # cloud-init: common cloud-init keys
     cloud_init_keys = {"packages", "runcmd", "write_files", "users", "ssh_authorized_keys", "growpart", "ntp"}
     if len(cloud_init_keys & set(doc.keys())) >= 2:
         return "cloud-init"
+
+    # Kubernetes: has apiVersion + kind
+    if "apiVersion" in doc and "kind" in doc:
+        return "kubernetes"
 
     return None
 

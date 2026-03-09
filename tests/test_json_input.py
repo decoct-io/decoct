@@ -110,6 +110,14 @@ class TestLoadInput:
         doc, _raw = load_input(YAML_FIXTURES / "cloud-init-config.yaml")
         assert detect_platform(doc) == "cloud-init"
 
+    def test_kubernetes_detected(self) -> None:
+        doc, _raw = load_input(YAML_FIXTURES / "kubernetes-deployment.yaml")
+        assert detect_platform(doc) == "kubernetes"
+
+    def test_ansible_detected(self) -> None:
+        doc, _raw = load_input(YAML_FIXTURES / "ansible-playbook.yaml")
+        assert detect_platform(doc) == "ansible-playbook"
+
     def test_tfstate_loads_as_commented_map(self) -> None:
         doc, raw = load_input(JSON_FIXTURES / "tfstate-sample.json")
         assert isinstance(doc, CommentedMap)

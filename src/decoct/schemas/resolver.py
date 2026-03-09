@@ -10,6 +10,9 @@ BUNDLED_SCHEMAS: dict[str, str] = {
     "docker-compose": "docker-compose.yaml",
     "terraform-state": "terraform-state.yaml",
     "cloud-init": "cloud-init.yaml",
+    "ansible-playbook": "ansible-playbook.yaml",
+    "sshd-config": "sshd-config.yaml",
+    "kubernetes": "kubernetes.yaml",
 }
 
 
