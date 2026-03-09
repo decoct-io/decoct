@@ -1,6 +1,6 @@
 # decoct User Manual
 
-decoct compresses infrastructure configuration (YAML, JSON) for LLM context windows. It strips platform defaults, removes noise, redacts secrets, and highlights deviations from your design standards — typically saving 40-60% of tokens while making output more informative.
+decoct compresses infrastructure configuration (YAML, JSON, INI/config files) for LLM context windows. It strips platform defaults, removes noise, redacts secrets, and highlights deviations from your design standards — typically saving 20-80% of tokens depending on input verbosity, while making output more informative.
 
 ## Installation
 
@@ -53,7 +53,7 @@ Tokens: 142 → 58 (saved 84, 59.2%)
 decoct compress [FILES...] [OPTIONS]
 ```
 
-Runs the compression pipeline on one or more YAML/JSON files. If no files are given, reads from stdin.
+Runs the compression pipeline on one or more files (YAML, JSON, INI/config). If no files are given, reads from stdin (treated as YAML). Directories are expanded to matching files (`.yaml`, `.yml`, `.json`, `.ini`, `.conf`, `.cfg`, `.cnf`, `.properties`).
 
 #### Arguments
 
@@ -65,13 +65,14 @@ Runs the compression pipeline on one or more YAML/JSON files. If no files are gi
 
 | Option | Description |
 |--------|-------------|
-| `--schema PATH` | Schema file defining platform defaults to strip. |
+| `--schema PATH` | Schema file or bundled name (e.g. `docker-compose`). Auto-detected if omitted. |
 | `--assertions PATH` | Assertions file defining design standards. |
-| `--profile PATH` | Profile file bundling schema, assertions, and pass config. |
+| `--profile PATH` | Profile file or bundled name (e.g. `docker-compose`). |
 | `--stats` | Print token statistics to stderr after the compressed output. |
 | `--stats-only` | Print only token statistics (no YAML output). |
 | `--show-removed` | Print details of what each pass removed (to stderr). |
 | `-o, --output PATH` | Write compressed output to a file instead of stdout. |
+| `-r, --recursive` | Recurse into subdirectories when processing directories. |
 | `--encoding TEXT` | Tiktoken encoding for token counting. Default: `cl100k_base`. |
 
 #### Examples
@@ -124,11 +125,15 @@ decoct runs a sequence of passes on your input. Each pass transforms the documen
 | **strip-secrets** | Redacts passwords, API keys, tokens, and high-entropy strings. Always runs first. | — |
 | **strip-comments** | Removes all YAML comments. | — |
 | **strip-defaults** | Removes values that match platform defaults from a schema. | `--schema` |
+| **emit-classes** | Adds `@class` header comments listing stripped defaults for LLM reconstruction. | `--schema` |
 | **strip-conformant** | Removes values conforming to `must`-severity assertions. | `--assertions` |
 | **annotate-deviations** | Adds `# [!]` comments on values that deviate from assertions. | `--assertions` |
 | **deviation-summary** | Adds a summary comment block at the top listing all deviations. | `--assertions` |
+| **drop-fields** | Removes fields matching glob patterns. | Profile config |
+| **keep-fields** | Retains only fields matching glob patterns. | Profile config |
+| **prune-empty** | Removes empty dicts/lists left by other passes. | — |
 
-Passes that require `--schema` or `--assertions` are only included when those options are provided.
+Passes that require `--schema` or `--assertions` are only included when those options are provided. `drop-fields` and `keep-fields` require configuration via a profile.
 
 ### Three Compression Tiers
 
@@ -229,6 +234,7 @@ The `match` field defines how to evaluate conformance. It requires a `path` and 
 | `range` | Numeric range `[min, max]` (inclusive). | `range: [1, 65535]` |
 | `contains` | Value (a list) must contain this item. | `contains: http` |
 | `not_value` | Value must NOT equal this. | `not_value: latest` |
+| `exists` | Path must exist (`true`) or not exist (`false`). | `exists: true` |
 
 If no condition is specified (just a `path`), the assertion matches any value at that path.
 
@@ -419,3 +425,94 @@ Change the encoding with `--encoding`:
 ```bash
 decoct compress input.yaml --stats --encoding o200k_base
 ```
+
+## Input Formats
+
+decoct accepts three input formats, auto-detected by file extension:
+
+| Extension | Format | Parser |
+|-----------|--------|--------|
+| `.yaml`, `.yml` | YAML | ruamel.yaml round-trip |
+| `.json` | JSON | `json.loads` → CommentedMap |
+| `.ini`, `.conf`, `.cfg`, `.cnf`, `.properties` | INI/config | configparser or flat key=value |
+
+INI files with `[section]` headers produce nested maps. Flat key=value files produce a flat map. Values are type-coerced (true/false/yes/no → bool, integers, floats).
+
+All formats produce YAML output — JSON and INI inputs are converted during loading.
+
+## Platform Auto-Detection
+
+When `--schema` is not provided, decoct examines the document content and automatically selects a bundled schema for recognised platforms:
+
+| Platform | Detection Rule |
+|----------|---------------|
+| Docker Compose | `services` key with dict value |
+| Kubernetes | `apiVersion` + `kind` |
+| Ansible | List with `hosts` + `tasks`/`roles` |
+| cloud-init | 2+ keys from {packages, runcmd, write_files, users, ...} |
+| Terraform | `terraform_version` + `resources` |
+| GitHub Actions | `on` + `jobs` |
+| Traefik | `entryPoints` or `providers` + `api`/`log` |
+| Prometheus | `scrape_configs` |
+
+Use `--schema <name>` to override auto-detection or specify platforms not in this list.
+
+## Bundled Schema Resolution
+
+Schema and profile names can be short names (e.g., `docker-compose`) or file paths. Short names resolve to bundled files shipped with the package. Use `--schema docker-compose` instead of locating the bundled file manually.
+
+See [Bundled Schemas Reference](bundled-schemas.md) for the full list of 25 available schemas.
+
+## Directory and Recursive Processing
+
+Pass a directory to process all matching files:
+
+```bash
+decoct compress ./configs/ --stats
+decoct compress ./configs/ --recursive --schema docker-compose --stats
+```
+
+With `--recursive`, subdirectories are included. Matching extensions: `.yaml`, `.yml`, `.json`, `.ini`, `.conf`, `.cfg`, `.cnf`, `.properties`.
+
+Multi-file output shows per-file stats and an aggregate total.
+
+## LLM-Assisted Learning
+
+### `decoct schema learn`
+
+Derive a schema from example configs and/or documentation using Claude:
+
+```bash
+decoct schema learn -e config1.yaml -e config2.yaml -p nginx -o nginx-schema.yaml
+decoct schema learn -d vendor-docs.md -p haproxy -o haproxy-schema.yaml
+decoct schema learn -e config.yaml -m existing-schema.yaml  # merge into existing
+```
+
+### `decoct assertion learn`
+
+Derive assertions from standards docs, examples, or a corpus:
+
+```bash
+# From standards documentation + examples
+decoct assertion learn -s standards.md -e config.yaml -o assertions.yaml
+
+# From corpus (cross-file pattern analysis)
+decoct assertion learn -c configs/*.yaml -p docker-compose -o learned.yaml
+
+# Merge into existing
+decoct assertion learn -s updated-standards.md -m existing-assertions.yaml
+```
+
+Both commands require `pip install decoct[llm]` and the `ANTHROPIC_API_KEY` environment variable.
+
+## Further Reading
+
+- [Getting Started](getting-started.md) — tutorial walkthrough
+- [CLI Reference](cli-reference.md) — complete option reference
+- [Schema Authoring](schema-authoring.md) — writing custom schemas
+- [Assertion Authoring](assertion-authoring.md) — encoding design standards
+- [Profile Authoring](profile-authoring.md) — bundling configurations
+- [Bundled Schemas](bundled-schemas.md) — all 25 platform schemas
+- [Cookbook](cookbook.md) — task-oriented recipes
+- [API Reference](dev/api-reference.md) — Python library API
+- [Troubleshooting](troubleshooting.md) — common issues and solutions
