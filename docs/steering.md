@@ -48,6 +48,11 @@ Phase 1 is complete: 183 tests, 95% coverage, 8 passes, full CLI.
 | AWS SSM / Config Rules | [AWS Config managed rules](https://docs.aws.amazon.com/config/latest/developerguide/managed-rules-by-aws-config.html) | Authoritative | JSON rule definitions with default parameters | ~20/rule | Medium | 2 (spec + curation) |
 | GCP Deployment Manager | [GCP API discovery docs](https://www.googleapis.com/discovery/v1/apis) | Authoritative | JSON Schema from discovery API per service | ~40/resource type | High | 1 (direct import) |
 | GCP IAM / Org Policies | [GCP Organization Policy constraints](https://cloud.google.com/resource-manager/docs/organization-policy/org-policy-constraints) | Authoritative | REST API, constraint defaults per service | ~25 | Medium | 2 (spec + curation) |
+| Cisco IOS XE | [YANG models (GitHub)](https://github.com/YangModels/yang/tree/main/vendor/cisco/xe) + RFC 6243 `report-all-tagged` | Medium-High | pyang extraction of YANG `default` statements; supplement with RFC 6243 device capture | ~100+ | Medium | 2 (schema + curation) |
+| Cisco IOS XR | [YANG models (GitHub)](https://github.com/YangModels/yang/tree/main/vendor/cisco/xr) + RFC 6243 | Medium-High | pyang extraction; model-driven architecture, unified models improving | ~100+ | Medium | 2 (schema + curation) |
+| Cisco NX-OS | [YANG models (GitHub)](https://github.com/YangModels/yang/tree/main/vendor/cisco/nx) | Low-Medium | pyang extraction (NX-OS README acknowledges incorrect default values) | ~80+ | High | 3 (snapshot) |
+| Juniper JunOS | `show groups junos-defaults` + [YANG models (GitHub)](https://github.com/Juniper/yang) | High | Built-in `junos-defaults` group is authoritative machine-readable defaults database | ~150+ | Low | 1 (direct import) |
+| Arista EOS | [OpenConfig YANG (GitHub)](https://github.com/aristanetworks/yang) + `show run all` diff | Medium | `show run all` minus `show run` diff; OpenConfig leader but YANG defaults intentionally sparse | ~80+ | Medium | 2 (schema + curation) |
 
 **Tier definitions:**
 - **Tier 1 — Direct import:** Schema available in machine-readable format, minimal curation needed
@@ -301,6 +306,75 @@ Cloud management APIs are among the most token-heavy data sources fed into LLMs 
 - Estimated defaults: ~25
 - Confidence: authoritative
 
+### Network operating systems
+
+Network device configs are among the most commonly pasted infrastructure data in LLM context windows — troubleshooting, architecture review, compliance audit, and migration planning all involve dumping running-configs. Configs are large (500–20,000+ lines), default-heavy (`show running-config all` is typically 3–10x larger than `show running-config`), and pasted frequently.
+
+There are two processing paths, and both are worth pursuing:
+
+**YANG/RESTCONF path (structured).** All five major NOS vendors publish YANG models. Configs retrieved via RESTCONF are JSON; via NETCONF they're XML. Once decoct has JSON input (Phase 2.4), RESTCONF-retrieved configs can be processed immediately with YANG-extracted default schemas. This path delivers structured, standards-based compression without custom parsers.
+
+**CLI path (what people actually paste).** Engineers paste `show running-config` output, not RESTCONF JSON. CLI formats are custom per vendor family: flat line-oriented for Cisco/Arista, hierarchical brace-structured for JunOS. Each needs a dedicated parser. Higher effort, but this is where the real user demand is. Fortunately, IOS/IOS XE/NX-OS/EOS all share a similar flat format, so one parser covers four vendors.
+
+**Cisco IOS XE:**
+- Source: [YangModels/yang — vendor/cisco/xe](https://github.com/YangModels/yang/tree/main/vendor/cisco/xe) — extensive native + OpenConfig YANG models
+- YANG `default` coverage: Medium — many leaf nodes have `default` statements (actively maintained, see revision history), but not exhaustive
+- RFC 6243 support: `report-all-tagged` available — programmatic way to identify which values are defaults from a live device
+- Config size: 500–3,000 lines (`show run`); 5,000–15,000+ lines (`show run all`)
+- Estimated defaults: ~100+
+- LLM context frequency: Highest of any NOS — IOS XE dominates enterprise networking
+- Extraction approach: pyang plugin to walk YANG tree and extract `default` statements, supplemented by RFC 6243 `report-all-tagged` captures from reference devices
+- Confidence: medium-high
+- Note: Cisco's YDK SDK does not expose YANG default values. Custom pyang plugin or PyangBind is needed. The same pyang tooling works across all Cisco platforms.
+
+**Cisco IOS XR:**
+- Source: [YangModels/yang — vendor/cisco/xr](https://github.com/YangModels/yang/tree/main/vendor/cisco/xr) — native, unified, and OpenConfig models
+- YANG `default` coverage: Medium — similar to IOS XE; unified models (from 7.1.1) are improving consistency
+- RFC 6243 support: Available but requires explicit enablement (`netconf-yang agent ssh with-defaults-support enable`)
+- Config size: 2,000–20,000+ lines (service provider routers with BGP tables, route policies)
+- Estimated defaults: ~100+
+- LLM context frequency: Medium — SP/large enterprise, but configs are very large when pasted
+- Note: IOS XR is the strongest Cisco platform for model-driven operations. Three model families: native (legacy), unified (CLI-generated, replacing native), OpenConfig.
+
+**Cisco NX-OS:**
+- Source: [YangModels/yang — vendor/cisco/nx](https://github.com/YangModels/yang/tree/main/vendor/cisco/nx)
+- YANG `default` coverage: Low — the NX-OS README explicitly acknowledges "incorrect default values" inherited from the DME (Data Management Engine) backend
+- Config size: 1,000–5,000 lines (`show run`); 10,000–30,000+ lines (`show run all`)
+- Estimated defaults: ~80+
+- LLM context frequency: High — data centre VXLAN/EVPN configs are commonly shared for troubleshooting
+- Note: Weakest Cisco platform for YANG default extraction. Best approached via `show run all` minus `show run` diff from reference devices, not YANG model parsing. Wait for Cisco to fix DME-derived model defaults.
+
+**Juniper JunOS:**
+- Source: `show groups junos-defaults` — immutable built-in configuration group containing all predefined default values. This is a machine-readable defaults database built into the device itself.
+- YANG source: [Juniper/yang](https://github.com/Juniper/yang) — YANG models are auto-generated from Juniper's internal DDL schema. Sparse `default` statements; relies on proprietary extensions (`junos:must`, `junos:must-message`).
+- Config size: 500–5,000+ lines (hierarchical format is inherently verbose)
+- Estimated defaults: ~150+ (the `junos-defaults` group is comprehensive)
+- LLM context frequency: High — SP/enterprise engineers heavily use LLMs; hierarchical format is verbose and benefits greatly from compression
+- Extraction approach: Capture `show groups junos-defaults` output from reference devices across platform families (MX, EX, SRX, QFX). Use this as the defaults database rather than parsing YANG models.
+- Confidence: high
+- Note: JunOS has three display formats — hierarchical (default), `display set` (flat), and `display xml` (full XML matching YANG schema). The hierarchical and `display set` formats each need parser support. The XML path works with future XML input support. JunOS's `junos-defaults` mechanism makes it the best NOS for authoritative default extraction.
+
+**Arista EOS:**
+- Source: [aristanetworks/yang](https://github.com/aristanetworks/yang) — publishes OpenConfig augmentations and deviations, not complete native YANG models
+- YANG `default` coverage: Low — follows OpenConfig style guide policy of intentionally avoiding `default` statements
+- Config size: 500–3,000 lines; IOS-like flat format
+- Estimated defaults: ~80+
+- LLM context frequency: High — data centre engineers frequently paste EOS configs
+- Extraction approach: `show running-config all` minus `show running-config` diff from reference devices. Arista is the strongest OpenConfig adopter; structured path via OpenConfig models is viable but defaults-sparse.
+- Note: IOS-like format means most IOS XE parser work transfers directly. Best approached after IOS XE.
+
+**Cross-cutting: pyang as a universal schema extraction tool.**
+A single pyang plugin can walk any YANG model tree and extract `default` statements as decoct schema YAML files. This covers all five NOS vendors plus any other YANG-modeled platform. Key repositories:
+- [YangModels/yang](https://github.com/YangModels/yang) — central repo with Cisco XE/XR/NX-OS and many other vendors
+- [Juniper/yang](https://github.com/Juniper/yang) — JunOS models
+- [aristanetworks/yang](https://github.com/aristanetworks/yang) — Arista OpenConfig augmentations
+- [openconfig/public](https://github.com/openconfig/public) — cross-vendor OpenConfig models (useful as structural framework, not for defaults)
+- [mbj4668/pyang](https://github.com/mbj4668/pyang) — YANG validator/converter (Python)
+- [robshakir/pyangbind](https://github.com/robshakir/pyangbind) — pyang plugin that generates Python bindings with default tracking
+
+**Cross-cutting: OpenConfig as structural framework.**
+OpenConfig models ([openconfig/public](https://github.com/openconfig/public)) deliberately avoid `default` statements — their style guide states "the use of default should be avoided." OpenConfig is not useful as a defaults database but is valuable as a cross-vendor structural framework for mapping vendor-specific defaults to canonical paths.
+
 ### Tier 2 — Schema + Curation (medium effort)
 
 **Docker Compose:**
@@ -452,6 +526,8 @@ The schema inventory reveals a clear pattern: the highest-compression targets be
 | **JSON** (Phase 2.4) | Terraform state, CloudFormation/CDK, ARM/Bicep, Entra ID, Intune, Azure Policy, GCP, Keycloak, Elasticsearch, Docker daemon, SchemaStore schemas | ~900+ | Low |
 | **INI / key-value** (not planned) | PostgreSQL, MariaDB, Redis, Grafana, Kafka, Zabbix, systemd, SSH | ~430+ | Medium |
 | **HCL** (future) | Terraform configs, Vault, Consul, Nomad | ~100+ | High |
+| **Network CLI** (not planned) | Cisco IOS/IOS XE/NX-OS/EOS (flat), JunOS (hierarchical) | ~500+ | High (two parser families) |
+| **Network YANG/RESTCONF** (via JSON) | All YANG-modeled NOS via RESTCONF JSON retrieval | ~500+ | Low (uses JSON input) |
 | **Custom syntax** | nginx, Apache, HAProxy, nftables, Envoy (protobuf/JSON) | ~200+ | High per format |
 
 ### Recommendation
@@ -459,6 +535,8 @@ The schema inventory reveals a clear pattern: the highest-compression targets be
 INI-format input support would unlock more high-compression targets than any other single format addition. PostgreSQL, MariaDB, Redis, Grafana, and Kafka alone represent ~310 defaults from authoritative sources — all extractable with low effort once the format is parseable. Most of these tools ship their own reference configs which double as the schema source.
 
 The normalisation approach should be: parse format → convert to `CommentedMap` → run standard pipeline. Same pattern as JSON input (Phase 2.4), extended to `key = value` formats. Python's `configparser` handles most INI variants; PostgreSQL's `key = value` format needs a simpler custom parser.
+
+Network operating system configs represent the largest single category of unlockable defaults (~500+ across five vendors), but they split into two paths. The **YANG/RESTCONF path** retrieves configs as JSON via RESTCONF — this works with Phase 2.4 JSON input and needs only YANG-extracted default schemas (a pyang tool, not a parser). The **CLI path** is what engineers actually paste and needs custom parsers: one for the Cisco/Arista flat format family, one for JunOS hierarchical format. The YANG path should come first — lower effort, structured data, and the pyang extraction tool serves all vendors.
 
 ---
 
@@ -500,6 +578,9 @@ Ranking all identified platforms by: **large configs × high LLM context frequen
 | **Grafana** | INI | `defaults.ini` shipped with every install — the schema writes itself. Requires INI support. | ~80 |
 | **cloud-init** | YAML | Already planned. JSON Schema available upstream. | ~30 |
 | **Fluent Bit / Fluentd** | YAML/JSON | Common in K8s logging. Pasted when debugging log routing. YAML/JSON native. | ~30 |
+| **Cisco IOS XE** | YANG→JSON / CLI | Most-pasted NOS config. YANG models with `default` stmts on GitHub. pyang extraction + RFC 6243. YANG/JSON path first, CLI parser later. | ~100+ |
+| **Juniper JunOS** | YANG→JSON / CLI | Built-in `junos-defaults` group is the best NOS defaults source. Hierarchical format is verbose — high compression value. | ~150+ |
+| **Cisco IOS XR** | YANG→JSON / CLI | Model-driven architecture, large SP configs (2K–20K lines). Same pyang tooling as IOS XE. | ~100+ |
 
 ### Tier C — Valuable but higher effort or narrower audience
 
@@ -517,6 +598,8 @@ Ranking all identified platforms by: **large configs × high LLM context frequen
 | **HashiCorp Vault/Consul** | HCL/JSON | Important in security-focused stacks. HCL is the blocker. | ~20-25 each |
 | **systemd** | INI | Huge surface area, needs curation. Individual units are small. | ~30 |
 | **SSH** | Custom | Moderate value — pasted for security review but small-to-medium files per host. | ~50 |
+| **Arista EOS** | YANG→JSON / CLI | IOS-like format — IOS XE parser work transfers. OpenConfig leader but YANG defaults sparse. `show run all` diff approach. | ~80+ |
+| **Cisco NX-OS** | YANG→JSON / CLI | High DC usage (VXLAN/EVPN) but YANG models have acknowledged incorrect defaults. Wait for fix or use `show run all` diff. | ~80+ |
 | **Ansible** | YAML/JSON | Already planned. Per-module extraction. | ~20/module |
 
 ### Tier D — Long tail (community-contributed or SchemaStore-derived)
@@ -584,19 +667,55 @@ JSON input (Phase 2.4) is the prerequisite. Cloud APIs publish machine-readable 
 27. **MariaDB schema** — extract via `SHOW VARIABLES`, validate against enable-infra `.cnf` files
 28. **Grafana schema** — parse `defaults.ini`
 
+### Medium-term (Phase 2.25–2.33) — Network operating systems (YANG-first)
+
+JSON input (Phase 2.4) is the prerequisite for the YANG/RESTCONF path. CLI parsers are deferred to Future. The pyang extraction tool is a one-time investment that serves all YANG-modeled vendors.
+
+29. **pyang default extraction tool** — pyang plugin to walk YANG model trees and emit decoct schema YAML files. Cross-vendor: works for Cisco XE/XR/NX-OS, Juniper, Arista, and any YANG-modeled platform. Depends on [pyang](https://github.com/mbj4668/pyang).
+30. **Juniper JunOS schema** — capture `show groups junos-defaults` from reference devices (MX, EX, SRX, QFX). This is the easiest NOS schema — the device gives you the defaults directly. No pyang needed for this path.
+31. **Cisco IOS XE schema** — extract YANG `default` statements via pyang tool (item 29). Supplement with RFC 6243 `report-all-tagged` captures. Version per IOS XE release.
+32. **Cisco IOS XR schema** — same pyang approach as IOS XE. Target unified models where available (7.1.1+).
+33. **Arista EOS schema** — `show running-config all` minus `show running-config` diff from reference devices. Supplement with OpenConfig YANG augmentation data.
+
 ### Future — Automation + remaining platforms
 
-29. **`decoct schema learn`** — LLM-assisted schema generation from examples
-30. **Helm values adapter** — treat chart's `values.yaml` as schema source
-31. **Azure Policy / AWS Config / GCP Org Policy schemas** — compliance policy defaults for governance context
-32. **Jinja2 pre-processing** — strip template syntax before YAML parsing
-33. **HCL support** — Terraform/Vault/Consul configs (requires HCL parser dependency)
-34. **SchemaStore adapter** — bulk import from SchemaStore for JSON-schema-described formats (GitLab CI, ESLint, Prettier, tsconfig, etc.)
-35. **Custom format parsers** — nginx, Apache, HAProxy (per-format effort, community-driven)
+34. **`decoct schema learn`** — LLM-assisted schema generation from examples
+35. **Helm values adapter** — treat chart's `values.yaml` as schema source
+36. **Azure Policy / AWS Config / GCP Org Policy schemas** — compliance policy defaults for governance context
+37. **Jinja2 pre-processing** — strip template syntax before YAML parsing
+38. **HCL support** — Terraform/Vault/Consul configs (requires HCL parser dependency)
+39. **SchemaStore adapter** — bulk import from SchemaStore for JSON-schema-described formats (GitLab CI, ESLint, Prettier, tsconfig, etc.)
+40. **Cisco NX-OS schema** — deferred until Cisco fixes acknowledged incorrect YANG default values, or build via `show run all` diff approach
+41. **Network CLI parsers** — Cisco/Arista flat format (one parser covers IOS XE, IOS XR, NX-OS, EOS) + JunOS hierarchical format (separate parser). Unlocks processing of `show running-config` output directly.
+42. **Custom format parsers** — nginx, Apache, HAProxy (per-format effort, community-driven)
 
 ---
 
 ## Changelog
+
+### 2026-03-09 — Network operating systems (CLI + YANG)
+
+**Added (5 NOS platforms + cross-cutting tooling):**
+- **Cisco IOS XE** → Tier B. Most-pasted NOS config in LLM context. YANG models with `default` statements on [GitHub](https://github.com/YangModels/yang/tree/main/vendor/cisco/xe). RFC 6243 `report-all-tagged` supplements. ~100+ defaults.
+- **Cisco IOS XR** → Tier B. Model-driven architecture, large SP configs (2K–20K lines). Same pyang tooling as IOS XE. ~100+ defaults.
+- **Juniper JunOS** → Tier B. Built-in `groups junos-defaults` is the best NOS defaults source — authoritative, machine-readable, comprehensive. ~150+ defaults.
+- **Arista EOS** → Tier C. IOS-like format means IOS XE work transfers. OpenConfig leader but YANG defaults intentionally sparse. ~80+ defaults.
+- **Cisco NX-OS** → Tier C (deferred). Acknowledged "incorrect default values" in YANG models. Wait for fix or use `show run all` diff.
+
+**Cross-cutting additions:**
+- **pyang default extraction tool** added to build order (item 29) — one-time investment that serves all YANG-modeled vendors
+- **Network CLI parsers** added to Future (item 41) — Cisco/Arista flat format + JunOS hierarchical format
+- **"Network operating systems" subsection** added to Section 4 (sourcing strategy) with detailed per-vendor analysis
+- **Two processing paths documented:** YANG/RESTCONF JSON (structured, lower effort, works with Phase 2.4 JSON input) vs CLI format (what people actually paste, needs custom parsers)
+
+**Structural changes:**
+- Section 1 inventory table: 5 new rows (Cisco IOS XE, IOS XR, NX-OS, Juniper JunOS, Arista EOS)
+- Section 6 format tiers table: 2 new rows (Network CLI, Network YANG/RESTCONF)
+- Section 6 recommendation: added paragraph on network OS YANG vs CLI paths
+- Section 7 priority matrix: IOS XE, JunOS, IOS XR added to Tier B; EOS, NX-OS added to Tier C
+- Section 8 build order: new subsection "Phase 2.25–2.33 — Network operating systems (YANG-first)" with 5 items
+- Build order renumbered sequentially (1–42) after additions
+- SchemaStore adapter reference in demotions updated from item 34 to item 39
 
 ### 2026-03-09 — Additions, removals, and reprioritisation
 
@@ -617,7 +736,7 @@ Applied the filter: **do people actually paste this configuration into LLM conte
 
 **Demoted:**
 - **Dockerfiles** — ~10 defaults, requires dedicated parser, poor effort-to-value ratio. Moved from Tier C to Tier D.
-- **ESLint / Prettier / tsconfig** — People paste these but files are rarely >40 lines. Not worth dedicated effort. Removed from Tier C and individual build order entries. Covered for free by SchemaStore adapter (build order item 34).
+- **ESLint / Prettier / tsconfig** — People paste these but files are rarely >40 lines. Not worth dedicated effort. Removed from Tier C and individual build order entries. Covered for free by SchemaStore adapter (build order item 39).
 - **SSH (sshd_config)** — Moderate value, small-to-medium files. Kept in inventory and Tier C but not promoted ahead of any Tier A/B item.
 - **Zabbix Agent** — High compression percentage but niche user base. Useful for enable-infra dogfooding. Kept in Tier C, not promoted.
 - **Grafana Alloy / syslog-ng** — Niche tools. Moved to Tier D footnote.
