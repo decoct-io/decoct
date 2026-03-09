@@ -143,7 +143,7 @@ def _auto_detect_schema(doc: Any) -> str | None:
     return detect_platform(doc)
 
 
-_INPUT_EXTENSIONS = {".yaml", ".yml", ".json"}
+_INPUT_EXTENSIONS = {".yaml", ".yml", ".json", ".ini", ".conf", ".cfg", ".cnf", ".properties"}
 
 
 def _expand_sources(files: tuple[str, ...], recursive: bool) -> list[str | None]:
@@ -272,6 +272,83 @@ def compress(
         saved = total_input_tokens - total_output_tokens
         pct = (saved / total_input_tokens * 100) if total_input_tokens else 0
         click.echo(f"Total: Tokens: {total_input_tokens} → {total_output_tokens} (saved {saved}, {pct:.1f}%)", err=True)
+
+
+@cli.group()
+def assertion() -> None:
+    """Assertion management commands."""
+
+
+@assertion.command("learn")
+@click.option("--standard", "-s", "standards", multiple=True, type=click.Path(exists=True), help="Standards docs.")
+@click.option("--example", "-e", "examples", multiple=True, type=click.Path(exists=True), help="Example config files.")
+@click.option(
+    "--corpus", "-c", "corpus_files", multiple=True, type=click.Path(exists=True),
+    help="Config files for cross-file pattern analysis.",
+)
+@click.option("--platform", "-p", type=str, help="Platform name hint (e.g. 'docker-compose', 'kubernetes').")
+@click.option("--output", "-o", type=click.Path(), help="Output assertions file path.")
+@click.option("--merge", "-m", type=click.Path(exists=True), help="Merge into existing assertions file.")
+@click.option("--model", default="claude-sonnet-4-20250514", show_default=True, help="Anthropic model to use.")
+def assertion_learn(
+    standards: tuple[str, ...],
+    examples: tuple[str, ...],
+    corpus_files: tuple[str, ...],
+    platform: str | None,
+    output: str | None,
+    merge: str | None,
+    model: str,
+) -> None:
+    """Derive assertions from standards docs, examples, or corpus using Claude.
+
+    Requires the anthropic SDK: pip install decoct[llm]
+    """
+    from decoct.learn import learn_assertions, merge_assertions
+
+    if corpus_files and examples:
+        click.echo("Error: --corpus and --example are mutually exclusive.", err=True)
+        sys.exit(1)
+
+    if not standards and not examples and not corpus_files:
+        click.echo("Error: at least one --standard, --example, or --corpus file is required.", err=True)
+        sys.exit(1)
+
+    standard_paths = [Path(s) for s in standards] if standards else None
+    example_paths = [Path(e) for e in examples] if examples else None
+    corpus_paths = [Path(c) for c in corpus_files] if corpus_files else None
+
+    try:
+        if corpus_files:
+            click.echo(f"Analysing {len(corpus_files)} corpus files for cross-file patterns...", err=True)
+        else:
+            click.echo("Analysing input files...", err=True)
+        assertions_yaml = learn_assertions(
+            standards=standard_paths,
+            examples=example_paths,
+            corpus=corpus_paths,
+            platform=platform,
+            model=model,
+        )
+    except ImportError as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+    except Exception as e:  # noqa: BLE001
+        click.echo(f"Error generating assertions: {e}", err=True)
+        sys.exit(1)
+
+    if merge:
+        try:
+            assertions_yaml = merge_assertions(Path(merge), assertions_yaml)
+            click.echo(f"Merged into {merge}", err=True)
+        except Exception as e:  # noqa: BLE001
+            click.echo(f"Error merging: {e}", err=True)
+            sys.exit(1)
+
+    if output:
+        Path(output).write_text(assertions_yaml + "\n")
+        click.echo(f"Assertions written to {output}", err=True)
+    else:
+        click.echo(assertions_yaml)
 
 
 @cli.group()
