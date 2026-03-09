@@ -164,12 +164,15 @@ class TestCompressCloudInit:
         # Non-default values should remain
         assert "packages" in result.output
         assert "nginx" in result.output
-        # Defaults should be stripped
-        assert "package_update" not in result.output
-        assert "package_upgrade" not in result.output
-        # List-item defaults should also be stripped (users.*.lock_passwd, etc.)
-        assert "lock_passwd" not in result.output
-        assert "no_create_home" not in result.output
+        # Defaults should be stripped from YAML body (may appear in class comments)
+        yaml_body = "\n".join(
+            line for line in result.output.splitlines() if not line.startswith("#")
+        )
+        assert "package_update" not in yaml_body
+        assert "package_upgrade" not in yaml_body
+        # List-item defaults should also be stripped
+        assert "lock_passwd" not in yaml_body
+        assert "no_create_home" not in yaml_body
 
     def test_compress_cloud_init_bundled(self) -> None:
         """`--schema cloud-init` works with bundled schema."""
@@ -248,10 +251,13 @@ class TestCompressKubernetes:
         # Non-default values should remain
         assert "web-app" in result.output
         assert "replicas" in result.output  # 3 is not the default
-        # Defaults should be stripped
-        assert "schedulerName" not in result.output
-        assert "enableServiceLinks" not in result.output
-        assert "terminationMessagePath" not in result.output
+        # Defaults should be stripped from YAML body (may appear in class comments)
+        yaml_body = "\n".join(
+            line for line in result.output.splitlines() if not line.startswith("#")
+        )
+        assert "schedulerName" not in yaml_body
+        assert "enableServiceLinks" not in yaml_body
+        assert "terminationMessagePath" not in yaml_body
 
     def test_compress_kubernetes_auto_detect(self) -> None:
         """Kubernetes manifest auto-detected by apiVersion + kind."""

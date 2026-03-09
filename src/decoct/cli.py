@@ -14,6 +14,7 @@ from decoct import __version__
 from decoct.passes import annotate_deviations as _ad  # noqa: F401
 from decoct.passes import deviation_summary as _ds  # noqa: F401
 from decoct.passes import drop_fields as _df  # noqa: F401
+from decoct.passes import emit_classes as _ec  # noqa: F401
 from decoct.passes import keep_fields as _kf  # noqa: F401
 from decoct.passes import prune_empty as _pe  # noqa: F401
 
@@ -62,6 +63,7 @@ def _build_passes(
     from decoct.passes.annotate_deviations import AnnotateDeviationsPass
     from decoct.passes.base import get_pass
     from decoct.passes.deviation_summary import DeviationSummaryPass
+    from decoct.passes.emit_classes import EmitClassesPass
     from decoct.passes.prune_empty import PruneEmptyPass
     from decoct.passes.strip_comments import StripCommentsPass
     from decoct.passes.strip_conformant import StripConformantPass
@@ -98,6 +100,8 @@ def _build_passes(
             pass_cls = get_pass(pass_name)
             if pass_cls == StripDefaultsPass and schema:
                 passes.append(StripDefaultsPass(schema=schema, **config))
+            elif pass_cls == EmitClassesPass and schema:
+                passes.append(EmitClassesPass(schema=schema, **config))
             elif pass_cls in (StripConformantPass, AnnotateDeviationsPass, DeviationSummaryPass):
                 passes.append(pass_cls(assertions=assertions, **config))
             else:
@@ -110,6 +114,7 @@ def _build_passes(
         if schema_path:
             schema = load_schema(resolve_schema(schema_path))
             passes.append(StripDefaultsPass(schema=schema))
+            passes.append(EmitClassesPass(schema=schema))
 
         if assertions_path:
             assertions = load_assertions(assertions_path)
