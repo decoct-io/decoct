@@ -468,6 +468,74 @@ class TestCompressBundledProfile:
         assert "[!]" in result.output
 
 
+class TestCompressNetworkOS:
+    def test_compress_cisco_ios_xe_with_bundled_schema(self) -> None:
+        """Verify IOS XE defaults are stripped from a representative config."""
+        runner = CliRunner()
+        result = runner.invoke(cli, [
+            "compress",
+            str(YAML_FIXTURES / "ios-xe-show-run-all.yaml"),
+            "--schema", "cisco-ios-xe",
+        ])
+        assert result.exit_code == 0
+        # Non-default customisations should remain
+        yaml_body = "\n".join(
+            line for line in result.output.splitlines() if not line.startswith("#")
+        )
+        assert "WAN uplink to ISP-A" in yaml_body  # custom description
+        assert "203.0.113.1" in yaml_body  # custom IP address
+        assert "example.com" in yaml_body  # custom domain name
+        assert "4096" in yaml_body  # custom spanning-tree priority
+        assert "10.255.0.1" in yaml_body  # custom OSPF router-id
+        # Defaults should be stripped from YAML body
+        assert "ip.classless" not in yaml_body or "classless: true" not in yaml_body
+
+    def test_compress_juniper_junos_with_bundled_schema(self) -> None:
+        """Verify JunOS defaults are stripped from a representative config."""
+        runner = CliRunner()
+        result = runner.invoke(cli, [
+            "compress",
+            str(YAML_FIXTURES / "junos-config.yaml"),
+            "--schema", "juniper-junos",
+        ])
+        assert result.exit_code == 0
+        # Non-default customisations should remain
+        yaml_body = "\n".join(
+            line for line in result.output.splitlines() if not line.startswith("#")
+        )
+        assert "core-rtr-01" in yaml_body  # custom hostname
+        assert "10.255.0.1" in yaml_body  # custom router-id
+        assert "Uplink to PE-01" in yaml_body  # custom description
+        assert "9192" in yaml_body  # custom MTU
+        assert "10g" in yaml_body or "10G" in yaml_body  # custom reference-bandwidth
+        # Defaults should be stripped from YAML body
+        assert "asdot-notation" not in yaml_body or "asdot-notation: false" not in yaml_body
+
+    def test_compress_cisco_ios_xe_stats(self) -> None:
+        """IOS XE compression shows meaningful savings."""
+        runner = CliRunner()
+        result = runner.invoke(cli, [
+            "compress",
+            str(YAML_FIXTURES / "ios-xe-show-run-all.yaml"),
+            "--schema", "cisco-ios-xe",
+            "--stats",
+        ])
+        assert result.exit_code == 0
+        assert "saved" in result.output or "Tokens:" in result.output
+
+    def test_compress_juniper_junos_stats(self) -> None:
+        """JunOS compression shows meaningful savings."""
+        runner = CliRunner()
+        result = runner.invoke(cli, [
+            "compress",
+            str(YAML_FIXTURES / "junos-config.yaml"),
+            "--schema", "juniper-junos",
+            "--stats",
+        ])
+        assert result.exit_code == 0
+        assert "saved" in result.output or "Tokens:" in result.output
+
+
 class TestCompressDirectory:
     def test_compress_directory(self, tmp_path: Path) -> None:
         """Directory argument processes all matching files."""

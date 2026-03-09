@@ -373,6 +373,83 @@ class TestResolveSchema:
         assert len(schema.defaults) >= 30
         assert len(schema.system_managed) >= 5
 
+    # --- Network OS schemas (Cisco IOS XE, IOS XR, NX-OS, Juniper JunOS, Arista EOS) ---
+
+    def test_resolve_cisco_ios_xe_bundled(self) -> None:
+        path = resolve_schema("cisco-ios-xe")
+        assert path.exists()
+        assert path.name == "cisco-ios-xe.yaml"
+
+    def test_bundled_cisco_ios_xe_loads(self) -> None:
+        from decoct.schemas import load_schema
+
+        path = resolve_schema("cisco-ios-xe")
+        schema = load_schema(path)
+        assert schema.platform == "cisco-ios-xe"
+        assert schema.confidence == "high"
+        assert len(schema.defaults) >= 60
+        assert len(schema.system_managed) >= 5
+
+    def test_resolve_cisco_ios_xr_bundled(self) -> None:
+        path = resolve_schema("cisco-ios-xr")
+        assert path.exists()
+        assert path.name == "cisco-ios-xr.yaml"
+
+    def test_bundled_cisco_ios_xr_loads(self) -> None:
+        from decoct.schemas import load_schema
+
+        path = resolve_schema("cisco-ios-xr")
+        schema = load_schema(path)
+        assert schema.platform == "cisco-ios-xr"
+        assert schema.confidence == "high"
+        assert len(schema.defaults) >= 60
+        assert len(schema.system_managed) >= 5
+
+    def test_resolve_cisco_nxos_bundled(self) -> None:
+        path = resolve_schema("cisco-nxos")
+        assert path.exists()
+        assert path.name == "cisco-nxos.yaml"
+
+    def test_bundled_cisco_nxos_loads(self) -> None:
+        from decoct.schemas import load_schema
+
+        path = resolve_schema("cisco-nxos")
+        schema = load_schema(path)
+        assert schema.platform == "cisco-nxos"
+        assert schema.confidence == "medium"
+        assert len(schema.defaults) >= 50
+        assert len(schema.system_managed) >= 5
+
+    def test_resolve_juniper_junos_bundled(self) -> None:
+        path = resolve_schema("juniper-junos")
+        assert path.exists()
+        assert path.name == "juniper-junos.yaml"
+
+    def test_bundled_juniper_junos_loads(self) -> None:
+        from decoct.schemas import load_schema
+
+        path = resolve_schema("juniper-junos")
+        schema = load_schema(path)
+        assert schema.platform == "juniper-junos"
+        assert schema.confidence == "authoritative"
+        assert len(schema.defaults) >= 60
+        assert len(schema.system_managed) >= 5
+
+    def test_resolve_arista_eos_bundled(self) -> None:
+        path = resolve_schema("arista-eos")
+        assert path.exists()
+        assert path.name == "arista-eos.yaml"
+
+    def test_bundled_arista_eos_loads(self) -> None:
+        from decoct.schemas import load_schema
+
+        path = resolve_schema("arista-eos")
+        schema = load_schema(path)
+        assert schema.platform == "arista-eos"
+        assert schema.confidence == "high"
+        assert len(schema.defaults) >= 50
+        assert len(schema.system_managed) >= 5
+
     def test_all_bundled_schemas_exist(self) -> None:
         for name in BUNDLED_SCHEMAS:
             path = resolve_schema(name)

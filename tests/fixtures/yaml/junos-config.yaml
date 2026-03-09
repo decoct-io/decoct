@@ -1,0 +1,163 @@
+# JunOS structured config — as from 'show configuration | display json' converted to YAML
+# Mix of defaults (to be stripped) and intentional customisations (to remain)
+system:
+  host-name: core-rtr-01                   # CUSTOM
+  domain-name: example.net                 # CUSTOM
+  services:
+    ssh:
+      protocol-version: v2
+      rate-limit: 150
+      root-login: deny-password            # CUSTOM — stricter than default 'deny'
+      connection-limit: 75
+      max-sessions-per-connection: 10
+    netconf:
+      ssh:
+        port: 830
+  internet-options:
+    tcp-mss: 4096
+    tcp-drop-synfin-set: true              # CUSTOM — security hardening
+  syslog:
+    host:
+      10.0.0.100:                          # CUSTOM — syslog server
+        any:
+          severity: warning
+        facility-override: none
+    file:
+      messages:
+        any: notice                        # CUSTOM — log level
+        facility-override: none
+  ntp:
+    server:
+      - 10.0.0.10                          # CUSTOM — NTP server
+    boot-server: none
+  login:
+    retry-options:
+      tries-before-disconnect: 3           # CUSTOM — stricter
+      backoff-threshold: 2
+      backoff-factor: 5
+    idle-timeout: 15                       # CUSTOM — 15 min idle timeout
+  arp:
+    aging-timer: 300
+interfaces:
+  ge-0/0/0:
+    description: "Uplink to PE-01"         # CUSTOM
+    mtu: 9192                              # CUSTOM — jumbo frames
+    hold-time:
+      up: 0
+      down: 0
+    link-mode: automatic
+    speed: auto
+    unit:
+      "0":
+        family:
+          inet:
+            address: 10.0.0.1/30          # CUSTOM
+            mtu: 1500
+  ge-0/0/1:
+    description: "Core link to core-rtr-02"  # CUSTOM
+    mtu: 1514
+    hold-time:
+      up: 2000                             # CUSTOM — dampening
+      down: 0
+    link-mode: automatic
+    unit:
+      "0":
+        family:
+          inet:
+            address: 10.0.1.1/30          # CUSTOM
+            mtu: 1500
+          mpls: {}                         # CUSTOM — MPLS enabled
+  lo0:
+    unit:
+      "0":
+        family:
+          inet:
+            address: 10.255.0.1/32        # CUSTOM — loopback
+protocols:
+  ospf:
+    reference-bandwidth: 10g               # CUSTOM — 10G reference
+    area:
+      "0.0.0.0":
+        interface:
+          ge-0/0/0.0:
+            hello-interval: 10
+            dead-interval: 40
+            retransmit-interval: 5
+            transit-delay: 1
+            metric: 1
+            priority: 128
+          ge-0/0/1.0:
+            hello-interval: 1              # CUSTOM — fast hellos
+            dead-interval: 4               # CUSTOM — fast dead
+            retransmit-interval: 5
+            transit-delay: 1
+            metric: 100                    # CUSTOM — higher cost
+            priority: 128
+          lo0.0:
+            passive: true                  # CUSTOM — passive loopback
+  bgp:
+    group:
+      IBGP-PEERS:
+        type: internal                     # CUSTOM
+        hold-time: 90
+        log-updown: true
+        preference: 170
+        tcp-mss: 4096
+        mtu-discovery: true
+        local-preference: 100
+        passive: false
+        neighbor:
+          10.255.0.2:
+            description: "core-rtr-02"     # CUSTOM
+          10.255.0.3:
+            description: "core-rtr-03"     # CUSTOM
+      EBGP-TRANSIT:
+        type: external                     # CUSTOM
+        hold-time: 30                      # CUSTOM — aggressive timers
+        log-updown: true
+        multihop:
+          ttl: 2                           # CUSTOM — eBGP multihop
+        neighbor:
+          203.0.113.1:
+            peer-as: 65002                 # CUSTOM
+            description: "Transit ISP-A"   # CUSTOM
+  isis:
+    level:
+      "2":
+        wide-metrics-only: true            # CUSTOM
+    interface:
+      ge-0/0/0.0:
+        hello-interval: 9
+        hold-time: 27
+        metric: 10
+      ge-0/0/1.0:
+        hello-interval: 3                  # CUSTOM — fast hellos
+        hold-time: 9                       # CUSTOM
+        metric: 100                        # CUSTOM — higher cost
+  ldp:
+    keepalive-interval: 10
+    keepalive-timeout: 30
+    transport-address: router-id
+    interface:
+      ge-0/0/0.0: {}                      # CUSTOM — LDP enabled
+      ge-0/0/1.0: {}                      # CUSTOM — LDP enabled
+routing-options:
+  router-id: 10.255.0.1                   # CUSTOM — explicit router-id
+  autonomous-system:
+    number: 65001                          # CUSTOM
+    asdot-notation: false
+  forwarding-table:
+    export: ECMP-POLICY                    # CUSTOM — load-balancing policy
+chassis:
+  alarm:
+    management-ethernet:
+      link-down: red
+  aggregated-devices:
+    ethernet:
+      device-count: 4                      # CUSTOM — 4 AE interfaces
+policy-options:
+  policy-statement:
+    ECMP-POLICY:                           # CUSTOM — entire policy
+      then:
+        load-balance:
+          per-packet: true

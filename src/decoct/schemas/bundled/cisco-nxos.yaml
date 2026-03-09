@@ -1,0 +1,119 @@
+platform: cisco-nxos
+source: "Cisco NX-OS Configuration Guides (10.x) + show running-config all analysis. YANG model defaults are known to be unreliable per NX-OS README; defaults sourced from documentation and show running-config all analysis."
+confidence: medium
+defaults:
+  # Interface defaults
+  interface.*.shutdown: true
+  interface.*.mtu: 1500
+  interface.*.speed: auto
+  interface.*.duplex: auto
+  interface.*.switchport: enabled
+  interface.*.cdp.enable: true
+  interface.*.spanning-tree.port.type: normal
+  interface.*.spanning-tree.bpduguard: disable
+  interface.*.spanning-tree.bpdufilter: disable
+  interface.*.spanning-tree.guard: none
+  interface.*.bandwidth: 1000000
+  interface.*.delay: 10
+  interface.*.flowcontrol.receive: off
+  interface.*.flowcontrol.send: off
+  interface.*.snmp.trap.link-status: true
+  interface.*.ip.redirects: true
+  interface.*.ip.unreachables: true
+  interface.*.ip.proxy-arp: false
+  interface.*.load-interval.counter.1: 300
+  interface.*.load-interval.counter.2: 300
+
+  # Spanning-tree defaults
+  spanning-tree.mode: rapid-pvst
+  spanning-tree.priority: 32768
+  spanning-tree.hello-time: 2
+  spanning-tree.forward-time: 15
+  spanning-tree.max-age: 20
+  spanning-tree.pathcost.method: short
+  spanning-tree.loopguard: disabled
+  spanning-tree.bridge-assurance: enabled
+
+  # VXLAN / EVPN defaults
+  nv.overlay.evpn: disabled
+  fabric.forwarding.anycast-gateway-mac: none
+  interface.nve.*.host-reachability.protocol: none
+  interface.nve.*.shutdown: true
+  interface.nve.*.source-interface: none
+
+  # vPC defaults
+  vpc.peer-keepalive.interval: 1000
+  vpc.peer-keepalive.timeout: 5
+  vpc.auto-recovery: disabled
+  vpc.auto-recovery.reload-delay: 240
+  vpc.delay.restore: 30
+  vpc.delay.restore.interface-vlan: 10
+  vpc.graceful-consistency-check: true
+  vpc.peer-gateway: false
+  vpc.ip.arp.synchronize: false
+
+  # Global feature defaults
+  feature.telnet: disabled
+  feature.ssh: enabled
+  feature.tacacs: disabled
+  feature.lacp: disabled
+  feature.vpc: disabled
+  feature.hsrp: disabled
+  feature.interface-vlan: disabled
+  feature.lldp: disabled
+  feature.bfd: disabled
+  feature.nv.overlay: disabled
+  feature.ospf: disabled
+  feature.bgp: disabled
+  feature.pim: disabled
+  system.default.switchport: enabled
+
+  # CoPP defaults
+  copp.profile: strict
+
+  # BGP defaults (when feature bgp is enabled)
+  router.bgp.*.timers.keepalive: 60
+  router.bgp.*.timers.holdtime: 180
+  router.bgp.*.maximum-paths: 1
+  router.bgp.*.distance.external: 20
+  router.bgp.*.distance.internal: 200
+  router.bgp.*.distance.local: 220
+  router.bgp.*.bestpath.as-path.multipath-relax: false
+  router.bgp.*.bestpath.compare-routerid: false
+  router.bgp.*.graceful-restart: true
+  router.bgp.*.log-neighbor-changes: false
+
+  # OSPF defaults (when feature ospf is enabled)
+  router.ospf.*.auto-cost.reference-bandwidth: 40000
+  router.ospf.*.timers.throttle.spf: "200 1000 5000"
+  router.ospf.*.maximum-paths: 8
+  "**.ospf.*.hello-interval": 10
+  "**.ospf.*.dead-interval": 40
+  "**.ospf.*.retransmit-interval": 5
+  "**.ospf.*.transmit-delay": 1
+
+  # Logging defaults
+  logging.console: 2
+  logging.monitor: 2
+  logging.logfile.severity: 5
+  logging.timestamp: seconds
+
+  # QoS defaults
+  system.qos.policy: default
+  qos.service-policy.type.queuing: default
+
+  # SNMP defaults
+  snmp-server.contact: ""
+  snmp-server.location: ""
+
+drop_patterns: []
+system_managed:
+  - "**.last-modified"
+  - "**.creation-time"
+  - "**.input-packets"
+  - "**.output-packets"
+  - "**.input-errors"
+  - "**.output-errors"
+  - "**.state-transitions"
+  - "**.uptime"
+  - "**.last-clearing"

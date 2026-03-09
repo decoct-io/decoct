@@ -1,0 +1,151 @@
+platform: cisco-ios-xe
+source: Cisco IOS XE YANG models (vendor/cisco/xe, 17.x) + IOS XE Configuration Guides + show running-config all documentation
+confidence: high
+defaults:
+  # Interface defaults — appear in 'show running-config all' but hidden in 'show running-config'
+  interface.*.shutdown: true
+  interface.*.mtu: 1500
+  interface.*.speed: auto
+  interface.*.duplex: auto
+  interface.*.negotiation.auto: true
+  interface.*.cdp.enable: true
+  interface.*.ip.proxy-arp: true
+  interface.*.ip.redirects: true
+  interface.*.ip.unreachables: true
+  interface.*.ip.mask-reply: false
+  interface.*.ip.route-cache: true
+  interface.*.ip.mtu: 1500
+  interface.*.bandwidth: 100000
+  interface.*.delay: 100
+  interface.*.keepalive: 10
+  interface.*.carrier-delay: 2
+  interface.*.load-interval: 300
+  interface.*.arp.timeout: 14400
+  interface.*.hold-queue.in: 375
+  interface.*.hold-queue.out: 40
+  interface.*.snmp.trap.link-status: true
+  interface.*.flowcontrol.receive: off
+  interface.*.flowcontrol.send: off
+
+  # Layer 2 interface defaults (switchport)
+  interface.*.switchport.mode: "dynamic auto"
+  interface.*.spanning-tree.portfast: disable
+  interface.*.spanning-tree.bpduguard: disable
+  interface.*.spanning-tree.bpdufilter: disable
+  interface.*.spanning-tree.guard: none
+  interface.*.spanning-tree.cost: 0
+  interface.*.storm-control.broadcast.level: 100.00
+  interface.*.storm-control.multicast.level: 100.00
+
+  # Line defaults (VTY/console)
+  line.console.*.exec-timeout.minutes: 10
+  line.console.*.exec-timeout.seconds: 0
+  line.console.*.login: local
+  line.vty.*.exec-timeout.minutes: 10
+  line.vty.*.exec-timeout.seconds: 0
+  line.vty.*.transport.input: all
+  line.vty.*.transport.output: all
+  line.vty.*.login: local
+  line.vty.*.privilege.level: 15
+
+  # Global service defaults
+  service.timestamps.debug: uptime
+  service.timestamps.log: uptime
+  service.password-encryption: false
+  service.tcp-keepalives-in: false
+  service.tcp-keepalives-out: false
+  service.nagle: false
+  service.pad: true
+  service.call-home: false
+
+  # IP global defaults
+  ip.domain-lookup: true
+  ip.classless: true
+  ip.subnet-zero: true
+  ip.cef: true
+  ip.source-route: true
+  ip.finger: false
+  ip.http.server: false
+  ip.http.secure-server: false
+  ip.gratuitous-arps: true
+
+  # OSPF defaults
+  # router-id is auto-selected (highest loopback IP, then highest interface IP)
+  router.ospf.*.auto-cost.reference-bandwidth: 100
+  router.ospf.*.timers.throttle.spf: "5000 10000 10000"
+  router.ospf.*.timers.throttle.lsa: "0 5000 5000"
+  router.ospf.*.distance: 110
+  router.ospf.*.maximum-paths: 4
+  router.ospf.*.default-metric: 10
+  "**.ospf.*.hello-interval": 10
+  "**.ospf.*.dead-interval": 40
+  "**.ospf.*.retransmit-interval": 5
+  "**.ospf.*.transmit-delay": 1
+  "**.ospf.*.cost": 1
+  "**.ospf.*.priority": 1
+
+  # BGP defaults
+  router.bgp.*.timers.keepalive: 60
+  router.bgp.*.timers.holdtime: 180
+  router.bgp.*.distance.external: 20
+  router.bgp.*.distance.internal: 200
+  router.bgp.*.distance.local: 200
+  router.bgp.*.maximum-paths: 1
+  router.bgp.*.bestpath.compare-routerid: false
+  router.bgp.*.bestpath.med.missing-as-worst: false
+  router.bgp.*.neighbor.*.version: 4
+  router.bgp.*.neighbor.*.timers.keepalive: 60
+  router.bgp.*.neighbor.*.timers.holdtime: 180
+  router.bgp.*.neighbor.*.advertisement-interval: 30
+  router.bgp.*.neighbor.*.soft-reconfiguration: false
+
+  # Spanning-tree defaults
+  spanning-tree.mode: rapid-pvst
+  spanning-tree.priority: 32768
+  spanning-tree.hello-time: 2
+  spanning-tree.forward-time: 15
+  spanning-tree.max-age: 20
+  spanning-tree.pathcost.method: short
+
+  # Logging defaults
+  logging.console: enabled
+  logging.console.severity: 7
+  logging.monitor: enabled
+  logging.monitor.severity: 7
+  logging.buffered: disabled
+  logging.trap: informational
+  logging.source-interface: none
+  logging.count: false
+
+  # SNMP defaults
+  snmp-server.enabled: false
+  snmp-server.contact: ""
+  snmp-server.location: ""
+
+  # AAA defaults
+  aaa.new-model: false
+  enable.secret: none
+
+  # NTP defaults
+  ntp.authenticate: false
+  ntp.master: false
+
+  # DHCP defaults
+  ip.dhcp.snooping: false
+  ip.dhcp.relay: true
+
+drop_patterns: []
+system_managed:
+  - "**.uptime"
+  - "**.last-input"
+  - "**.last-output"
+  - "**.input-packets"
+  - "**.output-packets"
+  - "**.input-errors"
+  - "**.output-errors"
+  - "**.crc"
+  - "**.collisions"
+  - "**.resets"
+  - "**.rxload"
+  - "**.txload"
+  - "**.reliability"

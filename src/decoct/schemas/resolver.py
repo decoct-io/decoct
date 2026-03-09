@@ -32,6 +32,11 @@ BUNDLED_SCHEMAS: dict[str, str] = {
     "azure-arm": "azure-arm.yaml",
     "aws-cloudformation": "aws-cloudformation.yaml",
     "gcp-resources": "gcp-resources.yaml",
+    "cisco-ios-xe": "cisco-ios-xe.yaml",
+    "cisco-ios-xr": "cisco-ios-xr.yaml",
+    "cisco-nxos": "cisco-nxos.yaml",
+    "juniper-junos": "juniper-junos.yaml",
+    "arista-eos": "arista-eos.yaml",
 }
 
 

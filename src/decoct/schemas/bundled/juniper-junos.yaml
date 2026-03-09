@@ -1,0 +1,157 @@
+platform: juniper-junos
+source: "Juniper JunOS show groups junos-defaults output + JunOS Configuration Guide (23.x). junos-defaults is an immutable built-in defaults group on the device."
+confidence: authoritative
+defaults:
+  # Interface defaults
+  interfaces.*.mtu: 1514
+  interfaces.*.unit.*.family.inet.mtu: 1500
+  interfaces.*.hold-time.up: 0
+  interfaces.*.hold-time.down: 0
+  interfaces.*.link-mode: automatic
+  interfaces.*.speed: auto
+  interfaces.*.gigether-options.auto-negotiation: true
+  interfaces.*.ether-options.auto-negotiation: true
+  interfaces.*.gratuitous-arp-reply: true
+  interfaces.*.no-gratuitous-arp-request: false
+  interfaces.*.flow-control: true
+  interfaces.*.arp-aging-timer: 300
+  interfaces.*.description: ""
+  interfaces.*.unit.*.family.inet.filter.input: none
+  interfaces.*.unit.*.family.inet.filter.output: none
+
+  # Protocols — OSPF
+  protocols.ospf.**.hello-interval: 10
+  protocols.ospf.**.dead-interval: 40
+  protocols.ospf.**.retransmit-interval: 5
+  protocols.ospf.**.transit-delay: 1
+  protocols.ospf.**.metric: 1
+  protocols.ospf.**.priority: 128
+  protocols.ospf.reference-bandwidth: 100m
+  protocols.ospf.spf-options.delay: 200
+  protocols.ospf.spf-options.holddown: 5000
+  protocols.ospf.spf-options.rapid-runs: 3
+  protocols.ospf.lsa-refresh-interval: 50
+  protocols.ospf.no-nssa-abr: false
+  protocols.ospf.graceful-restart.restart-duration: 180
+  protocols.ospf.graceful-restart.notify-duration: 1
+
+  # Protocols — OSPFv3
+  protocols.ospf3.**.hello-interval: 10
+  protocols.ospf3.**.dead-interval: 40
+  protocols.ospf3.**.retransmit-interval: 5
+  protocols.ospf3.**.transit-delay: 1
+  protocols.ospf3.**.metric: 1
+  protocols.ospf3.**.priority: 128
+
+  # Protocols — BGP
+  protocols.bgp.**.hold-time: 90
+  protocols.bgp.**.log-updown: true
+  protocols.bgp.**.preference: 170
+  protocols.bgp.**.tcp-mss: 4096
+  protocols.bgp.**.mtu-discovery: true
+  protocols.bgp.**.out-delay: 0
+  protocols.bgp.**.keep: all
+  protocols.bgp.**.no-client-reflect: false
+  protocols.bgp.**.graceful-restart.restart-time: 120
+  protocols.bgp.**.graceful-restart.stale-routes-time: 300
+  protocols.bgp.**.local-preference: 100
+  protocols.bgp.**.multihop.ttl: 1
+  protocols.bgp.**.passive: false
+  protocols.bgp.**.advertise-inactive: false
+  protocols.bgp.**.damping: false
+  protocols.bgp.**.remove-private: false
+  protocols.bgp.**.multipath: false
+
+  # Protocols — IS-IS
+  protocols.isis.**.hello-interval: 9
+  protocols.isis.**.hold-time: 27
+  protocols.isis.**.lsp-lifetime: 1200
+  protocols.isis.**.lsp-refresh-interval: 883
+  protocols.isis.**.csnp-interval: 10
+  protocols.isis.**.retransmit-interval: 5
+  protocols.isis.**.spf-delay: 200
+  protocols.isis.**.metric: 10
+  protocols.isis.**.hello-padding: strict
+  protocols.isis.**.overload.timeout: 0
+
+  # Protocols — LDP
+  protocols.ldp.keepalive-interval: 10
+  protocols.ldp.keepalive-timeout: 30
+  protocols.ldp.transport-address: router-id
+  protocols.ldp.graceful-restart.reconnect-time: 60
+  protocols.ldp.graceful-restart.recovery-time: 120
+
+  # Protocols — RSVP
+  protocols.rsvp.**.bandwidth: 0
+  protocols.rsvp.**.subscription: 100
+  protocols.rsvp.**.hello-interval: 9
+
+  # System settings
+  system.services.ssh.protocol-version: v2
+  system.services.ssh.rate-limit: 150
+  system.services.ssh.root-login: deny
+  system.services.ssh.connection-limit: 75
+  system.services.ssh.max-sessions-per-connection: 10
+  system.services.netconf.ssh.port: 830
+  system.internet-options.tcp-mss: 4096
+  system.internet-options.tcp-drop-synfin-set: false
+  system.internet-options.no-tcp-reset: drop-all-tcp
+  system.syslog.**.facility-override: none
+  system.ntp.boot-server: none
+  system.login.retry-options.tries-before-disconnect: 10
+  system.login.retry-options.backoff-threshold: 2
+  system.login.retry-options.backoff-factor: 5
+  system.login.idle-timeout: 0
+  system.arp.aging-timer: 300
+  system.ddos-protection.global.flow-detection: true
+
+  # Routing-options
+  routing-options.autonomous-system.asdot-notation: false
+  routing-options.router-id: none
+  routing-options.forwarding-table.export: none
+  routing-options.graceful-restart.restart-duration: 120
+  routing-options.graceful-restart.notify-duration: 1
+  routing-options.martians.allow: false
+
+  # Firewall / policy
+  policy-options.**.then.accept: true
+
+  # Security (SRX)
+  security.flow.tcp-mss.all-tcp.mss: 1350
+  security.flow.tcp-session.no-syn-check: false
+  security.flow.tcp-session.no-syn-check-in-tunnel: false
+  security.flow.tcp-session.no-sequence-check: false
+  security.flow.aging.early-ageout: 20
+  security.flow.aging.high-watermark: 100
+  security.flow.aging.low-watermark: 100
+  security.screen.ids-option.*.limit-session.source-ip-based: none
+  security.nat.source.**.persistent-nat-type: none
+
+  # Chassis
+  chassis.alarm.management-ethernet.link-down: red
+  chassis.fpc.*.pic.*.port-range.channel-speed: auto
+  chassis.aggregated-devices.ethernet.device-count: 0
+
+  # Class-of-service
+  class-of-service.interfaces.*.scheduler-map: default
+  class-of-service.interfaces.*.unit.*.rewrite-rules.dscp: default
+
+  # SNMP
+  snmp.contact: ""
+  snmp.location: ""
+  snmp.name: ""
+
+drop_patterns: []
+system_managed:
+  - "**.last-changed"
+  - "**.bytes"
+  - "**.packets"
+  - "**.transitions"
+  - "**.output-bytes"
+  - "**.input-bytes"
+  - "**.output-packets"
+  - "**.input-packets"
+  - "**.output-errors"
+  - "**.input-errors"
+  - "**.carrier-transitions"
+  - "**.uptime"
