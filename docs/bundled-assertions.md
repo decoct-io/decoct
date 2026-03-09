@@ -4,9 +4,9 @@
 
 ### Overview
 
-This assertion set encodes container deployment standards for Docker Compose services. It covers image versioning, restart policies, health checks, logging, security, and networking. All assertions reference the `ENS-OPS-DOCKER-001` source standard.
+This assertion set encodes container deployment standards for Docker Compose services. It covers image versioning, restart policies, health checks, logging, security, and networking. All assertions reference the `OPS-DOCKER-001` source standard.
 
-The set contains 12 assertions: 7 with `must` severity, 5 with `should` severity. Ten of the twelve have machine-evaluable `match` conditions; the remaining two (`ens-resource-limits`, `ens-named-networks`) are LLM-context only.
+The set contains 12 assertions: 7 with `must` severity, 5 with `should` severity. Ten of the twelve have machine-evaluable `match` conditions; the remaining two (`ops-resource-limits`, `ops-named-networks`) are LLM-context only.
 
 ### Usage
 
@@ -20,7 +20,7 @@ decoct compress docker-compose.yml --profile docker-compose
 
 ---
 
-#### `ens-image-pinned`
+#### `ops-image-pinned`
 
 - **Severity:** must
 - **Assertion:** Image tags must be pinned to specific versions, not :latest
@@ -35,7 +35,7 @@ decoct compress docker-compose.yml --profile docker-compose
 
 ---
 
-#### `ens-restart-policy`
+#### `ops-restart-policy`
 
 - **Severity:** must
 - **Assertion:** Restart policy must be unless-stopped or always
@@ -50,7 +50,7 @@ decoct compress docker-compose.yml --profile docker-compose
 
 ---
 
-#### `ens-container-name`
+#### `ops-container-name`
 
 - **Severity:** must
 - **Assertion:** Container name must be explicitly set
@@ -58,14 +58,14 @@ decoct compress docker-compose.yml --profile docker-compose
 - **Match:**
   - Path: `services.*.container_name`
   - Condition: `exists` = `true` -- the key must be present.
-- **Example (conformant):** `container_name: hairtrigger-web`
+- **Example (conformant):** `container_name: acme-app-web`
 - **Example (non-conformant):** The `container_name` key is absent from the service definition.
 - **Exceptions:** None
 - **Pipeline effect:** Because this is an `exists` assertion, the `strip-conformant` pass skips it (there is no value to strip for presence checks). The `annotate-deviations` pass detects missing keys and records a deviation: `[!] missing: Container name must be explicitly set`. Note that YAML inline comments cannot be attached to absent keys, so the deviation appears only in the pass report.
 
 ---
 
-#### `ens-healthcheck`
+#### `ops-healthcheck`
 
 - **Severity:** must
 - **Assertion:** All application containers must have health checks configured
@@ -76,11 +76,11 @@ decoct compress docker-compose.yml --profile docker-compose
 - **Example (conformant):** A `healthcheck` block with `test`, `interval`, `timeout`, and `retries` defined.
 - **Example (non-conformant):** The `healthcheck` key is absent from the service definition.
 - **Exceptions:** Infrastructure-only containers (redis, postgres) may rely on built-in health mechanisms
-- **Pipeline effect:** Same as `ens-container-name` -- `strip-conformant` skips exists assertions; `annotate-deviations` records a deviation for absent keys but cannot attach an inline YAML comment.
+- **Pipeline effect:** Same as `ops-container-name` -- `strip-conformant` skips exists assertions; `annotate-deviations` records a deviation for absent keys but cannot attach an inline YAML comment.
 
 ---
 
-#### `ens-logging-driver`
+#### `ops-logging-driver`
 
 - **Severity:** must
 - **Assertion:** Logging driver must be json-file
@@ -95,7 +95,7 @@ decoct compress docker-compose.yml --profile docker-compose
 
 ---
 
-#### `ens-logging-max-size`
+#### `ops-logging-max-size`
 
 - **Severity:** must
 - **Assertion:** Log rotation max-size must be configured
@@ -110,7 +110,7 @@ decoct compress docker-compose.yml --profile docker-compose
 
 ---
 
-#### `ens-logging-max-file`
+#### `ops-logging-max-file`
 
 - **Severity:** must
 - **Assertion:** Log rotation max-file must be configured
@@ -121,11 +121,11 @@ decoct compress docker-compose.yml --profile docker-compose
 - **Example (conformant):** `max-file: "3"`
 - **Example (non-conformant):** The `max-file` key is absent or empty.
 - **Exceptions:** None
-- **Pipeline effect:** Same as `ens-logging-max-size` -- conformant values are stripped; absent values produce a deviation.
+- **Pipeline effect:** Same as `ops-logging-max-size` -- conformant values are stripped; absent values produce a deviation.
 
 ---
 
-#### `ens-security-opt`
+#### `ops-security-opt`
 
 - **Severity:** should
 - **Assertion:** Containers should set no-new-privileges security option
@@ -140,7 +140,7 @@ decoct compress docker-compose.yml --profile docker-compose
 
 ---
 
-#### `ens-no-privileged`
+#### `ops-no-privileged`
 
 - **Severity:** must
 - **Assertion:** Containers must not run in privileged mode
@@ -155,7 +155,7 @@ decoct compress docker-compose.yml --profile docker-compose
 
 ---
 
-#### `ens-resource-limits`
+#### `ops-resource-limits`
 
 - **Severity:** should
 - **Assertion:** Production and multi-container stacks should define resource limits
@@ -168,7 +168,7 @@ decoct compress docker-compose.yml --profile docker-compose
 
 ---
 
-#### `ens-named-networks`
+#### `ops-named-networks`
 
 - **Severity:** should
 - **Assertion:** Services should use named networks, not the default bridge
@@ -181,7 +181,7 @@ decoct compress docker-compose.yml --profile docker-compose
 
 ---
 
-#### `ens-no-host-0000`
+#### `ops-no-host-0000`
 
 - **Severity:** should
 - **Assertion:** Ports must not bind to 0.0.0.0; use specific IPs or 127.0.0.1
@@ -198,19 +198,19 @@ decoct compress docker-compose.yml --profile docker-compose
 
 | Area | Assertions | Machine-Evaluable |
 |------|-----------|-------------------|
-| Image versioning | `ens-image-pinned` | Yes |
-| Restart policy | `ens-restart-policy` | Yes |
-| Container naming | `ens-container-name` | Yes |
-| Health checks | `ens-healthcheck` | Yes |
-| Logging | `ens-logging-driver`, `ens-logging-max-size`, `ens-logging-max-file` | Yes |
-| Security | `ens-security-opt`, `ens-no-privileged` | Yes |
-| Resources | `ens-resource-limits` | No |
-| Networking | `ens-named-networks`, `ens-no-host-0000` | No |
+| Image versioning | `ops-image-pinned` | Yes |
+| Restart policy | `ops-restart-policy` | Yes |
+| Container naming | `ops-container-name` | Yes |
+| Health checks | `ops-healthcheck` | Yes |
+| Logging | `ops-logging-driver`, `ops-logging-max-size`, `ops-logging-max-file` | Yes |
+| Security | `ops-security-opt`, `ops-no-privileged` | Yes |
+| Resources | `ops-resource-limits` | No |
+| Networking | `ops-named-networks`, `ops-no-host-0000` | No |
 
 ### Known Limitations
 
 - **Absent-field detection:** Assertions with `exists: true` check for presence but cannot report on services that entirely lack the field. The deviation is recorded in the pass report but no inline YAML comment can be attached to a missing key.
-- **Pattern matching on variable substitution:** `${IMAGE_TAG:-latest}` passes the `ens-image-pinned` check because the literal string does not end with `:latest` -- the shell variable syntax is not expanded during evaluation.
-- **Resource limits assertion has no match:** `ens-resource-limits` is LLM-context only and cannot be machine-evaluated. A future version may add path-based existence checks for `deploy.resources.limits`.
-- **Port binding assertion has no match:** `ens-no-host-0000` requires parsing port mapping syntax (e.g., `"0.0.0.0:8080:8080"`) which is not yet supported by the match condition model.
+- **Pattern matching on variable substitution:** `${IMAGE_TAG:-latest}` passes the `ops-image-pinned` check because the literal string does not end with `:latest` -- the shell variable syntax is not expanded during evaluation.
+- **Resource limits assertion has no match:** `ops-resource-limits` is LLM-context only and cannot be machine-evaluated. A future version may add path-based existence checks for `deploy.resources.limits`.
+- **Port binding assertion has no match:** `ops-no-host-0000` requires parsing port mapping syntax (e.g., `"0.0.0.0:8080:8080"`) which is not yet supported by the match condition model.
 - **`should`-severity stripping:** The `strip-conformant` pass only removes values for `must`-severity assertions. Conformant `should` values remain in the output, which is by design -- `should` conformance is less certain and the context may be useful to an LLM reviewer.

@@ -353,7 +353,7 @@ class TestDeploymentStandards:
         doc = _load_yaml(self.yaml_fixtures / "realistic-with-deviations.yaml")
         deviations = annotate_deviations(doc, self.assertions)
         # worker has image: acme-worker:latest
-        image_deviations = [d for d in deviations if d.assertion_id == "ens-image-pinned"]
+        image_deviations = [d for d in deviations if d.assertion_id == "ops-image-pinned"]
         assert len(image_deviations) >= 1
         output = _dump_yaml(doc)
         assert "[!]" in output
@@ -362,12 +362,12 @@ class TestDeploymentStandards:
         """restart: "no" gets annotation."""
         doc = _load_yaml(self.yaml_fixtures / "realistic-with-deviations.yaml")
         deviations = annotate_deviations(doc, self.assertions)
-        restart_deviations = [d for d in deviations if d.assertion_id == "ens-restart-policy"]
+        restart_deviations = [d for d in deviations if d.assertion_id == "ops-restart-policy"]
         assert len(restart_deviations) >= 1
 
     def test_pattern_match_restart_accepts_both(self) -> None:
         """unless-stopped and always both match the restart assertion."""
-        restart_assertion = next(a for a in self.assertions if a.id == "ens-restart-policy")
+        restart_assertion = next(a for a in self.assertions if a.id == "ops-restart-policy")
         assert restart_assertion.match is not None
         assert evaluate_match(restart_assertion.match, "unless-stopped") is True
         assert evaluate_match(restart_assertion.match, "always") is True
@@ -385,7 +385,7 @@ class TestDeploymentStandards:
 
     def test_contains_match_for_security_opt(self) -> None:
         """List contains evaluation works for security_opt assertion."""
-        sec_assertion = next(a for a in self.assertions if a.id == "ens-security-opt")
+        sec_assertion = next(a for a in self.assertions if a.id == "ops-security-opt")
         assert sec_assertion.match is not None
         # Conformant: list contains no-new-privileges:true
         assert evaluate_match(sec_assertion.match, ["no-new-privileges:true"]) is True

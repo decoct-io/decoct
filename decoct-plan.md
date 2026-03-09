@@ -494,31 +494,31 @@ Each tier requires deeper knowledge and produces greater savings:
 ```yaml
 # Before (12 tokens)
 services:
-  hairtrigger:
+  acme-app:
     restart: unless-stopped
-    image: hairtrigger:3.2.1
+    image: acme-app:3.2.1
 
 # After strip-conformant — restart matches assertion, removed (8 tokens)
 services:
-  hairtrigger:
-    image: hairtrigger:3.2.1
+  acme-app:
+    image: acme-app:3.2.1
 ```
 
 **Deviation annotation.** Where state violates an assertion, an inline comment marks it at point of use.
 
 ```yaml
 services:
-  hairtrigger:
+  acme-app:
     restart: always  # [!] standard: unless-stopped
-    image: hairtrigger:latest  # [!] standard: specific version tag
+    image: acme-app:latest  # [!] standard: specific version tag
 ```
 
 **Deviation summary preamble.**
 
 ```yaml
 # decoct: 2 deviations from standards on app-01
-# - hairtrigger.restart = always (standard: unless-stopped) [restart-policy]
-# - hairtrigger.image uses :latest (standard: specific tag) [image-tags]
+# - acme-app.restart = always (standard: unless-stopped) [restart-policy]
+# - acme-app.image uses :latest (standard: specific tag) [image-tags]
 ```
 
 #### Classes: Reconstitution from Compressed State
@@ -532,7 +532,7 @@ decoct records stripped values in a **class definition** — a compact represent
 class: app-01-host
 inherits:
   - linux-defaults         # platform defaults (from schema)
-  - enable-linux-standard  # organisational assertions
+  - example-linux-standard  # organisational assertions
 applied_defaults:
   systemd.units.*.Type: simple
   systemd.units.*.Restart: "no"
@@ -557,17 +557,17 @@ interfaces:
   eth0:
     ip: 10.0.1.5/24
 services:
-  hairtrigger:
-    image: hairtrigger:3.2.1
+  acme-app:
+    image: acme-app:3.2.1
 ```
 
 The class reference tells the LLM: "this document inherits from `app-01-host` — anything not shown matches that class." The model can reason without seeing every default:
 
-- "What's the restart policy for hairtrigger?" → not shown, inherits from class → `unless-stopped`
+- "What's the restart policy for acme-app?" → not shown, inherits from class → `unless-stopped`
 - "What's the swappiness?" → shown explicitly as 10 — it's a deviation from default 60
-- "Generate the full systemd unit for hairtrigger" → combine compressed state with class defaults
+- "Generate the full systemd unit for acme-app" → combine compressed state with class defaults
 
-Classes compose through inheritance. `app-01-host` inherits from `linux-defaults` (platform) and `enable-linux-standard` (organisational). This mirrors how compression itself works — platform defaults and assertion conformance are separate tiers.
+Classes compose through inheritance. `app-01-host` inherits from `linux-defaults` (platform) and `example-linux-standard` (organisational). This mirrors how compression itself works — platform defaults and assertion conformance are separate tiers.
 
 Classes integrate naturally with tiered context loading: compressed state is always loaded (tier A), class definitions are loaded when the task needs full state (tier B), raw uncompressed data is available but rarely needed (tier C).
 
@@ -586,7 +586,7 @@ The pipeline falls back to the LLM for unknown structure, ambiguous assertion ma
     - path: services.redis
       applicable: false
       reason: internal service, container-to-container only
-    - path: services.hairtrigger
+    - path: services.acme-app
       applicable: true
       reason: serves external HTTP traffic
 ```
@@ -952,8 +952,8 @@ Docker Compose for a production host:
   + design standards:      258 tokens  (58% saved)  ← decoct
 
   2 deviations found:
-  - hairtrigger.restart = always (standard: unless-stopped)
-  - hairtrigger.image uses :latest (standard: specific tag)
+  - acme-app.restart = always (standard: unless-stopped)
+  - acme-app.image uses :latest (standard: specific tag)
 ```
 
 **2. One-liner:** Decoct your infrastructure for LLMs.
@@ -1028,9 +1028,9 @@ Phase 1 has a hard quality gate. If the host stack cannot demonstrate 40%+ token
 
 ### Organisation
 
-**Repository:** `github.com/enable-network-services/decoct`
+**Repository:** `github.com/example-corp/decoct`
 
-Starting under Enable Network Services establishes credibility in infrastructure engineering. Transfer to a standalone organisation if community governance warrants it.
+Starting under Example Corp establishes credibility in infrastructure engineering. Transfer to a standalone organisation if community governance warrants it.
 
 **Package:** `decoct` on PyPI.
 

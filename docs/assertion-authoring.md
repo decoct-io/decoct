@@ -62,7 +62,7 @@ prefix with a namespace representing the team or standards document:
 
 - `require-healthcheck` -- clear about what is required
 - `no-privileged` -- clear about what is prohibited
-- `ens-image-pinned` -- namespaced to a specific standards document
+- `ops-image-pinned` -- namespaced to a specific standards document
 - `k8s-resource-limits` -- namespaced to a platform
 
 Avoid generic IDs like `rule-1` or `check-a`. The ID appears in pipeline
@@ -498,8 +498,8 @@ many items each pass removed and which specific deviations were detected:
 --- strip-conformant ---
   Removed: 5 items
 --- annotate-deviations ---
-  ens-image-pinned: services.web.image
-  ens-healthcheck: services.web.healthcheck
+  ops-image-pinned: services.web.image
+  ops-healthcheck: services.web.healthcheck
 ```
 
 ### Token Statistics

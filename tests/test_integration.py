@@ -176,11 +176,11 @@ class TestDeviationsFixture:
         deviations = annotate_deviations(doc, self.assertions)
 
         # Expected deviations:
-        # worker: image acme-worker:latest (ens-image-pinned)
-        # worker: missing logging options max-size (ens-logging-max-size)
-        # worker: missing logging options max-file (ens-logging-max-file)
-        # scheduler: restart "no" (ens-restart-policy)
-        # scheduler: missing security_opt on both worker and scheduler (ens-security-opt is should, not must)
+        # worker: image acme-worker:latest (ops-image-pinned)
+        # worker: missing logging options max-size (ops-logging-max-size)
+        # worker: missing logging options max-file (ops-logging-max-file)
+        # scheduler: restart "no" (ops-restart-policy)
+        # scheduler: missing security_opt on both worker and scheduler (ops-security-opt is should, not must)
         # At minimum we expect several deviations
         assert len(deviations) >= 2
 

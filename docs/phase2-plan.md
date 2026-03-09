@@ -61,26 +61,26 @@ Each work item includes acceptance criteria and depends on Phase 1 completion.
 
 ## 2.2 Deployment Standards Assertions
 
-**Goal:** Encode ENS-OPS-DOCKER-001 as ~12 machine-evaluable assertions.
+**Goal:** Encode OPS-DOCKER-001 as ~12 machine-evaluable assertions.
 
-**Source:** `enable-infra/docs/reference/deployment-standards.md`
+**Source:** `example-infra/docs/reference/deployment-standards.md`
 
 **Assertions:**
 
 | ID | Severity | Match Type | Evaluable |
 |----|----------|------------|-----------|
-| `ens-image-pinned` | must | pattern | Yes |
-| `ens-restart-policy` | must | pattern | Yes |
-| `ens-container-name` | must | pattern | Yes |
-| `ens-healthcheck` | must | — | LLM-context |
-| `ens-logging-driver` | must | value | Yes |
-| `ens-logging-max-size` | must | pattern | Yes |
-| `ens-logging-max-file` | must | pattern | Yes |
-| `ens-security-opt` | should | contains | Yes |
-| `ens-no-privileged` | must | value | Yes |
-| `ens-resource-limits` | should | — | LLM-context |
-| `ens-named-networks` | should | — | LLM-context |
-| `ens-no-host-0000` | should | — | LLM-context |
+| `ops-image-pinned` | must | pattern | Yes |
+| `ops-restart-policy` | must | pattern | Yes |
+| `ops-container-name` | must | pattern | Yes |
+| `ops-healthcheck` | must | — | LLM-context |
+| `ops-logging-driver` | must | value | Yes |
+| `ops-logging-max-size` | must | pattern | Yes |
+| `ops-logging-max-file` | must | pattern | Yes |
+| `ops-security-opt` | should | contains | Yes |
+| `ops-no-privileged` | must | value | Yes |
+| `ops-resource-limits` | should | — | LLM-context |
+| `ops-named-networks` | should | — | LLM-context |
+| `ops-no-host-0000` | should | — | LLM-context |
 
 **Acceptance criteria:**
 - [ ] 12 assertions load via `load_assertions()`
@@ -94,7 +94,7 @@ Each work item includes acceptance criteria and depends on Phase 1 completion.
 
 ## 2.3 Baseline Measurement
 
-**Goal:** Quantify token savings on real enable-infra data at three tiers.
+**Goal:** Quantify token savings on real example-infra data at three tiers.
 
 **Method:** Run decoct against all 11 deployed compose files with `--stats`:
 1. Generic only (strip-secrets + strip-comments)

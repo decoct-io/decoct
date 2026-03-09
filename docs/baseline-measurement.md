@@ -1,4 +1,4 @@
-# Baseline Measurement — enable-infra Docker Compose Files
+# Baseline Measurement — example-infra Docker Compose Files
 
 Date: 2026-03-09
 Schema: `docker-compose-full.yaml` (35 defaults, authoritative)
@@ -9,9 +9,9 @@ Encoding: cl100k_base
 
 | Stack | Svcs | Input | T1 Generic | T1% | T2 +Schema | T2% | T3 Full | T3% |
 |-------|------|-------|-----------|-----|-----------|-----|---------|-----|
-| hairtrigger | 6 | 2367 | 1851 | 21.8% | 1733 | 26.8% | 1480 | 37.5% |
+| acme-app | 6 | 2367 | 1851 | 21.8% | 1733 | 26.8% | 1480 | 37.5% |
 | mautic | 3 | 1646 | 1371 | 16.7% | 1309 | 20.5% | 1168 | 29.0% |
-| tps | 6 | 1655 | 1351 | 18.4% | 1254 | 24.2% | 1038 | 37.3% |
+| crm-stack | 6 | 1655 | 1351 | 18.4% | 1254 | 24.2% | 1038 | 37.3% |
 | traefik-internal | 1 | 432 | 364 | 15.7% | 345 | 20.1% | 303 | 29.9% |
 | wiki | 1 | 571 | 418 | 26.8% | 394 | 31.0% | 350 | 38.7% |
 | dns | 1 | 389 | 355 | 8.7% | 336 | 13.6% | 289 | 25.7% |
@@ -22,7 +22,7 @@ Encoding: cl100k_base
 | zabbix | 2 | 620 | 616 | 0.6% | 578 | 6.8% | 476 | 23.2% |
 | **TOTAL** | **28** | **9986** | **8512** | **14.8%** | **8012** | **19.8%** | **6844** | **31.5%** |
 
-## Per-Pass Contribution (hairtrigger, largest file)
+## Per-Pass Contribution (acme-app, largest file)
 
 | Pass | Items Removed |
 |------|--------------|
@@ -56,7 +56,7 @@ deviation patterns. These configs are highly conformant (0 deviations across
 ### 4. Absent field detection is a gap
 
 The matcher only evaluates fields that exist. Across 28 services:
-- 3 services missing `container_name` (infisical postgres/redis, tps redis)
+- 3 services missing `container_name` (infisical postgres/redis, crm-stack redis)
 - 1 service missing `healthcheck` (traefik-internal — expected, infrastructure service)
 - 0 missing `restart`, `security_opt`, or `logging`
 
@@ -73,23 +73,23 @@ and remove useful information. Healthcheck commands should be exempted.
 
 ### 6. Variable substitution passes correctly
 
-`hairtrigger:${IMAGE_TAG:-latest}` is correctly evaluated as conformant by
-`ens-image-pinned` — the literal string doesn't end with `:latest`, so the
+`acme-app:${IMAGE_TAG:-latest}` is correctly evaluated as conformant by
+`ops-image-pinned` — the literal string doesn't end with `:latest`, so the
 negative lookahead passes. This is the right behaviour.
 
 ## Template Comparison (less hardened)
 
 | Template | Svcs | Input | Full | Savings | Devs |
 |----------|------|-------|------|---------|------|
-| hairtrigger | 6 | 2255 | 1370 | 39.2% | 0 |
+| acme-app | 6 | 2255 | 1370 | 39.2% | 0 |
 | mautic | 3 | 1505 | 1055 | 29.9% | 0 |
-| tps | 6 | 1384 | 814 | **41.2%** | 0 |
+| crm-stack | 6 | 1384 | 814 | **41.2%** | 0 |
 | wiki | 1 | 558 | 337 | 39.6% | 0 |
 
 Templates achieve **35-41% savings** — closer to the 40-60% target. Higher savings
 come from `strip-conformant` stripping more present-but-conformant values.
 
-Still 0 deviations because the "violations" are absent fields (e.g. tps-run missing
+Still 0 deviations because the "violations" are absent fields (e.g. crm-stack-run missing
 `container_name`, 5/6 services missing `security_opt`, 3/6 missing `healthcheck`).
 These would be caught by absent-field detection.
 
@@ -104,7 +104,7 @@ These would be caught by absent-field detection.
 3. **Consider absent-field detection** as a Phase 3 feature — would require a new
    match type (`exists: true`) that checks for key presence rather than value evaluation.
 
-4. **Remove `ens-no-privileged` assertion** or convert to absent-field check —
+4. **Remove `ops-no-privileged` assertion** or convert to absent-field check —
    conformant services omit `privileged` entirely (default is false), so the
    assertion never matches.
 

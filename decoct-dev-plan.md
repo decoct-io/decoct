@@ -139,7 +139,7 @@ readme = "README.md"
 license = "MIT"
 requires-python = ">=3.10"
 authors = [
-    { name = "Enable Network Services", email = "dev@enable.network" },
+    { name = "decoct contributors" },
 ]
 keywords = ["llm", "yaml", "infrastructure", "context", "compression"]
 classifiers = [

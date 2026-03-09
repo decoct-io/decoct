@@ -63,7 +63,7 @@ Phase 1 is complete: 183 tests, 95% coverage, 8 passes, full CLI.
 
 ## 2. Live Data Assessment
 
-Source: `enable-infra` repository — production infrastructure for Enable Network Services.
+Source: `example-infra` repository — production infrastructure for Example Corp.
 
 ### What decoct can process today
 
@@ -103,8 +103,8 @@ Source: `enable-infra` repository — production infrastructure for Enable Netwo
 
 | Stack | Services | Highlights |
 |-------|----------|------------|
-| hairtrigger (app-01) | 6 (redis, rabbitmq, django, celery-worker, celery-beat, nginx) | Full standards compliance, resource limits, healthchecks |
-| tps (app-01) | 6 (api, worker, beat, redis, flower, legacy) | Multiple networks, profile-gated services |
+| acme-app (app-01) | 6 (redis, rabbitmq, django, celery-worker, celery-beat, nginx) | Full standards compliance, resource limits, healthchecks |
+| crm-stack (app-01) | 6 (api, worker, beat, redis, flower, legacy) | Multiple networks, profile-gated services |
 | mautic (app-01) | 3 (web, worker, cron) | Shared image, varied healthchecks |
 | wiki (app-01) | 1 (bookstack) | LinuxServer.io image, simple stack |
 | traefik-internal (app-01) | 1 | Macvlan networking, CAP_ADD |
@@ -162,14 +162,14 @@ Source: `enable-infra` repository — production infrastructure for Enable Netwo
 - Method: Query running instance or parse sample `postgresql.conf` shipped with every install
 - Estimated defaults: ~60 relevant (300+ total but many are internal)
 - Confidence: authoritative
-- Note: Massive compression opportunity — `postgresql.conf` is typically 500+ lines of which ~90% is commented defaults and documentation. The enable-infra instance confirms this pattern.
+- Note: Massive compression opportunity — `postgresql.conf` is typically 500+ lines of which ~90% is commented defaults and documentation. The example-infra instance confirms this pattern.
 
 **MariaDB/MySQL:**
 - Source: `SHOW VARIABLES` or `mysqld --help --verbose 2>/dev/null | tail -n +N`
 - Method: CLI dump, diff against custom `.cnf` files
 - Estimated defaults: ~40 relevant
 - Confidence: authoritative
-- Note: enable-infra has 5 `.cnf` files, only one (`99-enable-tuning.cnf`) has intentional customisations
+- Note: example-infra has 5 `.cnf` files, only one (`99-enable-tuning.cnf`) has intentional customisations
 
 **MongoDB:**
 - Source: `mongod --help` + [MongoDB Configuration File Options](https://www.mongodb.com/docs/manual/reference/configuration-options/)
@@ -195,7 +195,7 @@ Source: `enable-infra` repository — production infrastructure for Enable Netwo
 - Method: Diff uncommented lines against reference
 - Estimated defaults: ~30
 - Confidence: authoritative
-- Note: enable-infra has 565-line agent configs that are ~70% defaults and documentation
+- Note: example-infra has 565-line agent configs that are ~70% defaults and documentation
 
 **Apache Kafka:**
 - Source: Reference `server.properties` shipped with Kafka distribution + `kafka-configs.sh --describe --entity-type brokers`
@@ -411,7 +411,7 @@ OpenConfig models ([openconfig/public](https://github.com/openconfig/public)) de
 - Key defaults: TLS min version, cipher suites, entrypoint defaults, middleware defaults
 - Estimated defaults: ~25
 - Confidence: high
-- Note: enable-infra has 8 Traefik configs with repeated TLS/HSTS/middleware boilerplate (~45% compressible)
+- Note: example-infra has 8 Traefik configs with repeated TLS/HSTS/middleware boilerplate (~45% compressible)
 
 **nginx:**
 - Source: nginx module documentation (ngx_http_core_module, ngx_http_gzip_module, etc.)
@@ -476,7 +476,7 @@ OpenConfig models ([openconfig/public](https://github.com/openconfig/public)) de
 
 ### Tier 3 — Snapshot (higher effort, lower priority)
 
-**systemd:** Large surface area. Start with `[Service]` section defaults from man pages. ~30 relevant defaults. enable-infra has 14 unit files across hosts with repeated `Requires=docker.service` / `After=docker.service` / `WantedBy=multi-user.target` patterns.
+**systemd:** Large surface area. Start with `[Service]` section defaults from man pages. ~30 relevant defaults. example-infra has 14 unit files across hosts with repeated `Requires=docker.service` / `After=docker.service` / `WantedBy=multi-user.target` patterns.
 
 **Elasticsearch:**
 - Source: `_cluster/settings?include_defaults=true` REST API
@@ -489,28 +489,28 @@ OpenConfig models ([openconfig/public](https://github.com/openconfig/public)) de
 
 ## 5. Assertion Derivation
 
-Mapping from ENS-OPS-DOCKER-001 (deployment-standards.md) to machine-evaluable assertions:
+Mapping from OPS-DOCKER-001 (deployment-standards.md) to machine-evaluable assertions:
 
 | ID | Standard Section | Assert | Severity | Match Type | Path | Evaluable? |
 |----|-----------------|--------|----------|------------|------|------------|
-| `ens-image-pinned` | Mandatory elements | Image tags must be pinned, not `:latest` | must | pattern | `services.*.image` | Yes |
-| `ens-restart-policy` | Mandatory elements | Restart policy must be `unless-stopped` or `always` | must | pattern | `services.*.restart` | Yes |
-| `ens-container-name` | Mandatory elements | Container name must be explicitly set | must | pattern | `services.*.container_name` | Yes |
-| `ens-healthcheck` | Health check patterns | Application containers must have health checks | must | — | — | LLM-context only |
-| `ens-logging-driver` | Logging standard | Logging driver must be json-file | must | value | `services.*.logging.driver` | Yes |
-| `ens-logging-max-size` | Logging standard | Log max-size must be configured | must | pattern | `services.*.logging.options.max-size` | Yes |
-| `ens-logging-max-file` | Logging standard | Log max-file must be configured | must | pattern | `services.*.logging.options.max-file` | Yes |
-| `ens-security-opt` | Security baseline | Containers should set `no-new-privileges:true` | should | contains | `services.*.security_opt` | Yes |
-| `ens-no-privileged` | Security baseline | Containers must not run privileged | must | value | `services.*.privileged` | Yes |
-| `ens-resource-limits` | Security baseline | Production stacks should have resource limits | should | — | — | LLM-context only |
-| `ens-named-networks` | Network declarations | Services should use named networks, not default bridge | should | — | — | LLM-context only |
-| `ens-no-host-0000` | Firewall | Ports must not bind to 0.0.0.0 | should | — | — | LLM-context only |
+| `ops-image-pinned` | Mandatory elements | Image tags must be pinned, not `:latest` | must | pattern | `services.*.image` | Yes |
+| `ops-restart-policy` | Mandatory elements | Restart policy must be `unless-stopped` or `always` | must | pattern | `services.*.restart` | Yes |
+| `ops-container-name` | Mandatory elements | Container name must be explicitly set | must | pattern | `services.*.container_name` | Yes |
+| `ops-healthcheck` | Health check patterns | Application containers must have health checks | must | — | — | LLM-context only |
+| `ops-logging-driver` | Logging standard | Logging driver must be json-file | must | value | `services.*.logging.driver` | Yes |
+| `ops-logging-max-size` | Logging standard | Log max-size must be configured | must | pattern | `services.*.logging.options.max-size` | Yes |
+| `ops-logging-max-file` | Logging standard | Log max-file must be configured | must | pattern | `services.*.logging.options.max-file` | Yes |
+| `ops-security-opt` | Security baseline | Containers should set `no-new-privileges:true` | should | contains | `services.*.security_opt` | Yes |
+| `ops-no-privileged` | Security baseline | Containers must not run privileged | must | value | `services.*.privileged` | Yes |
+| `ops-resource-limits` | Security baseline | Production stacks should have resource limits | should | — | — | LLM-context only |
+| `ops-named-networks` | Network declarations | Services should use named networks, not default bridge | should | — | — | LLM-context only |
+| `ops-no-host-0000` | Firewall | Ports must not bind to 0.0.0.0 | should | — | — | LLM-context only |
 
 **Notes:**
 - 8 of 12 assertions are machine-evaluable (have `match` definitions)
 - 4 are LLM-context only due to structural complexity (existence checks, cross-field logic, format variation)
-- `ens-healthcheck` could theoretically check for key existence, but the spec says "application containers" — distinguishing app vs infrastructure containers requires LLM judgement
-- `ens-no-host-0000` is complex because port formats vary (short-form string, long-form map)
+- `ops-healthcheck` could theoretically check for key existence, but the spec says "application containers" — distinguishing app vs infrastructure containers requires LLM judgement
+- `ops-no-host-0000` is complex because port formats vary (short-form string, long-form map)
 
 ---
 
@@ -570,7 +570,7 @@ Ranking all identified platforms by: **large configs × high LLM context frequen
 | **Terraform** | JSON/HCL | Already planned. Envelope stripping is high value. Provider defaults vary. | ~15+ |
 | **GCP resources** | JSON | Discovery API gives JSON Schema per service. Compute, GKE, Cloud SQL, Storage. | ~40/type |
 | **Apache Kafka** | INI-like | 200+ line broker configs with 10–15 intentional changes. Pasted for tuning. Requires INI support. | ~80 |
-| **Traefik** | YAML | Real enable-infra data shows ~45% compression. Growing user base. | ~25 |
+| **Traefik** | YAML | Real example-infra data shows ~45% compression. Growing user base. | ~25 |
 | **nginx** | Custom | Universal but needs parser. Extremely well-documented defaults. | ~40 |
 | **Prometheus** | YAML | Common in monitoring stacks, YAML config, well-documented defaults. | ~30 |
 | **GitLab CI** | YAML/JSON | Large user base, JSON Schema available. | ~25 |
@@ -594,7 +594,7 @@ Ranking all identified platforms by: **large configs × high LLM context frequen
 | **Envoy** | JSON/protobuf | Complex config model but important in service mesh deployments. | ~40 |
 | **HAProxy** | Custom | Well-documented defaults but needs custom parser. | ~35 |
 | **Apache httpd** | Custom | Still widely deployed but declining. Custom format. | ~40 |
-| **Zabbix Agent** | INI | High compression (~70%) but niche user base. Useful for enable-infra dogfooding. | ~30 |
+| **Zabbix Agent** | INI | High compression (~70%) but niche user base. Useful for example-infra dogfooding. | ~30 |
 | **HashiCorp Vault/Consul** | HCL/JSON | Important in security-focused stacks. HCL is the blocker. | ~20-25 each |
 | **systemd** | INI | Huge surface area, needs curation. Individual units are small. | ~30 |
 | **SSH** | Custom | Moderate value — pasted for security review but small-to-medium files per host. | ~50 |
@@ -625,8 +625,8 @@ The practical implication is that JSON input support (Phase 2.4) unlocks the ent
 ### Immediate (Phase 2.1–2.3) — Validate on real data
 
 1. **Comprehensive Docker Compose schema** — expand from 6 to ~40 defaults
-2. **Deployment standards assertions** — 12 assertions from ENS-OPS-DOCKER-001
-3. **Baseline measurement** — run decoct against all 11 enable-infra compose files, document token savings at each tier
+2. **Deployment standards assertions** — 12 assertions from OPS-DOCKER-001
+3. **Baseline measurement** — run decoct against all 11 example-infra compose files, document token savings at each tier
 
 ### Short-term (Phase 2.4–2.5) — Expand input support
 
@@ -642,7 +642,7 @@ The practical implication is that JSON input support (Phase 2.4) unlocks the ent
 10. **Terraform state schema** — envelope/system-managed field stripping
 11. **cloud-init schema** — import from upstream JSON Schema
 12. **GitHub Actions schema** — JSON Schema import from SchemaStore
-13. **Traefik schema** — curate from docs, validate against enable-infra configs
+13. **Traefik schema** — curate from docs, validate against example-infra configs
 14. **Prometheus schema** — curate from config reference
 15. **Fluent Bit schema** — JSON Schema + docs curation per plugin
 16. **Keycloak schema** — parse realm export JSON against REST API schema (requires JSON input)
@@ -661,10 +661,10 @@ JSON input (Phase 2.4) is the prerequisite. Cloud APIs publish machine-readable 
 ### Medium-term (Phase 2.20–2.24) — INI format support + database/broker configs
 
 23. **INI/key-value input support** — `configparser` normalisation → `CommentedMap`
-24. **PostgreSQL schema** — extract via `pg_settings`, validate against enable-infra config
+24. **PostgreSQL schema** — extract via `pg_settings`, validate against example-infra config
 25. **Redis schema** — extract via `CONFIG GET *` or reference config
 26. **Apache Kafka schema** — parse reference `server.properties` or `kafka-configs.sh --describe`
-27. **MariaDB schema** — extract via `SHOW VARIABLES`, validate against enable-infra `.cnf` files
+27. **MariaDB schema** — extract via `SHOW VARIABLES`, validate against example-infra `.cnf` files
 28. **Grafana schema** — parse `defaults.ini`
 
 ### Medium-term (Phase 2.25–2.33) — Network operating systems (YANG-first)
@@ -738,7 +738,7 @@ Applied the filter: **do people actually paste this configuration into LLM conte
 - **Dockerfiles** — ~10 defaults, requires dedicated parser, poor effort-to-value ratio. Moved from Tier C to Tier D.
 - **ESLint / Prettier / tsconfig** — People paste these but files are rarely >40 lines. Not worth dedicated effort. Removed from Tier C and individual build order entries. Covered for free by SchemaStore adapter (build order item 39).
 - **SSH (sshd_config)** — Moderate value, small-to-medium files. Kept in inventory and Tier C but not promoted ahead of any Tier A/B item.
-- **Zabbix Agent** — High compression percentage but niche user base. Useful for enable-infra dogfooding. Kept in Tier C, not promoted.
+- **Zabbix Agent** — High compression percentage but niche user base. Useful for example-infra dogfooding. Kept in Tier C, not promoted.
 - **Grafana Alloy / syslog-ng** — Niche tools. Moved to Tier D footnote.
 
 **Structural changes:**

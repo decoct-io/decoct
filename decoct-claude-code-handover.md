@@ -82,7 +82,7 @@ Complete these items in order. Each is independently testable.
 
 ### 1.7 Schema-Aware Pass
 - `strip-defaults`: load schema, walk YAML tree, for each leaf check if path matches a schema default entry and value equals the default — if so, remove
-- Path matching with `*` wildcard in segments: `services.*.restart` matches `services.hairtrigger.restart`
+- Path matching with `*` wildcard in segments: `services.*.restart` matches `services.acme-app.restart`
 - If schema has `confidence: low` or `medium`, optionally annotate instead of strip (controlled by CLI flag or profile setting)
 - Also apply schema's `drop_patterns` and `system_managed` lists (functionally equivalent to drop-fields but sourced from schema)
 - Register in pass registry with `run_after: ["strip-secrets", "strip-comments"]`
@@ -206,4 +206,4 @@ After that, proceed through 1.2 → 1.3 → 1.4 → 1.5 → 1.6 → 1.7 → 1.8 
 
 ## Reference documents
 
-The full project plan is in `decoct-plan.md` (attached or in the enable-infra repo). The development breakdown is in `decoct-dev-plan.md`.
+The full project plan is in `decoct-plan.md` (attached or in the example-infra repo). The development breakdown is in `decoct-dev-plan.md`.
