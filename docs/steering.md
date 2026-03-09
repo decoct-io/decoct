@@ -14,11 +14,10 @@ Phase 1 is complete: 183 tests, 95% coverage, 8 passes, full CLI.
 | Ansible | `ansible-doc --metadata-dump` | Authoritative | CLI extraction per module | ~20/module | Medium | 1 (direct import) |
 | SSH (sshd) | `sshd -T` (compiled defaults) | Authoritative | CLI snapshot, diff against config | ~50 | Low | 1 (direct import) |
 | Terraform | Provider schemas (`terraform providers schema -json`) | Authoritative | JSON import, envelope fields curated | ~15 envelope + varies/provider | High | 2 (schema + curation) |
-| Netplan | netplan.io YAML spec | Medium | Manual curation | ~15 | Medium | 3 (snapshot) |
 | systemd | `systemd-analyze dump` / man pages | Medium | Snapshot + manual curation | ~30 | High | 3 (snapshot) |
-| sysctl | `sysctl -a` (kernel defaults) | High | Snapshot, diff against custom | ~20 relevant | Low | 3 (snapshot) |
 | PostgreSQL | `pg_settings` system view / sample config | Authoritative | Query `pg_settings` for boot_val vs reset_val | ~60 relevant | Low | 1 (direct import) |
 | MariaDB/MySQL | `SHOW VARIABLES` / `mysqld --help --verbose` | Authoritative | CLI dump, diff against custom .cnf files | ~40 relevant | Low | 1 (direct import) |
+| MongoDB | `mongod --help` / [MongoDB manual](https://www.mongodb.com/docs/manual/reference/configuration-options/) | Authoritative | Parse `mongod.conf` defaults from manual + CLI help | ~40 | Low | 1 (direct import) |
 | Kubernetes | [API OpenAPI spec](https://github.com/kubernetes/kubernetes/tree/master/api/openapi-spec) | Authoritative | Parse OpenAPI `default` fields per resource kind | ~80 (Deployment alone ~30) | High | 1 (direct import) |
 | Traefik | [Traefik docs](https://doc.traefik.io/traefik/) + CLI defaults | High | `traefik --help` + docs curation | ~25 | Medium | 2 (spec + curation) |
 | nginx | [ngx_http_core_module docs](https://nginx.org/en/docs/) | Authoritative | Manual curation from module reference | ~40 | Medium | 2 (spec + curation) |
@@ -26,19 +25,29 @@ Phase 1 is complete: 183 tests, 95% coverage, 8 passes, full CLI.
 | GitHub Actions | [Actions schema](https://json.schemastore.org/github-workflow.json) | High | JSON Schema import | ~20 | Low | 1 (direct import) |
 | GitLab CI | [GitLab CI schema](https://json.schemastore.org/gitlab-ci.json) | High | JSON Schema import | ~25 | Low | 1 (direct import) |
 | Prometheus | [Prometheus config docs](https://prometheus.io/docs/prometheus/latest/configuration/) | Authoritative | Manual curation from config reference | ~30 | Medium | 2 (spec + curation) |
+| OpenTelemetry Collector | [OTel Collector JSON Schema](https://github.com/open-telemetry/opentelemetry-collector) + docs | High | JSON Schema import + docs curation per component | ~50+ | Medium | 2 (spec + curation) |
 | Grafana | [Grafana defaults.ini](https://github.com/grafana/grafana/blob/main/conf/defaults.ini) | Authoritative | Parse shipped defaults.ini | ~80 | Low | 1 (direct import) |
 | Zabbix Agent | Reference config shipped with package | Authoritative | Diff uncommented lines against reference config | ~30 | Low | 1 (direct import) |
-| ESLint / Prettier | JSON config, schema on SchemaStore | Authoritative | JSON Schema import | ~15 per tool | Low | 1 (direct import) |
-| AWS CloudFormation | [CloudFormation resource spec](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-resource-specification.html) | Authoritative | JSON import of resource type defaults | ~50/resource type | High | 1 (direct import) |
-| Azure ARM | [ARM template schema](https://schema.management.azure.com/schemas/) | Authoritative | JSON Schema import | ~40/resource type | High | 1 (direct import) |
-| Dockerfiles | [Dockerfile reference](https://docs.docker.com/reference/dockerfile/) | Authoritative | Manual curation | ~10 | Low | 2 (spec + curation) |
-| Apache httpd | [httpd docs](https://httpd.apache.org/docs/current/mod/directives.html) | Authoritative | Manual curation from directive reference | ~40 | Medium | 2 (spec + curation) |
-| HAProxy | [HAProxy config manual](https://www.haproxy.org/download/2.8/doc/configuration.txt) | Authoritative | Manual curation from defaults/global sections | ~35 | Medium | 2 (spec + curation) |
 | Redis | `CONFIG GET *` / redis.conf reference | Authoritative | CLI dump or parse reference config | ~50 | Low | 1 (direct import) |
 | Elasticsearch | [Elasticsearch settings](https://www.elastic.co/docs/reference/elasticsearch/configuration-reference) | Authoritative | REST API `_cluster/settings` with `include_defaults` | ~60 | Medium | 1 (direct import) |
+| Apache Kafka | Reference `server.properties` / `kafka-configs.sh --describe` | Authoritative | Parse reference config or CLI dump | ~80 | Low | 1 (direct import) |
+| Keycloak | [Keycloak REST API](https://www.keycloak.org/docs-api/latest/rest-api/) + admin console schema | High | Parse realm export JSON against API schema | ~60/resource type | Medium | 2 (spec + curation) |
+| ArgoCD | [ArgoCD CRD OpenAPI spec](https://github.com/argoproj/argo-cd) | Authoritative | Parse CRD spec for Application/AppProject defaults | ~25/Application | Low | 1 (direct import) |
+| Fluent Bit / Fluentd | [Fluent Bit JSON Schema](https://docs.fluentbit.io/) + docs | High | JSON Schema import + docs curation per plugin | ~30 | Medium | 2 (spec + curation) |
 | Envoy | [Envoy API reference](https://www.envoyproxy.io/docs/envoy/latest/api-v3/api) | Authoritative | Protobuf default values from API spec | ~40 | High | 2 (spec + curation) |
+| Apache httpd | [httpd docs](https://httpd.apache.org/docs/current/mod/directives.html) | Authoritative | Manual curation from directive reference | ~40 | Medium | 2 (spec + curation) |
+| HAProxy | [HAProxy config manual](https://www.haproxy.org/download/2.8/doc/configuration.txt) | Authoritative | Manual curation from defaults/global sections | ~35 | Medium | 2 (spec + curation) |
 | Vault | [Vault config docs](https://developer.hashicorp.com/vault/docs/configuration) | High | Manual curation from config reference | ~20 | Medium | 2 (spec + curation) |
 | Consul | [Consul config docs](https://developer.hashicorp.com/consul/docs/agent/config) | High | Manual curation from config reference | ~25 | Medium | 2 (spec + curation) |
+| Microsoft Entra ID | [Microsoft Graph API metadata](https://graph.microsoft.com/v1.0/$metadata) | Authoritative | OData CSDL metadata + REST API defaults | ~60 per resource type | High | 1 (direct import) |
+| Intune | [Graph API / deviceManagement](https://graph.microsoft.com/beta/$metadata) | Authoritative | Graph API schema, `deviceManagement` resource defaults | ~80 per policy type | High | 1 (direct import) |
+| Azure (Bicep/ARM) | [Azure REST API specs](https://github.com/Azure/azure-rest-api-specs) + ARM schemas | Authoritative | OpenAPI specs per resource provider, published per API version | ~40/resource type | High | 1 (direct import) |
+| Azure Policy | [Built-in policy definitions](https://github.com/Azure/azure-policy) | Authoritative | JSON policy definitions with default parameter values | ~30/policy | Medium | 1 (direct import) |
+| AWS CDK/CloudFormation | [CloudFormation resource spec](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-resource-specification.html) | Authoritative | JSON resource spec with property defaults per type | ~50/resource type | High | 1 (direct import) |
+| AWS IAM policies | [IAM policy schema](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_grammar.html) | Authoritative | JSON, well-defined defaults (Effect, Version, etc.) | ~15 | Low | 2 (spec + curation) |
+| AWS SSM / Config Rules | [AWS Config managed rules](https://docs.aws.amazon.com/config/latest/developerguide/managed-rules-by-aws-config.html) | Authoritative | JSON rule definitions with default parameters | ~20/rule | Medium | 2 (spec + curation) |
+| GCP Deployment Manager | [GCP API discovery docs](https://www.googleapis.com/discovery/v1/apis) | Authoritative | JSON Schema from discovery API per service | ~40/resource type | High | 1 (direct import) |
+| GCP IAM / Org Policies | [GCP Organization Policy constraints](https://cloud.google.com/resource-manager/docs/organization-policy/org-policy-constraints) | Authoritative | REST API, constraint defaults per service | ~25 | Medium | 2 (spec + curation) |
 
 **Tier definitions:**
 - **Tier 1 — Direct import:** Schema available in machine-readable format, minimal curation needed
@@ -157,6 +166,13 @@ Source: `enable-infra` repository — production infrastructure for Enable Netwo
 - Confidence: authoritative
 - Note: enable-infra has 5 `.cnf` files, only one (`99-enable-tuning.cnf`) has intentional customisations
 
+**MongoDB:**
+- Source: `mongod --help` + [MongoDB Configuration File Options](https://www.mongodb.com/docs/manual/reference/configuration-options/)
+- Method: Parse `mongod.conf` (YAML format) defaults from manual. Config is YAML — works with decoct today, zero parser effort.
+- Estimated defaults: ~40 (storage engine, journal, network, replication, security, logging)
+- Confidence: authoritative
+- Note: People routinely paste full `mongod.conf` into LLMs for tuning review. Same use case pattern as PostgreSQL but needs no new format support — `mongod.conf` is native YAML.
+
 **Redis:**
 - Source: `CONFIG GET *` against running instance, or parse `redis.conf` reference
 - Method: CLI dump or shipped reference config (extensively commented with defaults)
@@ -176,12 +192,26 @@ Source: `enable-infra` repository — production infrastructure for Enable Netwo
 - Confidence: authoritative
 - Note: enable-infra has 565-line agent configs that are ~70% defaults and documentation
 
+**Apache Kafka:**
+- Source: Reference `server.properties` shipped with Kafka distribution + `kafka-configs.sh --describe --entity-type brokers`
+- Method: Parse reference config (INI-like `key=value`). CLI dump for runtime defaults.
+- Estimated defaults: ~80 (broker, log, network, replication, ZooKeeper/KRaft, producer/consumer defaults)
+- Confidence: authoritative
+- Note: People paste full broker configs into LLMs for tuning advice. Typically 200+ lines with only 10–15 intentional changes. Very high compression. Requires INI input support.
+
 **Kubernetes:**
 - Source: Kubernetes OpenAPI spec (JSON, shipped with every cluster via `/openapi/v2`)
 - Method: Parse OpenAPI `default` fields per resource kind
 - Estimated defaults: ~80 (Deployment alone has ~30 defaulted fields)
 - Confidence: authoritative
 - Note: Massive user base. K8s manifests are the single most common LLM infrastructure input.
+
+**ArgoCD:**
+- Source: ArgoCD CRD OpenAPI spec (published in the [argo-cd repo](https://github.com/argoproj/argo-cd))
+- Method: Parse CRD spec for Application and AppProject default values
+- Estimated defaults: ~25 per Application (sync policy defaults, retry defaults, health check defaults, destination defaults)
+- Confidence: authoritative
+- Note: Widely deployed GitOps tool (CNCF 2024 survey: Argo at 45% CI/CD adoption). People managing dozens of ArgoCD apps dump them for review or audit. YAML input — works today.
 
 **Helm values:**
 - Source: Each chart's `values.yaml` — this IS the defaults file by definition
@@ -202,12 +232,74 @@ Source: `enable-infra` repository — production infrastructure for Enable Netwo
 - Estimated defaults: ~25
 - Confidence: high
 
-**ESLint / Prettier / tsconfig:**
-- Source: JSON Schemas on SchemaStore
-- Method: JSON Schema import
-- Estimated defaults: ~15 per tool
+### Cloud management platforms
+
+Cloud management APIs are among the most token-heavy data sources fed into LLMs — policy exports, resource configurations, and compliance reports are deeply nested JSON with extensive platform defaults. They're also among the best-documented: every major cloud provider publishes machine-readable API specifications.
+
+**Microsoft Entra ID (Azure AD):**
+- Source: Microsoft Graph API OData metadata (`$metadata` endpoint) — every entity type, property, and default is formally specified
+- Method: Parse CSDL metadata for entity defaults; cross-reference with Graph API docs for conditional access policy defaults, authentication method defaults, group settings defaults
+- Key areas: Conditional access policies (~40 defaults per policy — session controls, grant controls, conditions), authentication methods configuration (~20 defaults), group settings (~15), app registration defaults (~25)
+- Estimated defaults: ~60 per resource type, ~200+ across commonly exported resources
 - Confidence: authoritative
-- Note: Developer tooling configs are very common LLM context. `tsconfig.json` especially has heavy defaults.
+- Note: Conditional access policy exports are a prime use case — organisations export dozens of policies for LLM review, each carrying identical platform defaults in session controls, client app types, and sign-in risk settings
+
+**Microsoft Intune:**
+- Source: Graph API `deviceManagement` resources (beta and v1.0) — full schema published via OData metadata
+- Method: Parse Graph API schema for device configuration profiles, compliance policies, app protection policies
+- Key areas: Device compliance policies (~30 defaults per platform — password requirements, encryption, OS version), device configuration profiles (~50 defaults per profile type), app protection policies (~40 defaults for MAM), Windows Update rings (~25 defaults)
+- Estimated defaults: ~80 per policy type, hundreds across a typical tenant export
+- Confidence: authoritative
+- Note: Intune tenants with 50+ policies are common. Each policy carries substantial boilerplate — platform defaults for every setting not explicitly configured. Compression potential is very high (~50-60%) for policy exports.
+
+**Azure (Bicep / ARM templates):**
+- Source: [Azure REST API specs](https://github.com/Azure/azure-rest-api-specs) — OpenAPI specs for every Azure resource provider, published per API version. Also: [ARM template schemas](https://schema.management.azure.com/schemas/)
+- Method: Parse OpenAPI `default` fields per resource type, extract from ARM JSON schemas
+- Key resource types to target first: `Microsoft.Compute/virtualMachines` (~40 defaults), `Microsoft.Storage/storageAccounts` (~25), `Microsoft.Network/networkSecurityGroups` (~15 per rule), `Microsoft.Web/sites` (~35), `Microsoft.Sql/servers` (~20)
+- Estimated defaults: ~40 per resource type
+- Confidence: authoritative
+- Note: The Azure REST API specs repo on GitHub is the single most comprehensive machine-readable source of Azure defaults. Bicep and ARM templates are JSON — native input once Phase 2.4 lands.
+
+**Azure Policy:**
+- Source: [azure-policy GitHub repo](https://github.com/Azure/azure-policy) — all built-in policy definitions as JSON
+- Method: Parse policy definition JSON for default parameter values and effect defaults
+- Estimated defaults: ~30 per policy definition
+- Confidence: authoritative
+- Note: Policy compliance reports exported for LLM review carry per-resource evaluation results with default parameters. Stripping the defaults leaves only the deviations — which is exactly what decoct does.
+
+**AWS CloudFormation / CDK:**
+- Source: [CloudFormation resource specification](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-resource-specification.html) — JSON, published per region, lists every resource type with property types and defaults
+- Method: JSON import, extract `Default` fields per property per resource type
+- Key resource types: `AWS::EC2::Instance` (~30 defaults), `AWS::S3::Bucket` (~20), `AWS::RDS::DBInstance` (~40), `AWS::Lambda::Function` (~15), `AWS::ECS::Service` (~25)
+- Estimated defaults: ~50 per resource type
+- Confidence: authoritative
+- Note: CDK synthesises to CloudFormation — same schema applies. The resource spec is a single JSON download per region, making it one of the easiest cloud schemas to import.
+
+**AWS IAM policies:**
+- Source: IAM policy grammar + action-level defaults
+- Method: Manual curation from policy reference — `Version` defaults to `2012-10-17`, `Effect` has no default (must be specified), `Resource` patterns, condition operator defaults
+- Estimated defaults: ~15 (small but universal — every AWS deployment has IAM policies)
+- Confidence: authoritative
+
+**AWS Config Rules / SSM:**
+- Source: AWS Config managed rule reference — each rule documents its default parameters
+- Method: Parse rule definitions for default parameter values
+- Estimated defaults: ~20 per rule
+- Confidence: authoritative
+
+**Google Cloud (GCP) resource configs:**
+- Source: GCP API discovery documents (`googleapis.com/discovery/v1/apis`) — JSON Schema per service
+- Method: Parse discovery doc JSON Schema `default` fields per resource type
+- Key services: Compute Engine (`instances`, `firewalls`), GKE (`clusters`), Cloud SQL, Cloud Storage (`buckets`), Cloud Run
+- Estimated defaults: ~40 per resource type
+- Confidence: authoritative
+- Note: GCP Deployment Manager templates and `gcloud` exports are JSON/YAML — directly processable
+
+**GCP Organization Policies / IAM:**
+- Source: Org policy constraint reference + IAM policy schema
+- Method: Manual curation from constraint documentation
+- Estimated defaults: ~25
+- Confidence: authoritative
 
 ### Tier 2 — Schema + Curation (medium effort)
 
@@ -232,6 +324,13 @@ Source: `enable-infra` repository — production infrastructure for Enable Netwo
 - Provider defaults vary by provider — start with vSphere (matches live data)
 - Confidence: authoritative (envelope), high (provider defaults)
 
+**OpenTelemetry Collector:**
+- Source: [OTel Collector JSON Schema](https://github.com/open-telemetry/opentelemetry-collector) + component documentation
+- Method: JSON Schema import for core config structure, curation per component (receivers, processors, exporters, connectors)
+- Estimated defaults: ~50+ across common components (OTLP receiver, batch processor, logging exporter, memory_limiter processor, etc.)
+- Confidence: high
+- Note: One of the fastest-growing CNCF projects. Configs are YAML — works today. Verbose and repetitive (receivers, processors, exporters, service pipelines) with extensive per-component defaults. People paste entire collector pipelines into LLMs for troubleshooting and architecture review.
+
 **Traefik:**
 - Source: Traefik docs + `traefik --help` CLI defaults
 - Method: Manual curation from documentation, cross-reference with CLI help output
@@ -255,6 +354,20 @@ Source: `enable-infra` repository — production infrastructure for Enable Netwo
 - Estimated defaults: ~30
 - Confidence: authoritative
 
+**Keycloak:**
+- Source: [Keycloak REST API](https://www.keycloak.org/docs-api/latest/rest-api/) + admin console schema documentation
+- Method: Parse realm export JSON against REST API schema. Identify defaults per resource type (clients, roles, authentication flows, identity providers).
+- Estimated defaults: ~60 per resource type (client defaults alone: ~30 settings for access type, consent, session timeouts, token lifespans)
+- Confidence: high
+- Note: A single Keycloak realm export can be 5,000–10,000 lines of JSON with 80%+ platform defaults. Organisations export realms for LLM-assisted security review, migration planning, and audit. Enormous compression potential. Requires JSON input (Phase 2.4).
+
+**Fluent Bit / Fluentd:**
+- Source: [Fluent Bit documentation](https://docs.fluentbit.io/) + JSON Schema (Fluent Bit), Fluentd plugin documentation
+- Method: JSON Schema import for Fluent Bit core config, docs curation per plugin
+- Estimated defaults: ~30 (flush interval, buffer, retry limits, parser defaults per input/output plugin)
+- Confidence: high
+- Note: Common in Kubernetes logging stacks. People paste pipeline configs when debugging log routing. YAML/JSON config — works today for Fluent Bit.
+
 **Apache httpd:**
 - Source: httpd directive reference (each directive documents its default)
 - Method: Manual curation
@@ -275,19 +388,6 @@ Source: `enable-infra` repository — production infrastructure for Enable Netwo
 - Confidence: authoritative
 - Note: Complex — protobuf-based config is deeply nested
 
-**AWS CloudFormation:**
-- Source: CloudFormation resource specification (JSON, published per region)
-- Method: JSON import of resource type property defaults
-- Estimated defaults: ~50 per resource type
-- Confidence: authoritative
-- Note: Huge user base but very large surface area — start with common resource types (EC2, S3, RDS, Lambda)
-
-**Azure ARM templates:**
-- Source: ARM template schema (published per API version per resource provider)
-- Method: JSON Schema import
-- Estimated defaults: ~40 per resource type
-- Confidence: authoritative
-
 **HashiCorp Vault:**
 - Source: Vault configuration reference docs
 - Method: Manual curation
@@ -300,20 +400,9 @@ Source: `enable-infra` repository — production infrastructure for Enable Netwo
 - Estimated defaults: ~25
 - Confidence: high
 
-**Dockerfiles:**
-- Source: Dockerfile reference
-- Method: Manual curation — `SHELL`, `STOPSIGNAL`, `HEALTHCHECK` defaults etc.
-- Estimated defaults: ~10
-- Confidence: authoritative
-- Note: Small but universal. Requires Dockerfile parsing, not YAML.
-
 ### Tier 3 — Snapshot (higher effort, lower priority)
 
-**Netplan:** Manual extraction from netplan.io docs. ~15 defaults (renderer, dhcp4, etc.)
-
 **systemd:** Large surface area. Start with `[Service]` section defaults from man pages. ~30 relevant defaults. enable-infra has 14 unit files across hosts with repeated `Requires=docker.service` / `After=docker.service` / `WantedBy=multi-user.target` patterns.
-
-**sysctl:** Snapshot `sysctl -a` on reference system, curate security/network-relevant subset. ~20 defaults. enable-infra has 12-14 sysctl files per host, heavily commented, ~70% compressible.
 
 **Elasticsearch:**
 - Source: `_cluster/settings?include_defaults=true` REST API
@@ -359,15 +448,15 @@ The schema inventory reveals a clear pattern: the highest-compression targets be
 
 | Format | Platforms Unlocked | Combined Est. Defaults | Effort |
 |--------|-------------------|----------------------|--------|
-| **YAML** (supported today) | Docker Compose, Ansible, cloud-init, K8s, Traefik, Prometheus, Helm | ~300+ | — |
-| **JSON** (Phase 2.4) | Terraform state, CloudFormation, ARM, Elasticsearch, Docker daemon, SchemaStore schemas | ~250+ | Low |
-| **INI / key-value** (not planned) | PostgreSQL, MariaDB, Redis, Grafana, Zabbix, sysctl, systemd, SSH, fail2ban | ~400+ | Medium |
+| **YAML** (supported today) | Docker Compose, Ansible, cloud-init, K8s, Traefik, Prometheus, Helm, MongoDB, OpenTelemetry Collector, ArgoCD, Fluent Bit | ~400+ | — |
+| **JSON** (Phase 2.4) | Terraform state, CloudFormation/CDK, ARM/Bicep, Entra ID, Intune, Azure Policy, GCP, Keycloak, Elasticsearch, Docker daemon, SchemaStore schemas | ~900+ | Low |
+| **INI / key-value** (not planned) | PostgreSQL, MariaDB, Redis, Grafana, Kafka, Zabbix, systemd, SSH | ~430+ | Medium |
 | **HCL** (future) | Terraform configs, Vault, Consul, Nomad | ~100+ | High |
-| **Custom syntax** | nginx, Apache, HAProxy, nftables, Envoy (protobuf/JSON), Alloy | ~200+ | High per format |
+| **Custom syntax** | nginx, Apache, HAProxy, nftables, Envoy (protobuf/JSON) | ~200+ | High per format |
 
 ### Recommendation
 
-INI-format input support would unlock more high-compression targets than any other single format addition. PostgreSQL, MariaDB, Redis, Grafana, and Zabbix alone represent ~260 defaults from authoritative sources — all extractable with low effort once the format is parseable. Most of these tools ship their own reference configs which double as the schema source.
+INI-format input support would unlock more high-compression targets than any other single format addition. PostgreSQL, MariaDB, Redis, Grafana, and Kafka alone represent ~310 defaults from authoritative sources — all extractable with low effort once the format is parseable. Most of these tools ship their own reference configs which double as the schema source.
 
 The normalisation approach should be: parse format → convert to `CommentedMap` → run standard pipeline. Same pattern as JSON input (Phase 2.4), extended to `key = value` formats. Python's `configparser` handles most INI variants; PostgreSQL's `key = value` format needs a simpler custom parser.
 
@@ -375,53 +464,76 @@ The normalisation approach should be: parse format → convert to `CommentedMap`
 
 ## 7. Schema Priority Matrix
 
-Ranking all identified platforms by a combination of user base, compression potential, schema quality, and implementation effort.
+Ranking all identified platforms by: **large configs × high LLM context frequency × low implementation effort**. The core filter is: do people actually paste this configuration into LLM context windows, and is the file large enough that compression delivers meaningful token savings?
 
 ### Tier A — High impact, low effort (build first)
 
 | Platform | Format | Why | Est. Defaults |
 |----------|--------|-----|---------------|
-| **Kubernetes** | YAML/JSON | Largest user base for LLM-assisted infra. OpenAPI spec gives authoritative defaults. | ~80 |
+| **Kubernetes** | YAML/JSON | Largest user base for LLM-assisted infra. OpenAPI spec gives authoritative defaults. Manifests are routinely pasted wholesale. | ~80 |
 | **Docker Compose** | YAML | Already in progress (Phase 2.1). Real data validates ~40 defaults. | ~40 |
+| **MongoDB** | YAML | `mongod.conf` is YAML — works today, zero parser effort. People paste full configs for tuning review. Same pattern as PostgreSQL. | ~40 |
+| **OpenTelemetry Collector** | YAML | Fastest-growing CNCF observability project. Verbose, repetitive configs pasted for troubleshooting. YAML native. | ~50+ |
 | **Helm values** | YAML | `values.yaml` IS the schema. Trivial to implement, elegant model. | varies/chart |
 | **GitHub Actions** | YAML/JSON | Massive user base, JSON Schema available, YAML input. | ~20 |
-| **PostgreSQL** | INI-like | Highest single-file compression (~60% on 500+ line configs). Authoritative source. | ~60 |
-| **Redis** | INI-like | Very common, reference config is the schema, `CONFIG GET *` for extraction. | ~50 |
+| **PostgreSQL** | INI-like | Highest single-file compression (~60% on 500+ line configs). People paste for tuning. Requires INI support. | ~60 |
+| **Redis** | INI-like | Very common, reference config is the schema. People paste for tuning. Requires INI support. | ~50 |
 
-### Tier B — High impact, medium effort
+### Tier B — High impact, medium effort (cloud management + popular platforms)
 
 | Platform | Format | Why | Est. Defaults |
 |----------|--------|-----|---------------|
+| **Keycloak** | JSON | Realm exports are 5,000–10,000 lines, 80%+ defaults. Pasted for security review and migration. Requires JSON input. | ~60/type |
+| **Microsoft Entra ID** | JSON | Conditional access + auth method exports are token-heavy with extensive defaults. Graph API metadata is the schema. | ~60/type |
+| **Intune** | JSON | Policy exports carry ~50-60% boilerplate defaults. Massive enterprise user base. Graph API schema available. | ~80/policy type |
+| **Azure (ARM/Bicep)** | JSON | REST API specs repo gives authoritative defaults per resource type. JSON input lands in Phase 2.4. | ~40/type |
+| **AWS CloudFormation/CDK** | JSON | Single JSON resource spec download per region. CDK synthesises to same format. Start with EC2, S3, RDS, Lambda. | ~50/type |
+| **ArgoCD** | YAML | 45% CI/CD adoption (CNCF 2024). People dump dozens of Applications for review. YAML native. | ~25/Application |
 | **Terraform** | JSON/HCL | Already planned. Envelope stripping is high value. Provider defaults vary. | ~15+ |
+| **GCP resources** | JSON | Discovery API gives JSON Schema per service. Compute, GKE, Cloud SQL, Storage. | ~40/type |
+| **Apache Kafka** | INI-like | 200+ line broker configs with 10–15 intentional changes. Pasted for tuning. Requires INI support. | ~80 |
 | **Traefik** | YAML | Real enable-infra data shows ~45% compression. Growing user base. | ~25 |
 | **nginx** | Custom | Universal but needs parser. Extremely well-documented defaults. | ~40 |
 | **Prometheus** | YAML | Common in monitoring stacks, YAML config, well-documented defaults. | ~30 |
 | **GitLab CI** | YAML/JSON | Large user base, JSON Schema available. | ~25 |
-| **MariaDB/MySQL** | INI | Second most common database. Authoritative defaults via CLI. | ~40 |
-| **Grafana** | INI | `defaults.ini` shipped with every install — the schema writes itself. | ~80 |
+| **MariaDB/MySQL** | INI | Second most common database. Authoritative defaults via CLI. People paste for tuning. Requires INI support. | ~40 |
+| **Grafana** | INI | `defaults.ini` shipped with every install — the schema writes itself. Requires INI support. | ~80 |
 | **cloud-init** | YAML | Already planned. JSON Schema available upstream. | ~30 |
+| **Fluent Bit / Fluentd** | YAML/JSON | Common in K8s logging. Pasted when debugging log routing. YAML/JSON native. | ~30 |
 
 ### Tier C — Valuable but higher effort or narrower audience
 
 | Platform | Format | Why | Est. Defaults |
 |----------|--------|-----|---------------|
-| **AWS CloudFormation** | JSON | Huge user base but enormous surface area. Start with common resource types. | ~50/type |
-| **Azure ARM** | JSON | Same pattern as CloudFormation. | ~40/type |
-| **Elasticsearch** | JSON | Common in observability stacks. REST API gives defaults. | ~60 |
+| **Azure Policy** | JSON | Policy definitions with default parameters. Useful for compliance review context. | ~30/policy |
+| **AWS IAM policies** | JSON | Small default set but universal — every AWS deployment has them. | ~15 |
+| **AWS Config Rules** | JSON | Managed rule defaults. Useful for compliance context. | ~20/rule |
+| **GCP Org Policies** | JSON | Constraint defaults per service. | ~25 |
+| **Elasticsearch** | JSON | Common in observability stacks. REST API gives defaults. Large cluster configs. | ~60 |
 | **Envoy** | JSON/protobuf | Complex config model but important in service mesh deployments. | ~40 |
 | **HAProxy** | Custom | Well-documented defaults but needs custom parser. | ~35 |
 | **Apache httpd** | Custom | Still widely deployed but declining. Custom format. | ~40 |
-| **Zabbix Agent** | INI | Niche but extremely high compression (~70%). | ~30 |
+| **Zabbix Agent** | INI | High compression (~70%) but niche user base. Useful for enable-infra dogfooding. | ~30 |
 | **HashiCorp Vault/Consul** | HCL/JSON | Important in security-focused stacks. HCL is the blocker. | ~20-25 each |
-| **systemd** | INI | Huge surface area, needs curation. | ~30 |
-| **ESLint/Prettier/tsconfig** | JSON | Developer tooling — common LLM context but not infrastructure. | ~15 each |
-| **Dockerfiles** | Custom | Small default set, needs Dockerfile parser. | ~10 |
-| **SSH** | Custom | Already planned. Small but security-relevant. | ~50 |
+| **systemd** | INI | Huge surface area, needs curation. Individual units are small. | ~30 |
+| **SSH** | Custom | Moderate value — pasted for security review but small-to-medium files per host. | ~50 |
 | **Ansible** | YAML/JSON | Already planned. Per-module extraction. | ~20/module |
 
-### Tier D — Long tail (community-contributed or LLM-learned)
+### Tier D — Long tail (community-contributed or SchemaStore-derived)
 
-Netplan, sysctl, fail2ban, nftables, Alloy, syslog-ng, and other niche tools. Best handled by `decoct schema learn` (Phase 2.9) or community-contributed schema files rather than first-party curation.
+Small configs, niche tools, or platforms where the effort-to-value ratio doesn't justify first-party curation. These are best handled by `decoct schema learn` (future), community-contributed schema files, or the SchemaStore adapter which would cover JSON-schema-described formats (ESLint, Prettier, tsconfig, etc.) for free. Includes: sysctl, nftables, Netplan, fail2ban, Grafana Alloy, syslog-ng, Dockerfiles.
+
+### Note on cloud platform schemas
+
+The cloud management platforms (Entra, Intune, Azure, AWS, GCP) represent a qualitatively different opportunity from on-premises infrastructure tools. Three things make them distinctive:
+
+1. **Volume.** A single Intune tenant export or CloudFormation stack can be thousands of lines of JSON. Organisations routinely dump dozens of policies, resource configs, or compliance reports into LLM context for review. The token cost is enormous.
+
+2. **Default density.** Cloud platforms have extensive default values for every setting not explicitly configured. An Intune compliance policy might have 80 properties, of which 60 are platform defaults. A CloudFormation EC2 instance definition carries defaults for monitoring, tenancy, instance metadata options, and more. Compression potential is typically 40-60%.
+
+3. **Machine-readable schemas.** Every major cloud provider publishes authoritative API specifications in machine-readable formats (OpenAPI, OData CSDL, JSON Schema). These are not documentation to be curated — they are the schema, importable directly. This makes cloud platform schemas Tier 1 candidates despite their complexity.
+
+The practical implication is that JSON input support (Phase 2.4) unlocks the entire cloud management category. Once decoct can ingest JSON, the schema extraction for Azure/AWS/GCP resources becomes a pipeline import rather than a manual curation exercise.
 
 ---
 
@@ -438,30 +550,82 @@ Netplan, sysctl, fail2ban, nftables, Alloy, syslog-ng, and other niche tools. Be
 4. **JSON input** — `json.load()` → `CommentedMap` conversion, format auto-detection
 5. **Bundled schemas** — `--schema docker-compose` shorthand, ship schemas with package
 
-### Medium-term (Phase 2.6–2.8) — New platforms (YAML/JSON native)
+### Medium-term (Phase 2.6–2.14) — New platforms (YAML/JSON native)
 
 6. **Kubernetes schema** — parse OpenAPI spec, target Deployment/Service/ConfigMap/Ingress defaults
-7. **Terraform state schema** — envelope/system-managed field stripping
-8. **cloud-init schema** — import from upstream JSON Schema
-9. **GitHub Actions schema** — JSON Schema import from SchemaStore
-10. **Traefik schema** — curate from docs, validate against enable-infra configs
-11. **Prometheus schema** — curate from config reference
-12. **Directory/recursive mode** — process multiple files, aggregate stats
+7. **MongoDB schema** — curate from manual + `mongod --help`. YAML native, no format gating.
+8. **OpenTelemetry Collector schema** — JSON Schema + docs curation per component. YAML native.
+9. **ArgoCD schema** — parse CRD OpenAPI spec for Application/AppProject defaults. YAML native.
+10. **Terraform state schema** — envelope/system-managed field stripping
+11. **cloud-init schema** — import from upstream JSON Schema
+12. **GitHub Actions schema** — JSON Schema import from SchemaStore
+13. **Traefik schema** — curate from docs, validate against enable-infra configs
+14. **Prometheus schema** — curate from config reference
+15. **Fluent Bit schema** — JSON Schema + docs curation per plugin
+16. **Keycloak schema** — parse realm export JSON against REST API schema (requires JSON input)
+17. **Directory/recursive mode** — process multiple files, aggregate stats
 
-### Medium-term (Phase 2.9–2.11) — INI format support + database configs
+### Medium-term (Phase 2.15–2.19) — Cloud management platforms
 
-13. **INI/key-value input support** — `configparser` normalisation → `CommentedMap`
-14. **PostgreSQL schema** — extract via `pg_settings`, validate against enable-infra config
-15. **Redis schema** — extract via `CONFIG GET *` or reference config
-16. **MariaDB schema** — extract via `SHOW VARIABLES`, validate against enable-infra `.cnf` files
-17. **Grafana schema** — parse `defaults.ini`
+JSON input (Phase 2.4) is the prerequisite. Cloud APIs publish machine-readable schemas, so extraction is largely automated rather than manually curated.
+
+18. **Microsoft Entra ID schema** — import from Graph API OData metadata; target conditional access policies, authentication methods, group settings
+19. **Intune schema** — import from Graph API `deviceManagement` metadata; target compliance policies, device config profiles, app protection policies
+20. **Azure resource schemas** — import from Azure REST API specs (OpenAPI); start with Compute, Storage, Network, Web, SQL
+21. **AWS CloudFormation schema** — import from resource specification JSON; start with EC2, S3, RDS, Lambda, ECS
+22. **GCP resource schemas** — import from discovery API JSON; start with Compute, GKE, Cloud SQL, Storage
+
+### Medium-term (Phase 2.20–2.24) — INI format support + database/broker configs
+
+23. **INI/key-value input support** — `configparser` normalisation → `CommentedMap`
+24. **PostgreSQL schema** — extract via `pg_settings`, validate against enable-infra config
+25. **Redis schema** — extract via `CONFIG GET *` or reference config
+26. **Apache Kafka schema** — parse reference `server.properties` or `kafka-configs.sh --describe`
+27. **MariaDB schema** — extract via `SHOW VARIABLES`, validate against enable-infra `.cnf` files
+28. **Grafana schema** — parse `defaults.ini`
 
 ### Future — Automation + remaining platforms
 
-18. **`decoct schema learn`** — LLM-assisted schema generation from examples
-19. **Helm values adapter** — treat chart's `values.yaml` as schema source
-20. **Jinja2 pre-processing** — strip template syntax before YAML parsing
-21. **HCL support** — Terraform/Vault/Consul configs (requires HCL parser dependency)
-22. **SchemaStore adapter** — bulk import from SchemaStore for JSON-schema-described formats (GitLab CI, ESLint, tsconfig, etc.)
-23. **Cloud provider schemas** — CloudFormation resource spec, ARM template schemas (large surface area, start with common types)
-24. **Custom format parsers** — nginx, Apache, HAProxy (per-format effort, community-driven)
+29. **`decoct schema learn`** — LLM-assisted schema generation from examples
+30. **Helm values adapter** — treat chart's `values.yaml` as schema source
+31. **Azure Policy / AWS Config / GCP Org Policy schemas** — compliance policy defaults for governance context
+32. **Jinja2 pre-processing** — strip template syntax before YAML parsing
+33. **HCL support** — Terraform/Vault/Consul configs (requires HCL parser dependency)
+34. **SchemaStore adapter** — bulk import from SchemaStore for JSON-schema-described formats (GitLab CI, ESLint, Prettier, tsconfig, etc.)
+35. **Custom format parsers** — nginx, Apache, HAProxy (per-format effort, community-driven)
+
+---
+
+## Changelog
+
+### 2026-03-09 — Additions, removals, and reprioritisation
+
+Applied the filter: **do people actually paste this configuration into LLM context windows, and is the file large enough that compression delivers meaningful token savings?**
+
+**Added (6 platforms):**
+- **MongoDB** → Tier A. `mongod.conf` is YAML (works today). People paste full configs for tuning. ~40 defaults. Same use case as PostgreSQL with zero parser effort.
+- **OpenTelemetry Collector** → Tier A. YAML native, fastest-growing CNCF observability project, verbose repetitive configs. ~50+ defaults.
+- **Keycloak** → Tier B. Realm exports are 5,000–10,000 lines JSON, 80%+ defaults. Massive compression. Requires JSON input.
+- **ArgoCD** → Tier B. YAML native, 45% CI/CD adoption (CNCF 2024), people dump dozens of Applications. ~25 defaults/app.
+- **Apache Kafka** → Tier B. INI-like `server.properties`, 200+ lines with ~15 intentional changes. ~80 defaults. Requires INI support.
+- **Fluent Bit / Fluentd** → Tier B. YAML/JSON, common in K8s logging stacks. ~30 defaults.
+
+**Removed from priority matrix and build order:**
+- **Netplan** — Configs are ~15 lines. Nobody pastes netplan into LLMs. Negligible absolute token savings. Removed from inventory, sourcing strategy, priority matrix, and build order.
+- **sysctl** — Individual files are small. High compression percentage is misleading — absolute savings negligible. People don't dump sysctl into LLM context. Removed from build order, moved to Tier D footnote.
+- **fail2ban** — Niche, small configs. Removed from format tiers table, moved to Tier D footnote.
+
+**Demoted:**
+- **Dockerfiles** — ~10 defaults, requires dedicated parser, poor effort-to-value ratio. Moved from Tier C to Tier D.
+- **ESLint / Prettier / tsconfig** — People paste these but files are rarely >40 lines. Not worth dedicated effort. Removed from Tier C and individual build order entries. Covered for free by SchemaStore adapter (build order item 34).
+- **SSH (sshd_config)** — Moderate value, small-to-medium files. Kept in inventory and Tier C but not promoted ahead of any Tier A/B item.
+- **Zabbix Agent** — High compression percentage but niche user base. Useful for enable-infra dogfooding. Kept in Tier C, not promoted.
+- **Grafana Alloy / syslog-ng** — Niche tools. Moved to Tier D footnote.
+
+**Structural changes:**
+- Tier D consolidated from individual platform list into a single paragraph framing items as community-contributed or SchemaStore-derived candidates.
+- Section 7 tier descriptions updated to emphasise the LLM-context-frequency filter.
+- Build order renumbered sequentially (1–35) after additions/removals.
+- Format tiers table (Section 6) updated: YAML row now includes MongoDB, OTel Collector, ArgoCD, Fluent Bit; JSON row now includes Keycloak; INI row now includes Kafka, removed sysctl/fail2ban.
+- Duplicate AWS CloudFormation entries in Tier 2 sourcing strategy consolidated (was listed under both cloud platforms and Tier 2).
+- Duplicate Azure ARM entries in Tier 2 sourcing strategy consolidated (same).
