@@ -153,3 +153,71 @@ class TestStripDefaultsPass:
 
     def test_pass_name(self) -> None:
         assert StripDefaultsPass.name == "strip-defaults"
+
+
+class TestStripDefaultsComprehensive:
+    """Tests against the comprehensive docker-compose-full schema and realistic fixtures."""
+
+    def setup_method(self) -> None:
+        self.schema = load_schema(SCHEMA_FIXTURES / "docker-compose-full.yaml")
+
+    def test_strips_healthcheck_interval_default(self) -> None:
+        yaml = YAML(typ="rt")
+        doc = yaml.load("services:\n  web:\n    healthcheck:\n      test: curl http://localhost\n      interval: 30s\n")
+        strip_defaults(doc, self.schema)
+        assert "interval" not in doc["services"]["web"]["healthcheck"]
+
+    def test_strips_logging_driver_default(self) -> None:
+        yaml = YAML(typ="rt")
+        yaml_str = (
+            "services:\n  web:\n    logging:\n"
+            "      driver: json-file\n      options:\n        max-size: 10m\n"
+        )
+        doc = yaml.load(yaml_str)
+        strip_defaults(doc, self.schema)
+        assert "driver" not in doc["services"]["web"]["logging"]
+        # Non-default options preserved
+        assert doc["services"]["web"]["logging"]["options"]["max-size"] == "10m"
+
+    def test_strips_deploy_replicas_default(self) -> None:
+        yaml = YAML(typ="rt")
+        yaml_str = (
+            "services:\n  web:\n    deploy:\n"
+            "      replicas: 1\n      resources:\n        limits:\n          memory: 512M\n"
+        )
+        doc = yaml.load(yaml_str)
+        strip_defaults(doc, self.schema)
+        assert "replicas" not in doc["services"]["web"]["deploy"]
+        assert doc["services"]["web"]["deploy"]["resources"]["limits"]["memory"] == "512M"
+
+    def test_preserves_non_default_healthcheck(self) -> None:
+        yaml = YAML(typ="rt")
+        doc = yaml.load("services:\n  web:\n    healthcheck:\n      timeout: 10s\n      interval: 15s\n")
+        strip_defaults(doc, self.schema)
+        # timeout: 10s is NOT the default (30s) — preserved
+        assert doc["services"]["web"]["healthcheck"]["timeout"] == "10s"
+        # interval: 15s is NOT the default (30s) — preserved
+        assert doc["services"]["web"]["healthcheck"]["interval"] == "15s"
+
+    def test_realistic_compose_default_strip_count(self) -> None:
+        doc = _load_yaml(YAML_FIXTURES / "realistic-compose.yaml")
+        count = strip_defaults(doc, self.schema)
+        # At least some defaults should be found (retries: 3, driver: bridge on networks, etc.)
+        assert count >= 5
+
+    def test_strips_network_driver_default(self) -> None:
+        yaml = YAML(typ="rt")
+        yaml_str = (
+            "networks:\n  app-net:\n    driver: bridge\n"
+            "    ipam:\n      config:\n        - subnet: 10.0.0.0/24\n"
+        )
+        doc = yaml.load(yaml_str)
+        strip_defaults(doc, self.schema)
+        assert "driver" not in doc["networks"]["app-net"]
+
+    def test_strips_init_false_default(self) -> None:
+        yaml = YAML(typ="rt")
+        doc = yaml.load("services:\n  web:\n    init: false\n    image: nginx\n")
+        strip_defaults(doc, self.schema)
+        assert "init" not in doc["services"]["web"]
+        assert doc["services"]["web"]["image"] == "nginx"

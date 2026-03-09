@@ -24,6 +24,14 @@ class TestMatchModel:
         m = Match(path="ports.*", range=[1, 65535])
         assert m.range == [1, 65535]
 
+    def test_match_with_exists(self) -> None:
+        m = Match(path="services.*.healthcheck", exists=True)
+        assert m.exists is True
+
+    def test_match_with_exists_false(self) -> None:
+        m = Match(path="services.*.privileged", exists=False)
+        assert m.exists is False
+
 
 class TestAssertionModel:
     def test_assertion_minimal(self) -> None:

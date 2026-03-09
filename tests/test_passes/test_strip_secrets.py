@@ -191,3 +191,56 @@ class TestStripSecretsOptions:
         strip_secrets(doc)
         assert doc["env"]["keys"][0] == REDACTED
         assert doc["env"]["keys"][1] == "normal_value"
+
+
+class TestHealthcheckExemption:
+    """Healthcheck commands should not trigger entropy-based detection."""
+
+    def test_healthcheck_test_preserved(self) -> None:
+        yaml = YAML(typ="rt")
+        doc = yaml.load(
+            "services:\n  web:\n    healthcheck:\n"
+            "      test:\n        - CMD-SHELL\n        - curl -f http://localhost:8080/health\n"
+        )
+        audit = strip_secrets(doc)
+        test_list = doc["services"]["web"]["healthcheck"]["test"]
+        assert test_list[0] == "CMD-SHELL"
+        assert "curl" in test_list[1]
+        # No entries for healthcheck paths
+        assert not any("healthcheck" in e.path for e in audit)
+
+    def test_healthcheck_string_command_preserved(self) -> None:
+        yaml = YAML(typ="rt")
+        doc = yaml.load(
+            "services:\n  web:\n    healthcheck:\n"
+            "      test: curl -sf http://localhost:8080/health || exit 1\n"
+        )
+        strip_secrets(doc)
+        assert "curl" in doc["services"]["web"]["healthcheck"]["test"]
+
+    def test_command_preserved(self) -> None:
+        yaml = YAML(typ="rt")
+        doc = yaml.load(
+            "services:\n  worker:\n    command: celery -A config worker -l info --concurrency=4\n"
+        )
+        strip_secrets(doc)
+        assert "celery" in doc["services"]["worker"]["command"]
+
+    def test_entrypoint_preserved(self) -> None:
+        yaml = YAML(typ="rt")
+        doc = yaml.load(
+            "services:\n  proxy:\n    entrypoint: /bin/sh -c 'ip route add default via 172.30.100.1'\n"
+        )
+        strip_secrets(doc)
+        assert "/bin/sh" in doc["services"]["proxy"]["entrypoint"]
+
+    def test_real_secret_in_env_still_redacted(self) -> None:
+        """Ensure exemptions don't leak actual secrets at non-exempt paths."""
+        yaml = YAML(typ="rt")
+        doc = yaml.load(
+            "services:\n  web:\n    healthcheck:\n"
+            "      test: curl http://localhost\n"
+            "    environment:\n      SECRET_KEY: xK9mP2vQ8rT5wZ3yB6nC4hL7jF1dA0eS\n"
+        )
+        strip_secrets(doc)
+        assert doc["services"]["web"]["environment"]["SECRET_KEY"] == REDACTED

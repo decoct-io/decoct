@@ -6,7 +6,7 @@ from pathlib import Path
 from ruamel.yaml import YAML
 
 from decoct.assertions import load_assertions
-from decoct.assertions.matcher import evaluate_match, find_matches
+from decoct.assertions.matcher import _SENTINEL, evaluate_match, find_matches
 from decoct.assertions.models import Assertion, Match
 from decoct.passes.annotate_deviations import AnnotateDeviationsPass, annotate_deviations
 from decoct.passes.deviation_summary import DeviationSummaryPass, deviation_summary
@@ -78,6 +78,70 @@ class TestEvaluateMatch:
     def test_no_condition(self) -> None:
         m = Match(path="x")
         assert evaluate_match(m, "anything") is True
+
+    def test_exists_true_present(self) -> None:
+        m = Match(path="x", exists=True)
+        assert evaluate_match(m, "any_value") is True
+
+    def test_exists_true_absent(self) -> None:
+        m = Match(path="x", exists=True)
+        assert evaluate_match(m, _SENTINEL) is False
+
+    def test_exists_false_present(self) -> None:
+        m = Match(path="x", exists=False)
+        assert evaluate_match(m, "any_value") is False
+
+    def test_exists_false_absent(self) -> None:
+        m = Match(path="x", exists=False)
+        assert evaluate_match(m, _SENTINEL) is True
+
+
+class TestFindExistsMatches:
+    def test_finds_present_keys(self) -> None:
+        yaml = YAML(typ="rt")
+        doc = yaml.load("services:\n  web:\n    healthcheck:\n      test: curl\n  db:\n    image: pg\n")
+        assertion = Assertion(
+            id="test", assert_="test", rationale="test", severity="must",
+            match=Match(path="services.*.healthcheck", exists=True),
+        )
+        matches = find_matches(doc, "", assertion)
+        assert len(matches) == 2
+        # web has healthcheck — value is the healthcheck dict
+        web_match = next(m for m in matches if "web" in m[0])
+        assert web_match[1] is not _SENTINEL
+        # db does NOT have healthcheck — value is sentinel
+        db_match = next(m for m in matches if "db" in m[0])
+        assert db_match[1] is _SENTINEL
+
+    def test_exists_deviations_annotated(self) -> None:
+        yaml = YAML(typ="rt")
+        doc = yaml.load("services:\n  web:\n    healthcheck:\n      test: curl\n  db:\n    image: pg\n")
+        assertions = [
+            Assertion(
+                id="has-healthcheck", assert_="Must have healthcheck", rationale="test", severity="must",
+                match=Match(path="services.*.healthcheck", exists=True),
+            ),
+        ]
+        deviations = annotate_deviations(doc, assertions)
+        assert len(deviations) == 1
+        assert deviations[0].assertion_id == "has-healthcheck"
+        assert "db" in deviations[0].path
+        assert "missing" in deviations[0].message
+
+    def test_exists_does_not_strip_conformant(self) -> None:
+        """exists assertions should not strip values — only detect."""
+        yaml = YAML(typ="rt")
+        doc = yaml.load("services:\n  web:\n    healthcheck:\n      test: curl\n")
+        assertions = [
+            Assertion(
+                id="has-healthcheck", assert_="Must have healthcheck", rationale="test", severity="must",
+                match=Match(path="services.*.healthcheck", exists=True),
+            ),
+        ]
+        count = strip_conformant(doc, assertions)
+        # Should NOT strip the healthcheck — exists assertions don't strip
+        assert "healthcheck" in doc["services"]["web"]
+        assert count == 0
 
 
 class TestFindMatches:
@@ -261,3 +325,71 @@ class TestDeviationSummaryPass:
 
     def test_pass_name(self) -> None:
         assert DeviationSummaryPass.name == "deviation-summary"
+
+
+# ── Deployment standards tests (against comprehensive assertions) ──
+
+
+def _load_deployment_assertions() -> list[Assertion]:
+    return load_assertions(ASSERTION_FIXTURES / "deployment-standards.yaml")
+
+
+class TestDeploymentStandards:
+    """Tests for the deployment standards assertions against realistic fixtures."""
+
+    def setup_method(self) -> None:
+        self.assertions = _load_deployment_assertions()
+        self.yaml_fixtures = Path(__file__).parent.parent / "fixtures" / "yaml"
+
+    def test_conformant_service_fully_stripped(self) -> None:
+        """A fully conformant service has its must-severity matches stripped."""
+        doc = _load_yaml(self.yaml_fixtures / "realistic-with-deviations.yaml")
+        count = strip_conformant(doc, self.assertions)
+        # api service is conformant — its must-match fields should be stripped
+        assert count > 0
+
+    def test_deviating_image_annotated(self) -> None:
+        """:latest tag gets [!] annotation."""
+        doc = _load_yaml(self.yaml_fixtures / "realistic-with-deviations.yaml")
+        deviations = annotate_deviations(doc, self.assertions)
+        # worker has image: acme-worker:latest
+        image_deviations = [d for d in deviations if d.assertion_id == "ens-image-pinned"]
+        assert len(image_deviations) >= 1
+        output = _dump_yaml(doc)
+        assert "[!]" in output
+
+    def test_deviating_restart_annotated(self) -> None:
+        """restart: "no" gets annotation."""
+        doc = _load_yaml(self.yaml_fixtures / "realistic-with-deviations.yaml")
+        deviations = annotate_deviations(doc, self.assertions)
+        restart_deviations = [d for d in deviations if d.assertion_id == "ens-restart-policy"]
+        assert len(restart_deviations) >= 1
+
+    def test_pattern_match_restart_accepts_both(self) -> None:
+        """unless-stopped and always both match the restart assertion."""
+        restart_assertion = next(a for a in self.assertions if a.id == "ens-restart-policy")
+        assert restart_assertion.match is not None
+        assert evaluate_match(restart_assertion.match, "unless-stopped") is True
+        assert evaluate_match(restart_assertion.match, "always") is True
+        assert evaluate_match(restart_assertion.match, "no") is False
+        assert evaluate_match(restart_assertion.match, "on-failure") is False
+
+    def test_deviation_count_matches_expected(self) -> None:
+        """Deviation fixture produces the correct deviation count."""
+        doc = _load_yaml(self.yaml_fixtures / "realistic-with-deviations.yaml")
+        deviations = annotate_deviations(doc, self.assertions)
+        # worker: :latest image, missing max-size, missing max-file
+        # scheduler: restart "no"
+        # Expect at least 2 deviations
+        assert len(deviations) >= 2
+
+    def test_contains_match_for_security_opt(self) -> None:
+        """List contains evaluation works for security_opt assertion."""
+        sec_assertion = next(a for a in self.assertions if a.id == "ens-security-opt")
+        assert sec_assertion.match is not None
+        # Conformant: list contains no-new-privileges:true
+        assert evaluate_match(sec_assertion.match, ["no-new-privileges:true"]) is True
+        # Deviating: list without it
+        assert evaluate_match(sec_assertion.match, ["apparmor:unconfined"]) is False
+        # Deviating: not a list
+        assert evaluate_match(sec_assertion.match, "no-new-privileges:true") is False
