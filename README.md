@@ -80,7 +80,7 @@ All input is normalised to YAML for processing.
 
 ## Supported Platforms
 
-decoct ships with bundled schemas for 25 platforms. Platforms marked with **(auto)** are
+decoct ships with bundled schemas for 30 platforms. Platforms marked with **(auto)** are
 detected automatically from file content or naming conventions.
 
 **Container/Orchestration** -- Docker Compose **(auto)**, Kubernetes **(auto)**
@@ -98,6 +98,8 @@ detected automatically from file content or naming conventions.
 **Networking** -- Traefik **(auto)**
 
 **Identity** -- Keycloak, Entra ID, Intune
+
+**Network OS** -- Cisco IOS XE, Cisco IOS XR, Cisco NX-OS, Juniper JunOS, Arista EOS
 
 ### Bundled Schemas
 
@@ -128,6 +130,11 @@ detected automatically from file content or naming conventions.
 | Identity | `keycloak` | Keycloak | ~80 defaults from Keycloak config |
 | | `entra-id` | Entra ID | ~65 defaults from Entra ID policies |
 | | `intune` | Intune | ~85 defaults from Intune profiles |
+| Network OS | `cisco-ios-xe` | Cisco IOS XE | ~100 defaults from YANG models + config guides |
+| | `cisco-ios-xr` | Cisco IOS XR | ~70 defaults from YANG models + config guides |
+| | `cisco-nxos` | Cisco NX-OS | ~80 defaults from config guides + show run all |
+| | `juniper-junos` | Juniper JunOS | ~110 defaults from junos-defaults group |
+| | `arista-eos` | Arista EOS | ~95 defaults from config guides + OpenConfig |
 
 ### Bundled Profiles
 
@@ -261,7 +268,6 @@ decoct compress config.yaml --profile my-profile.yaml
 - `decoct compress` -- compress one or more files with optional schema/assertions/profile
 - `decoct schema learn` -- derive a schema from example files using Claude
 - `decoct assertion learn` -- learn assertions from a corpus of existing configs
-- `decoct schema list` -- list bundled schemas
 - `--stats` / `--show-removed` / `--recursive` / `-o` output options
 
 ## Documentation

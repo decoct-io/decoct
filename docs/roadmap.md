@@ -11,27 +11,27 @@
 - Assertion-aware passes (strip-conformant, annotate-deviations, deviation-summary)
 - CLI integration (decoct compress)
 
-## Phase 2: Real-World Validation — CURRENT
+## Phase 2: Real-World Validation — MOSTLY COMPLETE
 Completed:
 - Comprehensive Docker Compose schema (~35 defaults)
 - Deployment standards assertions (12 assertions)
 - Baseline measurements (25-35% savings on production configs)
 - JSON input support
 - INI/config file input support
-- Bundled schema support (25 schemas across 8 categories)
+- Bundled schema support (30 schemas across 9 categories)
 - Platform auto-detection (8 platforms)
 - Directory/recursive processing
 - LLM-assisted schema learning (decoct schema learn)
 - LLM-assisted assertion learning (decoct assertion learn)
 - Corpus inference mode for assertions
 - emit-classes pass for class-based reconstitution
-- 16 additional platform schemas (databases, observability, cloud, identity, CI/CD)
+- 21 additional platform schemas (databases, observability, cloud, identity, CI/CD, network OS)
 
 Remaining:
 - Additional platform schemas (systemd, Nginx, HAProxy)
 - Bundled assertion sets for more platforms
 
-## Phase 3: Planned
+## Phase 3: Input Expansion + LLM Modes
 - XML input normalisation
 - CLI output normalisation (structured text → YAML)
 - Absent-field detection improvements
@@ -57,7 +57,7 @@ Remaining:
 
 ## Phase 7: Polish + Release
 - Documentation site at decoct.io
-- PyPI publish
+- PyPI stable release
 - Example schemas, assertions, and profiles
 - Community contribution guidelines
 

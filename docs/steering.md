@@ -1,7 +1,7 @@
 # Steering Document — decoct Phase 2
 
 This document consolidates all research into a single reference for Phase 2 planning.
-Phase 1 is complete: 183 tests, 95% coverage, 8 passes, full CLI.
+Phase 1 is complete: 183 tests, 95% coverage, 10 passes, full CLI.
 
 ---
 
@@ -72,26 +72,26 @@ Source: `example-infra` repository — production infrastructure for Example Cor
 | Docker Compose | 11 config + 4 templates | YAML | Fully supported |
 | Ansible vars | `group_vars/*.yml`, `host_vars/*.yml` | YAML | Supported (generic passes) |
 | cloud-init user-data | `templates/cloud-init/` | YAML | Supported (generic passes) |
+| PostgreSQL config | 1 (500+ lines) | INI-like (`key = value`) | Supported (INI input + bundled schema) |
+| MariaDB config | 5 `.cnf` files | INI (`.cnf`) | Supported (INI input + bundled schema) |
+| Traefik static + dynamic | 8 files | YAML | Supported (bundled schema + auto-detect) |
+| Zabbix Agent config | 3 (565 lines each) | INI-like | Supported (INI input, generic passes) |
+| systemd units | 14 files | INI (`[Unit]`/`[Service]`) | Supported (INI input, generic passes) |
+| sysctl configs | 12-14 per host | INI-like | Supported (INI input, generic passes) |
+| Docker daemon.json | 1 per host | JSON | Supported (JSON input) |
+| Terraform state | `tofu/terraform.tfstate` | JSON | Supported (JSON input + bundled schema) |
 
 ### What decoct could process with format support
 
 | Data Type | Files | Format | Blocker | Compression Potential |
 |-----------|-------|--------|---------|----------------------|
-| PostgreSQL config | 1 (500+ lines) | INI-like (`key = value`) | No INI input support | ~60% — mostly defaults and comments |
-| MariaDB config | 5 `.cnf` files | INI (`.cnf`) | No INI input support | ~50% — boilerplate defaults per file |
-| Traefik static + dynamic | 8 files | YAML | None (supported today) | ~45% — TLS ciphers, HSTS, middleware |
 | nginx config | 2 files | nginx syntax | No nginx parser | ~35% — gzip, logging, worker defaults |
-| Zabbix Agent config | 3 (565 lines each) | INI-like | No INI input support | ~70% — comments, examples, defaults |
 | Grafana Alloy | 4 files (130+ lines) | Alloy DSL (HCL-like) | No Alloy parser | ~40% — repetitive discovery rules |
-| systemd units | 14 files | INI (`[Unit]`/`[Service]`) | No INI input support | ~35% — repeated Requires/After/Wants |
-| sysctl configs | 12-14 per host | INI-like | No INI input support | ~70% — heavily commented kernel defaults |
-| Docker daemon.json | 1 per host | JSON | Needs JSON input (Phase 2.4) | ~30% — well-known defaults |
 
 ### What decoct cannot process today
 
 | Data Type | Files | Format | Blocker |
 |-----------|-------|--------|---------|
-| Terraform state | `tofu/terraform.tfstate` | JSON | No JSON input support |
 | Terraform HCL | `tofu/*.tf` | HCL | No HCL parser |
 | Jinja2 templates | `templates/**/*.j2` | Jinja2+YAML | Template syntax breaks YAML parser |
 | Ansible playbooks | `*.yml` with Jinja2 | YAML+Jinja2 | Jinja2 expressions in values |

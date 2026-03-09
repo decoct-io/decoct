@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- 5 bundled schemas for network operating systems: Cisco IOS XE, Cisco IOS XR, Cisco NX-OS, Juniper JunOS, Arista EOS
 - 16 bundled schemas: databases (PostgreSQL, MariaDB/MySQL, MongoDB, Redis, Kafka), observability (Grafana, OpenTelemetry Collector, Fluent Bit), cloud (AWS CloudFormation, Azure ARM, GCP Resources), identity (Keycloak, Entra ID, Intune), CI/CD (GitLab CI, ArgoCD)
 - INI/key-value input format support (`.ini`, `.conf`, `.cfg`, `.cnf`, `.properties`)
 - Corpus inference mode for `decoct assertion learn` (`--corpus` flag)
