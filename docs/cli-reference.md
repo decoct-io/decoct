@@ -416,6 +416,184 @@ decoct assertion learn \
 
 ---
 
+## `decoct entity-graph stats`
+
+```
+decoct entity-graph stats [OPTIONS]
+```
+
+Reports compression statistics for the entity-graph pipeline, comparing raw input files to the three-tier output.
+
+### Options
+
+#### `-i, --input-dir <PATH>` (required)
+
+- **Type:** Directory path (must exist)
+- **Description:** Directory containing raw input config files.
+
+#### `-o, --output-dir <PATH>` (required)
+
+- **Type:** Directory path (must exist)
+- **Description:** Directory containing entity-graph output files (`tier_a.yaml`, `*_classes.yaml`, `*_instances.yaml`).
+
+#### `--format <markdown|json>`
+
+- **Type:** Choice
+- **Default:** `markdown`
+- **Description:** Output format. Markdown produces human-readable tables. JSON produces structured data.
+
+#### `--output <PATH>`
+
+- **Type:** File path
+- **Default:** None (stdout)
+- **Description:** Write the report to a file instead of stdout.
+
+#### `--encoding <NAME>`
+
+- **Type:** String
+- **Default:** `cl100k_base`
+- **Description:** Tiktoken encoding for token counting.
+
+### Examples
+
+```
+decoct entity-graph stats -i configs/ -o output/entity-graph/
+decoct entity-graph stats -i configs/ -o output/entity-graph/ --format json --output report.json
+```
+
+---
+
+## `decoct entity-graph generate-questions`
+
+```
+decoct entity-graph generate-questions [OPTIONS]
+```
+
+Generates ground-truth Q&A pairs from raw IOS-XR config files. Output is a JSON question bank used by the `evaluate` command. No LLM required.
+
+### Options
+
+#### `-c, --config-dir <PATH>` (required)
+
+- **Type:** Directory path (must exist)
+- **Description:** Directory containing `.cfg` files to parse.
+
+#### `-o, --output <PATH>` (required)
+
+- **Type:** File path
+- **Description:** Output path for the question bank JSON file.
+
+#### `--max-questions <N>`
+
+- **Type:** Integer
+- **Default:** `200`
+- **Description:** Maximum number of questions to generate.
+
+#### `--seed <N>`
+
+- **Type:** Integer
+- **Default:** `42`
+- **Description:** Random seed for reproducible sampling.
+
+### Examples
+
+```
+decoct entity-graph generate-questions -c configs/ -o questions.json
+decoct entity-graph generate-questions -c configs/ -o questions.json --max-questions 100 --seed 99
+```
+
+---
+
+## `decoct entity-graph evaluate`
+
+```
+decoct entity-graph evaluate [OPTIONS]
+```
+
+Evaluates LLM comprehension accuracy on raw vs compressed config representations using a question bank.
+
+**Requires `decoct[llm]`** (`pip install decoct[llm]`). Uses the Anthropic API and requires the `ANTHROPIC_API_KEY` environment variable.
+
+### Options
+
+#### `-q, --questions <PATH>` (required)
+
+- **Type:** File path (must exist)
+- **Description:** Question bank JSON file from `generate-questions`.
+
+#### `-c, --config-dir <PATH>`
+
+- **Type:** Directory path (must exist)
+- **Description:** Directory of raw configs. Required when `--condition` is `raw` or `both`.
+
+#### `--output-dir <PATH>`
+
+- **Type:** Directory path (must exist)
+- **Description:** Entity-graph output directory. Required when `--condition` is `compressed` or `both`.
+
+#### `--manual <PATH>`
+
+- **Type:** File path (must exist)
+- **Default:** None
+- **Description:** Reader manual to prepend to compressed context. See `docs/entity-graph-data-manual.md`.
+
+#### `--condition <raw|compressed|both>`
+
+- **Type:** Choice
+- **Default:** `both`
+- **Description:** Which conditions to evaluate.
+
+#### `--model <MODEL_ID>`
+
+- **Type:** String
+- **Default:** `claude-sonnet-4-20250514`
+- **Description:** Anthropic model ID.
+
+#### `--format <markdown|json>`
+
+- **Type:** Choice
+- **Default:** `markdown`
+- **Description:** Report output format.
+
+#### `-o, --output <PATH>`
+
+- **Type:** File path
+- **Default:** None (stdout)
+- **Description:** Write report to a file.
+
+#### `--encoding <NAME>`
+
+- **Type:** String
+- **Default:** `cl100k_base`
+- **Description:** Tiktoken encoding for context token counting.
+
+### Examples
+
+Evaluate both conditions:
+
+```
+decoct entity-graph evaluate \
+  -q questions.json \
+  -c configs/ \
+  --output-dir output/entity-graph/ \
+  --manual docs/entity-graph-data-manual.md
+```
+
+Evaluate compressed only with JSON output:
+
+```
+decoct entity-graph evaluate \
+  -q questions.json \
+  --output-dir output/entity-graph/ \
+  --condition compressed \
+  --format json \
+  -o report.json
+```
+
+See [Entity-Graph Evaluation Guide](entity-graph-evaluation.md) for detailed usage, interpretation, and the Python API.
+
+---
+
 ## Exit Codes
 
 | Code | Meaning |
@@ -429,7 +607,7 @@ decoct assertion learn \
 
 | Variable | Description |
 |---|---|
-| `ANTHROPIC_API_KEY` | Anthropic API key. Required for `schema learn` and `assertion learn` commands. Not used by `compress`. |
+| `ANTHROPIC_API_KEY` | Anthropic API key. Required for `schema learn`, `assertion learn`, and `entity-graph evaluate` commands. Not used by `compress`, `entity-graph stats`, or `entity-graph generate-questions`. |
 
 ---
 
@@ -450,9 +628,17 @@ decoct assertion learn \
 | **stdout** | Generated schema or assertions YAML (when `-o` is not used). |
 | **stderr** | Progress messages ("Analysing input files..."), merge confirmations, output path confirmations, error messages. |
 
-This separation allows piping compressed output or generated schemas directly to other tools while keeping diagnostics visible in the terminal:
+### `decoct entity-graph stats` / `generate-questions` / `evaluate`
+
+| Stream | Content |
+|---|---|
+| **stdout** | Report output (markdown or JSON) when `--output` is not used. |
+| **stderr** | Progress messages, output path confirmations, per-condition accuracy summaries, error messages. |
+
+This separation allows piping output directly to other tools while keeping diagnostics visible in the terminal:
 
 ```
 decoct compress deployment.yaml --stats | pbcopy
 decoct schema learn -e example.yaml | decoct compress config.yaml --schema /dev/stdin
+decoct entity-graph stats -i configs/ -o output/ --format json | jq '.compression'
 ```

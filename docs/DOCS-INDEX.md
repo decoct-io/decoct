@@ -57,9 +57,12 @@ authoring — tackle them top-to-bottom within each group.
      - `--encoding`
   3. `decoct schema learn` — all options, examples, requirements
   4. `decoct assertion learn` — all options, modes (standards, corpus, combined), examples
-  5. Exit codes and error messages
-  6. Environment variables (ANTHROPIC_API_KEY for learn commands)
-  7. stdin/stdout/stderr behaviour
+  5. `decoct entity-graph stats` — compression statistics reporting
+  6. `decoct entity-graph generate-questions` — QA question bank generation
+  7. `decoct entity-graph evaluate` — LLM comprehension evaluation
+  8. Exit codes and error messages
+  9. Environment variables (ANTHROPIC_API_KEY for learn and evaluate commands)
+  10. stdin/stdout/stderr behaviour
 
 ### 1.4 User Manual
 - **Status:** EXISTS — needs expansion
@@ -190,7 +193,20 @@ authoring — tackle them top-to-bottom within each group.
   8. Feeding decoct output to LLMs (best practices, prompting tips)
   9. Reconstituting full documents from compressed output
 
-### 1.12 Cookbook / Recipes
+### 1.12 Entity-Graph Evaluation Guide
+- **Status:** EXISTS
+- **Location:** `docs/entity-graph-evaluation.md`
+- **Audience:** Users running entity-graph compression who want to measure effectiveness
+- **Purpose:** Complete guide to compression statistics, QA question generation, and LLM comprehension evaluation
+- **Sections:**
+  1. Entity-graph stats — CLI usage, options, output format, key metrics
+  2. QA question generation — categories, deterministic generation, question bank format
+  3. QA evaluation — LLM-based comprehension testing, answer matching, report format
+  4. Python API — programmatic access to all features
+  5. Interpreting results — what good/concerning results look like
+  6. End-to-end example — complete workflow from configs to evaluation report
+
+### 1.13 Cookbook / Recipes
 - **Status:** NEW
 - **Location:** `docs/cookbook.md`
 - **Audience:** Users looking for copy-paste solutions
@@ -475,8 +491,8 @@ Phase F — Operational:
 
 | Category | Count | Existing | Needs Update | New |
 |----------|-------|----------|--------------|-----|
-| User-facing | 12 | 2 | 2 | 10 |
+| User-facing | 13 | 3 | 2 | 10 |
 | Developer | 6 | 0 | 0 | 6 |
 | Project | 5 | 3 | 2 | 2 (+10 ADRs) |
 | Operational | 2 | 0 | 0 | 2 |
-| **Total** | **25** | **5** | **4** | **20** |
+| **Total** | **26** | **6** | **4** | **20** |
