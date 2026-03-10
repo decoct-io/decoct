@@ -1,0 +1,114 @@
+# Traefik Configuration — dev (static)
+# Ridgeline Data — traefik-dev
+
+# ── Global ─────────────────────────────────────────────────────────────────────
+global:
+  checkNewVersion: true
+  sendAnonymousUsage: false
+
+# ── API ────────────────────────────────────────────────────────────────────────
+api:
+  dashboard: true
+  insecure: true
+  debug: true
+
+# ── Logging ────────────────────────────────────────────────────────────────────
+log:
+  level: DEBUG
+  format: common
+  noColor: true
+  maxSize: 100
+  maxAge: 0
+  maxBackups: 0
+  compress: false
+
+accessLog:
+  format: common
+  bufferingSize: 0
+  addInternals: true
+  filters:
+    retryAttempts: false
+    minDuration: 0
+  fields:
+    defaultMode: keep
+    headers:
+      defaultMode: drop
+
+# ── EntryPoints ────────────────────────────────────────────────────────────────
+entryPoints:
+  web:
+    address: ":80"
+    transport:
+      lifeCycle:
+        requestAcceptGraceTimeout: 0s
+        graceTimeOut: 10s
+      respondingTimeouts:
+        readTimeout: 60s
+        writeTimeout: 0s
+        idleTimeout: 180s
+    forwardedHeaders:
+      insecure: false
+    proxyProtocol:
+      insecure: false
+    http2:
+      maxConcurrentStreams: 250
+    allowACMEByPass: false
+    reusePort: false
+    asDefault: false
+  traefik:
+    address: ":8080"
+    transport:
+      lifeCycle:
+        requestAcceptGraceTimeout: 0s
+        graceTimeOut: 10s
+      respondingTimeouts:
+        readTimeout: 60s
+        writeTimeout: 0s
+        idleTimeout: 180s
+    forwardedHeaders:
+      insecure: false
+    proxyProtocol:
+      insecure: false
+    http2:
+      maxConcurrentStreams: 250
+    allowACMEByPass: false
+    reusePort: false
+    asDefault: false
+
+# ── Providers ──────────────────────────────────────────────────────────────────
+providers:
+  providersThrottleDuration: 2s
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: true
+    watch: true
+    useBindPortIP: false
+    allowEmptyServices: false
+
+# ── TLS Options ────────────────────────────────────────────────────────────────
+tls:
+  options:
+    default:
+      minVersion: VersionTLS12
+      sniStrict: false
+
+
+
+
+# ── Servers Transport ──────────────────────────────────────────────────────────
+serversTransport:
+  maxIdleConnsPerHost: 200
+  forwardingTimeouts:
+    dialTimeout: 30s
+    responseHeaderTimeout: 0s
+    idleConnTimeout: 90s
+    readIdleTimeout: 0s
+    pingTimeout: 15s
+  insecureSkipVerify: true
+  disableHTTP2: false
+
+# ── Ping ───────────────────────────────────────────────────────────────────────
+ping:
+  entryPoint: traefik
+  terminatingStatusCode: 503
+  manualRouting: false

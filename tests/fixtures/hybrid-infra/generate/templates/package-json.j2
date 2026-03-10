@@ -1,0 +1,26 @@
+{
+  "name": "{{ name }}",
+  "version": "{{ version }}",
+  "description": "{{ description }}",
+  "main": "{{ main }}",
+  "private": {{ private }},
+  "license": "{{ license }}",
+  "engines": {
+    "node": "{{ engines_node }}"
+  },
+  "scripts": {
+{% for script in scripts %}
+    "{{ script.key }}": "{{ script.value }}"{{ "," if not loop.last else "" }}
+{% endfor %}
+  },
+  "dependencies": {
+{% for dep in dependencies %}
+    "{{ dep.key }}": "^{{ dep.value }}"{{ "," if not loop.last else "" }}
+{% endfor %}
+  },
+  "devDependencies": {
+{% for dep in dev_dependencies %}
+    "{{ dep.key }}": "^{{ dep.value }}"{{ "," if not loop.last else "" }}
+{% endfor %}
+  }
+}

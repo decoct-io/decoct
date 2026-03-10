@@ -1,0 +1,234 @@
+# PostgreSQL Configuration — {{ role }} ({{ env }})
+# Ridgeline Data — {{ filename }}
+# Server: db-{{ env }}-{{ role }}
+
+# ── Connection Settings ────────────────────────────────────────────────────────
+listen_addresses = '{{ listen_addresses }}'
+port = {{ port }}
+max_connections = {{ max_connections }}
+reserved_connections = 0
+superuser_reserved_connections = {{ superuser_reserved_connections }}
+bonjour = off
+tcp_keepalives_idle = 0
+tcp_keepalives_interval = 0
+tcp_keepalives_count = 0
+tcp_user_timeout = 0
+client_connection_check_interval = 0
+
+# ── Authentication ─────────────────────────────────────────────────────────────
+authentication_timeout = {{ authentication_timeout }}
+password_encryption = {{ password_encryption }}
+scram_iterations = 4096
+krb_caseins_users = off
+gss_accept_delegation = off
+
+# ── SSL ────────────────────────────────────────────────────────────────────────
+ssl = {{ ssl }}
+{% if ssl == 'on' %}
+ssl_cert_file = '{{ ssl_cert_file }}'
+ssl_key_file = '{{ ssl_key_file }}'
+ssl_prefer_server_ciphers = on
+ssl_min_protocol_version = TLSv1.2
+{% if ssl_passphrase_command != 'none' %}
+ssl_passphrase_command = '{{ ssl_passphrase_command }}'
+{% endif %}
+ssl_passphrase_command_supports_reload = off
+{% else %}
+ssl_prefer_server_ciphers = on
+ssl_min_protocol_version = TLSv1.2
+ssl_passphrase_command_supports_reload = off
+{% endif %}
+
+# ── Memory ─────────────────────────────────────────────────────────────────────
+shared_buffers = {{ shared_buffers }}
+huge_pages = {{ huge_pages }}
+huge_page_size = 0
+temp_buffers = {{ temp_buffers }}
+max_prepared_transactions = {{ max_prepared_transactions }}
+work_mem = {{ work_mem }}
+hash_mem_multiplier = {{ hash_mem_multiplier }}
+maintenance_work_mem = {{ maintenance_work_mem }}
+autovacuum_work_mem = {{ autovacuum_work_mem }}
+vacuum_buffer_usage_limit = {{ vacuum_buffer_usage_limit }}
+logical_decoding_work_mem = {{ logical_decoding_work_mem }}
+max_stack_depth = {{ max_stack_depth }}
+temp_file_limit = -1
+max_files_per_process = {{ max_files_per_process }}
+
+# ── Cost-Based Vacuum Delay ───────────────────────────────────────────────────
+vacuum_cost_delay = 0
+vacuum_cost_page_hit = 1
+vacuum_cost_page_miss = 2
+vacuum_cost_page_dirty = 20
+vacuum_cost_limit = 200
+
+# ── Background Writer ─────────────────────────────────────────────────────────
+bgwriter_delay = {{ bgwriter_delay }}
+bgwriter_lru_maxpages = {{ bgwriter_lru_maxpages }}
+bgwriter_lru_multiplier = {{ bgwriter_lru_multiplier }}
+
+# ── Asynchronous Behaviour ────────────────────────────────────────────────────
+max_worker_processes = {{ max_worker_processes }}
+max_parallel_workers_per_gather = {{ max_parallel_workers_per_gather }}
+max_parallel_maintenance_workers = {{ max_parallel_maintenance_workers }}
+max_parallel_workers = {{ max_parallel_workers }}
+parallel_leader_participation = {{ parallel_leader_participation }}
+backend_flush_after = 0
+
+# ── WAL Settings ──────────────────────────────────────────────────────────────
+wal_level = {{ wal_level }}
+fsync = on
+synchronous_commit = {{ synchronous_commit }}
+full_page_writes = on
+wal_log_hints = off
+wal_compression = off
+wal_init_zero = on
+wal_recycle = on
+wal_buffers = {{ wal_buffers }}
+wal_writer_delay = {{ wal_writer_delay }}
+wal_writer_flush_after = 1MB
+wal_skip_threshold = 2MB
+commit_delay = {{ commit_delay }}
+commit_siblings = {{ commit_siblings }}
+
+# ── Checkpoints ───────────────────────────────────────────────────────────────
+checkpoint_timeout = {{ checkpoint_timeout }}
+checkpoint_completion_target = {{ checkpoint_completion_target }}
+checkpoint_warning = {{ checkpoint_warning }}
+max_wal_size = {{ max_wal_size }}
+min_wal_size = {{ min_wal_size }}
+
+# ── Archiving ─────────────────────────────────────────────────────────────────
+archive_mode = {{ archive_mode }}
+archive_timeout = 0
+{% if archive_command != 'none' %}
+archive_command = '{{ archive_command }}'
+{% endif %}
+
+# ── Replication — Sending ─────────────────────────────────────────────────────
+max_wal_senders = {{ max_wal_senders }}
+max_replication_slots = {{ max_replication_slots }}
+wal_keep_size = {{ wal_keep_size }}
+max_slot_wal_keep_size = -1
+wal_sender_timeout = {{ wal_sender_timeout }}
+track_commit_timestamp = off
+
+# ── Replication — Standby ─────────────────────────────────────────────────────
+hot_standby = {{ hot_standby }}
+max_standby_archive_delay = 30s
+max_standby_streaming_delay = 30s
+wal_receiver_create_temp_slot = off
+wal_receiver_status_interval = {{ wal_receiver_status_interval }}
+hot_standby_feedback = {{ hot_standby_feedback }}
+wal_receiver_timeout = {{ wal_receiver_timeout }}
+wal_retrieve_retry_interval = 5s
+recovery_min_apply_delay = 0
+sync_replication_slots = off
+
+# ── Replication — Subscribers ─────────────────────────────────────────────────
+max_logical_replication_workers = 4
+max_sync_workers_per_subscription = 2
+max_parallel_apply_workers_per_subscription = 2
+
+# ── Planner Cost Constants ────────────────────────────────────────────────────
+seq_page_cost = {{ seq_page_cost }}
+random_page_cost = {{ random_page_cost }}
+cpu_tuple_cost = {{ cpu_tuple_cost }}
+cpu_index_tuple_cost = {{ cpu_index_tuple_cost }}
+cpu_operator_cost = {{ cpu_operator_cost }}
+parallel_setup_cost = 1000
+parallel_tuple_cost = 0.1
+min_parallel_table_scan_size = 8MB
+min_parallel_index_scan_size = 512kB
+effective_cache_size = {{ effective_cache_size }}
+jit_above_cost = 100000
+jit_inline_above_cost = 500000
+jit_optimize_above_cost = 500000
+
+# ── Genetic Query Optimiser ───────────────────────────────────────────────────
+geqo = {{ geqo }}
+geqo_threshold = {{ geqo_threshold }}
+geqo_effort = 5
+geqo_pool_size = 0
+geqo_generations = 0
+geqo_selection_bias = 2.0
+geqo_seed = 0
+
+# ── Other Planner Options ────────────────────────────────────────────────────
+default_statistics_target = {{ default_statistics_target }}
+constraint_exclusion = partition
+cursor_tuple_fraction = 0.1
+from_collapse_limit = 8
+jit = {{ jit }}
+join_collapse_limit = 8
+plan_cache_mode = auto
+recursive_worktable_factor = 10.0
+enable_partitionwise_join = off
+enable_partitionwise_aggregate = off
+
+# ── Logging — Where ──────────────────────────────────────────────────────────
+log_destination = '{{ log_destination }}'
+logging_collector = {{ logging_collector }}
+log_file_mode = {{ log_file_mode }}
+syslog_facility = {{ syslog_facility }}
+syslog_ident = postgres
+syslog_sequence_numbers = on
+syslog_split_messages = on
+
+# ── Logging — When ───────────────────────────────────────────────────────────
+log_min_messages = {{ log_min_messages }}
+log_min_error_statement = {{ log_min_error_statement }}
+log_min_duration_statement = {{ log_min_duration_statement }}
+log_min_duration_sample = -1
+log_statement_sample_rate = 1.0
+log_transaction_sample_rate = 0
+log_startup_progress_interval = 10s
+
+# ── Logging — What ───────────────────────────────────────────────────────────
+log_autovacuum_min_duration = {{ log_autovacuum_min_duration }}
+log_checkpoints = {{ log_checkpoints }}
+log_connections = {{ log_connections }}
+log_disconnections = {{ log_disconnections }}
+log_duration = off
+log_error_verbosity = {{ log_error_verbosity }}
+log_hostname = {{ log_hostname }}
+log_lock_waits = {{ log_lock_waits }}
+log_recovery_conflict_waits = off
+log_parameter_max_length = -1
+log_parameter_max_length_on_error = 0
+{% if log_statement != 'none' %}
+log_statement = '{{ log_statement }}'
+{% else %}
+log_statement = 'none'
+{% endif %}
+log_replication_commands = off
+log_temp_files = -1
+log_timezone = '{{ log_timezone }}'
+log_rotation_age = 24h
+log_rotation_size = 10MB
+log_truncate_on_rotation = off
+
+# ── Autovacuum ────────────────────────────────────────────────────────────────
+autovacuum = {{ autovacuum }}
+autovacuum_max_workers = {{ autovacuum_max_workers }}
+autovacuum_naptime = {{ autovacuum_naptime }}
+autovacuum_vacuum_threshold = {{ autovacuum_vacuum_threshold }}
+autovacuum_vacuum_insert_threshold = 1000
+autovacuum_analyze_threshold = {{ autovacuum_analyze_threshold }}
+autovacuum_vacuum_scale_factor = {{ autovacuum_vacuum_scale_factor }}
+autovacuum_vacuum_insert_scale_factor = 0.2
+autovacuum_analyze_scale_factor = {{ autovacuum_analyze_scale_factor }}
+autovacuum_freeze_max_age = 200000000
+autovacuum_multixact_freeze_max_age = 400000000
+autovacuum_vacuum_cost_delay = 2ms
+autovacuum_vacuum_cost_limit = -1
+
+# ── WAL Recovery ──────────────────────────────────────────────────────────────
+recovery_prefetch = try
+wal_decode_buffer_size = 512kB
+recovery_target_inclusive = on
+recovery_target_timeline = latest
+recovery_target_action = pause
+
+# ── WAL Summarisation ─────────────────────────────────────────────────────────
+summarize_wal = off

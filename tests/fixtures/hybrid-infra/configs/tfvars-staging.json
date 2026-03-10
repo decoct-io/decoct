@@ -1,0 +1,36 @@
+{
+  "workspace": "staging",
+  "environment": "staging",
+  "region": "eu-central-1",
+  "compute": {
+    "app_instance_type": "t3.medium",
+    "app_instance_count": 1,
+    "db_instance_type": "r6g.large",
+    "db_instance_count": 1,
+    "edge_instance_type": "t3.small"
+  },
+  "networking": {
+    "vpc_cidr": "10.1.0.0/16",
+    "subnet_cidrs": [
+      "10.1.1.0/24"
+    ],
+    "domain": "staging.ridgeline.io"
+  },
+  "database": {
+    "password": "StagingDBp@ss"
+  },
+  "secrets": {
+    "api_secret": "sk_test_staging_key_123"
+  },
+  "features": {
+    "enable_monitoring": true,
+    "enable_backups": true,
+    "backup_retention_days": 7
+  },
+  "tags": {
+    "team": "platform",
+    "project": "ridgeline",
+    "environment": "staging",
+    "managed_by": "opentofu"
+  }
+}

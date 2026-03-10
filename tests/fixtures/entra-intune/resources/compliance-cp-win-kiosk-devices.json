@@ -1,0 +1,65 @@
+{
+  "@odata.type": "#microsoft.graph.windows10CompliancePolicy",
+  "id": "0fc9bd15-e1c8-567f-b71e-f77d58585e0d",
+  "createdDateTime": "2024-06-15T10:30:00Z",
+  "modifiedDateTime": "2024-11-20T14:45:00Z",
+  "displayName": "CP-Win-Kiosk-Devices",
+  "description": "Minimal compliance for shared kiosk Windows devices",
+  "version": 1,
+  "roleScopeTagIds": [
+    "0"
+  ],
+  "passwordRequired": false,
+  "passwordBlockSimple": false,
+  "passwordRequiredToUnlockFromIdle": false,
+  "passwordMinutesOfInactivityBeforeLock": null,
+  "passwordExpirationDays": null,
+  "passwordMinimumLength": null,
+  "passwordMinimumCharacterSetCount": null,
+  "passwordRequiredType": "deviceDefault",
+  "passwordPreviousPasswordBlockCount": null,
+  "requireHealthyDeviceReport": false,
+  "osMinimumVersion": null,
+  "osMaximumVersion": null,
+  "mobileOsMinimumVersion": null,
+  "mobileOsMaximumVersion": null,
+  "earlyLaunchAntiMalwareDriverEnabled": false,
+  "bitLockerEnabled": false,
+  "secureBootEnabled": false,
+  "codeIntegrityEnabled": false,
+  "storageRequireEncryption": true,
+  "activeFirewallRequired": false,
+  "defenderEnabled": false,
+  "defenderVersion": null,
+  "signatureOutOfDate": false,
+  "rtpEnabled": false,
+  "antivirusRequired": false,
+  "antiSpywareRequired": false,
+  "deviceThreatProtectionEnabled": false,
+  "deviceThreatProtectionRequiredSecurityLevel": "unavailable",
+  "configurationManagerComplianceRequired": false,
+  "tpmRequired": false,
+  "deviceCompliancePolicyScript": null,
+  "validOperatingSystemBuildRanges": [],
+  "scheduledActionsForRule": [
+    {
+      "ruleName": "PasswordRequired",
+      "scheduledActionConfigurations": [
+        {
+          "actionType": "block",
+          "gracePeriodHours": 72,
+          "notificationTemplateId": "",
+          "notificationMessageCCList": []
+        }
+      ]
+    }
+  ],
+  "assignments": [
+    {
+      "target": {
+        "@odata.type": "#microsoft.graph.groupAssignmentTarget",
+        "groupId": "acd95104-b130-537e-a46d-6e2219a3bc8f"
+      }
+    }
+  ]
+}

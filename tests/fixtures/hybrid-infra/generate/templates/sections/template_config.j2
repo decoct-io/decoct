@@ -1,0 +1,21 @@
+    - name: Deploy templated configuration
+      ansible.builtin.template:
+        src: "{% raw %}{{ item.src }}{% endraw %}"
+        dest: "{% raw %}{{ item.dest }}{% endraw %}"
+        owner: root
+        group: root
+        mode: "0644"
+        backup: false
+        follow: false
+        force: true
+        lstrip_blocks: false
+        trim_blocks: true
+        unsafe_writes: false
+        output_encoding: utf-8
+      loop:
+        - { src: "templates/app.conf.j2", dest: "/etc/ridgeline/app.conf" }
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: {{ become }}

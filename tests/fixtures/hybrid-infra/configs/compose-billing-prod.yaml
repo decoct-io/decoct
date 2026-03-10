@@ -1,0 +1,61 @@
+# Docker Compose — compose-billing-prod
+# Ridgeline Data — B2B Analytics Platform
+
+services:
+  billing-api:
+    image: ridgeline/billing-api:1.3.0
+    restart: "always"
+    privileged: false
+    read_only: false
+    stdin_open: false
+    tty: false
+    init: false
+    ports:
+      - "8002:8002"
+    environment:
+      DATABASE_URL: "mysql://billing:B1llingS3cret@db-legacy-01:3306/billing"
+      STRIPE_API_KEY: "sk_live_4eC39HqLyjWDarjtT1zdp7dc"
+      ENCRYPTION_KEY: "Enc4ypt10nK3y!"
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.billing.rule: "Host(`billing.ridgeline.io`)"
+    networks:
+      - app-network
+      - monitoring
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8002/health"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 10s
+      start_interval: 5s
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        max_attempts: 0
+      update_config:
+        parallelism: 1
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+    mem_limit: 1g
+    cpus: 0.5
+
+networks:
+  app-network:
+    driver: bridge
+    external: false
+    internal: false
+    attachable: false
+    enable_ipv6: false
+  monitoring:
+    driver: bridge
+    external: false
+    internal: false
+    attachable: false
+    enable_ipv6: false
+

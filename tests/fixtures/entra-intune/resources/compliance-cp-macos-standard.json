@@ -1,0 +1,52 @@
+{
+  "@odata.type": "#microsoft.graph.macOSCompliancePolicy",
+  "id": "913c41c1-0007-5121-b999-82354bd2fc6f",
+  "createdDateTime": "2024-06-15T10:30:00Z",
+  "modifiedDateTime": "2024-11-20T14:45:00Z",
+  "displayName": "CP-macOS-Standard",
+  "description": "Standard macOS compliance policy",
+  "version": 1,
+  "roleScopeTagIds": [
+    "0"
+  ],
+  "passwordRequired": false,
+  "passwordBlockSimple": false,
+  "passwordMinimumLength": null,
+  "passwordRequiredType": "deviceDefault",
+  "passwordMinutesOfInactivityBeforeLock": null,
+  "passwordExpirationDays": null,
+  "passwordPreviousPasswordBlockCount": null,
+  "passwordMinimumCharacterSetCount": null,
+  "systemIntegrityProtectionEnabled": false,
+  "deviceThreatProtectionEnabled": false,
+  "deviceThreatProtectionRequiredSecurityLevel": "unavailable",
+  "storageRequireEncryption": false,
+  "firewallEnabled": false,
+  "firewallBlockAllIncoming": false,
+  "firewallEnableStealthMode": false,
+  "osMinimumVersion": null,
+  "osMaximumVersion": null,
+  "osMinimumBuildVersion": null,
+  "osMaximumBuildVersion": null,
+  "scheduledActionsForRule": [
+    {
+      "ruleName": "PasswordRequired",
+      "scheduledActionConfigurations": [
+        {
+          "actionType": "block",
+          "gracePeriodHours": 24,
+          "notificationTemplateId": "",
+          "notificationMessageCCList": []
+        }
+      ]
+    }
+  ],
+  "assignments": [
+    {
+      "target": {
+        "@odata.type": "#microsoft.graph.groupAssignmentTarget",
+        "groupId": "061db63e-7d80-5c29-9f6c-acd9595a064e"
+      }
+    }
+  ]
+}

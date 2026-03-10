@@ -1,0 +1,128 @@
+# Docker Compose — {{ group_name }}
+# Ridgeline Data — B2B Analytics Platform
+
+services:
+{% for svc in services %}
+  {{ svc.service_name }}:
+    image: {{ svc.image }}
+    restart: "{{ svc.restart }}"
+    privileged: {{ svc.privileged }}
+    read_only: {{ svc.read_only }}
+    stdin_open: {{ svc.stdin_open }}
+    tty: {{ svc.tty }}
+    init: {{ svc.init }}
+    {% if svc.command != 'none' %}
+    command: {{ svc.command }}
+    {% endif %}
+    {% if svc.ports %}
+    ports:
+      {% for port in svc.ports %}
+      - "{{ port }}"
+      {% endfor %}
+    {% endif %}
+    {% if svc.env_vars %}
+    environment:
+      {% for ev in svc.env_vars %}
+      {{ ev.key }}: "{{ ev.value }}"
+      {% endfor %}
+    {% endif %}
+    {% if svc.volumes %}
+    volumes:
+      {% for vol in svc.volumes %}
+      - {{ vol }}
+      {% endfor %}
+    {% endif %}
+    {% if svc.depends_on %}
+    depends_on:
+      {% for dep in svc.depends_on %}
+      {{ dep }}:
+        condition: service_started
+        required: true
+        restart: true
+      {% endfor %}
+    {% endif %}
+    {% if svc.labels %}
+    labels:
+      {% for lbl in svc.labels %}
+      {{ lbl.key }}: "{{ lbl.value }}"
+      {% endfor %}
+    {% endif %}
+    {% if svc.networks %}
+    networks:
+      {% for net in svc.networks %}
+      - {{ net }}
+      {% endfor %}
+    {% endif %}
+    {% if svc.healthcheck_cmd != 'none' %}
+    healthcheck:
+      test: ["CMD-SHELL", "{{ svc.healthcheck_cmd }}"]
+      interval: {{ svc.healthcheck_interval }}
+      timeout: {{ svc.healthcheck_timeout }}
+      retries: {{ svc.healthcheck_retries }}
+      start_period: {{ svc.healthcheck_start_period }}
+      start_interval: 5s
+    {% else %}
+    healthcheck:
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 0s
+      start_interval: 5s
+    {% endif %}
+    logging:
+      driver: {{ svc.logging_driver }}
+    deploy:
+      replicas: {{ svc.deploy_replicas }}
+      restart_policy:
+        condition: any
+        max_attempts: 0
+      update_config:
+        parallelism: 1
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+    {% if svc.mem_limit != 'none' %}
+    mem_limit: {{ svc.mem_limit }}
+    {% endif %}
+    {% if svc.cpus != 'none' %}
+    cpus: {{ svc.cpus }}
+    {% endif %}
+{% endfor %}
+
+{% set all_networks = [] %}
+{% for svc in services %}
+{% for net in svc.networks %}
+{% if net not in all_networks %}
+{% if all_networks.append(net) %}{% endif %}
+{% endif %}
+{% endfor %}
+{% endfor %}
+{% if all_networks %}
+networks:
+  {% for net in all_networks %}
+  {{ net }}:
+    driver: bridge
+    external: false
+    internal: false
+    attachable: false
+    enable_ipv6: false
+  {% endfor %}
+{% endif %}
+
+{% set all_volumes = [] %}
+{% for svc in services %}
+{% for vol in svc.volumes %}
+{% set vol_name = vol.split(':')[0] %}
+{% if '/' not in vol_name and '.' not in vol_name and vol_name not in all_volumes %}
+{% if all_volumes.append(vol_name) %}{% endif %}
+{% endif %}
+{% endfor %}
+{% endfor %}
+{% if all_volumes %}
+volumes:
+  {% for vol in all_volumes %}
+  {{ vol }}:
+    external: false
+  {% endfor %}
+{% endif %}

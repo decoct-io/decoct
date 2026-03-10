@@ -1,0 +1,117 @@
+{% from "macros/common.j2" import audit_fields %}
+{
+  "@odata.type": "#microsoft.graph.application",
+  {{ audit_fields(id, created_date, modified_date) }},
+  "appId": {{ app_id | tojson }},
+  "displayName": {{ display_name | tojson }},
+  "publisherDomain": {{ publisher_domain | tojson }},
+  "signInAudience": {{ sign_in_audience | tojson }},
+  "isFallbackPublicClient": {{ is_fallback_public_client | tojson }},
+  "isDeviceOnlyAuthSupported": {{ is_device_only_auth_supported | tojson }},
+  "oauth2RequiredPostResponse": {{ oauth2_required_post_response | tojson }},
+  "nativeAuthenticationApisEnabled": "none",
+  "web": {
+    "redirectUris": {{ web_redirect_uris | tojson }},
+    "homePageUrl": null,
+    "logoutUrl": null,
+    "implicitGrantSettings": {
+      "enableIdTokenIssuance": false,
+      "enableAccessTokenIssuance": false
+    }
+  },
+  "spa": {
+    "redirectUris": {{ spa_redirect_uris | tojson }}
+  },
+  "api": {
+    "acceptMappedClaims": null,
+    "knownClientApplications": [],
+    "requestedAccessTokenVersion": 2,
+    "oauth2PermissionScopes": [
+      {% for scope in api_scopes %}
+      {
+        "adminConsentDescription": "Allow the application to access {{ display_name }} on behalf of the signed-in user.",
+        "adminConsentDisplayName": {{ scope | tojson }},
+        "id": {{ (id ~ "-scope-" ~ loop.index0) | tojson }},
+        "isEnabled": true,
+        "type": "User",
+        "userConsentDescription": "Allow the application to access {{ display_name }} on your behalf.",
+        "userConsentDisplayName": {{ scope | tojson }},
+        "value": {{ scope | tojson }}
+      }{% if not loop.last %},{% endif %}
+      {% endfor %}
+    ],
+    "preAuthorizedApplications": []
+  },
+  "requiredResourceAccess": [
+    {% for ra in required_resource_access %}
+    {
+      "resourceAppId": "00000003-0000-0000-c000-000000000000",
+      "resourceAccess": [
+        {
+          "id": {{ (id ~ "-ra-" ~ loop.index0) | tojson }},
+          "type": "Scope"
+        }
+      ]
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+  ],
+  "identifierUris": {{ identifier_uris | tojson }},
+  "keyCredentials": [
+    {% if key_credentials %}
+    {
+      "customKeyIdentifier": null,
+      "displayName": "CN={{ display_name }}",
+      "endDateTime": "2026-06-15T10:30:00Z",
+      "key": {{ key_credentials | tojson }},
+      "keyId": {{ (id ~ "-key-0") | tojson }},
+      "startDateTime": {{ created_date | tojson }},
+      "type": "AsymmetricX509Cert",
+      "usage": "Verify"
+    }
+    {% endif %}
+  ],
+  "passwordCredentials": [
+    {% if password_credentials %}
+    {
+      "customKeyIdentifier": null,
+      "displayName": "Client Secret",
+      "endDateTime": "2026-06-15T10:30:00Z",
+      "hint": "xYz",
+      "keyId": {{ (id ~ "-pwd-0") | tojson }},
+      "secretText": {{ password_credentials | tojson }},
+      "startDateTime": {{ created_date | tojson }}
+    }
+    {% endif %}
+  ],
+  {% if optional_claims %}
+  "optionalClaims": {
+    "accessToken": [
+      {% for claim in optional_claims.split(";") %}
+      {% set parts = claim.split(":") %}
+      {% if parts | length == 2 and parts[0] == "access_token" %}
+      {
+        "additionalProperties": [],
+        "essential": false,
+        "name": {{ parts[1] | tojson }},
+        "source": null
+      },
+      {% endif %}
+      {% endfor %}
+      {"_sentinel": true}
+    ],
+    "idToken": [],
+    "saml2Token": []
+  },
+  {% else %}
+  "optionalClaims": null,
+  {% endif %}
+  "tags": [],
+  "appRoles": [],
+  "info": {
+    "logoUrl": null,
+    "marketingUrl": null,
+    "privacyStatementUrl": null,
+    "supportUrl": null,
+    "termsOfServiceUrl": null
+  }
+}

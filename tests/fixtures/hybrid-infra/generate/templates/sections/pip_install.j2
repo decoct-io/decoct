@@ -1,0 +1,13 @@
+    - name: Install Python dependencies
+      ansible.builtin.pip:
+        requirements: /opt/ridgeline/{% raw %}{{ app_name | default('app') }}{% endraw %}/requirements.txt
+        virtualenv: /opt/ridgeline/{% raw %}{{ app_name | default('app') }}{% endraw %}/venv
+        state: present
+        editable: false
+        break_system_packages: false
+        virtualenv_site_packages: false
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: {{ become }}

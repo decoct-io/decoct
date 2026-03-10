@@ -1,0 +1,4 @@
+filename,env,db_password,deploy_key,vault_password,api_key,jwt_secret,smtp_password,backup_encryption_key,redis_password,grafana_admin_password
+ansible-vars-prod,prod,Sup3rS3cretDB,"-----BEGIN RSA PRIVATE KEY-----MIIEpAIBAAKCAQEA0Z3VS5JJcds3xfn/ygWep4TzAUGMg9nHcGp1K-----END RSA PRIVATE KEY-----",V@ultP@ssw0rd!,sk_live_4eC39HqLyjWDarjtT1zdp7dc,xK9mPqR7vL2nW5jF8hT3yB6cD4gA1sE,SmtpP@ss123,Bkup3ncryptK3y!,R3disP@ss!,Gr@fanaAdm1n!
+ansible-vars-staging,staging,StagingDBp@ss,"-----BEGIN RSA PRIVATE KEY-----MIIEowIBAAKCAQEAstaging+key+data+here-----END RSA PRIVATE KEY-----",St@gingV@ult,sk_test_staging_key_123,staging-jwt-secret-not-secure,StagingSmtpP@ss,StagingBkupK3y,StagingR3dis,StagingGr@fana
+ansible-vars-dev,dev,devpassword,none,devvault,sk_test_dev_key,dev-jwt-secret,devsmtp,devbackup,devredis,devgrafana

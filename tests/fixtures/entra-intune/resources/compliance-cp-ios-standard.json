@@ -1,0 +1,49 @@
+{
+  "@odata.type": "#microsoft.graph.iosCompliancePolicy",
+  "id": "5eef8562-2182-5a82-ab79-dafa40458d0e",
+  "createdDateTime": "2024-06-15T10:30:00Z",
+  "modifiedDateTime": "2024-11-20T14:45:00Z",
+  "displayName": "CP-iOS-Standard",
+  "description": "Standard iOS compliance policy",
+  "version": 1,
+  "roleScopeTagIds": [
+    "0"
+  ],
+  "passcodeRequired": false,
+  "passcodeBlockSimple": false,
+  "passcodeMinimumLength": null,
+  "passcodeRequiredType": "deviceDefault",
+  "passcodeMinutesOfInactivityBeforeLock": null,
+  "passcodeExpirationDays": null,
+  "passcodePreviousPasscodeBlockCount": null,
+  "passcodeMinimumCharacterSetCount": null,
+  "securityBlockJailbrokenDevices": false,
+  "deviceThreatProtectionEnabled": false,
+  "deviceThreatProtectionRequiredSecurityLevel": "unavailable",
+  "managedEmailProfileRequired": false,
+  "osMinimumVersion": null,
+  "osMaximumVersion": null,
+  "osMinimumBuildVersion": null,
+  "osMaximumBuildVersion": null,
+  "scheduledActionsForRule": [
+    {
+      "ruleName": "PasswordRequired",
+      "scheduledActionConfigurations": [
+        {
+          "actionType": "block",
+          "gracePeriodHours": 24,
+          "notificationTemplateId": "",
+          "notificationMessageCCList": []
+        }
+      ]
+    }
+  ],
+  "assignments": [
+    {
+      "target": {
+        "@odata.type": "#microsoft.graph.groupAssignmentTarget",
+        "groupId": "da0f57dc-64a3-55d9-b2ad-9db34afcec0b"
+      }
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+    - name: Install packages via apt
+      ansible.builtin.apt:
+        name: "{% raw %}{{ item }}{% endraw %}"
+        state: present
+        update_cache: false
+        force: false
+        purge: false
+        autoremove: false
+        autoclean: false
+        only_upgrade: false
+        force_apt_get: false
+        allow_unauthenticated: false
+        allow_downgrade: false
+        fail_on_autoremove: false
+        lock_timeout: 60
+        cache_valid_time: 0
+      loop:
+{% for v in vars_list %}
+{% if v.key == 'packages' %}
+{% for pkg in v.value.split(',') %}
+        - {{ pkg.strip() }}
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% if not vars_list|selectattr('key', 'equalto', 'packages')|list %}
+        - curl
+        - wget
+{% endif %}
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: {{ become }}

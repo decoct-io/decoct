@@ -1,0 +1,70 @@
+{% if unit_type == 'service' %}
+# {{ description }}
+# Ridgeline Data — {{ filename }}
+
+[Unit]
+Description={{ description }}
+{% if after != 'none' %}
+After={{ after }}
+{% endif %}
+{% if wants != 'none' %}
+Wants={{ wants }}
+{% endif %}
+
+[Service]
+Type={{ type }}
+{% if working_directory != 'none' %}
+WorkingDirectory={{ working_directory }}
+{% endif %}
+{% if user != 'none' %}
+User={{ user }}
+Group={{ group }}
+{% endif %}
+ExecStart={{ exec_start }}
+{% if exec_stop != 'none' %}
+ExecStop={{ exec_stop }}
+{% endif %}
+{% if restart != 'no' %}
+Restart={{ restart }}
+{% if restart_sec != '0' %}
+RestartSec={{ restart_sec }}
+{% endif %}
+{% endif %}
+{% if timeout_start_sec != 'none' %}
+TimeoutStartSec={{ timeout_start_sec }}
+TimeoutStopSec={{ timeout_stop_sec }}
+{% endif %}
+{% if remain_after_exit == 'true' %}
+RemainAfterExit=yes
+{% endif %}
+{% if environment != 'none' %}
+{% for env_pair in environment.split(' ') %}
+Environment="{{ env_pair }}"
+{% endfor %}
+{% endif %}
+{% if limit_nofile != '0' %}
+LimitNOFILE={{ limit_nofile }}
+{% endif %}
+{% if limit_nproc != '0' %}
+LimitNPROC={{ limit_nproc }}
+{% endif %}
+
+[Install]
+WantedBy=multi-user.target
+{% elif unit_type == 'timer' %}
+# {{ description }}
+# Ridgeline Data — {{ filename }}
+
+[Unit]
+Description={{ description }}
+
+[Timer]
+OnCalendar={{ on_calendar }}
+{% if persistent == 'true' %}
+Persistent=true
+{% endif %}
+Unit={{ timer_unit }}
+
+[Install]
+WantedBy=timers.target
+{% endif %}

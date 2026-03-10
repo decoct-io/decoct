@@ -1,0 +1,91 @@
+{
+  "@odata.type": "#microsoft.graph.application",
+  "id": "e9d8598e-406a-51f9-8099-4afbb509babf",
+  "createdDateTime": "2024-06-15T10:30:00Z",
+  "modifiedDateTime": "2024-11-20T14:45:00Z",
+  "appId": "09bfc58f-4326-5719-a4dc-6af54ade2fb4",
+  "displayName": "App-API-Gateway",
+  "publisherDomain": "contoso.com",
+  "signInAudience": "AzureADMultipleOrgs",
+  "isFallbackPublicClient": false,
+  "isDeviceOnlyAuthSupported": false,
+  "oauth2RequiredPostResponse": false,
+  "nativeAuthenticationApisEnabled": "none",
+  "web": {
+    "redirectUris": [
+      "https://gateway.contoso.com/oauth2/callback"
+    ],
+    "homePageUrl": null,
+    "logoutUrl": null,
+    "implicitGrantSettings": {
+      "enableIdTokenIssuance": false,
+      "enableAccessTokenIssuance": false
+    }
+  },
+  "spa": {
+    "redirectUris": []
+  },
+  "api": {
+    "acceptMappedClaims": null,
+    "knownClientApplications": [],
+    "requestedAccessTokenVersion": 2,
+    "oauth2PermissionScopes": [
+      {
+        "adminConsentDescription": "Allow the application to access App-API-Gateway on behalf of the signed-in user.",
+        "adminConsentDisplayName": "gateway.read",
+        "id": "e9d8598e-406a-51f9-8099-4afbb509babf-scope-0",
+        "isEnabled": true,
+        "type": "User",
+        "userConsentDescription": "Allow the application to access App-API-Gateway on your behalf.",
+        "userConsentDisplayName": "gateway.read",
+        "value": "gateway.read"
+      },
+      {
+        "adminConsentDescription": "Allow the application to access App-API-Gateway on behalf of the signed-in user.",
+        "adminConsentDisplayName": "gateway.write",
+        "id": "e9d8598e-406a-51f9-8099-4afbb509babf-scope-1",
+        "isEnabled": true,
+        "type": "User",
+        "userConsentDescription": "Allow the application to access App-API-Gateway on your behalf.",
+        "userConsentDisplayName": "gateway.write",
+        "value": "gateway.write"
+      }
+    ],
+    "preAuthorizedApplications": []
+  },
+  "requiredResourceAccess": [
+    {
+      "resourceAppId": "00000003-0000-0000-c000-000000000000",
+      "resourceAccess": [
+        {
+          "id": "e9d8598e-406a-51f9-8099-4afbb509babf-ra-0",
+          "type": "Scope"
+        }
+      ]
+    },
+    {
+      "resourceAppId": "00000003-0000-0000-c000-000000000000",
+      "resourceAccess": [
+        {
+          "id": "e9d8598e-406a-51f9-8099-4afbb509babf-ra-1",
+          "type": "Scope"
+        }
+      ]
+    }
+  ],
+  "identifierUris": [
+    "api://contoso-api-gateway"
+  ],
+  "keyCredentials": [],
+  "passwordCredentials": [],
+  "optionalClaims": null,
+  "tags": [],
+  "appRoles": [],
+  "info": {
+    "logoUrl": null,
+    "marketingUrl": null,
+    "privacyStatementUrl": null,
+    "supportUrl": null,
+    "termsOfServiceUrl": null
+  }
+}

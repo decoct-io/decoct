@@ -1,0 +1,42 @@
+{# ── Shared macros for Entra ID / Intune JSON fixtures ─────────────────────── #}
+
+{# Emit system-managed audit fields (id, timestamps) #}
+{% macro audit_fields(id, created_date, modified_date) %}
+"id": {{ id | tojson }},
+"createdDateTime": {{ created_date | tojson }},
+"modifiedDateTime": {{ modified_date | tojson }}
+{% endmacro %}
+
+{# Emit an Intune assignment target block #}
+{% macro assignment_target(assignment) %}
+{
+  "target": {
+    "@odata.type": "#microsoft.graph.groupAssignmentTarget",
+    "groupId": {{ assignment.groupId | tojson }}
+  }
+}
+{% endmacro %}
+
+{# Emit an array of Intune assignments #}
+{% macro assignments_array(assignments) %}
+[
+{% for a in assignments %}
+  {{ assignment_target(a) }}{% if not loop.last %},{% endif %}
+{% endfor %}
+]
+{% endmacro %}
+
+{# Emit a scheduled action block for compliance policies #}
+{% macro scheduled_action(grace_hours) %}
+{
+  "ruleName": "PasswordRequired",
+  "scheduledActionConfigurations": [
+    {
+      "actionType": "block",
+      "gracePeriodHours": {{ grace_hours }},
+      "notificationTemplateId": "",
+      "notificationMessageCCList": []
+    }
+  ]
+}
+{% endmacro %}

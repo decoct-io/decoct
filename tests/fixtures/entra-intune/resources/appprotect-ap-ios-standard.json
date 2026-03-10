@@ -1,0 +1,72 @@
+{
+  "@odata.type": "#microsoft.graph.iosManagedAppProtection",
+  "id": "20907902-749d-53dd-b5ad-e5f0e65130f5",
+  "createdDateTime": "2024-06-15T10:30:00Z",
+  "modifiedDateTime": "2024-11-20T14:45:00Z",
+  "displayName": "AP-iOS-Standard",
+  "description": "Standard iOS app protection policy",
+  "version": 1,
+  "roleScopeTagIds": [
+    "0"
+  ],
+  "pinRequired": true,
+  "minimumPinLength": 4,
+  "simplePinBlocked": false,
+  "fingerprintBlocked": false,
+  "disableAppPinIfDevicePinIsSet": false,
+  "periodBeforePinReset": "PT0S",
+  "dataBackupBlocked": false,
+  "contactSyncBlocked": false,
+  "printBlocked": false,
+  "saveAsBlocked": false,
+  "deviceComplianceRequired": true,
+  "managedBrowserToOpenLinksRequired": false,
+  "organizationalCredentialsRequired": false,
+  "allowedDataStorageLocations": [],
+  "periodOfflineBeforeWipeIsEnforced": "P90D",
+  "periodOfflineBeforeAccessCheck": "PT720M",
+  "periodOnlineBeforeAccessCheck": "PT30M",
+  "allowedInboundDataTransferSources": "allApps",
+  "allowedOutboundDataTransferDestinations": "managedApps",
+  "allowedOutboundClipboardSharingLevel": "managedAppsWithPasteIn",
+  "faceIdBlocked": false,
+  "minimumRequiredSdkVersion": null,
+  "minimumRequiredOsVersion": null,
+  "minimumWarningOsVersion": null,
+  "managedBrowser": "notConfigured",
+  "customBrowserProtocol": null,
+  "apps": [
+    {
+      "mobileAppIdentifier": {
+        "@odata.type": "#microsoft.graph.iosMobileAppIdentifier",
+        "bundleId": "com.microsoft.Office.Outlook"
+      }
+    },
+    {
+      "mobileAppIdentifier": {
+        "@odata.type": "#microsoft.graph.iosMobileAppIdentifier",
+        "bundleId": "com.microsoft.Office.Word"
+      }
+    },
+    {
+      "mobileAppIdentifier": {
+        "@odata.type": "#microsoft.graph.iosMobileAppIdentifier",
+        "bundleId": "com.microsoft.Office.Excel"
+      }
+    },
+    {
+      "mobileAppIdentifier": {
+        "@odata.type": "#microsoft.graph.iosMobileAppIdentifier",
+        "bundleId": "com.microsoft.teams"
+      }
+    }
+  ],
+  "assignments": [
+    {
+      "target": {
+        "@odata.type": "#microsoft.graph.groupAssignmentTarget",
+        "groupId": "da0f57dc-64a3-55d9-b2ad-9db34afcec0b"
+      }
+    }
+  ]
+}

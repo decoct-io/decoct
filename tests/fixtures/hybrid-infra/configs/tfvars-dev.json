@@ -1,0 +1,35 @@
+{
+  "workspace": "development",
+  "environment": "dev",
+  "region": "eu-central-1",
+  "compute": {
+    "app_instance_type": "t3.small",
+    "app_instance_count": 1,
+    "db_instance_type": "t3.medium",
+    "db_instance_count": 1
+  },
+  "networking": {
+    "vpc_cidr": "10.2.0.0/16",
+    "subnet_cidrs": [
+      "10.2.1.0/24"
+    ],
+    "domain": "dev.ridgeline.internal"
+  },
+  "database": {
+    "password": "devpassword"
+  },
+  "secrets": {
+    "api_secret": "sk_test_dev_key"
+  },
+  "features": {
+    "enable_monitoring": false,
+    "enable_backups": false,
+    "backup_retention_days": 0
+  },
+  "tags": {
+    "team": "platform",
+    "project": "ridgeline",
+    "environment": "dev",
+    "managed_by": "opentofu"
+  }
+}

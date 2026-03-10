@@ -1,0 +1,4 @@
+filename,env,storage_driver,log_driver,log_max_size,log_max_file,live_restore,iptables,ip_forward,userland_proxy,default_ulimits_nofile_soft,default_ulimits_nofile_hard,dns_servers,insecure_registries,registry_mirrors,experimental,metrics_addr,debug
+docker-daemon-prod,prod,overlay2,json-file,50m,5,true,true,true,false,65535,65535,8.8.8.8;8.8.4.4,none,none,false,0.0.0.0:9323,false
+docker-daemon-dev,dev,overlay2,json-file,100m,3,true,true,true,true,1024,1024,none,registry.ridgeline.internal:5000,none,true,none,true
+docker-daemon-ci,ci,overlay2,json-file,10m,2,false,true,true,false,65535,65535,none,none,none,false,none,false

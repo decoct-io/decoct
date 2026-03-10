@@ -1,0 +1,62 @@
+{
+  "@odata.type": "#microsoft.graph.conditionalAccessPolicy",
+  "id": "d51e683e-391b-5aca-b898-1c0e3cad9a11",
+  "createdDateTime": "2024-06-15T10:30:00Z",
+  "modifiedDateTime": "2024-11-20T14:45:00Z",
+  "templateId": null,
+  "displayName": "CA-Compliant-Device-Azure",
+  "state": "enabled",
+  "conditions": {
+    "users": {
+      "includeUsers": [
+        "All"
+      ],
+      "excludeUsers": [],
+      "includeGroups": [],
+      "excludeGroups": [],
+      "includeRoles": [],
+      "excludeRoles": []
+    },
+    "applications": {
+      "includeApplications": [
+        "797f4846-ba00-4fd7-ba43-dac1f8f63013"
+      ],
+      "excludeApplications": [],
+      "includeUserActions": [],
+      "includeAuthenticationContextClassReferences": []
+    },
+    "platforms": {
+      "includePlatforms": [
+        "windows",
+        "macOS"
+      ]
+    },
+    "locations": {
+      "includeLocations": [],
+      "excludeLocations": []
+    },
+    "clientAppTypes": [
+      "browser",
+      "mobileAppsAndDesktopClients"
+    ],
+    "userRiskLevels": [],
+    "signInRiskLevels": [],
+    "servicePrincipalRiskLevels": []
+  },
+  "grantControls": {
+    "operator": "AND",
+    "builtInControls": [
+      "compliantDevice",
+      "mfa"
+    ],
+    "customAuthenticationFactors": [],
+    "termsOfUse": []
+  },
+  "sessionControls": {
+    "signInFrequency": null,
+    "persistentBrowser": null,
+    "cloudAppSecurity": null,
+    "applicationEnforcedRestrictions": null,
+    "disableResilienceDefaults": false
+  }
+}

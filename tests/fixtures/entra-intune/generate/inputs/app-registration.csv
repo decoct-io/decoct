@@ -1,0 +1,13 @@
+display_name,sign_in_audience,is_fallback_public_client,is_device_only_auth_supported,web_redirect_uris,spa_redirect_uris,api_scopes,required_resource_access,identifier_uris,key_credentials,password_credentials,optional_claims
+App-Portal-Web,AzureADMyOrg,false,false,https://portal.contoso.com/auth/callback;https://portal.contoso.com/silent-callback,none,none,Graph:User.Read;Graph:Mail.Read,none,none,none,none
+App-Portal-SPA,AzureADMyOrg,false,false,none,https://spa.contoso.com/auth;https://spa.contoso.com/callback,none,Graph:User.Read,none,none,none,none
+App-Mobile-iOS,AzureADMyOrg,true,false,none,none,none,Graph:User.Read;Graph:Files.Read,none,none,none,none
+App-Mobile-Android,AzureADMyOrg,true,false,none,none,none,Graph:User.Read;Graph:Calendars.Read,none,none,none,none
+App-API-Backend,AzureADMyOrg,false,false,none,none,access_as_user;read_all;write_all,Graph:User.Read,api://contoso-api-backend,none,none,none
+App-API-Gateway,AzureADMultipleOrgs,false,false,https://gateway.contoso.com/oauth2/callback,none,gateway.read;gateway.write,Graph:User.Read;Graph:Application.Read.All,api://contoso-api-gateway,none,none,none
+App-Daemon-Service,AzureADMyOrg,false,false,none,none,none,Graph:Mail.Send;Graph:User.Read.All,none,none,xYz789$ecr3tV4lue!@,none
+App-B2C-Customer-Portal,AzureADandPersonalMicrosoftAccount,false,false,https://customers.contoso.com/auth/redirect,https://customers.contoso.com/spa-callback,none,Graph:User.Read;Graph:openid;Graph:profile,none,none,none,access_token:email;access_token:family_name;access_token:given_name
+App-Teams-Bot,AzureADMyOrg,false,false,https://teams-bot.contoso.com/auth/callback,none,none,Graph:User.Read;BotFramework:access_as_user,none,none,none,none
+App-PowerBI-Embedded,AzureADMyOrg,false,false,https://reports.contoso.com/auth/callback,none,none,Graph:User.Read;PowerBI:Dataset.Read.All;PowerBI:Report.Read.All,none,none,none,none
+App-Legacy-WinApp,AzureADMyOrg,true,true,none,none,none,Graph:User.Read,none,LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURlVENDQW1HZ0F3SUJBZ0lVYTFiMmMzZDRlNWY2Zzdo,none,none
+App-DevTest-Sandbox,AzureADMyOrg,false,false,https://localhost:3000/callback;https://localhost:5173/auth,https://localhost:5173/spa-auth,test.read;test.write,Graph:User.Read,none,none,xYz789$ecr3tV4lue!@,none

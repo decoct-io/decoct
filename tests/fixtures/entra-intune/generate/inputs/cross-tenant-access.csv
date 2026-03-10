@@ -1,0 +1,4 @@
+display_name,tenant_id,is_service_default,b2b_collab_inbound_access_type,b2b_collab_outbound_access_type,b2b_direct_inbound_access_type,b2b_direct_outbound_access_type,inbound_trust_mfa,inbound_trust_compliant_device,inbound_trust_hybrid_joined
+CTA-Partner-Contoso,72f988bf-86f1-41af-91ab-2d7cd011db47,false,allowed,allowed,allowed,allowed,true,true,true
+CTA-Partner-Fabrikam,f8cdef31-a31e-4b4a-93e4-5f571e91255a,false,allowed,allowed,blocked,blocked,true,false,false
+CTA-Default-Settings,00000000-0000-0000-0000-000000000000,true,allowed,allowed,blocked,blocked,false,false,false

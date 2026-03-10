@@ -1,0 +1,89 @@
+!
+! CUSTOM: BGP confederation
+router bgp {{ sub_as }}
+ bgp confederation identifier {{ confederation_as }}
+{% if confederation_peers is defined and confederation_peers %}
+ bgp confederation peers
+{% for peer_as in confederation_peers %}
+  {{ peer_as }}
+{% endfor %}
+ !
+{% endif %}
+ bgp router-id {{ loopback0_ip }}
+ bgp log neighbor changes detail
+ timers bgp 60 180
+ distance bgp 20 200 200
+ address-family ipv4 unicast
+  maximum-paths ebgp 1
+  maximum-paths ibgp 1
+  network {{ loopback0_ip }}/32
+ !
+{% if bgp_address_families is defined %}
+{% for af in bgp_address_families %}
+ address-family {{ af }}
+ !
+{% endfor %}
+{% endif %}
+{% if bgp_neighbors is defined %}
+{% for neighbor in bgp_neighbors %}
+ neighbor {{ neighbor.ip }}
+  remote-as {{ neighbor.remote_as }}
+  description {{ neighbor.description }}
+  update-source Loopback0
+{% if neighbor.rr_client is defined and neighbor.rr_client %}
+  address-family ipv4 unicast
+   route-reflector-client
+  !
+{% if 'vpnv4-unicast' in (bgp_address_families | default([])) %}
+  address-family vpnv4 unicast
+   route-reflector-client
+  !
+{% endif %}
+{% if 'vpnv6-unicast' in (bgp_address_families | default([])) %}
+  address-family vpnv6 unicast
+   route-reflector-client
+  !
+{% endif %}
+{% if 'l2vpn-evpn' in (bgp_address_families | default([])) %}
+  address-family l2vpn evpn
+   route-reflector-client
+  !
+{% endif %}
+{% else %}
+  address-family ipv4 unicast
+   soft-reconfiguration inbound always
+  !
+{% if 'vpnv4-unicast' in (bgp_address_families | default([])) %}
+  address-family vpnv4 unicast
+   soft-reconfiguration inbound always
+  !
+{% endif %}
+{% if 'l2vpn-evpn' in (bgp_address_families | default([])) %}
+  address-family l2vpn evpn
+   soft-reconfiguration inbound always
+  !
+{% endif %}
+{% endif %}
+  advertisement-interval 30
+  timers 60 180
+ !
+{% endfor %}
+{% endif %}
+{% if ebgp_peers is defined %}
+{% for peer in ebgp_peers %}
+ neighbor {{ peer.ip }}
+  remote-as {{ peer.remote_as }}
+  description {{ peer.description }}
+  address-family ipv4 unicast
+   route-policy {{ peering_policy }} in
+   route-policy RPL-EBGP-OUT out
+   soft-reconfiguration inbound always
+  !
+  advertisement-interval 30
+  timers 60 180
+ !
+{% endfor %}
+{% endif %}
+ nsr
+ graceful-restart
+!

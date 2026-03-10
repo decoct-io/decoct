@@ -1,0 +1,23 @@
+---
+# Ansible Variables — dev
+# Ridgeline Data — ansible-vars-dev
+# WARNING: Contains sensitive values — encrypt with ansible-vault in production
+
+# Database credentials
+db_password: "devpassword"
+
+# Vault password
+vault_password: "devvault"
+
+# API credentials
+api_key: "sk_test_dev_key"
+jwt_secret: "dev-jwt-secret"
+
+# Service passwords
+smtp_password: "devsmtp"
+backup_encryption_key: "devbackup"
+redis_password: "devredis"
+grafana_admin_password: "devgrafana"
+
+# Environment
+env: dev

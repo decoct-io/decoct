@@ -1,0 +1,39 @@
+{
+  "@odata.type": "#microsoft.graph.group",
+  "id": "138b16e0-f729-50d8-91b5-7b7bb287ddc1",
+  "createdDateTime": "2024-06-15T10:30:00Z",
+  "modifiedDateTime": "2024-11-20T14:45:00Z",
+  "deletedDateTime": null,
+  "renewedDateTime": "2024-11-20T14:45:00Z",
+  "displayName": "M365-AllCompany-Comms",
+  "description": "Company-wide communications and announcements",
+  "mailEnabled": true,
+  "mailNickname": "m365-allcompany-comms",
+  "securityEnabled": false,
+  "groupTypes": [
+    "Unified"
+  ],
+  "membershipRule": null,
+  "membershipRuleProcessingState": null,
+  "allowExternalSenders": true,
+  "autoSubscribeNewMembers": true,
+  "hideFromAddressLists": false,
+  "hideFromOutlookClients": false,
+  "isAssignableToRole": false,
+  "isSubscribedByMail": true,
+  "securityIdentifier": "S-1-12-1-138b16e0",
+  "onPremisesLastSyncDateTime": null,
+  "onPremisesSecurityIdentifier": null,
+  "onPremisesSyncEnabled": null,
+  "onPremisesProvisioningErrors": [],
+  "proxyAddresses": [
+    "SMTP:m365-allcompany-comms@contoso.com"
+  ],
+  "mail": "m365-allcompany-comms@contoso.com",
+  "visibility": "Public",
+  "preferredDataLocation": null,
+  "preferredLanguage": null,
+  "theme": null,
+  "resourceBehaviorOptions": [],
+  "resourceProvisioningOptions": []
+}

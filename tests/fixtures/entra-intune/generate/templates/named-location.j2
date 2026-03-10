@@ -1,0 +1,32 @@
+{% from "macros/common.j2" import audit_fields %}
+{% if location_type == "ip" %}
+{
+  "@odata.type": "#microsoft.graph.ipNamedLocation",
+  {{ audit_fields(id, created_date, modified_date) }},
+  "displayName": {{ display_name | tojson }},
+  "isTrusted": {{ is_trusted | tojson }},
+  "ipRanges": [
+    {% for range in ip_ranges %}
+    {
+      {% if ":" in range %}
+      "@odata.type": "#microsoft.graph.iPv6CidrRange",
+      "cidrAddress": {{ range | tojson }}
+      {% else %}
+      "@odata.type": "#microsoft.graph.iPv4CidrRange",
+      "cidrAddress": {{ range | tojson }}
+      {% endif %}
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+{% elif location_type == "country" %}
+{
+  "@odata.type": "#microsoft.graph.countryNamedLocation",
+  {{ audit_fields(id, created_date, modified_date) }},
+  "displayName": {{ display_name | tojson }},
+  "isTrusted": {{ is_trusted | tojson }},
+  "countriesAndRegions": {{ countries_and_regions | tojson }},
+  "includeUnknownCountriesAndRegions": {{ include_unknown_countries | tojson }},
+  "countryLookupMethod": "clientIpAddress"
+}
+{% endif %}

@@ -1,0 +1,43 @@
+---
+# {{ playbook_name }}
+# Ridgeline Data — {{ filename }}
+
+- name: {{ playbook_name }}
+  hosts: {{ hosts }}
+  become: {{ become }}
+  {% if become_user != 'none' %}
+  become_user: {{ become_user }}
+  {% endif %}
+  gather_facts: {{ gather_facts }}
+  any_errors_fatal: {{ any_errors_fatal }}
+  ignore_errors: {{ ignore_errors }}
+  check_mode: {{ check_mode }}
+  no_log: {{ no_log }}
+  run_once: {{ run_once }}
+  order: {{ order }}
+  {% if vars_list %}
+
+  vars:
+    {% for v in vars_list %}
+    {{ v.key }}: "{{ v.value }}"
+    {% endfor %}
+  {% endif %}
+
+  tasks:
+{% for task in tasks %}
+{% include 'sections/' ~ task ~ '.j2' %}
+
+{% endfor %}
+  {% if handlers and handlers[0] != 'none' %}
+  handlers:
+    {% for handler in handlers %}
+    - name: {{ handler }}
+      ansible.builtin.systemd:
+        name: "{% raw %}{{ service_name | default('ridgeline') }}{% endraw %}"
+        state: restarted
+        daemon_reload: false
+        daemon_reexec: false
+        no_block: false
+        scope: system
+    {% endfor %}
+  {% endif %}

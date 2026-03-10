@@ -1,0 +1,93 @@
+# {{ config_name }}
+# Ridgeline Data — {{ filename }} ({{ env }})
+
+app:
+  name: ridgeline-platform
+  version: {{ api_version }}
+  env: {{ env }}
+  debug: {{ debug_mode }}
+
+{% if log_level != 'none' %}
+logging:
+  level: {{ log_level }}
+  format: {{ log_format }}
+  handlers:
+    - console
+    - file
+  file:
+    path: /var/log/ridgeline/app.log
+    max_size: 100MB
+    max_backups: 5
+    compress: true
+{% endif %}
+
+{% if cors_origins != 'none' %}
+cors:
+  enabled: true
+  origins:
+{% for origin in cors_origins.split(';') %}
+    - {{ origin }}
+{% endfor %}
+  methods:
+    - GET
+    - POST
+    - PUT
+    - DELETE
+  allow_credentials: true
+{% endif %}
+
+{% if rate_limit_rpm != '0' %}
+rate_limiting:
+  enabled: true
+  requests_per_minute: {{ rate_limit_rpm }}
+  burst: 50
+  by: ip
+{% endif %}
+
+{% if feature_flags != 'none' %}
+features:
+{% for flag in feature_flags.split(';') %}
+{% set parts = flag.split(':') %}
+  {{ parts[0] }}: {{ parts[1] }}
+{% endfor %}
+{% endif %}
+
+{% if cache_ttl != '0' %}
+cache:
+  enabled: true
+  ttl: {{ cache_ttl }}
+  backend: redis
+  redis_url: "redis://:R3disP@ss!@redis:6379/1"
+{% endif %}
+
+{% if db_pool_size != '0' %}
+database:
+  pool_size: {{ db_pool_size }}
+  pool_timeout: {{ db_pool_timeout }}
+  pool_recycle: 3600
+  echo: false
+{% endif %}
+
+{% if config_name == 'Service Mesh Configuration' %}
+services:
+  core-api:
+    url: http://core-api:8000
+    timeout: 30
+    retries: 3
+  auth-service:
+    url: http://auth-service:8001
+    timeout: 10
+    retries: 2
+  billing-api:
+    url: http://billing-api:8002
+    timeout: 30
+    retries: 3
+  search-svc:
+    url: http://search-svc:8004
+    timeout: 15
+    retries: 2
+  notification-svc:
+    url: http://notification-svc:8003
+    timeout: 10
+    retries: 1
+{% endif %}

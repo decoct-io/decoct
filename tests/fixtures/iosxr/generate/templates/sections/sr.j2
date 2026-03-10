@@ -1,0 +1,33 @@
+!
+! CUSTOM: Segment Routing
+segment-routing
+ global-block 16000 23999
+ local-block 15000 15999
+!
+router static
+ address-family ipv4 unicast
+  0.0.0.0/0 MgmtEth0/RP0/CPU0/0 {{ mgmt_ip.rsplit('.', 1)[0] }}.254
+ !
+!
+{% if mpls_te_enabled is defined and mpls_te_enabled %}
+! CUSTOM: MPLS Traffic Engineering
+mpls traffic-eng
+ interface {{ p2p_interfaces[0].name }}
+ !
+{% for intf in p2p_interfaces[1:] %}
+ interface {{ intf.name }}
+ !
+{% endfor %}
+!
+{% endif %}
+mpls ldp
+ router-id {{ loopback0_ip }}
+ discovery hello interval 5
+ discovery hello hold-time 15
+ discovery targeted-hello interval 10
+ discovery targeted-hello hold-time 90
+ log neighbor
+ graceful-restart
+ address-family ipv4
+ !
+!

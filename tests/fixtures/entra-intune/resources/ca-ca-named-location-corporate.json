@@ -1,0 +1,60 @@
+{
+  "@odata.type": "#microsoft.graph.conditionalAccessPolicy",
+  "id": "cb1626ab-0573-5b79-8a66-90dc93d657a8",
+  "createdDateTime": "2024-06-15T10:30:00Z",
+  "modifiedDateTime": "2024-11-20T14:45:00Z",
+  "templateId": null,
+  "displayName": "CA-Named-Location-Corporate",
+  "state": "enabled",
+  "conditions": {
+    "users": {
+      "includeUsers": [
+        "All"
+      ],
+      "excludeUsers": [],
+      "includeGroups": [],
+      "excludeGroups": [],
+      "includeRoles": [],
+      "excludeRoles": []
+    },
+    "applications": {
+      "includeApplications": [
+        "All"
+      ],
+      "excludeApplications": [],
+      "includeUserActions": [],
+      "includeAuthenticationContextClassReferences": []
+    },
+    "platforms": {
+      "includePlatforms": []
+    },
+    "locations": {
+      "includeLocations": [
+        "NL-Corporate-HQ"
+      ],
+      "excludeLocations": []
+    },
+    "clientAppTypes": [
+      "browser",
+      "mobileAppsAndDesktopClients"
+    ],
+    "userRiskLevels": [],
+    "signInRiskLevels": [],
+    "servicePrincipalRiskLevels": []
+  },
+  "grantControls": {
+    "operator": "OR",
+    "builtInControls": [
+      "mfa"
+    ],
+    "customAuthenticationFactors": [],
+    "termsOfUse": []
+  },
+  "sessionControls": {
+    "signInFrequency": null,
+    "persistentBrowser": null,
+    "cloudAppSecurity": null,
+    "applicationEnforcedRestrictions": null,
+    "disableResilienceDefaults": false
+  }
+}

@@ -1,0 +1,155 @@
+# Docker Compose — compose-ci
+# Ridgeline Data — B2B Analytics Platform
+
+services:
+  core-api-test:
+    image: ridgeline/core-api:${CI_COMMIT_SHA}
+    restart: "no"
+    privileged: false
+    read_only: false
+    stdin_open: false
+    tty: false
+    init: false
+    command: pytest --cov=core_api -v
+    environment:
+      DATABASE_URL: "postgresql://test:testpassword@postgres:5432/test_db"
+      API_KEY: "sk_test_ci_key"
+      JWT_SECRET: "ci-jwt-secret"
+    depends_on:
+      postgres:
+        condition: service_started
+        required: true
+        restart: true
+    networks:
+      - ci-network
+    healthcheck:
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 0s
+      start_interval: 5s
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        max_attempts: 0
+      update_config:
+        parallelism: 1
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+    mem_limit: 2g
+    cpus: 1.0
+  postgres:
+    image: postgres:16-alpine
+    restart: "no"
+    privileged: false
+    read_only: false
+    stdin_open: false
+    tty: false
+    init: false
+    environment:
+      POSTGRES_PASSWORD: "testpassword"
+      POSTGRES_DB: "test_db"
+    networks:
+      - ci-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 0s
+      start_interval: 5s
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        max_attempts: 0
+      update_config:
+        parallelism: 1
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+    mem_limit: 512m
+    cpus: 0.5
+  mariadb:
+    image: mariadb:10.11
+    restart: "no"
+    privileged: false
+    read_only: false
+    stdin_open: false
+    tty: false
+    init: false
+    environment:
+      MARIADB_ROOT_PASSWORD: "testpassword"
+    networks:
+      - ci-network
+    healthcheck:
+      test: ["CMD-SHELL", "healthcheck.sh --connect --innodb_initialized"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 0s
+      start_interval: 5s
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        max_attempts: 0
+      update_config:
+        parallelism: 1
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+    mem_limit: 512m
+    cpus: 0.5
+  redis:
+    image: redis:7-alpine
+    restart: "no"
+    privileged: false
+    read_only: false
+    stdin_open: false
+    tty: false
+    init: false
+    networks:
+      - ci-network
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 0s
+      start_interval: 5s
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        max_attempts: 0
+      update_config:
+        parallelism: 1
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+    mem_limit: 128m
+    cpus: 0.1
+
+networks:
+  ci-network:
+    driver: bridge
+    external: false
+    internal: false
+    attachable: false
+    enable_ipv6: false
+

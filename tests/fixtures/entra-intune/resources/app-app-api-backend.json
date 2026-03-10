@@ -1,0 +1,90 @@
+{
+  "@odata.type": "#microsoft.graph.application",
+  "id": "1183d2b2-0ed9-5f80-b7a4-5c7adfd8e296",
+  "createdDateTime": "2024-06-15T10:30:00Z",
+  "modifiedDateTime": "2024-11-20T14:45:00Z",
+  "appId": "328ff003-8ec4-52c5-827d-8bc270bb442f",
+  "displayName": "App-API-Backend",
+  "publisherDomain": "contoso.com",
+  "signInAudience": "AzureADMyOrg",
+  "isFallbackPublicClient": false,
+  "isDeviceOnlyAuthSupported": false,
+  "oauth2RequiredPostResponse": false,
+  "nativeAuthenticationApisEnabled": "none",
+  "web": {
+    "redirectUris": [],
+    "homePageUrl": null,
+    "logoutUrl": null,
+    "implicitGrantSettings": {
+      "enableIdTokenIssuance": false,
+      "enableAccessTokenIssuance": false
+    }
+  },
+  "spa": {
+    "redirectUris": []
+  },
+  "api": {
+    "acceptMappedClaims": null,
+    "knownClientApplications": [],
+    "requestedAccessTokenVersion": 2,
+    "oauth2PermissionScopes": [
+      {
+        "adminConsentDescription": "Allow the application to access App-API-Backend on behalf of the signed-in user.",
+        "adminConsentDisplayName": "access_as_user",
+        "id": "1183d2b2-0ed9-5f80-b7a4-5c7adfd8e296-scope-0",
+        "isEnabled": true,
+        "type": "User",
+        "userConsentDescription": "Allow the application to access App-API-Backend on your behalf.",
+        "userConsentDisplayName": "access_as_user",
+        "value": "access_as_user"
+      },
+      {
+        "adminConsentDescription": "Allow the application to access App-API-Backend on behalf of the signed-in user.",
+        "adminConsentDisplayName": "read_all",
+        "id": "1183d2b2-0ed9-5f80-b7a4-5c7adfd8e296-scope-1",
+        "isEnabled": true,
+        "type": "User",
+        "userConsentDescription": "Allow the application to access App-API-Backend on your behalf.",
+        "userConsentDisplayName": "read_all",
+        "value": "read_all"
+      },
+      {
+        "adminConsentDescription": "Allow the application to access App-API-Backend on behalf of the signed-in user.",
+        "adminConsentDisplayName": "write_all",
+        "id": "1183d2b2-0ed9-5f80-b7a4-5c7adfd8e296-scope-2",
+        "isEnabled": true,
+        "type": "User",
+        "userConsentDescription": "Allow the application to access App-API-Backend on your behalf.",
+        "userConsentDisplayName": "write_all",
+        "value": "write_all"
+      }
+    ],
+    "preAuthorizedApplications": []
+  },
+  "requiredResourceAccess": [
+    {
+      "resourceAppId": "00000003-0000-0000-c000-000000000000",
+      "resourceAccess": [
+        {
+          "id": "1183d2b2-0ed9-5f80-b7a4-5c7adfd8e296-ra-0",
+          "type": "Scope"
+        }
+      ]
+    }
+  ],
+  "identifierUris": [
+    "api://contoso-api-backend"
+  ],
+  "keyCredentials": [],
+  "passwordCredentials": [],
+  "optionalClaims": null,
+  "tags": [],
+  "appRoles": [],
+  "info": {
+    "logoUrl": null,
+    "marketingUrl": null,
+    "privacyStatementUrl": null,
+    "supportUrl": null,
+    "termsOfServiceUrl": null
+  }
+}

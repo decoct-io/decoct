@@ -1,0 +1,76 @@
+{
+  "@odata.type": "#microsoft.graph.application",
+  "id": "3130b034-f661-5e55-b7ce-4dd835b2282c",
+  "createdDateTime": "2024-06-15T10:30:00Z",
+  "modifiedDateTime": "2024-11-20T14:45:00Z",
+  "appId": "4b1d9df5-3023-5c7a-8fca-7e8828f67148",
+  "displayName": "App-Daemon-Service",
+  "publisherDomain": "contoso.com",
+  "signInAudience": "AzureADMyOrg",
+  "isFallbackPublicClient": false,
+  "isDeviceOnlyAuthSupported": false,
+  "oauth2RequiredPostResponse": false,
+  "nativeAuthenticationApisEnabled": "none",
+  "web": {
+    "redirectUris": [],
+    "homePageUrl": null,
+    "logoutUrl": null,
+    "implicitGrantSettings": {
+      "enableIdTokenIssuance": false,
+      "enableAccessTokenIssuance": false
+    }
+  },
+  "spa": {
+    "redirectUris": []
+  },
+  "api": {
+    "acceptMappedClaims": null,
+    "knownClientApplications": [],
+    "requestedAccessTokenVersion": 2,
+    "oauth2PermissionScopes": [],
+    "preAuthorizedApplications": []
+  },
+  "requiredResourceAccess": [
+    {
+      "resourceAppId": "00000003-0000-0000-c000-000000000000",
+      "resourceAccess": [
+        {
+          "id": "3130b034-f661-5e55-b7ce-4dd835b2282c-ra-0",
+          "type": "Scope"
+        }
+      ]
+    },
+    {
+      "resourceAppId": "00000003-0000-0000-c000-000000000000",
+      "resourceAccess": [
+        {
+          "id": "3130b034-f661-5e55-b7ce-4dd835b2282c-ra-1",
+          "type": "Scope"
+        }
+      ]
+    }
+  ],
+  "identifierUris": [],
+  "keyCredentials": [],
+  "passwordCredentials": [
+    {
+      "customKeyIdentifier": null,
+      "displayName": "Client Secret",
+      "endDateTime": "2026-06-15T10:30:00Z",
+      "hint": "xYz",
+      "keyId": "3130b034-f661-5e55-b7ce-4dd835b2282c-pwd-0",
+      "secretText": "xYz789$ecr3tV4lue!@",
+      "startDateTime": "2024-06-15T10:30:00Z"
+    }
+  ],
+  "optionalClaims": null,
+  "tags": [],
+  "appRoles": [],
+  "info": {
+    "logoUrl": null,
+    "marketingUrl": null,
+    "privacyStatementUrl": null,
+    "supportUrl": null,
+    "termsOfServiceUrl": null
+  }
+}

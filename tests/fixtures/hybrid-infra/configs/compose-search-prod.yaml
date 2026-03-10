@@ -1,0 +1,114 @@
+# Docker Compose — compose-search-prod
+# Ridgeline Data — B2B Analytics Platform
+
+services:
+  search-svc:
+    image: ridgeline/search-svc:0.9.0
+    restart: "always"
+    privileged: false
+    read_only: false
+    stdin_open: false
+    tty: false
+    init: false
+    ports:
+      - "8004:8004"
+    environment:
+      ELASTICSEARCH_URL: "http://elasticsearch:9200"
+      ELASTICSEARCH_PASSWORD: "El@sticP@ss!"
+      API_KEY: "sk_live_search_key_xyz"
+    volumes:
+      - search-data:/app/data
+    depends_on:
+      elasticsearch:
+        condition: service_started
+        required: true
+        restart: true
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.search.rule: "Host(`search.ridgeline.io`)"
+    networks:
+      - app-network
+      - monitoring
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8004/health"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 15s
+      start_interval: 5s
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        max_attempts: 0
+      update_config:
+        parallelism: 1
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+    mem_limit: 1g
+    cpus: 0.5
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.13.0
+    restart: "unless-stopped"
+    privileged: false
+    read_only: false
+    stdin_open: false
+    tty: false
+    init: false
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      discovery.type: "single-node"
+      ELASTIC_PASSWORD: "El@sticP@ss!"
+      xpack.security.enabled: "true"
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health"]
+      interval: 60s
+      timeout: 30s
+      retries: 5
+      start_period: 60s
+      start_interval: 5s
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        max_attempts: 0
+      update_config:
+        parallelism: 1
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+    mem_limit: 4g
+    cpus: 2.0
+
+networks:
+  app-network:
+    driver: bridge
+    external: false
+    internal: false
+    attachable: false
+    enable_ipv6: false
+  monitoring:
+    driver: bridge
+    external: false
+    internal: false
+    attachable: false
+    enable_ipv6: false
+
+volumes:
+  search-data:
+    external: false
+  es-data:
+    external: false

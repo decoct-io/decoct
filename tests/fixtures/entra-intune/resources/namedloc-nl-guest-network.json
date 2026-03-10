@@ -1,0 +1,18 @@
+{
+  "@odata.type": "#microsoft.graph.ipNamedLocation",
+  "id": "aad86928-364e-51c2-abd3-9aadc528140b",
+  "createdDateTime": "2024-06-15T10:30:00Z",
+  "modifiedDateTime": "2024-11-20T14:45:00Z",
+  "displayName": "NL-Guest-Network",
+  "isTrusted": false,
+  "ipRanges": [
+    {
+      "@odata.type": "#microsoft.graph.iPv4CidrRange",
+      "cidrAddress": "10.99.0.0/16"
+    },
+    {
+      "@odata.type": "#microsoft.graph.iPv4CidrRange",
+      "cidrAddress": "172.31.0.0/16"
+    }
+  ]
+}

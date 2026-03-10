@@ -1,0 +1,54 @@
+{
+  "@odata.type": "#microsoft.graph.androidCompliancePolicy",
+  "id": "95e7cb4c-2ad7-54ce-8ca9-5a534b81ef0e",
+  "createdDateTime": "2024-06-15T10:30:00Z",
+  "modifiedDateTime": "2024-11-20T14:45:00Z",
+  "displayName": "CP-Android-Standard",
+  "description": "Standard Android compliance policy",
+  "version": 1,
+  "roleScopeTagIds": [
+    "0"
+  ],
+  "passwordRequired": false,
+  "passwordRequiredType": "deviceDefault",
+  "passwordMinimumLength": null,
+  "passwordMinutesOfInactivityBeforeLock": null,
+  "passwordExpirationDays": null,
+  "passwordPreviousPasswordBlockCount": null,
+  "securityPreventInstallAppsFromUnknownSources": false,
+  "securityDisableUsbDebugging": false,
+  "securityRequireVerifyApps": false,
+  "deviceThreatProtectionEnabled": false,
+  "deviceThreatProtectionRequiredSecurityLevel": "unavailable",
+  "securityBlockJailbrokenDevices": false,
+  "storageRequireEncryption": false,
+  "securityRequireSafetyNetAttestationBasicIntegrity": false,
+  "securityRequireSafetyNetAttestationCertifiedDevice": false,
+  "securityRequireGooglePlayServices": false,
+  "securityRequireUpToDateSecurityProviders": false,
+  "securityRequireCompanyPortalAppIntegrity": false,
+  "osMinimumVersion": null,
+  "osMaximumVersion": null,
+  "minAndroidSecurityPatchLevel": null,
+  "scheduledActionsForRule": [
+    {
+      "ruleName": "PasswordRequired",
+      "scheduledActionConfigurations": [
+        {
+          "actionType": "block",
+          "gracePeriodHours": 24,
+          "notificationTemplateId": "",
+          "notificationMessageCCList": []
+        }
+      ]
+    }
+  ],
+  "assignments": [
+    {
+      "target": {
+        "@odata.type": "#microsoft.graph.groupAssignmentTarget",
+        "groupId": "496f4253-0480-5d9f-a32e-faad9a648cba"
+      }
+    }
+  ]
+}

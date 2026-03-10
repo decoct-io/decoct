@@ -1,0 +1,15 @@
+    - name: Configure scheduled backup
+      ansible.builtin.cron:
+        name: "ridgeline-backup"
+        job: "/opt/ridgeline/scripts/backup-all-dbs.sh"
+        minute: "0"
+        hour: "3"
+        state: present
+        backup: false
+        disabled: false
+        user: root
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: {{ become }}

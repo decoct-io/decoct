@@ -1,0 +1,68 @@
+{
+  "@odata.type": "#microsoft.graph.application",
+  "id": "1cfb4d16-0c4d-5313-9abb-995e6af8dc11",
+  "createdDateTime": "2024-06-15T10:30:00Z",
+  "modifiedDateTime": "2024-11-20T14:45:00Z",
+  "appId": "7ea7b940-e701-5fd5-9aa0-2dcc1aa4d7bc",
+  "displayName": "App-Legacy-WinApp",
+  "publisherDomain": "contoso.com",
+  "signInAudience": "AzureADMyOrg",
+  "isFallbackPublicClient": true,
+  "isDeviceOnlyAuthSupported": true,
+  "oauth2RequiredPostResponse": false,
+  "nativeAuthenticationApisEnabled": "none",
+  "web": {
+    "redirectUris": [],
+    "homePageUrl": null,
+    "logoutUrl": null,
+    "implicitGrantSettings": {
+      "enableIdTokenIssuance": false,
+      "enableAccessTokenIssuance": false
+    }
+  },
+  "spa": {
+    "redirectUris": []
+  },
+  "api": {
+    "acceptMappedClaims": null,
+    "knownClientApplications": [],
+    "requestedAccessTokenVersion": 2,
+    "oauth2PermissionScopes": [],
+    "preAuthorizedApplications": []
+  },
+  "requiredResourceAccess": [
+    {
+      "resourceAppId": "00000003-0000-0000-c000-000000000000",
+      "resourceAccess": [
+        {
+          "id": "1cfb4d16-0c4d-5313-9abb-995e6af8dc11-ra-0",
+          "type": "Scope"
+        }
+      ]
+    }
+  ],
+  "identifierUris": [],
+  "keyCredentials": [
+    {
+      "customKeyIdentifier": null,
+      "displayName": "CN=App-Legacy-WinApp",
+      "endDateTime": "2026-06-15T10:30:00Z",
+      "key": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURlVENDQW1HZ0F3SUJBZ0lVYTFiMmMzZDRlNWY2Zzdo",
+      "keyId": "1cfb4d16-0c4d-5313-9abb-995e6af8dc11-key-0",
+      "startDateTime": "2024-06-15T10:30:00Z",
+      "type": "AsymmetricX509Cert",
+      "usage": "Verify"
+    }
+  ],
+  "passwordCredentials": [],
+  "optionalClaims": null,
+  "tags": [],
+  "appRoles": [],
+  "info": {
+    "logoUrl": null,
+    "marketingUrl": null,
+    "privacyStatementUrl": null,
+    "supportUrl": null,
+    "termsOfServiceUrl": null
+  }
+}

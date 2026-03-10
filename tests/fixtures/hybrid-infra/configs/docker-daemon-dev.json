@@ -1,0 +1,24 @@
+{
+  "storage-driver": "overlay2",
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "100m",
+    "max-file": "3"
+  },
+  "live-restore": true,
+  "iptables": true,
+  "ip-forward": true,
+  "userland-proxy": true,
+  "default-ulimits": {
+    "nofile": {
+      "Name": "nofile",
+      "Soft": 1024,
+      "Hard": 1024
+    }
+  },
+  "insecure-registries": [
+    "registry.ridgeline.internal:5000"
+  ],
+  "experimental": true,
+  "debug": true
+}

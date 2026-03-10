@@ -1,0 +1,124 @@
+# Prometheus Configuration — {{ env }}
+# Ridgeline Data — {{ filename }}
+
+# ── Global ─────────────────────────────────────────────────────────────────────
+global:
+  scrape_interval: {{ global_scrape_interval }}
+  scrape_timeout: {{ global_scrape_timeout }}
+  evaluation_interval: {{ global_evaluation_interval }}
+  body_size_limit: 0
+  sample_limit: 0
+  label_limit: 0
+  label_name_length_limit: 0
+  label_value_length_limit: 0
+  target_limit: 0
+  keep_dropped_targets: 0
+  scrape_native_histograms: false
+{% if external_labels != 'none' %}
+  external_labels:
+{% for pair in external_labels.split(';') %}
+{% set kv = pair.split(':') %}
+    {{ kv[0] }}: {{ kv[1] }}
+{% endfor %}
+{% endif %}
+
+{% if rule_files %}
+# ── Rule Files ─────────────────────────────────────────────────────────────────
+rule_files:
+{% for rf in rule_files %}
+  - "{{ rf }}"
+{% endfor %}
+{% endif %}
+
+{% if alertmanagers %}
+# ── Alerting ───────────────────────────────────────────────────────────────────
+alerting:
+  alertmanagers:
+{% for am in alertmanagers %}
+    - scheme: http
+      timeout: 10s
+      api_version: v2
+      follow_redirects: true
+      enable_http2: true
+      static_configs:
+        - targets:
+            - {{ am }}
+{% endfor %}
+{% endif %}
+
+# ── Scrape Configs ─────────────────────────────────────────────────────────────
+scrape_configs:
+  - job_name: prometheus
+    scrape_interval: {{ global_scrape_interval }}
+    scrape_timeout: {{ global_scrape_timeout }}
+    metrics_path: /metrics
+    scheme: http
+    honor_labels: false
+    honor_timestamps: true
+    track_timestamps_staleness: false
+    enable_compression: true
+    follow_redirects: true
+    enable_http2: true
+    body_size_limit: 0
+    sample_limit: 0
+    label_limit: 0
+    label_name_length_limit: 0
+    label_value_length_limit: 0
+    target_limit: 0
+    keep_dropped_targets: 0
+    static_configs:
+      - targets:
+          - localhost:9090
+
+{% for target in scrape_targets %}
+{% set parts = target.key.split(':') if target.key is defined else target.split(':') %}
+  - job_name: {{ parts[0] if parts is defined else target }}
+    scrape_interval: {{ global_scrape_interval }}
+    scrape_timeout: {{ global_scrape_timeout }}
+    metrics_path: /metrics
+    scheme: http
+    honor_labels: false
+    honor_timestamps: true
+    track_timestamps_staleness: false
+    enable_compression: true
+    follow_redirects: true
+    enable_http2: true
+    body_size_limit: 0
+    sample_limit: 0
+    label_limit: 0
+    label_name_length_limit: 0
+    label_value_length_limit: 0
+    target_limit: 0
+    keep_dropped_targets: 0
+    static_configs:
+      - targets:
+{% if parts|length >= 3 %}
+          - "{{ parts[1] }}:{{ parts[2] }}"
+{% else %}
+          - "{{ target.value if target.value is defined else parts[1] if parts|length > 1 else 'localhost:9090' }}"
+{% endif %}
+{% endfor %}
+
+{% if remote_write_url != 'none' %}
+# ── Remote Write ───────────────────────────────────────────────────────────────
+remote_write:
+  - url: {{ remote_write_url }}
+    remote_timeout: 30s
+    send_exemplars: false
+    send_native_histograms: false
+    follow_redirects: true
+    enable_http2: false
+    queue_config:
+      capacity: 10000
+      max_shards: 50
+      min_shards: 1
+      max_samples_per_send: 2000
+      batch_send_deadline: 5s
+      min_backoff: 30ms
+      max_backoff: 5s
+      retry_on_http_429: false
+    metadata_config:
+      send: true
+      send_interval: 1m
+      max_samples_per_send: 2000
+{% endif %}

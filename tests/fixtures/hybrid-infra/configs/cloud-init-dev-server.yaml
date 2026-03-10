@@ -1,0 +1,104 @@
+#cloud-config
+# Cloud-Init — dev server (dev)
+# Ridgeline Data — dev-01
+
+# ── Package Management ─────────────────────────────────────────────────────────
+package_update: false
+package_upgrade: false
+package_reboot_if_required: false
+
+packages:
+  - curl
+  - wget
+  - htop
+  - vim
+  - git
+  - docker-ce
+  - docker-compose-plugin
+  - python3-pip
+  - nodejs
+  - npm
+
+# ── SSH ────────────────────────────────────────────────────────────────────────
+ssh:
+  emit_keys_to_console: true
+ssh_deletekeys: true
+allow_public_ssh_keys: true
+disable_root: false
+ssh_quiet_keygen: false
+
+# ── Users ──────────────────────────────────────────────────────────────────────
+users:
+  - default
+  - name: deploy
+    groups: sudo
+    lock_passwd: true
+    no_create_home: false
+    no_log_init: false
+    no_user_group: false
+    create_groups: true
+    system: false
+    ssh_redirect_user: false
+    shell: /bin/bash
+    sudo: ALL=(ALL) NOPASSWD:ALL
+  - name: dev
+    groups: sudo
+    lock_passwd: true
+    no_create_home: false
+    no_log_init: false
+    no_user_group: false
+    create_groups: true
+    system: false
+    ssh_redirect_user: false
+    shell: /bin/bash
+    sudo: ALL=(ALL) NOPASSWD:ALL
+  - name: intern
+    groups: users
+    lock_passwd: true
+    no_create_home: false
+    no_log_init: false
+    no_user_group: false
+    create_groups: true
+    system: false
+    ssh_redirect_user: false
+    shell: /bin/bash
+    sudo: ALL=(ALL) NOPASSWD:ALL
+
+# ── Disk / Filesystem ─────────────────────────────────────────────────────────
+growpart:
+  mode: auto
+  ignore_growroot_disabled: false
+
+# ── NTP ────────────────────────────────────────────────────────────────────────
+ntp:
+  enabled: true
+  ntp_client: auto
+  servers:
+    - pool.ntp.org
+
+# ── APT ────────────────────────────────────────────────────────────────────────
+apt:
+  preserve_sources_list: false
+apt_pipelining: os
+
+# ── Hostname / Networking ──────────────────────────────────────────────────────
+hostname: dev-01
+manage_etc_hosts: false
+preserve_hostname: false
+manage_resolv_conf: false
+disable_ec2_metadata: false
+
+timezone: UTC
+
+# ── Write Files ────────────────────────────────────────────────────────────────
+
+# ── CA Certificates ───────────────────────────────────────────────────────────
+ca_certs:
+  remove_defaults: false
+
+# ── Power State ────────────────────────────────────────────────────────────────
+power_state:
+  delay: now
+  timeout: 30
+  condition: true
+

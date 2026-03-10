@@ -1,0 +1,151 @@
+# Docker Compose — compose-app-prod-01
+# Ridgeline Data — B2B Analytics Platform
+
+services:
+  core-api:
+    image: ridgeline/core-api:2.1.0
+    restart: "always"
+    privileged: false
+    read_only: false
+    stdin_open: false
+    tty: false
+    init: false
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: "postgresql://core:Sup3rS3cretDB@db-prod-01:5432/core"
+      API_KEY: "sk_live_4eC39HqLyjWDarjtT1zdp7dc"
+      JWT_SECRET: "xK9mPqR7vL2nW5jF8hT3yB6cD4gA1sE"
+      REDIS_URL: "redis://:R3disP@ss!@redis:6379"
+    volumes:
+      - /opt/ridgeline/core-api/data:/app/data
+      - /opt/ridgeline/core-api/logs:/app/logs
+    depends_on:
+      redis:
+        condition: service_started
+        required: true
+        restart: true
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.core-api.rule: "Host(`api.ridgeline.io`)"
+    networks:
+      - app-network
+      - monitoring
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/health"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 10s
+      start_interval: 5s
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: any
+        max_attempts: 0
+      update_config:
+        parallelism: 1
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+    mem_limit: 2g
+    cpus: 1.0
+  auth-service:
+    image: ridgeline/auth-service:1.8.0
+    restart: "always"
+    privileged: false
+    read_only: false
+    stdin_open: false
+    tty: false
+    init: false
+    ports:
+      - "8001:8001"
+    environment:
+      DATABASE_URL: "postgresql://auth:AuthP@ssw0rd@db-prod-01:5432/auth"
+      JWT_SECRET: "xK9mPqR7vL2nW5jF8hT3yB6cD4gA1sE"
+      OAUTH_CLIENT_SECRET: "ocs_Xm9pL7kR2vN4wQ8jT5"
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.auth.rule: "Host(`auth.ridgeline.io`)"
+    networks:
+      - app-network
+      - monitoring
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8001/health"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 10s
+      start_interval: 5s
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        max_attempts: 0
+      update_config:
+        parallelism: 1
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+    mem_limit: 1g
+    cpus: 0.5
+  redis:
+    image: redis:7-alpine
+    restart: "no"
+    privileged: false
+    read_only: false
+    stdin_open: false
+    tty: false
+    init: false
+    environment:
+      REDIS_PASSWORD: "R3disP@ss!"
+    volumes:
+      - redis-data:/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 0s
+      start_interval: 5s
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        max_attempts: 0
+      update_config:
+        parallelism: 1
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+    mem_limit: 512m
+    cpus: 0.25
+
+networks:
+  app-network:
+    driver: bridge
+    external: false
+    internal: false
+    attachable: false
+    enable_ipv6: false
+  monitoring:
+    driver: bridge
+    external: false
+    internal: false
+    attachable: false
+    enable_ipv6: false
+
+volumes:
+  redis-data:
+    external: false

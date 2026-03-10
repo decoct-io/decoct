@@ -1,0 +1,20 @@
+    - name: Copy configuration files
+      ansible.builtin.copy:
+        src: "{% raw %}{{ item.src }}{% endraw %}"
+        dest: "{% raw %}{{ item.dest }}{% endraw %}"
+        owner: root
+        group: root
+        mode: "0644"
+        backup: false
+        decrypt: true
+        follow: false
+        force: true
+        remote_src: false
+        unsafe_writes: false
+      loop:
+        - { src: "files/config.conf", dest: "/etc/ridgeline/config.conf" }
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: {{ become }}

@@ -1,0 +1,29 @@
+---
+# Ansible Variables — {{ env }}
+# Ridgeline Data — {{ filename }}
+# WARNING: Contains sensitive values — encrypt with ansible-vault in production
+
+# Database credentials
+db_password: "{{ db_password }}"
+{% if deploy_key != 'none' %}
+
+# Deployment SSH key
+deploy_key: |
+  {{ deploy_key }}
+{% endif %}
+
+# Vault password
+vault_password: "{{ vault_password }}"
+
+# API credentials
+api_key: "{{ api_key }}"
+jwt_secret: "{{ jwt_secret }}"
+
+# Service passwords
+smtp_password: "{{ smtp_password }}"
+backup_encryption_key: "{{ backup_encryption_key }}"
+redis_password: "{{ redis_password }}"
+grafana_admin_password: "{{ grafana_admin_password }}"
+
+# Environment
+env: {{ env }}

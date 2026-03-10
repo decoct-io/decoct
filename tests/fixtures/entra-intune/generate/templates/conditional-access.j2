@@ -1,0 +1,71 @@
+{% from "macros/common.j2" import audit_fields %}
+{
+  "@odata.type": "#microsoft.graph.conditionalAccessPolicy",
+  {{ audit_fields(id, created_date, modified_date) }},
+  "templateId": null,
+  "displayName": {{ display_name | tojson }},
+  "state": {{ state | tojson }},
+  "conditions": {
+    "users": {
+      "includeUsers": {{ include_users | tojson }},
+      "excludeUsers": {{ exclude_users | tojson }},
+      "includeGroups": {{ include_groups | tojson }},
+      "excludeGroups": {{ exclude_groups | tojson }},
+      "includeRoles": [],
+      "excludeRoles": []
+    },
+    "applications": {
+      "includeApplications": {{ include_applications | tojson }},
+      "excludeApplications": {{ exclude_applications | tojson }},
+      "includeUserActions": [],
+      "includeAuthenticationContextClassReferences": []
+    },
+    "platforms": {
+      "includePlatforms": {{ include_platforms | tojson }}
+    },
+    "locations": {
+      "includeLocations": {{ include_locations | tojson }},
+      "excludeLocations": []
+    },
+    "clientAppTypes": {{ client_app_types | tojson }},
+    "userRiskLevels": {{ user_risk_levels | tojson }},
+    "signInRiskLevels": {{ sign_in_risk_levels | tojson }},
+    "servicePrincipalRiskLevels": []
+  },
+  "grantControls": {
+    "operator": {{ grant_operator | tojson }},
+    "builtInControls": {{ grant_controls | tojson }},
+    "customAuthenticationFactors": [],
+    "termsOfUse": []
+  },
+  "sessionControls": {
+    {% if session_sign_in_frequency and session_sign_in_frequency != "none" %}
+    "signInFrequency": {
+      "value": {{ session_sign_in_frequency.split(":")[0] | int }},
+      "type": {{ session_sign_in_frequency.split(":")[1] | tojson }},
+      "isEnabled": true,
+      "frequencyInterval": "timeBased",
+      "authenticationType": "primaryAndSecondaryAuthentication"
+    },
+    {% else %}
+    "signInFrequency": null,
+    {% endif %}
+    {% if session_persistent_browser and session_persistent_browser != "none" %}
+    "persistentBrowser": {
+      "mode": {{ session_persistent_browser | tojson }},
+      "isEnabled": true
+    },
+    {% else %}
+    "persistentBrowser": null,
+    {% endif %}
+    "cloudAppSecurity": null,
+    "applicationEnforcedRestrictions": null,
+    "disableResilienceDefaults": {{ disable_resilience_defaults | tojson }}
+  }
+  {% if client_secret %}
+  ,"_metadata": {
+    "clientSecret": {{ client_secret | tojson }},
+    "policyVersion": "1.0"
+  }
+  {% endif %}
+}

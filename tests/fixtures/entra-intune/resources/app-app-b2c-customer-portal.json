@@ -1,0 +1,105 @@
+{
+  "@odata.type": "#microsoft.graph.application",
+  "id": "e1239019-09e3-5e47-b353-8ebc10e4ad47",
+  "createdDateTime": "2024-06-15T10:30:00Z",
+  "modifiedDateTime": "2024-11-20T14:45:00Z",
+  "appId": "2d1a241d-a476-5250-88f6-952e095d0f20",
+  "displayName": "App-B2C-Customer-Portal",
+  "publisherDomain": "contoso.com",
+  "signInAudience": "AzureADandPersonalMicrosoftAccount",
+  "isFallbackPublicClient": false,
+  "isDeviceOnlyAuthSupported": false,
+  "oauth2RequiredPostResponse": false,
+  "nativeAuthenticationApisEnabled": "none",
+  "web": {
+    "redirectUris": [
+      "https://customers.contoso.com/auth/redirect"
+    ],
+    "homePageUrl": null,
+    "logoutUrl": null,
+    "implicitGrantSettings": {
+      "enableIdTokenIssuance": false,
+      "enableAccessTokenIssuance": false
+    }
+  },
+  "spa": {
+    "redirectUris": [
+      "https://customers.contoso.com/spa-callback"
+    ]
+  },
+  "api": {
+    "acceptMappedClaims": null,
+    "knownClientApplications": [],
+    "requestedAccessTokenVersion": 2,
+    "oauth2PermissionScopes": [],
+    "preAuthorizedApplications": []
+  },
+  "requiredResourceAccess": [
+    {
+      "resourceAppId": "00000003-0000-0000-c000-000000000000",
+      "resourceAccess": [
+        {
+          "id": "e1239019-09e3-5e47-b353-8ebc10e4ad47-ra-0",
+          "type": "Scope"
+        }
+      ]
+    },
+    {
+      "resourceAppId": "00000003-0000-0000-c000-000000000000",
+      "resourceAccess": [
+        {
+          "id": "e1239019-09e3-5e47-b353-8ebc10e4ad47-ra-1",
+          "type": "Scope"
+        }
+      ]
+    },
+    {
+      "resourceAppId": "00000003-0000-0000-c000-000000000000",
+      "resourceAccess": [
+        {
+          "id": "e1239019-09e3-5e47-b353-8ebc10e4ad47-ra-2",
+          "type": "Scope"
+        }
+      ]
+    }
+  ],
+  "identifierUris": [],
+  "keyCredentials": [],
+  "passwordCredentials": [],
+  "optionalClaims": {
+    "accessToken": [
+      {
+        "additionalProperties": [],
+        "essential": false,
+        "name": "email",
+        "source": null
+      },
+      {
+        "additionalProperties": [],
+        "essential": false,
+        "name": "family_name",
+        "source": null
+      },
+      {
+        "additionalProperties": [],
+        "essential": false,
+        "name": "given_name",
+        "source": null
+      },
+      {
+        "_sentinel": true
+      }
+    ],
+    "idToken": [],
+    "saml2Token": []
+  },
+  "tags": [],
+  "appRoles": [],
+  "info": {
+    "logoUrl": null,
+    "marketingUrl": null,
+    "privacyStatementUrl": null,
+    "supportUrl": null,
+    "termsOfServiceUrl": null
+  }
+}

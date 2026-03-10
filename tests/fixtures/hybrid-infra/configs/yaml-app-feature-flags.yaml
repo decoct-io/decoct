@@ -1,0 +1,35 @@
+# Feature Flags
+# Ridgeline Data — yaml-app-feature-flags (prod)
+
+app:
+  name: ridgeline-platform
+  version: v2
+  env: prod
+  debug: false
+
+logging:
+  level: INFO
+  format: json
+  handlers:
+    - console
+    - file
+  file:
+    path: /var/log/ridgeline/app.log
+    max_size: 100MB
+    max_backups: 5
+    compress: true
+
+
+
+features:
+  analytics_v2: true
+  new_billing: false
+  dark_mode: true
+  search_v2: true
+  notification_batching: true
+  report_scheduling: true
+  admin_audit_log: false
+  legacy_compat: true
+
+
+

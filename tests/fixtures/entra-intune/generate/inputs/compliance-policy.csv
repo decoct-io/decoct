@@ -1,0 +1,11 @@
+display_name,platform,description,password_required,password_block_simple,password_min_length,password_required_type,security_block_jailbroken,device_threat_protection_enabled,device_threat_protection_level,storage_require_encryption,bitlocker_enabled,secure_boot_enabled,code_integrity_enabled,firewall_enabled,firewall_block_all_incoming,system_integrity_protection,scheduled_actions,assignments
+CP-Win-Basic-Security,windows,Basic Windows 10 compliance for standard users,false,false,0,deviceDefault,false,false,unavailable,false,false,false,false,false,false,false,24,group:DG-All-Corp-Windows
+CP-Win-Advanced-Security,windows,Advanced Windows compliance with hardware security,true,true,8,alphanumeric,false,true,secured,true,true,true,true,true,false,false,4,group:DG-All-Corp-Windows
+CP-Win-Kiosk-Devices,windows,Minimal compliance for shared kiosk Windows devices,false,false,0,deviceDefault,false,false,unavailable,true,false,false,false,false,false,false,72,group:SG-IT-Admins
+CP-iOS-Standard,ios,Standard iOS compliance policy,false,false,0,deviceDefault,false,false,unavailable,false,false,false,false,false,false,false,24,group:DG-All-Corp-iOS
+CP-iOS-Corporate-Managed,ios,Strict iOS compliance for corporate-managed devices,true,true,6,numeric,true,true,secured,false,false,false,false,false,false,false,4,group:DG-All-Corp-iOS
+CP-iOS-BYOD,ios,Lightweight compliance for BYOD iOS devices,false,false,0,deviceDefault,true,false,unavailable,false,false,false,false,false,false,false,48,group:SG-External-Contractors
+CP-Android-Standard,android,Standard Android compliance policy,false,false,0,deviceDefault,false,false,unavailable,false,false,false,false,false,false,false,24,group:DG-All-Corp-Android
+CP-Android-Corporate,android,Strict Android compliance for corporate devices,true,true,6,alphanumeric,true,true,secured,true,false,false,false,false,false,false,4,group:DG-All-Corp-Android
+CP-macOS-Standard,macos,Standard macOS compliance policy,false,false,0,deviceDefault,false,false,unavailable,false,false,false,false,false,false,false,24,group:DG-All-Corp-macOS
+CP-macOS-Secure-Workstation,macos,High-security macOS workstation compliance,true,true,12,alphanumeric,false,true,secured,true,false,false,false,true,true,true,4,group:SG-Engineering

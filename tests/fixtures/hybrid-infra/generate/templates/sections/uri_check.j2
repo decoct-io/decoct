@@ -1,0 +1,17 @@
+    - name: Verify service health endpoint
+      ansible.builtin.uri:
+        url: "http://localhost:{% raw %}{{ app_port | default('8000') }}{% endraw %}/health"
+        method: GET
+        follow_redirects: safe
+        force: false
+        force_basic_auth: false
+        return_content: false
+        timeout: 30
+        use_proxy: true
+        validate_certs: true
+        status_code: 200
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: false

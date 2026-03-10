@@ -1,0 +1,40 @@
+{
+  "workspace": "production",
+  "environment": "prod",
+  "region": "eu-central-1",
+  "compute": {
+    "app_instance_type": "t3.xlarge",
+    "app_instance_count": 3,
+    "db_instance_type": "r6g.2xlarge",
+    "db_instance_count": 3,
+    "edge_instance_type": "t3.medium"
+  },
+  "networking": {
+    "vpc_cidr": "10.0.0.0/16",
+    "subnet_cidrs": [
+      "10.0.1.0/24",
+      "10.0.2.0/24",
+      "10.0.3.0/24"
+    ],
+    "domain": "ridgeline.io",
+    "ssl_cert_arn": "arn:aws:acm:eu-central-1:123456789:certificate/abc-123"
+  },
+  "database": {
+    "password": "Sup3rS3cretDB"
+  },
+  "secrets": {
+    "api_secret": "sk_live_4eC39HqLyjWDarjtT1zdp7dc",
+    "ssh_private_key": "-----BEGIN RSA PRIVATE KEY-----MIIEpAIBAAKCAQEA0Z3VS5JJcds3xfn/ygWep4TzAUGMg9nHcGp1K-----END RSA PRIVATE KEY-----"
+  },
+  "features": {
+    "enable_monitoring": true,
+    "enable_backups": true,
+    "backup_retention_days": 30
+  },
+  "tags": {
+    "team": "platform",
+    "project": "ridgeline",
+    "environment": "prod",
+    "managed_by": "opentofu"
+  }
+}

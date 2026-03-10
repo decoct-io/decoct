@@ -1,0 +1,67 @@
+!
+! CUSTOM: BNG subscriber management
+!
+! Dynamic template for subscriber sessions
+dynamic-template
+ type ppp {{ dynamic_template }}
+  ppp authentication chap
+  ppp ipcp peer-address pool {{ subscriber_pool_name }}
+  ipv4 unnumbered Loopback0
+  accounting aaa list default type session periodic-interval 15
+ !
+!
+! CUSTOM: Subscriber address pool
+pool vrf default ipv4 {{ subscriber_pool_name }}
+ address-range {{ subscriber_pool_network.split('/')[0] }} {{ subscriber_pool_network.replace('.0/', '.254/').split('/')[0] }}
+!
+! CUSTOM: PPPoE BBA group
+pppoe bba-group {{ pppoe_bba_group }}
+ sessions per-mac throttle 10 10 10
+ sessions per-mac limit 4
+ sessions max limit 32000
+!
+! CUSTOM: RADIUS configuration
+radius-server host {{ radius_server }} auth-port 1812 acct-port 1813
+ key 7 {{ radius_key }}
+ timeout 5
+ retransmit 3
+!
+aaa group server radius RADIUS-GROUP
+ server {{ radius_server }} auth-port 1812 acct-port 1813
+!
+aaa authentication subscriber default group RADIUS-GROUP
+aaa authorization subscriber default group RADIUS-GROUP
+aaa accounting subscriber default start-stop group RADIUS-GROUP
+!
+! CUSTOM: QoS policy map
+policy-map {{ policy_map_name }}
+ class class-default
+  police rate percent 100
+  !
+  shape average percent 100
+  bandwidth remaining percent 100
+  queue-limit 512 packets
+ !
+!
+! CUSTOM: Subscriber interface
+interface Bundle-Ether100
+ description BNG-SUBSCRIBER-FACING
+ service-policy input {{ policy_map_name }}
+ service-policy output {{ policy_map_name }}
+ load-interval 300
+ carrier-delay up 0
+ carrier-delay down 0
+ cdp
+ bandwidth 100000
+ mtu 9216
+ pppoe enable bba-group {{ pppoe_bba_group }}
+ no shutdown
+!
+interface Bundle-Ether100.100 l2transport
+ encapsulation dot1q 100
+ pppoe enable bba-group {{ pppoe_bba_group }}
+!
+interface Bundle-Ether100.200 l2transport
+ encapsulation dot1q 200
+ pppoe enable bba-group {{ pppoe_bba_group }}
+!

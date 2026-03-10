@@ -1,0 +1,47 @@
+---
+# Ansible Inventory — staging
+# Ridgeline Data — ansible-inventory-staging
+
+all:
+  vars:
+    ansible_user: deploy
+    ntp_server: ntp.ubuntu.com
+    dns_servers:
+      - 8.8.8.8
+      - 1.1.1.1
+
+  children:
+    app_servers:
+      hosts:
+        app-staging-01:
+          ansible_host: app-staging-01.ridgeline.internal
+
+    web_servers:
+      hosts:
+        app-staging-01:
+          ansible_host: app-staging-01.ridgeline.internal
+
+    db_servers:
+      hosts:
+        db-staging-01:
+          ansible_host: db-staging-01.ridgeline.internal
+
+    legacy_db_servers:
+      hosts:
+        db-staging-01:
+          ansible_host: db-staging-01.ridgeline.internal
+
+    edge_servers:
+      hosts:
+        app-staging-01:
+          ansible_host: app-staging-01.ridgeline.internal
+
+    monitoring_servers:
+      hosts:
+        app-staging-01:
+          ansible_host: app-staging-01.ridgeline.internal
+
+    worker_servers:
+      hosts:
+        app-staging-01:
+          ansible_host: app-staging-01.ridgeline.internal

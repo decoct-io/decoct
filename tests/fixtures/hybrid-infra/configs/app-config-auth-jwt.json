@@ -1,0 +1,56 @@
+{
+  "name": "Auth Service JWT Config",
+  "environment": "prod",
+  "auth": {
+    "jwt_secret": "xK9mPqR7vL2nW5jF8hT3yB6cD4gA1sE",
+    "jwt_expiry_seconds": 3600,
+    "jwt_refresh_expiry_seconds": 86400,
+    "jwt_issuer": "ridgeline.io",
+    "encryption_key": "aes256_Enc4ypt10nK3y_Pr0d!",
+    "api_key": "sk_live_4eC39HqLyjWDarjtT1zdp7dc"
+  },
+  "cors": {
+    "enabled": true,
+    "origins": [
+      "https://app.ridgeline.io",
+      "https://admin.ridgeline.io"
+    ],
+    "methods": [
+      "GET",
+      "POST",
+      "PUT",
+      "DELETE"
+    ],
+    "allow_credentials": true
+  },
+  "rate_limiting": {
+    "enabled": true,
+    "requests_per_minute": 1000,
+    "burst": 50
+  },
+  "logging": {
+    "level": "info",
+    "format": "json",
+    "output": "stdout"
+  },
+  "database": {
+    "host": "db-prod-01",
+    "port": 5432,
+    "name": "auth",
+    "user": "auth_svc",
+    "password": "AuthP@ssw0rd",
+    "pool_size": 10,
+    "pool_timeout": 30,
+    "ssl": false
+  },
+  "redis": {
+    "url": "redis://:R3disP@ss!@redis:6379/0",
+    "pool_size": 5,
+    "timeout": 5
+  },
+  "features": {
+    "mfa_required": true,
+    "session_rotation": true,
+    "password_complexity": "strict"
+  }
+}

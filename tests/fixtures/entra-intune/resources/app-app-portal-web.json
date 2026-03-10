@@ -1,0 +1,69 @@
+{
+  "@odata.type": "#microsoft.graph.application",
+  "id": "e22d8220-1420-58cc-ac3b-d857933e4fdd",
+  "createdDateTime": "2024-06-15T10:30:00Z",
+  "modifiedDateTime": "2024-11-20T14:45:00Z",
+  "appId": "63b992d8-f6af-59e6-b300-1ed0792b20b5",
+  "displayName": "App-Portal-Web",
+  "publisherDomain": "contoso.com",
+  "signInAudience": "AzureADMyOrg",
+  "isFallbackPublicClient": false,
+  "isDeviceOnlyAuthSupported": false,
+  "oauth2RequiredPostResponse": false,
+  "nativeAuthenticationApisEnabled": "none",
+  "web": {
+    "redirectUris": [
+      "https://portal.contoso.com/auth/callback",
+      "https://portal.contoso.com/silent-callback"
+    ],
+    "homePageUrl": null,
+    "logoutUrl": null,
+    "implicitGrantSettings": {
+      "enableIdTokenIssuance": false,
+      "enableAccessTokenIssuance": false
+    }
+  },
+  "spa": {
+    "redirectUris": []
+  },
+  "api": {
+    "acceptMappedClaims": null,
+    "knownClientApplications": [],
+    "requestedAccessTokenVersion": 2,
+    "oauth2PermissionScopes": [],
+    "preAuthorizedApplications": []
+  },
+  "requiredResourceAccess": [
+    {
+      "resourceAppId": "00000003-0000-0000-c000-000000000000",
+      "resourceAccess": [
+        {
+          "id": "e22d8220-1420-58cc-ac3b-d857933e4fdd-ra-0",
+          "type": "Scope"
+        }
+      ]
+    },
+    {
+      "resourceAppId": "00000003-0000-0000-c000-000000000000",
+      "resourceAccess": [
+        {
+          "id": "e22d8220-1420-58cc-ac3b-d857933e4fdd-ra-1",
+          "type": "Scope"
+        }
+      ]
+    }
+  ],
+  "identifierUris": [],
+  "keyCredentials": [],
+  "passwordCredentials": [],
+  "optionalClaims": null,
+  "tags": [],
+  "appRoles": [],
+  "info": {
+    "logoUrl": null,
+    "marketingUrl": null,
+    "privacyStatementUrl": null,
+    "supportUrl": null,
+    "termsOfServiceUrl": null
+  }
+}

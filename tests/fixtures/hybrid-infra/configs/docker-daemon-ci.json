@@ -1,0 +1,21 @@
+{
+  "storage-driver": "overlay2",
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "10m",
+    "max-file": "2"
+  },
+  "live-restore": false,
+  "iptables": true,
+  "ip-forward": true,
+  "userland-proxy": false,
+  "default-ulimits": {
+    "nofile": {
+      "Name": "nofile",
+      "Soft": 65535,
+      "Hard": 65535
+    }
+  },
+  "experimental": false,
+  "debug": false
+}

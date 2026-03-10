@@ -1,0 +1,127 @@
+---
+# Deploy Web App
+# Ridgeline Data — ansible-deploy-web-app
+
+- name: Deploy Web App
+  hosts: web_servers
+  become: false
+  gather_facts: true
+  any_errors_fatal: false
+  ignore_errors: false
+  check_mode: false
+  no_log: false
+  run_once: false
+  order: inventory
+
+  vars:
+    app_version: "3.0.0"
+    app_port: "3000"
+    node_version: "20"
+
+  tasks:
+    - name: Install packages via dnf
+      ansible.builtin.dnf:
+        name: "{{ item }}"
+        state: present
+        update_cache: false
+        allow_downgrade: false
+        autoremove: false
+        disable_gpg_check: false
+        download_only: false
+        install_weak_deps: true
+        lock_timeout: 30
+        security: false
+        skip_broken: false
+        sslverify: true
+        update_only: false
+        validate_certs: true
+      loop:
+        - nodejs
+        - npm
+        - curl
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: false
+
+    - name: Clone application repository
+      ansible.builtin.git:
+        repo: "https://github.com/ridgeline-data/{{ app_name | default('app') }}.git"
+        dest: "/opt/ridgeline/{{ app_name | default('app') }}"
+        bare: false
+        clone: true
+        force: false
+        recursive: true
+        remote: origin
+        track_submodules: false
+        update: true
+        verify_commit: false
+        version: HEAD
+        accept_hostkey: false
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: false
+
+    - name: Copy configuration files
+      ansible.builtin.copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: root
+        group: root
+        mode: "0644"
+        backup: false
+        decrypt: true
+        follow: false
+        force: true
+        remote_src: false
+        unsafe_writes: false
+      loop:
+        - { src: "files/config.conf", dest: "/etc/ridgeline/config.conf" }
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: false
+
+    - name: Enable and start service
+      ansible.builtin.systemd:
+        name: "{{ service_name | default('ridgeline') }}"
+        state: started
+        enabled: true
+        daemon_reload: false
+        daemon_reexec: false
+        no_block: false
+        scope: system
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: false
+
+    - name: Wait for service to be ready
+      ansible.builtin.wait_for:
+        port: "{{ app_port | default('8000') }}"
+        host: 127.0.0.1
+        connect_timeout: 5
+        delay: 0
+        sleep: 1
+        state: started
+        timeout: 300
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: false
+
+  handlers:
+    - name: restart_web_app
+      ansible.builtin.systemd:
+        name: "{{ service_name | default('ridgeline') }}"
+        state: restarted
+        daemon_reload: false
+        daemon_reexec: false
+        no_block: false
+        scope: system

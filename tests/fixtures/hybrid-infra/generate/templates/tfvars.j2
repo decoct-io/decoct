@@ -1,0 +1,60 @@
+{
+  "workspace": "{{ workspace }}",
+  "environment": "{{ env }}",
+  "region": "{{ region }}",
+
+{% set compute_items = [] %}
+{% if instance_type_app != 'none' %}
+{% if compute_items.append('"app_instance_type": "' ~ instance_type_app ~ '"') %}{% endif %}
+{% if compute_items.append('"app_instance_count": ' ~ instance_count_app) %}{% endif %}
+{% endif %}
+{% if instance_type_db != 'none' %}
+{% if compute_items.append('"db_instance_type": "' ~ instance_type_db ~ '"') %}{% endif %}
+{% if compute_items.append('"db_instance_count": ' ~ instance_count_db) %}{% endif %}
+{% endif %}
+{% if instance_type_edge != 'none' %}
+{% if compute_items.append('"edge_instance_type": "' ~ instance_type_edge ~ '"') %}{% endif %}
+{% endif %}
+  "compute": {
+{% for item in compute_items %}
+    {{ item }}{{ "," if not loop.last else "" }}
+{% endfor %}
+  },
+
+  "networking": {
+    "vpc_cidr": "{{ vpc_cidr }}",
+    "subnet_cidrs": [
+{% for subnet in subnet_cidrs.split(';') %}
+      "{{ subnet }}"{{ "," if not loop.last else "" }}
+{% endfor %}
+    ],
+    "domain": "{{ domain }}"
+{% if ssl_cert_arn != 'none' %}
+    ,"ssl_cert_arn": "{{ ssl_cert_arn }}"
+{% endif %}
+  },
+
+  "database": {
+    "password": "{{ db_password }}"
+  },
+
+  "secrets": {
+    "api_secret": "{{ api_secret }}"
+{% if ssh_private_key != 'none' %}
+    ,"ssh_private_key": "{{ ssh_private_key }}"
+{% endif %}
+  },
+
+  "features": {
+    "enable_monitoring": {{ enable_monitoring }},
+    "enable_backups": {{ enable_backups }},
+    "backup_retention_days": {{ backup_retention_days }}
+  },
+
+  "tags": {
+    "team": "{{ tags_team }}",
+    "project": "{{ tags_project }}",
+    "environment": "{{ env }}",
+    "managed_by": "opentofu"
+  }
+}

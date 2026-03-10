@@ -1,0 +1,397 @@
+# Prometheus Configuration — prod
+# Ridgeline Data — prometheus-prod
+
+# ── Global ─────────────────────────────────────────────────────────────────────
+global:
+  scrape_interval: 15s
+  scrape_timeout: 10s
+  evaluation_interval: 15s
+  body_size_limit: 0
+  sample_limit: 0
+  label_limit: 0
+  label_name_length_limit: 0
+  label_value_length_limit: 0
+  target_limit: 0
+  keep_dropped_targets: 0
+  scrape_native_histograms: false
+  external_labels:
+    env: prod
+    cluster: ridgeline-prod
+
+# ── Rule Files ─────────────────────────────────────────────────────────────────
+rule_files:
+  - "/etc/prometheus/rules/*.yaml"
+
+# ── Alerting ───────────────────────────────────────────────────────────────────
+alerting:
+  alertmanagers:
+    - scheme: http
+      timeout: 10s
+      api_version: v2
+      follow_redirects: true
+      enable_http2: true
+      static_configs:
+        - targets:
+            - mon-prod-01:9093
+
+# ── Scrape Configs ─────────────────────────────────────────────────────────────
+scrape_configs:
+  - job_name: prometheus
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    honor_labels: false
+    honor_timestamps: true
+    track_timestamps_staleness: false
+    enable_compression: true
+    follow_redirects: true
+    enable_http2: true
+    body_size_limit: 0
+    sample_limit: 0
+    label_limit: 0
+    label_name_length_limit: 0
+    label_value_length_limit: 0
+    target_limit: 0
+    keep_dropped_targets: 0
+    static_configs:
+      - targets:
+          - localhost:9090
+
+  - job_name: core-api
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    honor_labels: false
+    honor_timestamps: true
+    track_timestamps_staleness: false
+    enable_compression: true
+    follow_redirects: true
+    enable_http2: true
+    body_size_limit: 0
+    sample_limit: 0
+    label_limit: 0
+    label_name_length_limit: 0
+    label_value_length_limit: 0
+    target_limit: 0
+    keep_dropped_targets: 0
+    static_configs:
+      - targets:
+          - "app-prod-01:8000"
+  - job_name: auth-service
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    honor_labels: false
+    honor_timestamps: true
+    track_timestamps_staleness: false
+    enable_compression: true
+    follow_redirects: true
+    enable_http2: true
+    body_size_limit: 0
+    sample_limit: 0
+    label_limit: 0
+    label_name_length_limit: 0
+    label_value_length_limit: 0
+    target_limit: 0
+    keep_dropped_targets: 0
+    static_configs:
+      - targets:
+          - "app-prod-01:8001"
+  - job_name: billing-api
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    honor_labels: false
+    honor_timestamps: true
+    track_timestamps_staleness: false
+    enable_compression: true
+    follow_redirects: true
+    enable_http2: true
+    body_size_limit: 0
+    sample_limit: 0
+    label_limit: 0
+    label_name_length_limit: 0
+    label_value_length_limit: 0
+    target_limit: 0
+    keep_dropped_targets: 0
+    static_configs:
+      - targets:
+          - "app-prod-03:8002"
+  - job_name: web-app
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    honor_labels: false
+    honor_timestamps: true
+    track_timestamps_staleness: false
+    enable_compression: true
+    follow_redirects: true
+    enable_http2: true
+    body_size_limit: 0
+    sample_limit: 0
+    label_limit: 0
+    label_name_length_limit: 0
+    label_value_length_limit: 0
+    target_limit: 0
+    keep_dropped_targets: 0
+    static_configs:
+      - targets:
+          - "app-prod-02:3000"
+  - job_name: notification-svc
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    honor_labels: false
+    honor_timestamps: true
+    track_timestamps_staleness: false
+    enable_compression: true
+    follow_redirects: true
+    enable_http2: true
+    body_size_limit: 0
+    sample_limit: 0
+    label_limit: 0
+    label_name_length_limit: 0
+    label_value_length_limit: 0
+    target_limit: 0
+    keep_dropped_targets: 0
+    static_configs:
+      - targets:
+          - "app-prod-02:8003"
+  - job_name: search-svc
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    honor_labels: false
+    honor_timestamps: true
+    track_timestamps_staleness: false
+    enable_compression: true
+    follow_redirects: true
+    enable_http2: true
+    body_size_limit: 0
+    sample_limit: 0
+    label_limit: 0
+    label_name_length_limit: 0
+    label_value_length_limit: 0
+    target_limit: 0
+    keep_dropped_targets: 0
+    static_configs:
+      - targets:
+          - "app-prod-02:8004"
+  - job_name: admin-panel
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    honor_labels: false
+    honor_timestamps: true
+    track_timestamps_staleness: false
+    enable_compression: true
+    follow_redirects: true
+    enable_http2: true
+    body_size_limit: 0
+    sample_limit: 0
+    label_limit: 0
+    label_name_length_limit: 0
+    label_value_length_limit: 0
+    target_limit: 0
+    keep_dropped_targets: 0
+    static_configs:
+      - targets:
+          - "app-prod-03:8005"
+  - job_name: legacy-dashboard
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    honor_labels: false
+    honor_timestamps: true
+    track_timestamps_staleness: false
+    enable_compression: true
+    follow_redirects: true
+    enable_http2: true
+    body_size_limit: 0
+    sample_limit: 0
+    label_limit: 0
+    label_name_length_limit: 0
+    label_value_length_limit: 0
+    target_limit: 0
+    keep_dropped_targets: 0
+    static_configs:
+      - targets:
+          - "app-prod-03:5000"
+  - job_name: analytics-worker
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    honor_labels: false
+    honor_timestamps: true
+    track_timestamps_staleness: false
+    enable_compression: true
+    follow_redirects: true
+    enable_http2: true
+    body_size_limit: 0
+    sample_limit: 0
+    label_limit: 0
+    label_name_length_limit: 0
+    label_value_length_limit: 0
+    target_limit: 0
+    keep_dropped_targets: 0
+    static_configs:
+      - targets:
+          - "worker-prod-01:8000"
+  - job_name: postgres-primary
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    honor_labels: false
+    honor_timestamps: true
+    track_timestamps_staleness: false
+    enable_compression: true
+    follow_redirects: true
+    enable_http2: true
+    body_size_limit: 0
+    sample_limit: 0
+    label_limit: 0
+    label_name_length_limit: 0
+    label_value_length_limit: 0
+    target_limit: 0
+    keep_dropped_targets: 0
+    static_configs:
+      - targets:
+          - "db-prod-01:9187"
+  - job_name: postgres-replica
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    honor_labels: false
+    honor_timestamps: true
+    track_timestamps_staleness: false
+    enable_compression: true
+    follow_redirects: true
+    enable_http2: true
+    body_size_limit: 0
+    sample_limit: 0
+    label_limit: 0
+    label_name_length_limit: 0
+    label_value_length_limit: 0
+    target_limit: 0
+    keep_dropped_targets: 0
+    static_configs:
+      - targets:
+          - "db-prod-02:9187"
+  - job_name: postgres-analytics
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    honor_labels: false
+    honor_timestamps: true
+    track_timestamps_staleness: false
+    enable_compression: true
+    follow_redirects: true
+    enable_http2: true
+    body_size_limit: 0
+    sample_limit: 0
+    label_limit: 0
+    label_name_length_limit: 0
+    label_value_length_limit: 0
+    target_limit: 0
+    keep_dropped_targets: 0
+    static_configs:
+      - targets:
+          - "db-prod-03:9187"
+  - job_name: mariadb
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    honor_labels: false
+    honor_timestamps: true
+    track_timestamps_staleness: false
+    enable_compression: true
+    follow_redirects: true
+    enable_http2: true
+    body_size_limit: 0
+    sample_limit: 0
+    label_limit: 0
+    label_name_length_limit: 0
+    label_value_length_limit: 0
+    target_limit: 0
+    keep_dropped_targets: 0
+    static_configs:
+      - targets:
+          - "db-legacy-01:9104"
+  - job_name: traefik
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    honor_labels: false
+    honor_timestamps: true
+    track_timestamps_staleness: false
+    enable_compression: true
+    follow_redirects: true
+    enable_http2: true
+    body_size_limit: 0
+    sample_limit: 0
+    label_limit: 0
+    label_name_length_limit: 0
+    label_value_length_limit: 0
+    target_limit: 0
+    keep_dropped_targets: 0
+    static_configs:
+      - targets:
+          - "edge-prod-01:8080"
+  - job_name: node-exporter
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    honor_labels: false
+    honor_timestamps: true
+    track_timestamps_staleness: false
+    enable_compression: true
+    follow_redirects: true
+    enable_http2: true
+    body_size_limit: 0
+    sample_limit: 0
+    label_limit: 0
+    label_name_length_limit: 0
+    label_value_length_limit: 0
+    target_limit: 0
+    keep_dropped_targets: 0
+    static_configs:
+      - targets:
+          - "*:9100"
+
+# ── Remote Write ───────────────────────────────────────────────────────────────
+remote_write:
+  - url: http://remote-write.ridgeline.io/api/v1/write
+    remote_timeout: 30s
+    send_exemplars: false
+    send_native_histograms: false
+    follow_redirects: true
+    enable_http2: false
+    queue_config:
+      capacity: 10000
+      max_shards: 50
+      min_shards: 1
+      max_samples_per_send: 2000
+      batch_send_deadline: 5s
+      min_backoff: 30ms
+      max_backoff: 5s
+      retry_on_http_429: false
+    metadata_config:
+      send: true
+      send_interval: 1m
+      max_samples_per_send: 2000

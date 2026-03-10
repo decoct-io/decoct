@@ -1,0 +1,243 @@
+# Docker Compose — compose-staging
+# Ridgeline Data — B2B Analytics Platform
+
+services:
+  core-api:
+    image: ridgeline/core-api:2.1.0-rc1
+    restart: "unless-stopped"
+    privileged: false
+    read_only: false
+    stdin_open: false
+    tty: false
+    init: false
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: "postgresql://core:StagingDBp@ss@db-staging-01:5432/core_staging"
+      API_KEY: "sk_test_staging_key_123"
+      JWT_SECRET: "staging-jwt-secret-not-secure"
+    networks:
+      - staging-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/health"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 0s
+      start_interval: 5s
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        max_attempts: 0
+      update_config:
+        parallelism: 1
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+    mem_limit: 1g
+    cpus: 0.5
+  auth-service:
+    image: ridgeline/auth-service:1.8.0-rc1
+    restart: "unless-stopped"
+    privileged: false
+    read_only: false
+    stdin_open: false
+    tty: false
+    init: false
+    ports:
+      - "8001:8001"
+    environment:
+      DATABASE_URL: "postgresql://auth:StagingDBp@ss@db-staging-01:5432/auth_staging"
+      JWT_SECRET: "staging-jwt-secret-not-secure"
+    networks:
+      - staging-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8001/health"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 0s
+      start_interval: 5s
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        max_attempts: 0
+      update_config:
+        parallelism: 1
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+    mem_limit: 512m
+    cpus: 0.25
+  web-app:
+    image: ridgeline/web-app:3.0.0-rc1
+    restart: "unless-stopped"
+    privileged: false
+    read_only: false
+    stdin_open: false
+    tty: false
+    init: false
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: "staging"
+      API_URL: "http://core-api:8000"
+    networks:
+      - staging-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/health"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 0s
+      start_interval: 5s
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        max_attempts: 0
+      update_config:
+        parallelism: 1
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+    mem_limit: 512m
+    cpus: 0.25
+  legacy-dashboard:
+    image: ridgeline/legacy-dashboard:latest
+    restart: "unless-stopped"
+    privileged: false
+    read_only: false
+    stdin_open: false
+    tty: false
+    init: false
+    ports:
+      - "5000:5000"
+    environment:
+      DATABASE_URL: "mysql://legacy:StagingDBp@ss@db-staging-01:3306/dashboard_staging"
+      SECRET_KEY: "staging-flask-secret"
+    networks:
+      - staging-network
+    healthcheck:
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 0s
+      start_interval: 5s
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        max_attempts: 0
+      update_config:
+        parallelism: 1
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+    mem_limit: 512m
+    cpus: 0.25
+  postgres:
+    image: postgres:16-alpine
+    restart: "unless-stopped"
+    privileged: false
+    read_only: false
+    stdin_open: false
+    tty: false
+    init: false
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: "StagingDBp@ss"
+      POSTGRES_DB: "core_staging"
+    volumes:
+      - pg-staging-data:/var/lib/postgresql/data
+    networks:
+      - staging-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 10s
+      start_interval: 5s
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        max_attempts: 0
+      update_config:
+        parallelism: 1
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+    mem_limit: 1g
+    cpus: 0.5
+  mariadb:
+    image: mariadb:10.11
+    restart: "unless-stopped"
+    privileged: false
+    read_only: false
+    stdin_open: false
+    tty: false
+    init: false
+    ports:
+      - "3306:3306"
+    environment:
+      MARIADB_ROOT_PASSWORD: "StagingM@riaDBp@ss"
+    volumes:
+      - maria-staging-data:/var/lib/mysql
+    networks:
+      - staging-network
+    healthcheck:
+      test: ["CMD-SHELL", "healthcheck.sh --connect --innodb_initialized"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 30s
+      start_interval: 5s
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        max_attempts: 0
+      update_config:
+        parallelism: 1
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+    mem_limit: 512m
+    cpus: 0.5
+
+networks:
+  staging-network:
+    driver: bridge
+    external: false
+    internal: false
+    attachable: false
+    enable_ipv6: false
+
+volumes:
+  pg-staging-data:
+    external: false
+  maria-staging-data:
+    external: false

@@ -1,0 +1,18 @@
+{
+  "@odata.type": "#microsoft.graph.ipNamedLocation",
+  "id": "e3d2f8a6-e2ca-59e8-86f1-44e1979d50df",
+  "createdDateTime": "2024-06-15T10:30:00Z",
+  "modifiedDateTime": "2024-11-20T14:45:00Z",
+  "displayName": "NL-VPN-Gateway",
+  "isTrusted": true,
+  "ipRanges": [
+    {
+      "@odata.type": "#microsoft.graph.iPv4CidrRange",
+      "cidrAddress": "203.0.113.50/32"
+    },
+    {
+      "@odata.type": "#microsoft.graph.iPv4CidrRange",
+      "cidrAddress": "203.0.113.51/32"
+    }
+  ]
+}

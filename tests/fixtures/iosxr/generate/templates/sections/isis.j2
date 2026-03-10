@@ -1,0 +1,47 @@
+!
+! CUSTOM: IS-IS routing process
+router isis CORE
+ is-type level-2-only
+ net {{ isis_net }}
+ log adjacency changes
+ lsp-mtu 1497
+ lsp-lifetime 1200
+ lsp-refresh-interval 900
+ address-family ipv4 unicast
+  metric-style wide
+  router-id Loopback0
+  segment-routing mpls sr-prefer
+  mpls traffic-eng level-2-only
+  mpls traffic-eng router-id Loopback0
+ !
+ address-family ipv6 unicast
+  metric-style wide
+  segment-routing mpls sr-prefer
+ !
+ interface Loopback0
+  passive
+  address-family ipv4 unicast
+   prefix-sid index {{ prefix_sid }}
+  !
+  address-family ipv6 unicast
+  !
+ !
+{% for intf in p2p_interfaces %}
+ interface {{ intf.name }}
+  point-to-point
+  hello-interval 10
+  hello-multiplier 3
+  csnp-interval 10
+  retransmit-interval 5
+  address-family ipv4 unicast
+   metric 10
+  !
+  address-family ipv6 unicast
+   metric 10
+  !
+ !
+{% endfor %}
+{% if isis_overload_timeout is defined and isis_overload_timeout %}
+ set-overload-bit on-startup {{ isis_overload_timeout }}
+{% endif %}
+!

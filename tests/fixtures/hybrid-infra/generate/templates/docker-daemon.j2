@@ -1,0 +1,45 @@
+{
+  "storage-driver": "{{ storage_driver }}",
+  "log-driver": "{{ log_driver }}",
+  "log-opts": {
+    "max-size": "{{ log_max_size }}",
+    "max-file": "{{ log_max_file }}"
+  },
+  "live-restore": {{ live_restore }},
+  "iptables": {{ iptables }},
+  "ip-forward": {{ ip_forward }},
+  "userland-proxy": {{ userland_proxy }},
+  "default-ulimits": {
+    "nofile": {
+      "Name": "nofile",
+      "Soft": {{ default_ulimits_nofile_soft }},
+      "Hard": {{ default_ulimits_nofile_hard }}
+    }
+  },
+{% if dns_servers != 'none' %}
+  "dns": [
+{% for dns in dns_servers.split(';') %}
+    "{{ dns }}"{{ "," if not loop.last else "" }}
+{% endfor %}
+  ],
+{% endif %}
+{% if insecure_registries != 'none' %}
+  "insecure-registries": [
+{% for reg in insecure_registries.split(';') %}
+    "{{ reg }}"{{ "," if not loop.last else "" }}
+{% endfor %}
+  ],
+{% endif %}
+{% if registry_mirrors != 'none' %}
+  "registry-mirrors": [
+{% for mirror in registry_mirrors.split(';') %}
+    "{{ mirror }}"{{ "," if not loop.last else "" }}
+{% endfor %}
+  ],
+{% endif %}
+  "experimental": {{ experimental }},
+{% if metrics_addr != 'none' %}
+  "metrics-addr": "{{ metrics_addr }}",
+{% endif %}
+  "debug": {{ debug }}
+}

@@ -1,0 +1,88 @@
+---
+# Setup Cloud-Init Configs
+# Ridgeline Data — ansible-setup-cloud-init
+
+- name: Setup Cloud-Init Configs
+  hosts: all
+  become: true
+  become_user: root
+  gather_facts: true
+  any_errors_fatal: false
+  ignore_errors: false
+  check_mode: false
+  no_log: false
+  run_once: false
+  order: inventory
+
+  vars:
+    cloud_init_version: "24.1"
+
+  tasks:
+    - name: Install packages via apt
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: false
+        force: false
+        purge: false
+        autoremove: false
+        autoclean: false
+        only_upgrade: false
+        force_apt_get: false
+        allow_unauthenticated: false
+        allow_downgrade: false
+        fail_on_autoremove: false
+        lock_timeout: 60
+        cache_valid_time: 0
+      loop:
+        - curl
+        - wget
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: true
+
+    - name: Copy configuration files
+      ansible.builtin.copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: root
+        group: root
+        mode: "0644"
+        backup: false
+        decrypt: true
+        follow: false
+        force: true
+        remote_src: false
+        unsafe_writes: false
+      loop:
+        - { src: "files/config.conf", dest: "/etc/ridgeline/config.conf" }
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: true
+
+    - name: Deploy templated configuration
+      ansible.builtin.template:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: root
+        group: root
+        mode: "0644"
+        backup: false
+        follow: false
+        force: true
+        lstrip_blocks: false
+        trim_blocks: true
+        unsafe_writes: false
+        output_encoding: utf-8
+      loop:
+        - { src: "templates/app.conf.j2", dest: "/etc/ridgeline/app.conf" }
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: true
+

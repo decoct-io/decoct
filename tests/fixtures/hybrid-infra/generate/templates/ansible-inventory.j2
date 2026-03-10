@@ -1,0 +1,62 @@
+---
+# Ansible Inventory — {{ env }}
+# Ridgeline Data — {{ filename }}
+
+all:
+  vars:
+    ansible_user: deploy
+    ntp_server: {{ all_vars_ntp }}
+    dns_servers:
+{% for dns in all_vars_dns.split(';') %}
+      - {{ dns }}
+{% endfor %}
+
+  children:
+    app_servers:
+      hosts:
+{% for host in app_servers.split(';') %}
+        {{ host }}:
+          ansible_host: {{ host }}.ridgeline.internal
+{% endfor %}
+
+    web_servers:
+      hosts:
+{% for host in web_servers.split(';') %}
+        {{ host }}:
+          ansible_host: {{ host }}.ridgeline.internal
+{% endfor %}
+
+    db_servers:
+      hosts:
+{% for host in db_servers.split(';') %}
+        {{ host }}:
+          ansible_host: {{ host }}.ridgeline.internal
+{% endfor %}
+
+    legacy_db_servers:
+      hosts:
+{% for host in legacy_db_servers.split(';') %}
+        {{ host }}:
+          ansible_host: {{ host }}.ridgeline.internal
+{% endfor %}
+
+    edge_servers:
+      hosts:
+{% for host in edge_servers.split(';') %}
+        {{ host }}:
+          ansible_host: {{ host }}.ridgeline.internal
+{% endfor %}
+
+    monitoring_servers:
+      hosts:
+{% for host in monitoring_servers.split(';') %}
+        {{ host }}:
+          ansible_host: {{ host }}.ridgeline.internal
+{% endfor %}
+
+    worker_servers:
+      hosts:
+{% for host in worker_servers.split(';') %}
+        {{ host }}:
+          ansible_host: {{ host }}.ridgeline.internal
+{% endfor %}

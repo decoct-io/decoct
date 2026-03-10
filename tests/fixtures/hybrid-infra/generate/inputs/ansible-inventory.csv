@@ -1,0 +1,4 @@
+filename,env,app_servers,web_servers,db_servers,legacy_db_servers,edge_servers,monitoring_servers,worker_servers,all_vars_ntp,all_vars_dns
+ansible-inventory-prod,prod,app-prod-01;app-prod-02;app-prod-03,app-prod-02,db-prod-01;db-prod-02;db-prod-03,db-legacy-01,edge-prod-01,mon-prod-01,worker-prod-01,ntp.ubuntu.com,8.8.8.8;8.8.4.4
+ansible-inventory-staging,staging,app-staging-01,app-staging-01,db-staging-01,db-staging-01,app-staging-01,app-staging-01,app-staging-01,ntp.ubuntu.com,8.8.8.8;1.1.1.1
+ansible-inventory-dev,dev,dev-01,dev-01,dev-01,dev-01,dev-01,dev-01,dev-01,pool.ntp.org,1.1.1.1;8.8.8.8

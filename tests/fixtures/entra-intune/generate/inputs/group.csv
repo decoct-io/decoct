@@ -1,0 +1,26 @@
+display_name,description,mail_enabled,mail_nickname,security_enabled,group_types,membership_rule,allow_external_senders,auto_subscribe_new_members,hide_from_address_lists,hide_from_outlook_clients,is_assignable_to_role
+SG-IT-Admins,IT administrators with full system access,false,sg-it-admins,true,none,none,false,false,false,false,false
+SG-Security-Team,Security operations and incident response team,false,sg-security-team,true,none,none,false,false,false,false,false
+SG-Helpdesk-Staff,Tier 1 and Tier 2 helpdesk support staff,false,sg-helpdesk-staff,true,none,none,false,false,false,false,false
+SG-Finance-Users,Finance department members,false,sg-finance-users,true,none,none,false,false,false,false,false
+SG-HR-Users,Human resources department members,false,sg-hr-users,true,none,none,false,false,false,false,false
+SG-Marketing-Users,Marketing and communications team,false,sg-marketing-users,true,none,none,false,false,false,false,false
+SG-Engineering,Software engineering department,false,sg-engineering,true,none,none,false,false,false,false,false
+SG-Executive-Team,C-suite and senior leadership,false,sg-executive-team,true,none,none,false,false,true,true,false
+SG-Compliance-Officers,Regulatory compliance and audit team,false,sg-compliance-officers,true,none,none,false,false,false,false,false
+SG-External-Contractors,External contractors and consultants,false,sg-external-contractors,true,none,none,false,false,true,false,false
+DG-All-Corp-Windows,All corporate Windows devices,false,dg-all-corp-windows,true,DynamicMembership,(device.deviceOSType -eq "Windows"),false,false,false,false,false
+DG-All-Corp-iOS,All corporate iOS devices,false,dg-all-corp-ios,true,DynamicMembership,(device.deviceOSType -eq "iOS"),false,false,false,false,false
+DG-All-Corp-Android,All corporate Android devices,false,dg-all-corp-android,true,DynamicMembership,(device.deviceOSType -eq "AndroidEnterprise"),false,false,false,false,false
+DG-All-Corp-macOS,All corporate macOS devices,false,dg-all-corp-macos,true,DynamicMembership,(device.deviceOSType -eq "macOS"),false,false,false,false,false
+DG-All-Licensed-Users,All users with assigned licenses,false,dg-all-licensed-users,true,DynamicMembership,(user.assignedPlans -any (assignedPlan.servicePlanId -eq "efb87545-963c-4e0d-99df-69c6916d9eb0")),false,false,false,false,false
+DG-Dept-Engineering,Dynamic group for engineering department,false,dg-dept-engineering,true,DynamicMembership,(user.department -eq "Engineering"),false,false,false,false,false
+DG-Dept-Sales,Dynamic group for sales department,false,dg-dept-sales,true,DynamicMembership,(user.department -eq "Sales"),false,false,false,false,false
+DG-Remote-Workers,Users flagged as remote workers,false,dg-remote-workers,true,DynamicMembership,(user.extensionAttribute1 -eq "Remote"),false,false,false,false,false
+M365-Project-Alpha,Microsoft 365 group for Project Alpha collaboration,true,m365-project-alpha,false,Unified,none,false,false,false,false,false
+M365-Project-Beta,Microsoft 365 group for Project Beta collaboration,true,m365-project-beta,false,Unified,none,false,false,false,false,false
+M365-AllCompany-Comms,Company-wide communications and announcements,true,m365-allcompany-comms,false,Unified,none,true,true,false,false,false
+M365-Leadership-Team,Leadership team collaboration workspace,true,m365-leadership-team,false,Unified,none,false,false,true,true,false
+RAG-Global-Admin-Role,Role-assignable group for Global Administrator,false,rag-global-admin-role,true,none,none,false,false,false,false,true
+RAG-Security-Admin-Role,Role-assignable group for Security Administrator,false,rag-security-admin-role,true,none,none,false,false,false,false,true
+RAG-Compliance-Admin-Role,Role-assignable group for Compliance Administrator,false,rag-compliance-admin-role,true,none,none,false,false,false,false,true

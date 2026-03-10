@@ -1,0 +1,37 @@
+# sysctl.conf — {{ role }} ({{ env }})
+# Ridgeline Data — {{ filename }}
+
+# ── Virtual Memory ────────────────────────────────────────────────────────────
+vm.swappiness = {{ vm_swappiness }}
+vm.dirty_ratio = {{ vm_dirty_ratio }}
+vm.dirty_background_ratio = {{ vm_dirty_background_ratio }}
+vm.overcommit_memory = {{ vm_overcommit_memory }}
+{% if vm_nr_hugepages != '0' %}
+vm.nr_hugepages = {{ vm_nr_hugepages }}
+{% endif %}
+
+# ── Network Core ──────────────────────────────────────────────────────────────
+net.core.somaxconn = {{ net_core_somaxconn }}
+net.core.netdev_max_backlog = {{ net_core_netdev_max_backlog }}
+
+# ── TCP/IP ────────────────────────────────────────────────────────────────────
+net.ipv4.tcp_max_syn_backlog = {{ net_ipv4_tcp_max_syn_backlog }}
+net.ipv4.ip_local_port_range = {{ net_ipv4_ip_local_port_range }}
+net.ipv4.tcp_fin_timeout = {{ net_ipv4_tcp_fin_timeout }}
+net.ipv4.tcp_keepalive_time = {{ net_ipv4_tcp_keepalive_time }}
+net.ipv4.tcp_tw_reuse = {{ net_ipv4_tcp_tw_reuse }}
+net.ipv4.tcp_syncookies = {{ net_ipv4_tcp_syncookies }}
+net.ipv4.tcp_max_tw_buckets = {{ net_ipv4_tcp_max_tw_buckets }}
+net.ipv4.tcp_rmem = {{ net_ipv4_tcp_rmem }}
+net.ipv4.tcp_wmem = {{ net_ipv4_tcp_wmem }}
+
+# ── File System ───────────────────────────────────────────────────────────────
+fs.file-max = {{ fs_file_max }}
+fs.inotify.max_user_watches = {{ fs_inotify_max_user_watches }}
+
+# ── Kernel ────────────────────────────────────────────────────────────────────
+kernel.pid_max = {{ kernel_pid_max }}
+{% if kernel_shmmax != '0' %}
+kernel.shmmax = {{ kernel_shmmax }}
+kernel.shmall = {{ kernel_shmall }}
+{% endif %}

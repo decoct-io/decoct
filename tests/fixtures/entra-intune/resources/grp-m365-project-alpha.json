@@ -1,0 +1,39 @@
+{
+  "@odata.type": "#microsoft.graph.group",
+  "id": "668f5c29-2630-53bf-b311-2b1ee742f097",
+  "createdDateTime": "2024-06-15T10:30:00Z",
+  "modifiedDateTime": "2024-11-20T14:45:00Z",
+  "deletedDateTime": null,
+  "renewedDateTime": "2024-11-20T14:45:00Z",
+  "displayName": "M365-Project-Alpha",
+  "description": "Microsoft 365 group for Project Alpha collaboration",
+  "mailEnabled": true,
+  "mailNickname": "m365-project-alpha",
+  "securityEnabled": false,
+  "groupTypes": [
+    "Unified"
+  ],
+  "membershipRule": null,
+  "membershipRuleProcessingState": null,
+  "allowExternalSenders": false,
+  "autoSubscribeNewMembers": false,
+  "hideFromAddressLists": false,
+  "hideFromOutlookClients": false,
+  "isAssignableToRole": false,
+  "isSubscribedByMail": true,
+  "securityIdentifier": "S-1-12-1-668f5c29",
+  "onPremisesLastSyncDateTime": null,
+  "onPremisesSecurityIdentifier": null,
+  "onPremisesSyncEnabled": null,
+  "onPremisesProvisioningErrors": [],
+  "proxyAddresses": [
+    "SMTP:m365-project-alpha@contoso.com"
+  ],
+  "mail": "m365-project-alpha@contoso.com",
+  "visibility": "Public",
+  "preferredDataLocation": null,
+  "preferredLanguage": null,
+  "theme": null,
+  "resourceBehaviorOptions": [],
+  "resourceProvisioningOptions": []
+}

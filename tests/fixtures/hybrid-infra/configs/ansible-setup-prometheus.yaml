@@ -1,0 +1,142 @@
+---
+# Setup Prometheus
+# Ridgeline Data — ansible-setup-prometheus
+
+- name: Setup Prometheus
+  hosts: monitoring_servers
+  become: true
+  become_user: root
+  gather_facts: true
+  any_errors_fatal: false
+  ignore_errors: false
+  check_mode: false
+  no_log: false
+  run_once: false
+  order: inventory
+
+  vars:
+    prom_version: "2.51.0"
+    prom_dir: "/opt/prometheus"
+
+  tasks:
+    - name: Download binary
+      ansible.builtin.get_url:
+        url: "{{ download_url | default('https://github.com/ridgeline-data/releases/latest') }}"
+        dest: /tmp/download
+        mode: "0755"
+        backup: false
+        force: false
+        force_basic_auth: false
+        timeout: 10
+        unsafe_writes: false
+        use_proxy: true
+        validate_certs: true
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: true
+
+    - name: Create application user
+      ansible.builtin.user:
+        name: ridgeline
+        state: present
+        system: false
+        create_home: true
+        append: false
+        force: false
+        generate_ssh_key: false
+        move_home: false
+        non_unique: false
+        remove: false
+        update_password: always
+        shell: /bin/bash
+        home: /opt/ridgeline
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: true
+
+    - name: Copy configuration files
+      ansible.builtin.copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: root
+        group: root
+        mode: "0644"
+        backup: false
+        decrypt: true
+        follow: false
+        force: true
+        remote_src: false
+        unsafe_writes: false
+      loop:
+        - { src: "files/config.conf", dest: "/etc/ridgeline/config.conf" }
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: true
+
+    - name: Deploy templated configuration
+      ansible.builtin.template:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: root
+        group: root
+        mode: "0644"
+        backup: false
+        follow: false
+        force: true
+        lstrip_blocks: false
+        trim_blocks: true
+        unsafe_writes: false
+        output_encoding: utf-8
+      loop:
+        - { src: "templates/app.conf.j2", dest: "/etc/ridgeline/app.conf" }
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: true
+
+    - name: Enable and start service
+      ansible.builtin.systemd:
+        name: "{{ service_name | default('ridgeline') }}"
+        state: started
+        enabled: true
+        daemon_reload: false
+        daemon_reexec: false
+        no_block: false
+        scope: system
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: true
+
+    - name: Wait for service to be ready
+      ansible.builtin.wait_for:
+        port: "{{ app_port | default('8000') }}"
+        host: 127.0.0.1
+        connect_timeout: 5
+        delay: 0
+        sleep: 1
+        state: started
+        timeout: 300
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: false
+
+  handlers:
+    - name: restart_prometheus
+      ansible.builtin.systemd:
+        name: "{{ service_name | default('ridgeline') }}"
+        state: restarted
+        daemon_reload: false
+        daemon_reexec: false
+        no_block: false
+        scope: system

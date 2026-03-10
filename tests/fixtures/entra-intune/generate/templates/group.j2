@@ -1,0 +1,43 @@
+{% from "macros/common.j2" import audit_fields %}
+{
+  "@odata.type": "#microsoft.graph.group",
+  {{ audit_fields(id, created_date, modified_date) }},
+  "deletedDateTime": null,
+  "renewedDateTime": {{ modified_date | tojson }},
+  "displayName": {{ display_name | tojson }},
+  "description": {{ description | tojson }},
+  "mailEnabled": {{ mail_enabled | tojson }},
+  "mailNickname": {{ mail_nickname | tojson }},
+  "securityEnabled": {{ security_enabled | tojson }},
+  "groupTypes": {{ group_types | tojson }},
+  {% if membership_rule %}
+  "membershipRule": {{ membership_rule | tojson }},
+  "membershipRuleProcessingState": {{ membership_rule_processing_state | tojson }},
+  {% else %}
+  "membershipRule": null,
+  "membershipRuleProcessingState": null,
+  {% endif %}
+  "allowExternalSenders": {{ allow_external_senders | tojson }},
+  "autoSubscribeNewMembers": {{ auto_subscribe_new_members | tojson }},
+  "hideFromAddressLists": {{ hide_from_address_lists | tojson }},
+  "hideFromOutlookClients": {{ hide_from_outlook_clients | tojson }},
+  "isAssignableToRole": {{ is_assignable_to_role | tojson }},
+  "isSubscribedByMail": {{ is_subscribed_by_mail | tojson }},
+  "securityIdentifier": {{ ("S-1-12-1-" ~ id.split("-")[0]) | tojson }},
+  "onPremisesLastSyncDateTime": null,
+  "onPremisesSecurityIdentifier": null,
+  "onPremisesSyncEnabled": null,
+  "onPremisesProvisioningErrors": [],
+  "proxyAddresses": [
+    {% if mail_enabled %}
+    {{ ("SMTP:" ~ mail_nickname ~ "@contoso.com") | tojson }}
+    {% endif %}
+  ],
+  "mail": {% if mail_enabled %}{{ (mail_nickname ~ "@contoso.com") | tojson }}{% else %}null{% endif %},
+  "visibility": {% if "Unified" in group_types %}"Public"{% else %}null{% endif %},
+  "preferredDataLocation": null,
+  "preferredLanguage": null,
+  "theme": null,
+  "resourceBehaviorOptions": [],
+  "resourceProvisioningOptions": []
+}

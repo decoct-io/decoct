@@ -1,0 +1,90 @@
+{
+  "@odata.type": "#microsoft.graph.iosManagedAppProtection",
+  "id": "f76d23c9-e4e4-5a7c-9822-5f7d468a90ec",
+  "createdDateTime": "2024-06-15T10:30:00Z",
+  "modifiedDateTime": "2024-11-20T14:45:00Z",
+  "displayName": "AP-iOS-Strict",
+  "description": "Strict iOS app protection with all restrictions",
+  "version": 1,
+  "roleScopeTagIds": [
+    "0"
+  ],
+  "pinRequired": true,
+  "minimumPinLength": 6,
+  "simplePinBlocked": true,
+  "fingerprintBlocked": true,
+  "disableAppPinIfDevicePinIsSet": false,
+  "periodBeforePinReset": "PT0S",
+  "dataBackupBlocked": true,
+  "contactSyncBlocked": true,
+  "printBlocked": true,
+  "saveAsBlocked": true,
+  "deviceComplianceRequired": true,
+  "managedBrowserToOpenLinksRequired": true,
+  "organizationalCredentialsRequired": false,
+  "allowedDataStorageLocations": [],
+  "periodOfflineBeforeWipeIsEnforced": "P30D",
+  "periodOfflineBeforeAccessCheck": "PT360M",
+  "periodOnlineBeforeAccessCheck": "PT15M",
+  "allowedInboundDataTransferSources": "allApps",
+  "allowedOutboundDataTransferDestinations": "managedApps",
+  "allowedOutboundClipboardSharingLevel": "managedAppsWithPasteIn",
+  "faceIdBlocked": false,
+  "minimumRequiredSdkVersion": null,
+  "minimumRequiredOsVersion": null,
+  "minimumWarningOsVersion": null,
+  "managedBrowser": "notConfigured",
+  "customBrowserProtocol": null,
+  "apps": [
+    {
+      "mobileAppIdentifier": {
+        "@odata.type": "#microsoft.graph.iosMobileAppIdentifier",
+        "bundleId": "com.microsoft.Office.Outlook"
+      }
+    },
+    {
+      "mobileAppIdentifier": {
+        "@odata.type": "#microsoft.graph.iosMobileAppIdentifier",
+        "bundleId": "com.microsoft.Office.Word"
+      }
+    },
+    {
+      "mobileAppIdentifier": {
+        "@odata.type": "#microsoft.graph.iosMobileAppIdentifier",
+        "bundleId": "com.microsoft.Office.Excel"
+      }
+    },
+    {
+      "mobileAppIdentifier": {
+        "@odata.type": "#microsoft.graph.iosMobileAppIdentifier",
+        "bundleId": "com.microsoft.teams"
+      }
+    },
+    {
+      "mobileAppIdentifier": {
+        "@odata.type": "#microsoft.graph.iosMobileAppIdentifier",
+        "bundleId": "com.microsoft.Office.PowerPoint"
+      }
+    },
+    {
+      "mobileAppIdentifier": {
+        "@odata.type": "#microsoft.graph.iosMobileAppIdentifier",
+        "bundleId": "com.microsoft.sharepoint"
+      }
+    }
+  ],
+  "assignments": [
+    {
+      "target": {
+        "@odata.type": "#microsoft.graph.groupAssignmentTarget",
+        "groupId": "098e10db-f215-51c2-978d-687b16aa42f5"
+      }
+    },
+    {
+      "target": {
+        "@odata.type": "#microsoft.graph.groupAssignmentTarget",
+        "groupId": "79dedecf-0247-52c4-80f0-32a82b42f6f9"
+      }
+    }
+  ]
+}

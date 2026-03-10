@@ -1,0 +1,70 @@
+{
+  "name": "{{ config_name }}",
+  "environment": "{{ env }}",
+
+  "auth": {
+    "jwt_secret": "{{ jwt_secret }}",
+    "jwt_expiry_seconds": {{ jwt_expiry }},
+    "jwt_refresh_expiry_seconds": {{ jwt_refresh_expiry }},
+    "jwt_issuer": "{{ jwt_issuer }}",
+{% if encryption_key != 'none' %}
+    "encryption_key": "{{ encryption_key }}",
+{% endif %}
+    "api_key": "{{ api_key }}"
+  },
+
+{% if cors_origins != 'none' %}
+  "cors": {
+    "enabled": true,
+    "origins": [
+{% for origin in cors_origins.split(';') %}
+      "{{ origin }}"{{ "," if not loop.last else "" }}
+{% endfor %}
+    ],
+    "methods": ["GET", "POST", "PUT", "DELETE"],
+    "allow_credentials": true
+  },
+{% endif %}
+
+  "rate_limiting": {
+    "enabled": true,
+    "requests_per_minute": {{ rate_limit }},
+    "burst": 50
+  },
+
+  "logging": {
+    "level": "{{ log_level }}",
+    "format": "json",
+    "output": "stdout"
+  },
+
+{% if db_host != 'none' %}
+  "database": {
+    "host": "{{ db_host }}",
+    "port": {{ db_port }},
+    "name": "{{ db_name }}",
+    "user": "{{ db_user }}",
+    "password": "{{ db_password }}",
+    "pool_size": 10,
+    "pool_timeout": 30,
+    "ssl": false
+  },
+{% endif %}
+
+  "redis": {
+    "url": "{{ redis_url }}",
+    "pool_size": 5,
+    "timeout": 5
+  },
+
+  "features": {
+{% for flag in feature_flags.split(';') %}
+{% set parts = flag.split(':') %}
+{% if parts[1] in ('true', 'false') %}
+    "{{ parts[0] }}": {{ parts[1] }}{{ "," if not loop.last else "" }}
+{% else %}
+    "{{ parts[0] }}": "{{ parts[1] }}"{{ "," if not loop.last else "" }}
+{% endif %}
+{% endfor %}
+  }
+}

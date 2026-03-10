@@ -1,0 +1,20 @@
+    - name: Create application user
+      ansible.builtin.user:
+        name: ridgeline
+        state: present
+        system: false
+        create_home: true
+        append: false
+        force: false
+        generate_ssh_key: false
+        move_home: false
+        non_unique: false
+        remove: false
+        update_password: always
+        shell: /bin/bash
+        home: /opt/ridgeline
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: {{ become }}

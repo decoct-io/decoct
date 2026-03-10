@@ -1,0 +1,112 @@
+# MariaDB/MySQL Configuration — {{ role }} ({{ env }})
+# Ridgeline Data — {{ filename }}
+# Server ID: {{ server_id }}
+{% if db_password_comment != 'none' %}
+{{ db_password_comment }}
+{% endif %}
+
+[mysqld]
+# ── Connection ─────────────────────────────────────────────────────────────────
+port = {{ port }}
+max_connections = {{ max_connections }}
+connect_timeout = {{ connect_timeout }}
+wait_timeout = {{ wait_timeout }}
+interactive_timeout = {{ interactive_timeout }}
+net_read_timeout = {{ net_read_timeout }}
+net_write_timeout = {{ net_write_timeout }}
+max_allowed_packet = {{ max_allowed_packet }}
+back_log = {{ back_log }}
+
+# ── Character Set and Collation ────────────────────────────────────────────────
+character_set_server = {{ character_set_server }}
+character_set_filesystem = binary
+collation_server = {{ collation_server }}
+
+# ── Storage Engine ─────────────────────────────────────────────────────────────
+default_storage_engine = {{ default_storage_engine }}
+default_tmp_storage_engine = {{ default_tmp_storage_engine }}
+
+# ── InnoDB ─────────────────────────────────────────────────────────────────────
+innodb_buffer_pool_size = {{ innodb_buffer_pool_size }}
+innodb_flush_log_at_trx_commit = {{ innodb_flush_log_at_trx_commit }}
+innodb_file_per_table = {{ innodb_file_per_table }}
+innodb_io_capacity = {{ innodb_io_capacity }}
+innodb_io_capacity_max = {{ innodb_io_capacity_max }}
+innodb_read_io_threads = {{ innodb_read_io_threads }}
+innodb_write_io_threads = {{ innodb_write_io_threads }}
+innodb_lock_wait_timeout = {{ innodb_lock_wait_timeout }}
+innodb_open_files = {{ innodb_open_files }}
+innodb_thread_concurrency = {{ innodb_thread_concurrency }}
+innodb_autoinc_lock_mode = {{ innodb_autoinc_lock_mode }}
+innodb_doublewrite = {{ innodb_doublewrite }}
+innodb_log_buffer_size = {{ innodb_log_buffer_size }}
+innodb_max_dirty_pages_pct = {{ innodb_max_dirty_pages_pct }}
+innodb_change_buffering = {{ innodb_change_buffering }}
+innodb_adaptive_hash_index = {{ innodb_adaptive_hash_index }}
+innodb_stats_on_metadata = {{ innodb_stats_on_metadata }}
+innodb_stats_persistent = {{ innodb_stats_persistent }}
+innodb_flush_neighbors = {{ innodb_flush_neighbors }}
+innodb_purge_threads = {{ innodb_purge_threads }}
+innodb_sort_buffer_size = {{ innodb_sort_buffer_size }}
+innodb_online_alter_log_max_size = {{ innodb_online_alter_log_max_size }}
+innodb_strict_mode = {{ innodb_strict_mode }}
+
+# ── Buffers and Memory ─────────────────────────────────────────────────────────
+sort_buffer_size = {{ sort_buffer_size }}
+read_buffer_size = {{ read_buffer_size }}
+read_rnd_buffer_size = {{ read_rnd_buffer_size }}
+join_buffer_size = {{ join_buffer_size }}
+key_buffer_size = {{ key_buffer_size }}
+bulk_insert_buffer_size = {{ bulk_insert_buffer_size }}
+tmp_table_size = {{ tmp_table_size }}
+max_heap_table_size = {{ max_heap_table_size }}
+table_open_cache = {{ table_open_cache }}
+table_definition_cache = {{ table_definition_cache }}
+
+# ── Threading ──────────────────────────────────────────────────────────────────
+thread_cache_size = -1
+
+# ── Binary Logging ─────────────────────────────────────────────────────────────
+server_id = {{ server_id }}
+sync_binlog = {{ sync_binlog }}
+binlog_expire_logs_seconds = {{ binlog_expire_logs_seconds }}
+max_binlog_size = {{ max_binlog_size }}
+binlog_row_image = {{ binlog_row_image }}
+binlog_rows_query_log_events = {{ binlog_rows_query_log_events }}
+
+# ── Slow Query Log ─────────────────────────────────────────────────────────────
+slow_query_log = {{ slow_query_log }}
+long_query_time = {{ long_query_time }}
+log_slow_admin_statements = {{ log_slow_admin_statements }}
+
+# ── General Logging ────────────────────────────────────────────────────────────
+general_log = {{ general_log }}
+log_output = {{ log_output }}
+
+# ── Replication ────────────────────────────────────────────────────────────────
+replica_net_timeout = {{ replica_net_timeout }}
+relay_log_recovery = {{ relay_log_recovery }}
+relay_log_purge = {{ relay_log_purge }}
+log_replica_updates = {{ log_replica_updates }}
+
+# ── SQL Mode and Behaviour ─────────────────────────────────────────────────────
+autocommit = {{ autocommit }}
+big_tables = {{ big_tables }}
+lower_case_table_names = {{ lower_case_table_names }}
+div_precision_increment = {{ div_precision_increment }}
+group_concat_max_len = {{ group_concat_max_len }}
+explicit_defaults_for_timestamp = {{ explicit_defaults_for_timestamp }}
+sql_require_primary_key = {{ sql_require_primary_key }}
+local_infile = {{ local_infile }}
+secure_file_priv = {{ secure_file_priv }}
+
+# ── Optimizer ──────────────────────────────────────────────────────────────────
+optimizer_prune_level = {{ optimizer_prune_level }}
+optimizer_search_depth = {{ optimizer_search_depth }}
+eq_range_index_dive_limit = {{ eq_range_index_dive_limit }}
+
+# ── Performance Schema ─────────────────────────────────────────────────────────
+performance_schema = {{ performance_schema }}
+
+# ── Error Logging ──────────────────────────────────────────────────────────────
+log_error_verbosity = {{ log_error_verbosity }}

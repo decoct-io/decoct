@@ -1,0 +1,101 @@
+---
+# Setup Backup System
+# Ridgeline Data — ansible-setup-backup
+
+- name: Setup Backup System
+  hosts: db_servers
+  become: true
+  become_user: root
+  gather_facts: true
+  any_errors_fatal: false
+  ignore_errors: false
+  check_mode: false
+  no_log: false
+  run_once: false
+  order: inventory
+
+  vars:
+    backup_dir: "/opt/ridgeline/backups"
+    encryption_key: "Bkup3ncryptK3y!"
+    backup_retention: "30"
+
+  tasks:
+    - name: Install packages via apt
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: false
+        force: false
+        purge: false
+        autoremove: false
+        autoclean: false
+        only_upgrade: false
+        force_apt_get: false
+        allow_unauthenticated: false
+        allow_downgrade: false
+        fail_on_autoremove: false
+        lock_timeout: 60
+        cache_valid_time: 0
+      loop:
+        - curl
+        - wget
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: true
+
+    - name: Copy configuration files
+      ansible.builtin.copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: root
+        group: root
+        mode: "0644"
+        backup: false
+        decrypt: true
+        follow: false
+        force: true
+        remote_src: false
+        unsafe_writes: false
+      loop:
+        - { src: "files/config.conf", dest: "/etc/ridgeline/config.conf" }
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: true
+
+    - name: Configure scheduled backup
+      ansible.builtin.cron:
+        name: "ridgeline-backup"
+        job: "/opt/ridgeline/scripts/backup-all-dbs.sh"
+        minute: "0"
+        hour: "3"
+        state: present
+        backup: false
+        disabled: false
+        user: root
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: true
+
+    - name: Set file permissions
+      ansible.builtin.file:
+        path: /opt/ridgeline
+        state: directory
+        owner: ridgeline
+        group: ridgeline
+        mode: "0755"
+        follow: true
+        force: false
+        recurse: false
+        unsafe_writes: false
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: true
+

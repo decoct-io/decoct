@@ -1,0 +1,146 @@
+# Docker Compose — compose-worker-prod
+# Ridgeline Data — B2B Analytics Platform
+
+services:
+  analytics-worker:
+    image: ridgeline/analytics-worker:2.1.0
+    restart: "always"
+    privileged: false
+    read_only: false
+    stdin_open: false
+    tty: false
+    init: false
+    command: celery -A analytics.tasks worker --loglevel=info --concurrency=4
+    environment:
+      DATABASE_URL: "postgresql://analytics:An@lyticsDB@db-prod-03:5432/analytics"
+      REDIS_PASSWORD: "R3disP@ss!"
+      CELERY_BROKER_URL: "redis://:R3disP@ss!@redis:6379/0"
+    volumes:
+      - worker-data:/app/data
+    depends_on:
+      redis:
+        condition: service_started
+        required: true
+        restart: true
+    networks:
+      - app-network
+      - monitoring
+    healthcheck:
+      test: ["CMD-SHELL", "celery inspect ping"]
+      interval: 60s
+      timeout: 30s
+      retries: 3
+      start_period: 30s
+      start_interval: 5s
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 4
+      restart_policy:
+        condition: any
+        max_attempts: 0
+      update_config:
+        parallelism: 1
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+    mem_limit: 4g
+    cpus: 2.0
+  redis:
+    image: redis:7-alpine
+    restart: "unless-stopped"
+    privileged: false
+    read_only: false
+    stdin_open: false
+    tty: false
+    init: false
+    environment:
+      REDIS_PASSWORD: "R3disP@ss!"
+    volumes:
+      - redis-worker-data:/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 0s
+      start_interval: 5s
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        max_attempts: 0
+      update_config:
+        parallelism: 1
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+    mem_limit: 256m
+    cpus: 0.25
+  flower:
+    image: mher/flower:2.0
+    restart: "unless-stopped"
+    privileged: false
+    read_only: false
+    stdin_open: false
+    tty: false
+    init: false
+    ports:
+      - "5555:5555"
+    environment:
+      CELERY_BROKER_URL: "redis://:R3disP@ss!@redis:6379/0"
+      FLOWER_BASIC_AUTH: "admin:Fl0werP@ss!"
+    depends_on:
+      redis:
+        condition: service_started
+        required: true
+        restart: true
+    networks:
+      - app-network
+    healthcheck:
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 0s
+      start_interval: 5s
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        max_attempts: 0
+      update_config:
+        parallelism: 1
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+    mem_limit: 256m
+    cpus: 0.25
+
+networks:
+  app-network:
+    driver: bridge
+    external: false
+    internal: false
+    attachable: false
+    enable_ipv6: false
+  monitoring:
+    driver: bridge
+    external: false
+    internal: false
+    attachable: false
+    enable_ipv6: false
+
+volumes:
+  worker-data:
+    external: false
+  redis-worker-data:
+    external: false

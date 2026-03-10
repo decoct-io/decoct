@@ -1,0 +1,99 @@
+{
+  "@odata.type": "#microsoft.graph.crossTenantAccessPolicyConfigurationPartner",
+  "id": "ad3c34b4-2437-5ff6-a24c-04fe42b68d33",
+  "createdDateTime": "2024-06-15T10:30:00Z",
+  "modifiedDateTime": "2024-11-20T14:45:00Z",
+  "displayName": "CTA-Default-Settings",
+  "tenantId": "00000000-0000-0000-0000-000000000000",
+  "isServiceProvider": false,
+  "isServiceDefault": true,
+  "b2bCollaborationInbound": {
+    "applications": {
+      "accessType": "allowed",
+      "targets": [
+        {
+          "target": "AllApplications",
+          "targetType": "application"
+        }
+      ]
+    },
+    "usersAndGroups": {
+      "accessType": "allowed",
+      "targets": [
+        {
+          "target": "AllUsers",
+          "targetType": "user"
+        }
+      ]
+    }
+  },
+  "b2bCollaborationOutbound": {
+    "applications": {
+      "accessType": "allowed",
+      "targets": [
+        {
+          "target": "AllApplications",
+          "targetType": "application"
+        }
+      ]
+    },
+    "usersAndGroups": {
+      "accessType": "allowed",
+      "targets": [
+        {
+          "target": "AllUsers",
+          "targetType": "user"
+        }
+      ]
+    }
+  },
+  "b2bDirectConnectInbound": {
+    "applications": {
+      "accessType": "blocked",
+      "targets": [
+        {
+          "target": "AllApplications",
+          "targetType": "application"
+        }
+      ]
+    },
+    "usersAndGroups": {
+      "accessType": "blocked",
+      "targets": [
+        {
+          "target": "AllUsers",
+          "targetType": "user"
+        }
+      ]
+    }
+  },
+  "b2bDirectConnectOutbound": {
+    "applications": {
+      "accessType": "blocked",
+      "targets": [
+        {
+          "target": "AllApplications",
+          "targetType": "application"
+        }
+      ]
+    },
+    "usersAndGroups": {
+      "accessType": "blocked",
+      "targets": [
+        {
+          "target": "AllUsers",
+          "targetType": "user"
+        }
+      ]
+    }
+  },
+  "inboundTrust": {
+    "isMfaAccepted": false,
+    "isCompliantDeviceAccepted": false,
+    "isHybridAzureADJoinedDeviceAccepted": false
+  },
+  "automaticUserConsentSettings": {
+    "inboundAllowed": null,
+    "outboundAllowed": null
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "@odata.type": "#microsoft.graph.iosCompliancePolicy",
+  "id": "6106ee17-83e8-54d5-a8f5-694023003586",
+  "createdDateTime": "2024-06-15T10:30:00Z",
+  "modifiedDateTime": "2024-11-20T14:45:00Z",
+  "displayName": "CP-iOS-BYOD",
+  "description": "Lightweight compliance for BYOD iOS devices",
+  "version": 1,
+  "roleScopeTagIds": [
+    "0"
+  ],
+  "passcodeRequired": false,
+  "passcodeBlockSimple": false,
+  "passcodeMinimumLength": null,
+  "passcodeRequiredType": "deviceDefault",
+  "passcodeMinutesOfInactivityBeforeLock": null,
+  "passcodeExpirationDays": null,
+  "passcodePreviousPasscodeBlockCount": null,
+  "passcodeMinimumCharacterSetCount": null,
+  "securityBlockJailbrokenDevices": true,
+  "deviceThreatProtectionEnabled": false,
+  "deviceThreatProtectionRequiredSecurityLevel": "unavailable",
+  "managedEmailProfileRequired": false,
+  "osMinimumVersion": null,
+  "osMaximumVersion": null,
+  "osMinimumBuildVersion": null,
+  "osMaximumBuildVersion": null,
+  "scheduledActionsForRule": [
+    {
+      "ruleName": "PasswordRequired",
+      "scheduledActionConfigurations": [
+        {
+          "actionType": "block",
+          "gracePeriodHours": 48,
+          "notificationTemplateId": "",
+          "notificationMessageCCList": []
+        }
+      ]
+    }
+  ],
+  "assignments": [
+    {
+      "target": {
+        "@odata.type": "#microsoft.graph.groupAssignmentTarget",
+        "groupId": "f5843f0d-24e2-5506-9911-ebc899094fab"
+      }
+    }
+  ]
+}

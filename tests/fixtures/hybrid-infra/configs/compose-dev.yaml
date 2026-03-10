@@ -1,0 +1,203 @@
+# Docker Compose — compose-dev
+# Ridgeline Data — B2B Analytics Platform
+
+services:
+  core-api:
+    image: ridgeline/core-api:dev
+    restart: "unless-stopped"
+    privileged: false
+    read_only: false
+    stdin_open: true
+    tty: true
+    init: false
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: "postgresql://core:devpassword@postgres:5432/core_dev"
+      API_KEY: "sk_test_dev_key"
+      JWT_SECRET: "dev-jwt-secret"
+      DEBUG: "true"
+    volumes:
+      - ./core-api:/app
+    depends_on:
+      postgres:
+        condition: service_started
+        required: true
+        restart: true
+    networks:
+      - dev-network
+    healthcheck:
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 0s
+      start_interval: 5s
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        max_attempts: 0
+      update_config:
+        parallelism: 1
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+  web-app:
+    image: ridgeline/web-app:dev
+    restart: "unless-stopped"
+    privileged: false
+    read_only: false
+    stdin_open: true
+    tty: true
+    init: false
+    command: npm run dev
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: "development"
+      API_URL: "http://core-api:8000"
+    volumes:
+      - ./web-app:/app
+    networks:
+      - dev-network
+    healthcheck:
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 0s
+      start_interval: 5s
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        max_attempts: 0
+      update_config:
+        parallelism: 1
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+  postgres:
+    image: postgres:16-alpine
+    restart: "no"
+    privileged: false
+    read_only: false
+    stdin_open: false
+    tty: false
+    init: false
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: "devpassword"
+      POSTGRES_DB: "core_dev"
+    volumes:
+      - pg-dev-data:/var/lib/postgresql/data
+    networks:
+      - dev-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 0s
+      start_interval: 5s
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        max_attempts: 0
+      update_config:
+        parallelism: 1
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+  mariadb:
+    image: mariadb:10.11
+    restart: "no"
+    privileged: false
+    read_only: false
+    stdin_open: false
+    tty: false
+    init: false
+    ports:
+      - "3306:3306"
+    environment:
+      MARIADB_ROOT_PASSWORD: "devpassword"
+    volumes:
+      - maria-dev-data:/var/lib/mysql
+    networks:
+      - dev-network
+    healthcheck:
+      test: ["CMD-SHELL", "healthcheck.sh --connect --innodb_initialized"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 0s
+      start_interval: 5s
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        max_attempts: 0
+      update_config:
+        parallelism: 1
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+  redis:
+    image: redis:7-alpine
+    restart: "no"
+    privileged: false
+    read_only: false
+    stdin_open: false
+    tty: false
+    init: false
+    ports:
+      - "6379:6379"
+    networks:
+      - dev-network
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 0s
+      start_interval: 5s
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        max_attempts: 0
+      update_config:
+        parallelism: 1
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+
+networks:
+  dev-network:
+    driver: bridge
+    external: false
+    internal: false
+    attachable: false
+    enable_ipv6: false
+
+volumes:
+  pg-dev-data:
+    external: false
+  maria-dev-data:
+    external: false

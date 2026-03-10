@@ -1,0 +1,14 @@
+    - name: Wait for service to be ready
+      ansible.builtin.wait_for:
+        port: "{% raw %}{{ app_port | default('8000') }}{% endraw %}"
+        host: 127.0.0.1
+        connect_timeout: 5
+        delay: 0
+        sleep: 1
+        state: started
+        timeout: 300
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: false

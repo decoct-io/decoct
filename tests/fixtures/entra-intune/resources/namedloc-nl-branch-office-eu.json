@@ -1,0 +1,18 @@
+{
+  "@odata.type": "#microsoft.graph.ipNamedLocation",
+  "id": "29b9c12c-9bc3-596c-8e71-679f8174229a",
+  "createdDateTime": "2024-06-15T10:30:00Z",
+  "modifiedDateTime": "2024-11-20T14:45:00Z",
+  "displayName": "NL-Branch-Office-EU",
+  "isTrusted": true,
+  "ipRanges": [
+    {
+      "@odata.type": "#microsoft.graph.iPv4CidrRange",
+      "cidrAddress": "198.51.100.0/24"
+    },
+    {
+      "@odata.type": "#microsoft.graph.iPv4CidrRange",
+      "cidrAddress": "192.0.2.0/24"
+    }
+  ]
+}

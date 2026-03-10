@@ -1,0 +1,59 @@
+# sshd_config — {{ role }} ({{ env }})
+# Ridgeline Data — {{ filename }}
+
+# ── Connection & Network ──────────────────────────────────────────────────────
+Port {{ Port }}
+AddressFamily {{ AddressFamily }}
+TCPKeepAlive {{ TCPKeepAlive }}
+ClientAliveInterval {{ ClientAliveInterval }}
+ClientAliveCountMax {{ ClientAliveCountMax }}
+LoginGraceTime {{ LoginGraceTime }}
+MaxAuthTries {{ MaxAuthTries }}
+MaxSessions {{ MaxSessions }}
+GatewayPorts {{ GatewayPorts }}
+PermitTunnel {{ PermitTunnel }}
+
+# ── Authentication ────────────────────────────────────────────────────────────
+PermitRootLogin {{ PermitRootLogin }}
+PasswordAuthentication {{ PasswordAuthentication }}
+PubkeyAuthentication {{ PubkeyAuthentication }}
+PermitEmptyPasswords {{ PermitEmptyPasswords }}
+KbdInteractiveAuthentication {{ KbdInteractiveAuthentication }}
+HostbasedAuthentication {{ HostbasedAuthentication }}
+IgnoreRhosts {{ IgnoreRhosts }}
+IgnoreUserKnownHosts {{ IgnoreUserKnownHosts }}
+KerberosAuthentication {{ KerberosAuthentication }}
+StrictModes {{ StrictModes }}
+
+# ── Session & Environment ─────────────────────────────────────────────────────
+PrintMotd {{ PrintMotd }}
+PrintLastLog {{ PrintLastLog }}
+PermitUserRC {{ PermitUserRC }}
+PermitUserEnvironment {{ PermitUserEnvironment }}
+
+# ── Forwarding ────────────────────────────────────────────────────────────────
+AllowTcpForwarding {{ AllowTcpForwarding }}
+AllowStreamLocalForwarding {{ AllowStreamLocalForwarding }}
+AllowAgentForwarding {{ AllowAgentForwarding }}
+
+# ── X11 ───────────────────────────────────────────────────────────────────────
+X11Forwarding {{ X11Forwarding }}
+X11DisplayOffset {{ X11DisplayOffset }}
+X11UseLocalhost {{ X11UseLocalhost }}
+
+# ── Logging ───────────────────────────────────────────────────────────────────
+LogLevel {{ LogLevel }}
+SyslogFacility {{ SyslogFacility }}
+
+# ── Crypto & Security ─────────────────────────────────────────────────────────
+Compression {{ Compression }}
+FingerprintHash {{ FingerprintHash }}
+ExposeAuthInfo {{ ExposeAuthInfo }}
+{% if AllowUsers != 'none' %}
+
+# ── Access Control ────────────────────────────────────────────────────────────
+AllowUsers {{ AllowUsers }}
+{% endif %}
+{% if Banner != 'none' %}
+Banner {{ Banner }}
+{% endif %}

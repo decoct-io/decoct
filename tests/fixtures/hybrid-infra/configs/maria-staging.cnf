@@ -1,0 +1,109 @@
+# MariaDB/MySQL Configuration — staging (staging)
+# Ridgeline Data — maria-staging
+# Server ID: 10
+
+[mysqld]
+# ── Connection ─────────────────────────────────────────────────────────────────
+port = 3306
+max_connections = 100
+connect_timeout = 10
+wait_timeout = 28800
+interactive_timeout = 28800
+net_read_timeout = 30
+net_write_timeout = 60
+max_allowed_packet = 67108864
+back_log = -1
+
+# ── Character Set and Collation ────────────────────────────────────────────────
+character_set_server = utf8mb4
+character_set_filesystem = binary
+collation_server = utf8mb4_0900_ai_ci
+
+# ── Storage Engine ─────────────────────────────────────────────────────────────
+default_storage_engine = InnoDB
+default_tmp_storage_engine = InnoDB
+
+# ── InnoDB ─────────────────────────────────────────────────────────────────────
+innodb_buffer_pool_size = 512M
+innodb_flush_log_at_trx_commit = 1
+innodb_file_per_table = ON
+innodb_io_capacity = 200
+innodb_io_capacity_max = 2000
+innodb_read_io_threads = 4
+innodb_write_io_threads = 4
+innodb_lock_wait_timeout = 50
+innodb_open_files = 4000
+innodb_thread_concurrency = 0
+innodb_autoinc_lock_mode = 2
+innodb_doublewrite = ON
+innodb_log_buffer_size = 16777216
+innodb_max_dirty_pages_pct = 90
+innodb_change_buffering = all
+innodb_adaptive_hash_index = ON
+innodb_stats_on_metadata = OFF
+innodb_stats_persistent = ON
+innodb_flush_neighbors = 0
+innodb_purge_threads = 4
+innodb_sort_buffer_size = 1048576
+innodb_online_alter_log_max_size = 134217728
+innodb_strict_mode = ON
+
+# ── Buffers and Memory ─────────────────────────────────────────────────────────
+sort_buffer_size = 262144
+read_buffer_size = 131072
+read_rnd_buffer_size = 262144
+join_buffer_size = 262144
+key_buffer_size = 8388608
+bulk_insert_buffer_size = 8388608
+tmp_table_size = 16777216
+max_heap_table_size = 16777216
+table_open_cache = 4000
+table_definition_cache = 2000
+
+# ── Threading ──────────────────────────────────────────────────────────────────
+thread_cache_size = -1
+
+# ── Binary Logging ─────────────────────────────────────────────────────────────
+server_id = 10
+sync_binlog = 1
+binlog_expire_logs_seconds = 2592000
+max_binlog_size = 1073741824
+binlog_row_image = FULL
+binlog_rows_query_log_events = OFF
+
+# ── Slow Query Log ─────────────────────────────────────────────────────────────
+slow_query_log = OFF
+long_query_time = 10
+log_slow_admin_statements = OFF
+
+# ── General Logging ────────────────────────────────────────────────────────────
+general_log = OFF
+log_output = FILE
+
+# ── Replication ────────────────────────────────────────────────────────────────
+replica_net_timeout = 60
+relay_log_recovery = OFF
+relay_log_purge = ON
+log_replica_updates = ON
+
+# ── SQL Mode and Behaviour ─────────────────────────────────────────────────────
+autocommit = ON
+big_tables = OFF
+lower_case_table_names = 0
+div_precision_increment = 4
+group_concat_max_len = 1024
+explicit_defaults_for_timestamp = ON
+sql_require_primary_key = OFF
+local_infile = OFF
+secure_file_priv = NULL
+
+# ── Optimizer ──────────────────────────────────────────────────────────────────
+optimizer_prune_level = 1
+optimizer_search_depth = 62
+eq_range_index_dive_limit = 200
+
+# ── Performance Schema ─────────────────────────────────────────────────────────
+performance_schema = ON
+
+# ── Error Logging ──────────────────────────────────────────────────────────────
+log_error_verbosity = 2

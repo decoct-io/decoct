@@ -1,0 +1,218 @@
+# Prometheus Configuration — staging
+# Ridgeline Data — prometheus-staging
+
+# ── Global ─────────────────────────────────────────────────────────────────────
+global:
+  scrape_interval: 30s
+  scrape_timeout: 10s
+  evaluation_interval: 30s
+  body_size_limit: 0
+  sample_limit: 0
+  label_limit: 0
+  label_name_length_limit: 0
+  label_value_length_limit: 0
+  target_limit: 0
+  keep_dropped_targets: 0
+  scrape_native_histograms: false
+  external_labels:
+    env: staging
+    cluster: ridgeline-staging
+
+# ── Rule Files ─────────────────────────────────────────────────────────────────
+rule_files:
+  - "/etc/prometheus/rules/*.yaml"
+
+
+# ── Scrape Configs ─────────────────────────────────────────────────────────────
+scrape_configs:
+  - job_name: prometheus
+    scrape_interval: 30s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    honor_labels: false
+    honor_timestamps: true
+    track_timestamps_staleness: false
+    enable_compression: true
+    follow_redirects: true
+    enable_http2: true
+    body_size_limit: 0
+    sample_limit: 0
+    label_limit: 0
+    label_name_length_limit: 0
+    label_value_length_limit: 0
+    target_limit: 0
+    keep_dropped_targets: 0
+    static_configs:
+      - targets:
+          - localhost:9090
+
+  - job_name: core-api
+    scrape_interval: 30s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    honor_labels: false
+    honor_timestamps: true
+    track_timestamps_staleness: false
+    enable_compression: true
+    follow_redirects: true
+    enable_http2: true
+    body_size_limit: 0
+    sample_limit: 0
+    label_limit: 0
+    label_name_length_limit: 0
+    label_value_length_limit: 0
+    target_limit: 0
+    keep_dropped_targets: 0
+    static_configs:
+      - targets:
+          - "app-staging-01:8000"
+  - job_name: auth-service
+    scrape_interval: 30s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    honor_labels: false
+    honor_timestamps: true
+    track_timestamps_staleness: false
+    enable_compression: true
+    follow_redirects: true
+    enable_http2: true
+    body_size_limit: 0
+    sample_limit: 0
+    label_limit: 0
+    label_name_length_limit: 0
+    label_value_length_limit: 0
+    target_limit: 0
+    keep_dropped_targets: 0
+    static_configs:
+      - targets:
+          - "app-staging-01:8001"
+  - job_name: web-app
+    scrape_interval: 30s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    honor_labels: false
+    honor_timestamps: true
+    track_timestamps_staleness: false
+    enable_compression: true
+    follow_redirects: true
+    enable_http2: true
+    body_size_limit: 0
+    sample_limit: 0
+    label_limit: 0
+    label_name_length_limit: 0
+    label_value_length_limit: 0
+    target_limit: 0
+    keep_dropped_targets: 0
+    static_configs:
+      - targets:
+          - "app-staging-01:3000"
+  - job_name: legacy-dashboard
+    scrape_interval: 30s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    honor_labels: false
+    honor_timestamps: true
+    track_timestamps_staleness: false
+    enable_compression: true
+    follow_redirects: true
+    enable_http2: true
+    body_size_limit: 0
+    sample_limit: 0
+    label_limit: 0
+    label_name_length_limit: 0
+    label_value_length_limit: 0
+    target_limit: 0
+    keep_dropped_targets: 0
+    static_configs:
+      - targets:
+          - "app-staging-01:5000"
+  - job_name: postgres
+    scrape_interval: 30s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    honor_labels: false
+    honor_timestamps: true
+    track_timestamps_staleness: false
+    enable_compression: true
+    follow_redirects: true
+    enable_http2: true
+    body_size_limit: 0
+    sample_limit: 0
+    label_limit: 0
+    label_name_length_limit: 0
+    label_value_length_limit: 0
+    target_limit: 0
+    keep_dropped_targets: 0
+    static_configs:
+      - targets:
+          - "db-staging-01:9187"
+  - job_name: mariadb
+    scrape_interval: 30s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    honor_labels: false
+    honor_timestamps: true
+    track_timestamps_staleness: false
+    enable_compression: true
+    follow_redirects: true
+    enable_http2: true
+    body_size_limit: 0
+    sample_limit: 0
+    label_limit: 0
+    label_name_length_limit: 0
+    label_value_length_limit: 0
+    target_limit: 0
+    keep_dropped_targets: 0
+    static_configs:
+      - targets:
+          - "db-staging-01:9104"
+  - job_name: traefik
+    scrape_interval: 30s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    honor_labels: false
+    honor_timestamps: true
+    track_timestamps_staleness: false
+    enable_compression: true
+    follow_redirects: true
+    enable_http2: true
+    body_size_limit: 0
+    sample_limit: 0
+    label_limit: 0
+    label_name_length_limit: 0
+    label_value_length_limit: 0
+    target_limit: 0
+    keep_dropped_targets: 0
+    static_configs:
+      - targets:
+          - "app-staging-01:8080"
+  - job_name: node-exporter
+    scrape_interval: 30s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    honor_labels: false
+    honor_timestamps: true
+    track_timestamps_staleness: false
+    enable_compression: true
+    follow_redirects: true
+    enable_http2: true
+    body_size_limit: 0
+    sample_limit: 0
+    label_limit: 0
+    label_name_length_limit: 0
+    label_value_length_limit: 0
+    target_limit: 0
+    keep_dropped_targets: 0
+    static_configs:
+      - targets:
+          - "*:9100"
+

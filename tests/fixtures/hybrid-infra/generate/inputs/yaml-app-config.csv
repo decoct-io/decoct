@@ -1,0 +1,4 @@
+filename,config_name,env,log_level,log_format,cors_origins,rate_limit_rpm,feature_flags,cache_ttl,debug_mode,api_version,db_pool_size,db_pool_timeout
+yaml-app-logging-config,FastAPI Logging Configuration,prod,INFO,json,https://app.ridgeline.io;https://admin.ridgeline.io,1000,analytics_v2:true;new_billing:false;dark_mode:true,300,false,v2,20,30
+yaml-app-feature-flags,Feature Flags,prod,INFO,json,none,0,analytics_v2:true;new_billing:false;dark_mode:true;search_v2:true;notification_batching:true;report_scheduling:true;admin_audit_log:false;legacy_compat:true,0,false,v2,0,0
+yaml-app-service-mesh,Service Mesh Configuration,prod,WARNING,json,none,0,none,60,false,v1,10,15

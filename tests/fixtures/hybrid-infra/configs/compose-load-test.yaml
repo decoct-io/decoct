@@ -1,0 +1,94 @@
+# Docker Compose — compose-load-test
+# Ridgeline Data — B2B Analytics Platform
+
+services:
+  k6:
+    image: grafana/k6:latest
+    restart: "no"
+    privileged: false
+    read_only: false
+    stdin_open: false
+    tty: false
+    init: false
+    command: run /scripts/stress-test.js
+    environment:
+      K6_OUT: "influxdb=http://influxdb:8086/k6"
+      TARGET_URL: "https://api.ridgeline.io"
+      API_KEY: "sk_test_loadtest_key"
+    volumes:
+      - ./load-tests:/scripts
+    networks:
+      - test-network
+    healthcheck:
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 0s
+      start_interval: 5s
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        max_attempts: 0
+      update_config:
+        parallelism: 1
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+    mem_limit: 4g
+    cpus: 2.0
+  influxdb:
+    image: influxdb:2.7
+    restart: "no"
+    privileged: false
+    read_only: false
+    stdin_open: false
+    tty: false
+    init: false
+    ports:
+      - "8086:8086"
+    environment:
+      DOCKER_INFLUXDB_INIT_PASSWORD: "Influx_S3cret!"
+      DOCKER_INFLUXDB_INIT_ORG: "ridgeline"
+      DOCKER_INFLUXDB_INIT_BUCKET: "k6"
+    volumes:
+      - influx-data:/var/lib/influxdb2
+    networks:
+      - test-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8086/health"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 10s
+      start_interval: 5s
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        max_attempts: 0
+      update_config:
+        parallelism: 1
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+    mem_limit: 2g
+    cpus: 1.0
+
+networks:
+  test-network:
+    driver: bridge
+    external: false
+    internal: false
+    attachable: false
+    enable_ipv6: false
+
+volumes:
+  influx-data:
+    external: false

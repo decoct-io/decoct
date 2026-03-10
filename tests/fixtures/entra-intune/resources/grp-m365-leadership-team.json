@@ -1,0 +1,39 @@
+{
+  "@odata.type": "#microsoft.graph.group",
+  "id": "310d6cef-c56a-55fb-97f8-d55b38064b7a",
+  "createdDateTime": "2024-06-15T10:30:00Z",
+  "modifiedDateTime": "2024-11-20T14:45:00Z",
+  "deletedDateTime": null,
+  "renewedDateTime": "2024-11-20T14:45:00Z",
+  "displayName": "M365-Leadership-Team",
+  "description": "Leadership team collaboration workspace",
+  "mailEnabled": true,
+  "mailNickname": "m365-leadership-team",
+  "securityEnabled": false,
+  "groupTypes": [
+    "Unified"
+  ],
+  "membershipRule": null,
+  "membershipRuleProcessingState": null,
+  "allowExternalSenders": false,
+  "autoSubscribeNewMembers": false,
+  "hideFromAddressLists": true,
+  "hideFromOutlookClients": true,
+  "isAssignableToRole": false,
+  "isSubscribedByMail": true,
+  "securityIdentifier": "S-1-12-1-310d6cef",
+  "onPremisesLastSyncDateTime": null,
+  "onPremisesSecurityIdentifier": null,
+  "onPremisesSyncEnabled": null,
+  "onPremisesProvisioningErrors": [],
+  "proxyAddresses": [
+    "SMTP:m365-leadership-team@contoso.com"
+  ],
+  "mail": "m365-leadership-team@contoso.com",
+  "visibility": "Public",
+  "preferredDataLocation": null,
+  "preferredLanguage": null,
+  "theme": null,
+  "resourceBehaviorOptions": [],
+  "resourceProvisioningOptions": []
+}

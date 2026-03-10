@@ -1,0 +1,27 @@
+---
+# Ansible Variables — staging
+# Ridgeline Data — ansible-vars-staging
+# WARNING: Contains sensitive values — encrypt with ansible-vault in production
+
+# Database credentials
+db_password: "StagingDBp@ss"
+
+# Deployment SSH key
+deploy_key: |
+  -----BEGIN RSA PRIVATE KEY-----MIIEowIBAAKCAQEAstaging+key+data+here-----END RSA PRIVATE KEY-----
+
+# Vault password
+vault_password: "St@gingV@ult"
+
+# API credentials
+api_key: "sk_test_staging_key_123"
+jwt_secret: "staging-jwt-secret-not-secure"
+
+# Service passwords
+smtp_password: "StagingSmtpP@ss"
+backup_encryption_key: "StagingBkupK3y"
+redis_password: "StagingR3dis"
+grafana_admin_password: "StagingGr@fana"
+
+# Environment
+env: staging

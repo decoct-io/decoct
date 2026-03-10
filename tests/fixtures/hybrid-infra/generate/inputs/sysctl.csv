@@ -1,0 +1,7 @@
+filename,role,env,vm_swappiness,vm_dirty_ratio,vm_dirty_background_ratio,vm_overcommit_memory,net_core_somaxconn,net_core_netdev_max_backlog,net_ipv4_tcp_max_syn_backlog,net_ipv4_ip_local_port_range,net_ipv4_tcp_fin_timeout,net_ipv4_tcp_keepalive_time,net_ipv4_tcp_tw_reuse,net_ipv4_tcp_syncookies,net_ipv4_tcp_max_tw_buckets,net_ipv4_tcp_rmem,net_ipv4_tcp_wmem,fs_file_max,fs_inotify_max_user_watches,kernel_pid_max,kernel_shmmax,kernel_shmall,vm_nr_hugepages
+sysctl-db-tuned,db-server,prod,10,40,10,0,65535,5000,4096,1024 65535,15,600,1,1,262144,4096 87380 16777216,4096 65536 16777216,2097152,524288,131072,68719476736,16777216,1024
+sysctl-app-server,app-server,prod,60,20,10,0,128,1000,128,32768 60999,60,7200,0,1,32768,4096 87380 6291456,4096 16384 4194304,1048576,65536,32768,0,0,0
+sysctl-edge,edge-proxy,prod,30,20,5,0,65535,5000,4096,1024 65535,10,600,1,1,262144,4096 87380 16777216,4096 65536 16777216,2097152,524288,131072,0,0,0
+sysctl-monitoring,monitoring,prod,60,20,10,0,128,1000,128,32768 60999,60,7200,0,1,32768,4096 87380 6291456,4096 16384 4194304,1048576,65536,32768,0,0,0
+sysctl-dev,dev-server,dev,60,20,10,0,128,1000,128,32768 60999,60,7200,0,1,32768,4096 87380 6291456,4096 16384 4194304,1048576,65536,32768,0,0,0
+sysctl-hardened,security-hardened,prod,10,10,5,2,65535,5000,4096,1024 65535,10,300,1,1,262144,4096 87380 16777216,4096 65536 16777216,2097152,524288,131072,0,0,0

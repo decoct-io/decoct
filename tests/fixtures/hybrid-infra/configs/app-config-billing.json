@@ -1,0 +1,55 @@
+{
+  "name": "Billing API Config",
+  "environment": "prod",
+  "auth": {
+    "jwt_secret": "B1lling_JWT_S3cret!",
+    "jwt_expiry_seconds": 7200,
+    "jwt_refresh_expiry_seconds": 172800,
+    "jwt_issuer": "billing.ridgeline.io",
+    "encryption_key": "billing_Enc4ypt10nK3y!",
+    "api_key": "sk_live_4eC39HqLyjWDarjtT1zdp7dc"
+  },
+  "cors": {
+    "enabled": true,
+    "origins": [
+      "https://app.ridgeline.io"
+    ],
+    "methods": [
+      "GET",
+      "POST",
+      "PUT",
+      "DELETE"
+    ],
+    "allow_credentials": true
+  },
+  "rate_limiting": {
+    "enabled": true,
+    "requests_per_minute": 500,
+    "burst": 50
+  },
+  "logging": {
+    "level": "info",
+    "format": "json",
+    "output": "stdout"
+  },
+  "database": {
+    "host": "db-legacy-01",
+    "port": 3306,
+    "name": "billing",
+    "user": "billing_svc",
+    "password": "B1llingS3cret",
+    "pool_size": 10,
+    "pool_timeout": 30,
+    "ssl": false
+  },
+  "redis": {
+    "url": "redis://:R3disP@ss!@redis:6379/1",
+    "pool_size": 5,
+    "timeout": 5
+  },
+  "features": {
+    "stripe_v2": true,
+    "invoice_batching": false,
+    "auto_retry": true
+  }
+}

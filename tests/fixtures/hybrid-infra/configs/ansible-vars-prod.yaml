@@ -1,0 +1,27 @@
+---
+# Ansible Variables — prod
+# Ridgeline Data — ansible-vars-prod
+# WARNING: Contains sensitive values — encrypt with ansible-vault in production
+
+# Database credentials
+db_password: "Sup3rS3cretDB"
+
+# Deployment SSH key
+deploy_key: |
+  -----BEGIN RSA PRIVATE KEY-----MIIEpAIBAAKCAQEA0Z3VS5JJcds3xfn/ygWep4TzAUGMg9nHcGp1K-----END RSA PRIVATE KEY-----
+
+# Vault password
+vault_password: "V@ultP@ssw0rd!"
+
+# API credentials
+api_key: "sk_live_4eC39HqLyjWDarjtT1zdp7dc"
+jwt_secret: "xK9mPqR7vL2nW5jF8hT3yB6cD4gA1sE"
+
+# Service passwords
+smtp_password: "SmtpP@ss123"
+backup_encryption_key: "Bkup3ncryptK3y!"
+redis_password: "R3disP@ss!"
+grafana_admin_password: "Gr@fanaAdm1n!"
+
+# Environment
+env: prod

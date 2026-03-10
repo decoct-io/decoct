@@ -1,0 +1,103 @@
+#cloud-config
+# Cloud-Init — {{ server_type }} server ({{ env }})
+# Ridgeline Data — {{ hostname }}
+
+# ── Package Management ─────────────────────────────────────────────────────────
+package_update: {{ package_update }}
+package_upgrade: {{ package_upgrade }}
+package_reboot_if_required: {{ package_reboot_if_required }}
+
+{% if packages %}
+packages:
+{% for pkg in packages %}
+  - {{ pkg }}
+{% endfor %}
+{% endif %}
+
+# ── SSH ────────────────────────────────────────────────────────────────────────
+ssh:
+  emit_keys_to_console: {{ ssh_emit_keys_to_console }}
+ssh_deletekeys: {{ ssh_deletekeys }}
+allow_public_ssh_keys: {{ allow_public_ssh_keys }}
+disable_root: {{ disable_root }}
+ssh_quiet_keygen: {{ ssh_quiet_keygen }}
+
+# ── Users ──────────────────────────────────────────────────────────────────────
+users:
+  - default
+{% for user_spec in users %}
+{% set parts = user_spec.split(':') %}
+  - name: {{ parts[0] }}
+    groups: {{ parts[1] if parts|length > 1 else 'users' }}
+    lock_passwd: true
+    no_create_home: false
+    no_log_init: false
+    no_user_group: false
+    create_groups: true
+    system: false
+    ssh_redirect_user: false
+    shell: /bin/bash
+    sudo: ALL=(ALL) NOPASSWD:ALL
+{% endfor %}
+
+# ── Disk / Filesystem ─────────────────────────────────────────────────────────
+growpart:
+  mode: {{ growpart_mode }}
+  ignore_growroot_disabled: false
+
+# ── NTP ────────────────────────────────────────────────────────────────────────
+ntp:
+  enabled: {{ ntp_enabled }}
+  ntp_client: {{ ntp_client }}
+{% if ntp_servers %}
+  servers:
+{% for srv in ntp_servers %}
+    - {{ srv }}
+{% endfor %}
+{% endif %}
+
+# ── APT ────────────────────────────────────────────────────────────────────────
+apt:
+  preserve_sources_list: false
+apt_pipelining: os
+
+# ── Hostname / Networking ──────────────────────────────────────────────────────
+hostname: {{ hostname }}
+manage_etc_hosts: {{ manage_etc_hosts }}
+preserve_hostname: {{ preserve_hostname }}
+manage_resolv_conf: {{ manage_resolv_conf }}
+disable_ec2_metadata: {{ disable_ec2_metadata }}
+
+timezone: {{ timezone }}
+
+# ── Write Files ────────────────────────────────────────────────────────────────
+{% if write_files %}
+write_files:
+{% for wf in write_files %}
+{% set parts = wf.key.split(':') if wf.key is defined else wf.split(':') %}
+  - path: {{ parts[0] if parts is defined else wf }}
+    content: |
+      {{ parts[1] if parts|length > 1 else '' }}
+    permissions: "0644"
+    append: false
+    defer: false
+{% endfor %}
+{% endif %}
+
+# ── CA Certificates ───────────────────────────────────────────────────────────
+ca_certs:
+  remove_defaults: false
+
+# ── Power State ────────────────────────────────────────────────────────────────
+power_state:
+  delay: now
+  timeout: 30
+  condition: true
+
+{% if runcmd %}
+# ── Run Commands ───────────────────────────────────────────────────────────────
+runcmd:
+{% for cmd in runcmd %}
+  - {{ cmd }}
+{% endfor %}
+{% endif %}

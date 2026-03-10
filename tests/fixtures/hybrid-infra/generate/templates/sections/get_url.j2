@@ -1,0 +1,17 @@
+    - name: Download binary
+      ansible.builtin.get_url:
+        url: "{% raw %}{{ download_url | default('https://github.com/ridgeline-data/releases/latest') }}{% endraw %}"
+        dest: /tmp/download
+        mode: "0755"
+        backup: false
+        force: false
+        force_basic_auth: false
+        timeout: 10
+        unsafe_writes: false
+        use_proxy: true
+        validate_certs: true
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: {{ become }}

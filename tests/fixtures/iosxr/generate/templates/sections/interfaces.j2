@@ -1,0 +1,54 @@
+!
+! CUSTOM: Loopback interface
+interface Loopback0
+ description {{ hostname }} Router-ID
+ ipv4 address {{ loopback0_ip }} 255.255.255.255
+ no shutdown
+!
+! CUSTOM: Management interface
+interface MgmtEth0/RP0/CPU0/0
+ description MGMT-{{ hostname }}
+ ipv4 address {{ mgmt_ip }} 255.255.255.0
+ no shutdown
+!
+{% for intf in p2p_interfaces %}
+! CUSTOM: P2P link to {{ intf.remote }}
+interface {{ intf.name }}
+ description TO-{{ intf.remote }}
+ {% set ip_parts = intf.ip.split('/') %}
+ ipv4 address {{ ip_parts[0] }} 255.255.255.254
+ load-interval 300
+ carrier-delay up 0
+ carrier-delay down 0
+ arp timeout 14400
+ cdp
+ bandwidth 100000
+ mtu 9216
+ no shutdown
+!
+{% endfor %}
+{% if bundle_interfaces is defined and bundle_interfaces %}
+{% for bundle in bundle_interfaces %}
+interface Bundle-Ether{{ bundle.id }}
+ description {{ bundle.description }}
+ ipv4 address {{ bundle.ip }} 255.255.255.252
+ bundle minimum-active links 1
+ bundle maximum-active links 64
+ bundle wait-while 2000
+ lacp period 30
+ load-interval 300
+ mtu 9216
+ no shutdown
+!
+{% for member in bundle.members %}
+interface {{ member }}
+ description MEMBER-BE{{ bundle.id }}
+ bundle id {{ bundle.id }} mode active
+ carrier-delay up 0
+ carrier-delay down 0
+ cdp
+ no shutdown
+!
+{% endfor %}
+{% endfor %}
+{% endif %}

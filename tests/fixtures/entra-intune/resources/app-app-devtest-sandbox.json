@@ -1,0 +1,93 @@
+{
+  "@odata.type": "#microsoft.graph.application",
+  "id": "4d94319d-9ea7-500c-a739-f6d1571e8edd",
+  "createdDateTime": "2024-06-15T10:30:00Z",
+  "modifiedDateTime": "2024-11-20T14:45:00Z",
+  "appId": "6ba96347-5146-5724-8b91-7eeab582af64",
+  "displayName": "App-DevTest-Sandbox",
+  "publisherDomain": "contoso.com",
+  "signInAudience": "AzureADMyOrg",
+  "isFallbackPublicClient": false,
+  "isDeviceOnlyAuthSupported": false,
+  "oauth2RequiredPostResponse": false,
+  "nativeAuthenticationApisEnabled": "none",
+  "web": {
+    "redirectUris": [
+      "https://localhost:3000/callback",
+      "https://localhost:5173/auth"
+    ],
+    "homePageUrl": null,
+    "logoutUrl": null,
+    "implicitGrantSettings": {
+      "enableIdTokenIssuance": false,
+      "enableAccessTokenIssuance": false
+    }
+  },
+  "spa": {
+    "redirectUris": [
+      "https://localhost:5173/spa-auth"
+    ]
+  },
+  "api": {
+    "acceptMappedClaims": null,
+    "knownClientApplications": [],
+    "requestedAccessTokenVersion": 2,
+    "oauth2PermissionScopes": [
+      {
+        "adminConsentDescription": "Allow the application to access App-DevTest-Sandbox on behalf of the signed-in user.",
+        "adminConsentDisplayName": "test.read",
+        "id": "4d94319d-9ea7-500c-a739-f6d1571e8edd-scope-0",
+        "isEnabled": true,
+        "type": "User",
+        "userConsentDescription": "Allow the application to access App-DevTest-Sandbox on your behalf.",
+        "userConsentDisplayName": "test.read",
+        "value": "test.read"
+      },
+      {
+        "adminConsentDescription": "Allow the application to access App-DevTest-Sandbox on behalf of the signed-in user.",
+        "adminConsentDisplayName": "test.write",
+        "id": "4d94319d-9ea7-500c-a739-f6d1571e8edd-scope-1",
+        "isEnabled": true,
+        "type": "User",
+        "userConsentDescription": "Allow the application to access App-DevTest-Sandbox on your behalf.",
+        "userConsentDisplayName": "test.write",
+        "value": "test.write"
+      }
+    ],
+    "preAuthorizedApplications": []
+  },
+  "requiredResourceAccess": [
+    {
+      "resourceAppId": "00000003-0000-0000-c000-000000000000",
+      "resourceAccess": [
+        {
+          "id": "4d94319d-9ea7-500c-a739-f6d1571e8edd-ra-0",
+          "type": "Scope"
+        }
+      ]
+    }
+  ],
+  "identifierUris": [],
+  "keyCredentials": [],
+  "passwordCredentials": [
+    {
+      "customKeyIdentifier": null,
+      "displayName": "Client Secret",
+      "endDateTime": "2026-06-15T10:30:00Z",
+      "hint": "xYz",
+      "keyId": "4d94319d-9ea7-500c-a739-f6d1571e8edd-pwd-0",
+      "secretText": "xYz789$ecr3tV4lue!@",
+      "startDateTime": "2024-06-15T10:30:00Z"
+    }
+  ],
+  "optionalClaims": null,
+  "tags": [],
+  "appRoles": [],
+  "info": {
+    "logoUrl": null,
+    "marketingUrl": null,
+    "privacyStatementUrl": null,
+    "supportUrl": null,
+    "termsOfServiceUrl": null
+  }
+}

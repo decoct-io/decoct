@@ -1,0 +1,61 @@
+!
+! CUSTOM: L3VPN / VRF configuration
+{% for vrf in l3vpn_vrfs %}
+vrf {{ vrf.name }}
+ address-family ipv4 unicast
+  import route-target
+   {{ sub_as }}:{{ vrf.rd }}
+  !
+  export route-target
+   {{ sub_as }}:{{ vrf.rd }}
+  !
+ !
+!
+interface Loopback{{ loop.index }}
+ vrf {{ vrf.name }}
+ description {{ vrf.name }}-LOOPBACK
+ ipv4 address {{ vrf.network.split('/')[0].rsplit('.', 1)[0] }}.254 255.255.255.255
+ no shutdown
+!
+{% endfor %}
+{% for vrf in l3vpn_vrfs %}
+! CUSTOM: BGP VRF {{ vrf.name }}
+router bgp {{ sub_as }}
+ vrf {{ vrf.name }}
+  rd {{ loopback0_ip }}:{{ vrf.rd }}
+  address-family ipv4 unicast
+   redistribute connected
+   redistribute static
+  !
+{% if ebgp_peers is defined %}
+{% for peer in ebgp_peers %}
+  neighbor {{ peer.ip }}
+   remote-as {{ peer.remote_as }}
+   address-family ipv4 unicast
+    route-policy {{ peering_policy }} in
+    route-policy RPL-EBGP-OUT out
+   !
+  !
+{% endfor %}
+{% endif %}
+ !
+!
+{% endfor %}
+! CUSTOM: Route policies
+route-policy RPL-EBGP-OUT
+ set med 100
+ set community ({{ sub_as }}:100) additive
+ pass
+end-policy
+!
+{% if peering_policy is defined %}
+route-policy {{ peering_policy }}
+ if community matches-any (no-export) then
+  drop
+ else
+  set local-preference 200
+  pass
+ endif
+end-policy
+!
+{% endif %}

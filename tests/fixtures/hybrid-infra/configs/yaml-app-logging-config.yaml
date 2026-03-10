@@ -1,0 +1,56 @@
+# FastAPI Logging Configuration
+# Ridgeline Data — yaml-app-logging-config (prod)
+
+app:
+  name: ridgeline-platform
+  version: v2
+  env: prod
+  debug: false
+
+logging:
+  level: INFO
+  format: json
+  handlers:
+    - console
+    - file
+  file:
+    path: /var/log/ridgeline/app.log
+    max_size: 100MB
+    max_backups: 5
+    compress: true
+
+cors:
+  enabled: true
+  origins:
+    - https://app.ridgeline.io
+    - https://admin.ridgeline.io
+  methods:
+    - GET
+    - POST
+    - PUT
+    - DELETE
+  allow_credentials: true
+
+rate_limiting:
+  enabled: true
+  requests_per_minute: 1000
+  burst: 50
+  by: ip
+
+features:
+  analytics_v2: true
+  new_billing: false
+  dark_mode: true
+
+cache:
+  enabled: true
+  ttl: 300
+  backend: redis
+  redis_url: "redis://:R3disP@ss!@redis:6379/1"
+
+database:
+  pool_size: 20
+  pool_timeout: 30
+  pool_recycle: 3600
+  echo: false
+

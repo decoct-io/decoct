@@ -1,0 +1,121 @@
+# Traefik Configuration — prod (dynamic)
+# Ridgeline Data — traefik-prod-dynamic
+
+# ── Global ─────────────────────────────────────────────────────────────────────
+global:
+  checkNewVersion: true
+  sendAnonymousUsage: false
+
+# ── API ────────────────────────────────────────────────────────────────────────
+api:
+  dashboard: true
+  insecure: false
+  debug: false
+
+# ── Logging ────────────────────────────────────────────────────────────────────
+log:
+  level: ERROR
+  format: common
+  noColor: false
+  maxSize: 100
+  maxAge: 0
+  maxBackups: 0
+  compress: false
+
+accessLog:
+  format: common
+  bufferingSize: 0
+  addInternals: false
+  filters:
+    retryAttempts: false
+    minDuration: 0
+  fields:
+    defaultMode: keep
+    headers:
+      defaultMode: drop
+
+
+# ── Providers ──────────────────────────────────────────────────────────────────
+providers:
+  providersThrottleDuration: 2s
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: true
+    watch: true
+    useBindPortIP: false
+    allowEmptyServices: false
+  file:
+    directory: /etc/traefik/dynamic
+    watch: true
+
+# ── TLS Options ────────────────────────────────────────────────────────────────
+tls:
+  options:
+    default:
+      minVersion: VersionTLS12
+      sniStrict: false
+
+# ── HTTP Routers ───────────────────────────────────────────────────────────────
+http:
+  routers:
+    core-api:
+      rule: "Host(`api.ridgeline.io`)"
+      service: core-api
+      entryPoints:
+        - websecure
+    web-app:
+      rule: "Host(`app.ridgeline.io`)"
+      service: web-app
+      entryPoints:
+        - websecure
+    billing:
+      rule: "Host(`billing.ridgeline.io`)"
+      service: billing
+      entryPoints:
+        - websecure
+    admin:
+      rule: "Host(`admin.ridgeline.io`)"
+      service: admin
+      entryPoints:
+        - websecure
+    docs:
+      rule: "Host(`docs.ridgeline.io`)"
+      service: docs
+      entryPoints:
+        - websecure
+
+  middlewares:
+    rate-limit:
+      enabled: true
+    compress:
+      enabled: true
+    headers-security:
+      enabled: true
+
+# ── Metrics ────────────────────────────────────────────────────────────────────
+metrics:
+  prometheus:
+    addEntryPointsLabels: true
+    addRoutersLabels: false
+    addServicesLabels: true
+    entryPoint: traefik
+    manualRouting: false
+    addInternals: false
+
+# ── Servers Transport ──────────────────────────────────────────────────────────
+serversTransport:
+  maxIdleConnsPerHost: 200
+  forwardingTimeouts:
+    dialTimeout: 30s
+    responseHeaderTimeout: 0s
+    idleConnTimeout: 90s
+    readIdleTimeout: 0s
+    pingTimeout: 15s
+  insecureSkipVerify: false
+  disableHTTP2: false
+
+# ── Ping ───────────────────────────────────────────────────────────────────────
+ping:
+  entryPoint: traefik
+  terminatingStatusCode: 503
+  manualRouting: false

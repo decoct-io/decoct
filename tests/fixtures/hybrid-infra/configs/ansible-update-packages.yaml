@@ -1,0 +1,61 @@
+---
+# Update System Packages
+# Ridgeline Data — ansible-update-packages
+
+- name: Update System Packages
+  hosts: all
+  become: true
+  become_user: root
+  gather_facts: true
+  any_errors_fatal: false
+  ignore_errors: false
+  check_mode: false
+  no_log: false
+  run_once: false
+  order: inventory
+
+  vars:
+    update_cache: "yes"
+    upgrade: "dist"
+
+  tasks:
+    - name: Install packages via apt
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: false
+        force: false
+        purge: false
+        autoremove: false
+        autoclean: false
+        only_upgrade: false
+        force_apt_get: false
+        allow_unauthenticated: false
+        allow_downgrade: false
+        fail_on_autoremove: false
+        lock_timeout: 60
+        cache_valid_time: 0
+      loop:
+        - curl
+        - wget
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: true
+
+    - name: Enable and start service
+      ansible.builtin.systemd:
+        name: "{{ service_name | default('ridgeline') }}"
+        state: started
+        enabled: true
+        daemon_reload: false
+        daemon_reexec: false
+        no_block: false
+        scope: system
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: true
+

@@ -1,0 +1,68 @@
+---
+# Emergency Rollback
+# Ridgeline Data — ansible-emergency-rollback
+
+- name: Emergency Rollback
+  hosts: app_servers
+  become: false
+  gather_facts: false
+  any_errors_fatal: false
+  ignore_errors: true
+  check_mode: false
+  no_log: false
+  run_once: false
+  order: inventory
+
+  vars:
+    rollback_version: "previous"
+    deploy_key: "-----BEGIN RSA PRIVATE KEY-----MIIEpAIBAAKCAQEA0Z3VS5JJcds3xfn/ygWep-----END RSA PRIVATE KEY-----"
+
+  tasks:
+    - name: Enable and start service
+      ansible.builtin.systemd:
+        name: "{{ service_name | default('ridgeline') }}"
+        state: started
+        enabled: true
+        daemon_reload: false
+        daemon_reexec: false
+        no_block: false
+        scope: system
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: false
+
+    - name: Wait for service to be ready
+      ansible.builtin.wait_for:
+        port: "{{ app_port | default('8000') }}"
+        host: 127.0.0.1
+        connect_timeout: 5
+        delay: 0
+        sleep: 1
+        state: started
+        timeout: 300
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: false
+
+    - name: Verify service health endpoint
+      ansible.builtin.uri:
+        url: "http://localhost:{{ app_port | default('8000') }}/health"
+        method: GET
+        follow_redirects: safe
+        force: false
+        force_basic_auth: false
+        return_content: false
+        timeout: 30
+        use_proxy: true
+        validate_certs: true
+        status_code: 200
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: false
+

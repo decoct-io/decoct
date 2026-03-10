@@ -1,0 +1,99 @@
+{% from "macros/common.j2" import audit_fields, assignments_array %}
+{% if platform == "ios" %}
+{
+  "@odata.type": "#microsoft.graph.iosManagedAppProtection",
+  {{ audit_fields(id, created_date, modified_date) }},
+  "displayName": {{ display_name | tojson }},
+  "description": {{ description | tojson }},
+  "version": 1,
+  "roleScopeTagIds": ["0"],
+  "pinRequired": {{ pin_required | tojson }},
+  "minimumPinLength": {{ minimum_pin_length }},
+  "simplePinBlocked": {{ simple_pin_blocked | tojson }},
+  "fingerprintBlocked": {{ fingerprint_blocked | tojson }},
+  "disableAppPinIfDevicePinIsSet": false,
+  "periodBeforePinReset": "PT0S",
+  "dataBackupBlocked": {{ data_backup_blocked | tojson }},
+  "contactSyncBlocked": {{ contact_sync_blocked | tojson }},
+  "printBlocked": {{ print_blocked | tojson }},
+  "saveAsBlocked": {{ save_as_blocked | tojson }},
+  "deviceComplianceRequired": {{ device_compliance_required | tojson }},
+  "managedBrowserToOpenLinksRequired": {{ managed_browser_required | tojson }},
+  "organizationalCredentialsRequired": false,
+  "allowedDataStorageLocations": [],
+  "periodOfflineBeforeWipeIsEnforced": {{ period_offline_before_wipe | tojson }},
+  "periodOfflineBeforeAccessCheck": {{ period_offline_before_access_check | tojson }},
+  "periodOnlineBeforeAccessCheck": {{ period_online_before_access_check | tojson }},
+  "allowedInboundDataTransferSources": "allApps",
+  "allowedOutboundDataTransferDestinations": "managedApps",
+  "allowedOutboundClipboardSharingLevel": "managedAppsWithPasteIn",
+  "faceIdBlocked": false,
+  "minimumRequiredSdkVersion": null,
+  "minimumRequiredOsVersion": null,
+  "minimumWarningOsVersion": null,
+  "managedBrowser": "notConfigured",
+  "customBrowserProtocol": null,
+  "apps": [
+    {% for app in apps %}
+    {
+      "mobileAppIdentifier": {
+        "@odata.type": "#microsoft.graph.iosMobileAppIdentifier",
+        "bundleId": {{ app | tojson }}
+      }
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+  ],
+  "assignments": {{ assignments_array(assignments) }}
+}
+{% elif platform == "android" %}
+{
+  "@odata.type": "#microsoft.graph.androidManagedAppProtection",
+  {{ audit_fields(id, created_date, modified_date) }},
+  "displayName": {{ display_name | tojson }},
+  "description": {{ description | tojson }},
+  "version": 1,
+  "roleScopeTagIds": ["0"],
+  "pinRequired": {{ pin_required | tojson }},
+  "minimumPinLength": {{ minimum_pin_length }},
+  "simplePinBlocked": {{ simple_pin_blocked | tojson }},
+  "fingerprintBlocked": {{ fingerprint_blocked | tojson }},
+  "disableAppPinIfDevicePinIsSet": false,
+  "periodBeforePinReset": "PT0S",
+  "dataBackupBlocked": {{ data_backup_blocked | tojson }},
+  "contactSyncBlocked": {{ contact_sync_blocked | tojson }},
+  "printBlocked": {{ print_blocked | tojson }},
+  "saveAsBlocked": {{ save_as_blocked | tojson }},
+  "deviceComplianceRequired": {{ device_compliance_required | tojson }},
+  "managedBrowserToOpenLinksRequired": {{ managed_browser_required | tojson }},
+  "organizationalCredentialsRequired": false,
+  "allowedDataStorageLocations": [],
+  "periodOfflineBeforeWipeIsEnforced": {{ period_offline_before_wipe | tojson }},
+  "periodOfflineBeforeAccessCheck": {{ period_offline_before_access_check | tojson }},
+  "periodOnlineBeforeAccessCheck": {{ period_online_before_access_check | tojson }},
+  "allowedInboundDataTransferSources": "allApps",
+  "allowedOutboundDataTransferDestinations": "managedApps",
+  "allowedOutboundClipboardSharingLevel": "managedAppsWithPasteIn",
+  "screenCaptureBlocked": false,
+  "encryptAppData": true,
+  "disableAppEncryptionIfDeviceEncryptionIsEnabled": false,
+  "minimumRequiredSdkVersion": null,
+  "minimumRequiredOsVersion": null,
+  "minimumWarningOsVersion": null,
+  "minimumRequiredPatchVersion": null,
+  "minimumWarningPatchVersion": null,
+  "managedBrowser": "notConfigured",
+  "customBrowserPackageId": null,
+  "customBrowserDisplayName": null,
+  "apps": [
+    {% for app in apps %}
+    {
+      "mobileAppIdentifier": {
+        "@odata.type": "#microsoft.graph.androidMobileAppIdentifier",
+        "packageId": {{ app | tojson }}
+      }
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+  ],
+  "assignments": {{ assignments_array(assignments) }}
+}
+{% endif %}

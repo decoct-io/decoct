@@ -1,0 +1,103 @@
+#cloud-config
+# Cloud-Init — app server (prod)
+# Ridgeline Data — app-prod-01
+
+# ── Package Management ─────────────────────────────────────────────────────────
+package_update: true
+package_upgrade: true
+package_reboot_if_required: false
+
+packages:
+  - curl
+  - wget
+  - htop
+  - vim
+  - net-tools
+  - python3-pip
+  - docker-ce
+  - docker-compose-plugin
+
+# ── SSH ────────────────────────────────────────────────────────────────────────
+ssh:
+  emit_keys_to_console: true
+ssh_deletekeys: true
+allow_public_ssh_keys: true
+disable_root: true
+ssh_quiet_keygen: false
+
+# ── Users ──────────────────────────────────────────────────────────────────────
+users:
+  - default
+  - name: deploy
+    groups: sudo
+    lock_passwd: true
+    no_create_home: false
+    no_log_init: false
+    no_user_group: false
+    create_groups: true
+    system: false
+    ssh_redirect_user: false
+    shell: /bin/bash
+    sudo: ALL=(ALL) NOPASSWD:ALL
+  - name: ops
+    groups: sudo
+    lock_passwd: true
+    no_create_home: false
+    no_log_init: false
+    no_user_group: false
+    create_groups: true
+    system: false
+    ssh_redirect_user: false
+    shell: /bin/bash
+    sudo: ALL=(ALL) NOPASSWD:ALL
+
+# ── Disk / Filesystem ─────────────────────────────────────────────────────────
+growpart:
+  mode: auto
+  ignore_growroot_disabled: false
+
+# ── NTP ────────────────────────────────────────────────────────────────────────
+ntp:
+  enabled: true
+  ntp_client: auto
+  servers:
+    - 0.pool.ntp.org
+    - 1.pool.ntp.org
+
+# ── APT ────────────────────────────────────────────────────────────────────────
+apt:
+  preserve_sources_list: false
+apt_pipelining: os
+
+# ── Hostname / Networking ──────────────────────────────────────────────────────
+hostname: app-prod-01
+manage_etc_hosts: true
+preserve_hostname: false
+manage_resolv_conf: false
+disable_ec2_metadata: false
+
+timezone: America/New_York
+
+# ── Write Files ────────────────────────────────────────────────────────────────
+write_files:
+  - path: /etc/ridgeline/api.conf
+    content: |
+      
+    permissions: "0644"
+    append: false
+    defer: false
+
+# ── CA Certificates ───────────────────────────────────────────────────────────
+ca_certs:
+  remove_defaults: false
+
+# ── Power State ────────────────────────────────────────────────────────────────
+power_state:
+  delay: now
+  timeout: 30
+  condition: true
+
+# ── Run Commands ───────────────────────────────────────────────────────────────
+runcmd:
+  - systemctl enable docker
+  - systemctl start docker

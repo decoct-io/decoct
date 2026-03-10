@@ -1,0 +1,49 @@
+# Docker Compose — compose-report-prod
+# Ridgeline Data — B2B Analytics Platform
+
+services:
+  report-generator:
+    image: ridgeline/report-generator:1.0.0
+    restart: "unless-stopped"
+    privileged: false
+    read_only: false
+    stdin_open: false
+    tty: false
+    init: false
+    environment:
+      DATABASE_URL: "postgresql://reports:R3portDB@db-prod-01:5432/reports"
+      SMTP_PASSWORD: "SmtpP@ss123"
+    volumes:
+      - /opt/ridgeline/reports:/app/output
+    networks:
+      - app-network
+    healthcheck:
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 0s
+      start_interval: 5s
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        max_attempts: 0
+      update_config:
+        parallelism: 1
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+    mem_limit: 2g
+    cpus: 1.0
+
+networks:
+  app-network:
+    driver: bridge
+    external: false
+    internal: false
+    attachable: false
+    enable_ipv6: false
+

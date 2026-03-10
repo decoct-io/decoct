@@ -1,0 +1,19 @@
+{
+  "@odata.type": "#microsoft.graph.countryNamedLocation",
+  "id": "a01e4f97-f752-52d6-997f-70c0ec360ca4",
+  "createdDateTime": "2024-06-15T10:30:00Z",
+  "modifiedDateTime": "2024-11-20T14:45:00Z",
+  "displayName": "NL-Allowed-Countries",
+  "isTrusted": false,
+  "countriesAndRegions": [
+    "US",
+    "GB",
+    "DE",
+    "FR",
+    "CA",
+    "AU",
+    "JP"
+  ],
+  "includeUnknownCountriesAndRegions": true,
+  "countryLookupMethod": "clientIpAddress"
+}

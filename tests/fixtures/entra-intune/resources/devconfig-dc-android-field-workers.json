@@ -1,0 +1,70 @@
+{
+  "@odata.type": "#microsoft.graph.androidGeneralDeviceConfiguration",
+  "id": "5ca4fc4a-0bf2-54d5-a2b2-4ca0fe283b9b",
+  "createdDateTime": "2024-06-15T10:30:00Z",
+  "modifiedDateTime": "2024-11-20T14:45:00Z",
+  "displayName": "DC-Android-Field-Workers",
+  "description": "Field worker Android device with WiFi PSK",
+  "version": 1,
+  "roleScopeTagIds": [
+    "0"
+  ],
+  "appsBlockClipboardSharing": false,
+  "appsBlockCopyPaste": false,
+  "appsBlockYouTube": false,
+  "bluetoothBlocked": false,
+  "cameraBlocked": false,
+  "cellularBlockDataRoaming": false,
+  "cellularBlockMessaging": false,
+  "cellularBlockVoiceRoaming": false,
+  "cellularBlockWiFiTethering": false,
+  "compliantAppListType": "none",
+  "compliantAppsList": [],
+  "deviceSharingAllowed": false,
+  "diagnosticDataBlockSubmission": false,
+  "factoryResetBlocked": false,
+  "googleAccountBlockAutoSync": false,
+  "googlePlayStoreBlocked": false,
+  "kioskModeApps": [],
+  "kioskModeBlockSleepButton": false,
+  "kioskModeBlockVolumeButtons": false,
+  "locationServicesBlocked": true,
+  "nfcBlocked": false,
+  "passwordBlockFingerprintUnlock": false,
+  "passwordBlockTrustAgents": false,
+  "passwordExpirationDays": null,
+  "passwordMinimumLength": 4,
+  "passwordMinutesOfInactivityBeforeScreenTimeout": null,
+  "passwordPreviousPasswordBlockCount": null,
+  "passwordRequired": true,
+  "passwordRequiredType": "numeric",
+  "passwordSignInFailureCountBeforeFactoryReset": null,
+  "powerOffBlocked": false,
+  "screenCaptureBlocked": false,
+  "securityRequireVerifyApps": false,
+  "storageBlockGoogleBackup": false,
+  "storageBlockRemovableStorage": false,
+  "storageRequireDeviceEncryption": true,
+  "storageRequireRemovableStorageEncryption": false,
+  "voiceAssistantBlocked": false,
+  "voiceDialingBlocked": false,
+  "webBrowserBlockAutofill": false,
+  "webBrowserBlocked": false,
+  "webBrowserBlockJavaScript": false,
+  "webBrowserBlockPopups": false,
+  "webBrowserCookieSettings": "browserDefault",
+  "wiFiBlocked": false,
+  "_networkConfig": {
+    "wiFiPsk": "W1F1P@ssw0rd!2024",
+    "ssid": "CorpWiFi",
+    "securityType": "wpaPersonal"
+  },
+  "assignments": [
+    {
+      "target": {
+        "@odata.type": "#microsoft.graph.groupAssignmentTarget",
+        "groupId": "c7ab825c-4116-5394-a58f-0a42a9843eff"
+      }
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+    - name: Set file permissions
+      ansible.builtin.file:
+        path: /opt/ridgeline
+        state: directory
+        owner: ridgeline
+        group: ridgeline
+        mode: "0755"
+        follow: true
+        force: false
+        recurse: false
+        unsafe_writes: false
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: {{ become }}

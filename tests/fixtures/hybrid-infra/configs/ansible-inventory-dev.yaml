@@ -1,0 +1,47 @@
+---
+# Ansible Inventory — dev
+# Ridgeline Data — ansible-inventory-dev
+
+all:
+  vars:
+    ansible_user: deploy
+    ntp_server: pool.ntp.org
+    dns_servers:
+      - 1.1.1.1
+      - 8.8.8.8
+
+  children:
+    app_servers:
+      hosts:
+        dev-01:
+          ansible_host: dev-01.ridgeline.internal
+
+    web_servers:
+      hosts:
+        dev-01:
+          ansible_host: dev-01.ridgeline.internal
+
+    db_servers:
+      hosts:
+        dev-01:
+          ansible_host: dev-01.ridgeline.internal
+
+    legacy_db_servers:
+      hosts:
+        dev-01:
+          ansible_host: dev-01.ridgeline.internal
+
+    edge_servers:
+      hosts:
+        dev-01:
+          ansible_host: dev-01.ridgeline.internal
+
+    monitoring_servers:
+      hosts:
+        dev-01:
+          ansible_host: dev-01.ridgeline.internal
+
+    worker_servers:
+      hosts:
+        dev-01:
+          ansible_host: dev-01.ridgeline.internal

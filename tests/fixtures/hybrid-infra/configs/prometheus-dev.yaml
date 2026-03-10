@@ -1,0 +1,110 @@
+# Prometheus Configuration — dev
+# Ridgeline Data — prometheus-dev
+
+# ── Global ─────────────────────────────────────────────────────────────────────
+global:
+  scrape_interval: 1m
+  scrape_timeout: 10s
+  evaluation_interval: 1m
+  body_size_limit: 0
+  sample_limit: 0
+  label_limit: 0
+  label_name_length_limit: 0
+  label_value_length_limit: 0
+  target_limit: 0
+  keep_dropped_targets: 0
+  scrape_native_histograms: false
+  external_labels:
+    env: dev
+    cluster: ridgeline-dev
+
+
+
+# ── Scrape Configs ─────────────────────────────────────────────────────────────
+scrape_configs:
+  - job_name: prometheus
+    scrape_interval: 1m
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    honor_labels: false
+    honor_timestamps: true
+    track_timestamps_staleness: false
+    enable_compression: true
+    follow_redirects: true
+    enable_http2: true
+    body_size_limit: 0
+    sample_limit: 0
+    label_limit: 0
+    label_name_length_limit: 0
+    label_value_length_limit: 0
+    target_limit: 0
+    keep_dropped_targets: 0
+    static_configs:
+      - targets:
+          - localhost:9090
+
+  - job_name: core-api
+    scrape_interval: 1m
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    honor_labels: false
+    honor_timestamps: true
+    track_timestamps_staleness: false
+    enable_compression: true
+    follow_redirects: true
+    enable_http2: true
+    body_size_limit: 0
+    sample_limit: 0
+    label_limit: 0
+    label_name_length_limit: 0
+    label_value_length_limit: 0
+    target_limit: 0
+    keep_dropped_targets: 0
+    static_configs:
+      - targets:
+          - "dev-01:8000"
+  - job_name: web-app
+    scrape_interval: 1m
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    honor_labels: false
+    honor_timestamps: true
+    track_timestamps_staleness: false
+    enable_compression: true
+    follow_redirects: true
+    enable_http2: true
+    body_size_limit: 0
+    sample_limit: 0
+    label_limit: 0
+    label_name_length_limit: 0
+    label_value_length_limit: 0
+    target_limit: 0
+    keep_dropped_targets: 0
+    static_configs:
+      - targets:
+          - "dev-01:3000"
+  - job_name: node-exporter
+    scrape_interval: 1m
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    honor_labels: false
+    honor_timestamps: true
+    track_timestamps_staleness: false
+    enable_compression: true
+    follow_redirects: true
+    enable_http2: true
+    body_size_limit: 0
+    sample_limit: 0
+    label_limit: 0
+    label_name_length_limit: 0
+    label_value_length_limit: 0
+    target_limit: 0
+    keep_dropped_targets: 0
+    static_configs:
+      - targets:
+          - "dev-01:9100"
+

@@ -1,0 +1,57 @@
+# Service Mesh Configuration
+# Ridgeline Data — yaml-app-service-mesh (prod)
+
+app:
+  name: ridgeline-platform
+  version: v1
+  env: prod
+  debug: false
+
+logging:
+  level: WARNING
+  format: json
+  handlers:
+    - console
+    - file
+  file:
+    path: /var/log/ridgeline/app.log
+    max_size: 100MB
+    max_backups: 5
+    compress: true
+
+
+
+
+cache:
+  enabled: true
+  ttl: 60
+  backend: redis
+  redis_url: "redis://:R3disP@ss!@redis:6379/1"
+
+database:
+  pool_size: 10
+  pool_timeout: 15
+  pool_recycle: 3600
+  echo: false
+
+services:
+  core-api:
+    url: http://core-api:8000
+    timeout: 30
+    retries: 3
+  auth-service:
+    url: http://auth-service:8001
+    timeout: 10
+    retries: 2
+  billing-api:
+    url: http://billing-api:8002
+    timeout: 30
+    retries: 3
+  search-svc:
+    url: http://search-svc:8004
+    timeout: 15
+    retries: 2
+  notification-svc:
+    url: http://notification-svc:8003
+    timeout: 10
+    retries: 1

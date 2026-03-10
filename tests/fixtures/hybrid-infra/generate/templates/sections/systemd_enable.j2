@@ -1,0 +1,14 @@
+    - name: Enable and start service
+      ansible.builtin.systemd:
+        name: "{% raw %}{{ service_name | default('ridgeline') }}{% endraw %}"
+        state: started
+        enabled: true
+        daemon_reload: false
+        daemon_reexec: false
+        no_block: false
+        scope: system
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: {{ become }}

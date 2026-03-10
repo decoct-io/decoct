@@ -1,0 +1,48 @@
+!
+! CUSTOM: EVPN configuration
+evpn
+ evi {{ evpn_vni_base }}
+  bgp
+   route-target import {{ sub_as }}:{{ evpn_vni_base }}
+   route-target export {{ sub_as }}:{{ evpn_vni_base }}
+  !
+  advertise-mac
+  !
+ !
+{% for i in range(1, evpn_instance_count) %}
+ evi {{ evpn_vni_base + i }}
+  bgp
+   route-target import {{ sub_as }}:{{ evpn_vni_base + i }}
+   route-target export {{ sub_as }}:{{ evpn_vni_base + i }}
+  !
+  advertise-mac
+  !
+ !
+{% endfor %}
+!
+! CUSTOM: L2VPN bridge domains
+l2vpn
+{% for bd in bridge_domains %}
+ bridge group BG-{{ hostname }}
+  bridge-domain {{ bd.name }}
+   interface Bundle-Ether{{ bd.vlan }}.{{ bd.vlan }}
+   !
+   evi {{ evpn_vni_base + loop.index0 }}
+   !
+   routed interface BVI{{ bd.vlan }}
+   !
+  !
+ !
+{% endfor %}
+!
+{% for bd in bridge_domains %}
+interface BVI{{ bd.vlan }}
+ description SVI-{{ bd.name }}
+ ipv4 address {{ loopback0_ip.rsplit('.', 1)[0] }}.{{ bd.vlan }} 255.255.255.0
+ no shutdown
+!
+interface Bundle-Ether{{ bd.vlan }}.{{ bd.vlan }} l2transport
+ description L2-{{ bd.name }}
+ encapsulation dot1q {{ bd.vlan }}
+!
+{% endfor %}

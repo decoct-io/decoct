@@ -1,0 +1,98 @@
+{% from "macros/common.j2" import audit_fields %}
+{
+  "@odata.type": "#microsoft.graph.crossTenantAccessPolicyConfigurationPartner",
+  {{ audit_fields(id, created_date, modified_date) }},
+  "displayName": {{ display_name | tojson }},
+  "tenantId": {{ tenant_id | tojson }},
+  "isServiceProvider": false,
+  "isServiceDefault": {{ is_service_default | tojson }},
+  "b2bCollaborationInbound": {
+    "applications": {
+      "accessType": {{ b2b_collab_inbound_access_type | tojson }},
+      "targets": [
+        {
+          "target": "AllApplications",
+          "targetType": "application"
+        }
+      ]
+    },
+    "usersAndGroups": {
+      "accessType": {{ b2b_collab_inbound_access_type | tojson }},
+      "targets": [
+        {
+          "target": "AllUsers",
+          "targetType": "user"
+        }
+      ]
+    }
+  },
+  "b2bCollaborationOutbound": {
+    "applications": {
+      "accessType": {{ b2b_collab_outbound_access_type | tojson }},
+      "targets": [
+        {
+          "target": "AllApplications",
+          "targetType": "application"
+        }
+      ]
+    },
+    "usersAndGroups": {
+      "accessType": {{ b2b_collab_outbound_access_type | tojson }},
+      "targets": [
+        {
+          "target": "AllUsers",
+          "targetType": "user"
+        }
+      ]
+    }
+  },
+  "b2bDirectConnectInbound": {
+    "applications": {
+      "accessType": {{ b2b_direct_inbound_access_type | tojson }},
+      "targets": [
+        {
+          "target": "AllApplications",
+          "targetType": "application"
+        }
+      ]
+    },
+    "usersAndGroups": {
+      "accessType": {{ b2b_direct_inbound_access_type | tojson }},
+      "targets": [
+        {
+          "target": "AllUsers",
+          "targetType": "user"
+        }
+      ]
+    }
+  },
+  "b2bDirectConnectOutbound": {
+    "applications": {
+      "accessType": {{ b2b_direct_outbound_access_type | tojson }},
+      "targets": [
+        {
+          "target": "AllApplications",
+          "targetType": "application"
+        }
+      ]
+    },
+    "usersAndGroups": {
+      "accessType": {{ b2b_direct_outbound_access_type | tojson }},
+      "targets": [
+        {
+          "target": "AllUsers",
+          "targetType": "user"
+        }
+      ]
+    }
+  },
+  "inboundTrust": {
+    "isMfaAccepted": {{ inbound_trust_mfa | tojson }},
+    "isCompliantDeviceAccepted": {{ inbound_trust_compliant_device | tojson }},
+    "isHybridAzureADJoinedDeviceAccepted": {{ inbound_trust_hybrid_joined | tojson }}
+  },
+  "automaticUserConsentSettings": {
+    "inboundAllowed": null,
+    "outboundAllowed": null
+  }
+}

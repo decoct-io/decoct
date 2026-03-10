@@ -1,0 +1,22 @@
+{
+  "@odata.type": "#microsoft.graph.ipNamedLocation",
+  "id": "3bab498d-df1b-5aeb-9cd6-edb6a6e76a69",
+  "createdDateTime": "2024-06-15T10:30:00Z",
+  "modifiedDateTime": "2024-11-20T14:45:00Z",
+  "displayName": "NL-Corporate-HQ",
+  "isTrusted": true,
+  "ipRanges": [
+    {
+      "@odata.type": "#microsoft.graph.iPv4CidrRange",
+      "cidrAddress": "10.0.0.0/8"
+    },
+    {
+      "@odata.type": "#microsoft.graph.iPv4CidrRange",
+      "cidrAddress": "172.16.0.0/12"
+    },
+    {
+      "@odata.type": "#microsoft.graph.iPv4CidrRange",
+      "cidrAddress": "203.0.113.0/24"
+    }
+  ]
+}

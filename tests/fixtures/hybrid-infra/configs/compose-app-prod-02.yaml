@@ -1,0 +1,139 @@
+# Docker Compose — compose-app-prod-02
+# Ridgeline Data — B2B Analytics Platform
+
+services:
+  web-app:
+    image: ridgeline/web-app:3.0.0
+    restart: "always"
+    privileged: false
+    read_only: false
+    stdin_open: false
+    tty: false
+    init: false
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: "production"
+      API_URL: "http://core-api:8000"
+      SESSION_SECRET: "sEssI0nS3cret!"
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.web.rule: "Host(`app.ridgeline.io`)"
+    networks:
+      - app-network
+      - monitoring
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/health"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 15s
+      start_interval: 5s
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: any
+        max_attempts: 0
+      update_config:
+        parallelism: 1
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+    mem_limit: 1g
+    cpus: 0.5
+  notification-svc:
+    image: ridgeline/notification-svc:1.2.0
+    restart: "unless-stopped"
+    privileged: false
+    read_only: false
+    stdin_open: false
+    tty: false
+    init: false
+    ports:
+      - "8003:8003"
+    environment:
+      SMTP_PASSWORD: "SmtpP@ss123"
+      API_KEY: "sk_live_notif_key_abc123"
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8003/health"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 0s
+      start_interval: 5s
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        max_attempts: 0
+      update_config:
+        parallelism: 1
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+    mem_limit: 512m
+    cpus: 0.25
+  search-svc:
+    image: ridgeline/search-svc:0.9.0
+    restart: "unless-stopped"
+    privileged: false
+    read_only: false
+    stdin_open: false
+    tty: false
+    init: false
+    ports:
+      - "8004:8004"
+    environment:
+      ELASTICSEARCH_PASSWORD: "El@sticP@ss!"
+    volumes:
+      - search-data:/app/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8004/health"]
+      interval: 60s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+      start_interval: 5s
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        max_attempts: 0
+      update_config:
+        parallelism: 1
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+    mem_limit: 1g
+    cpus: 0.5
+
+networks:
+  app-network:
+    driver: bridge
+    external: false
+    internal: false
+    attachable: false
+    enable_ipv6: false
+  monitoring:
+    driver: bridge
+    external: false
+    internal: false
+    attachable: false
+    enable_ipv6: false
+
+volumes:
+  search-data:
+    external: false

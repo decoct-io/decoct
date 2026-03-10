@@ -1,0 +1,9 @@
+display_name,platform,description,camera_blocked,screen_capture_blocked,bluetooth_blocked,nfc_blocked,wifi_blocked,location_services_blocked,factory_reset_blocked,password_required,password_required_type,password_min_length,web_browser_cookie_settings,storage_require_device_encryption,compliant_app_list_type,wifi_psk,assignments
+DC-Android-Corporate-Lockdown,android,Strict lockdown for corporate Android devices,true,true,true,true,false,false,true,true,alphanumeric,8,blockAll,true,appsInListCompliant,none,group:DG-All-Corp-Android
+DC-Android-Standard,android,Standard configuration for Android devices,false,false,false,false,false,false,false,false,deviceDefault,0,browserDefault,false,none,none,group:DG-All-Corp-Android
+DC-Android-BYOD,android,Minimal restrictions for personal Android devices,false,false,false,false,false,false,false,false,deviceDefault,0,browserDefault,false,none,none,group:SG-External-Contractors
+DC-Android-Kiosk,android,Kiosk mode configuration for shared devices,true,true,true,true,true,true,true,true,numeric,4,blockAll,true,none,none,group:SG-IT-Admins
+DC-Android-Executive,android,Executive Android device configuration,true,true,false,false,false,false,false,true,alphanumeric,6,browserDefault,true,none,none,group:SG-Executive-Team
+DC-Android-Field-Workers,android,Field worker Android device with WiFi PSK,false,false,false,false,false,true,false,true,numeric,4,browserDefault,true,none,W1F1P@ssw0rd!2024,group:DG-Remote-Workers
+DC-Android-Contractor,android,Contractor Android device restrictions,false,true,false,false,false,false,false,false,deviceDefault,0,browserDefault,false,none,none,group:SG-External-Contractors
+DC-Android-Lab-Devices,android,Lab and testing Android device configuration,false,false,false,false,false,false,false,false,deviceDefault,0,allowCurrentWebSite,false,none,none,group:SG-Engineering

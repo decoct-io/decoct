@@ -1,0 +1,19 @@
+    - name: Clone application repository
+      ansible.builtin.git:
+        repo: "https://github.com/ridgeline-data/{% raw %}{{ app_name | default('app') }}{% endraw %}.git"
+        dest: "/opt/ridgeline/{% raw %}{{ app_name | default('app') }}{% endraw %}"
+        bare: false
+        clone: true
+        force: false
+        recursive: true
+        remote: origin
+        track_submodules: false
+        update: true
+        verify_commit: false
+        version: HEAD
+        accept_hostkey: false
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: {{ become }}

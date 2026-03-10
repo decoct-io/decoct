@@ -1,0 +1,45 @@
+{
+  "name": "Search Service Config",
+  "environment": "prod",
+  "auth": {
+    "jwt_secret": "search_JWT_t0ken!",
+    "jwt_expiry_seconds": 3600,
+    "jwt_refresh_expiry_seconds": 86400,
+    "jwt_issuer": "ridgeline.io",
+    "api_key": "sk_live_search_key_xyz"
+  },
+  "cors": {
+    "enabled": true,
+    "origins": [
+      "https://app.ridgeline.io",
+      "https://admin.ridgeline.io"
+    ],
+    "methods": [
+      "GET",
+      "POST",
+      "PUT",
+      "DELETE"
+    ],
+    "allow_credentials": true
+  },
+  "rate_limiting": {
+    "enabled": true,
+    "requests_per_minute": 2000,
+    "burst": 50
+  },
+  "logging": {
+    "level": "warning",
+    "format": "json",
+    "output": "stdout"
+  },
+  "redis": {
+    "url": "redis://:R3disP@ss!@redis:6379/2",
+    "pool_size": 5,
+    "timeout": 5
+  },
+  "features": {
+    "fuzzy_search": true,
+    "autocomplete": true,
+    "index_cache": true
+  }
+}

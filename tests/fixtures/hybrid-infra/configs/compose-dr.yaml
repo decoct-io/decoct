@@ -1,0 +1,88 @@
+# Docker Compose — compose-dr
+# Ridgeline Data — B2B Analytics Platform
+
+services:
+  core-api:
+    image: ridgeline/core-api:2.1.0
+    restart: "always"
+    privileged: false
+    read_only: false
+    stdin_open: false
+    tty: false
+    init: false
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: "postgresql://core:DR_Sup3rS3cretDB@db-dr-01:5432/core"
+      API_KEY: "sk_live_dr_key_failover"
+      JWT_SECRET: "dr-jwt-secret-failover"
+    networks:
+      - dr-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/health"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 10s
+      start_interval: 5s
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        max_attempts: 0
+      update_config:
+        parallelism: 1
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+    mem_limit: 1g
+    cpus: 0.5
+  auth-service:
+    image: ridgeline/auth-service:1.8.0
+    restart: "always"
+    privileged: false
+    read_only: false
+    stdin_open: false
+    tty: false
+    init: false
+    ports:
+      - "8001:8001"
+    environment:
+      DATABASE_URL: "postgresql://auth:DR_AuthP@ssw0rd@db-dr-01:5432/auth"
+      JWT_SECRET: "dr-jwt-secret-failover"
+    networks:
+      - dr-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8001/health"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 10s
+      start_interval: 5s
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        max_attempts: 0
+      update_config:
+        parallelism: 1
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+    mem_limit: 512m
+    cpus: 0.25
+
+networks:
+  dr-network:
+    driver: bridge
+    external: false
+    internal: false
+    attachable: false
+    enable_ipv6: false
+

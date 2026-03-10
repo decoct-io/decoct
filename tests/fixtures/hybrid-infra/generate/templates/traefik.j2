@@ -1,0 +1,138 @@
+# Traefik Configuration — {{ env }} ({{ config_type }})
+# Ridgeline Data — {{ filename }}
+
+# ── Global ─────────────────────────────────────────────────────────────────────
+global:
+  checkNewVersion: {{ check_new_version }}
+  sendAnonymousUsage: {{ send_anonymous_usage }}
+
+# ── API ────────────────────────────────────────────────────────────────────────
+api:
+  dashboard: {{ api_dashboard }}
+  insecure: {{ api_insecure }}
+  debug: {{ api_debug }}
+
+# ── Logging ────────────────────────────────────────────────────────────────────
+log:
+  level: {{ log_level }}
+  format: {{ log_format }}
+  noColor: {{ log_noColor }}
+  maxSize: {{ log_maxSize }}
+  maxAge: {{ log_maxAge }}
+  maxBackups: {{ log_maxBackups }}
+  compress: {{ log_compress }}
+
+accessLog:
+  format: {{ accesslog_format }}
+  bufferingSize: {{ accesslog_bufferingSize }}
+  addInternals: {{ accesslog_addInternals }}
+  filters:
+    retryAttempts: false
+    minDuration: 0
+  fields:
+    defaultMode: keep
+    headers:
+      defaultMode: drop
+
+{% if entrypoints != 'none' %}
+# ── EntryPoints ────────────────────────────────────────────────────────────────
+entryPoints:
+{% for ep in entrypoints.split(';') %}
+{% set parts = ep.split(':') %}
+  {{ parts[0] }}:
+    address: ":{{ parts[1] }}"
+    transport:
+      lifeCycle:
+        requestAcceptGraceTimeout: 0s
+        graceTimeOut: 10s
+      respondingTimeouts:
+        readTimeout: 60s
+        writeTimeout: 0s
+        idleTimeout: 180s
+    forwardedHeaders:
+      insecure: false
+    proxyProtocol:
+      insecure: false
+    http2:
+      maxConcurrentStreams: 250
+    allowACMEByPass: false
+    reusePort: false
+    asDefault: false
+{% endfor %}
+{% endif %}
+
+# ── Providers ──────────────────────────────────────────────────────────────────
+providers:
+  providersThrottleDuration: {{ providers_throttle }}
+{% if providers_docker == 'true' %}
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: {{ providers_docker_exposedByDefault }}
+    watch: {{ providers_docker_watch }}
+    useBindPortIP: false
+    allowEmptyServices: false
+{% endif %}
+{% if providers_file == 'true' %}
+  file:
+    directory: /etc/traefik/dynamic
+    watch: {{ providers_file_watch }}
+{% endif %}
+
+# ── TLS Options ────────────────────────────────────────────────────────────────
+tls:
+  options:
+    default:
+      minVersion: {{ tls_min_version }}
+      sniStrict: false
+
+{% if routers != 'none' %}
+# ── HTTP Routers ───────────────────────────────────────────────────────────────
+http:
+  routers:
+{% for router in routers.split(';') %}
+{% set parts = router.split(':') %}
+    {{ parts[0] }}:
+      rule: "{{ parts[1] }}"
+      service: {{ parts[0] }}
+      entryPoints:
+        - websecure
+{% endfor %}
+{% endif %}
+
+{% if middlewares != 'none' %}
+  middlewares:
+{% for mw in middlewares.split(';') %}
+    {{ mw }}:
+      enabled: true
+{% endfor %}
+{% endif %}
+
+{% if metrics_prometheus == 'true' %}
+# ── Metrics ────────────────────────────────────────────────────────────────────
+metrics:
+  prometheus:
+    addEntryPointsLabels: true
+    addRoutersLabels: false
+    addServicesLabels: true
+    entryPoint: traefik
+    manualRouting: false
+    addInternals: false
+{% endif %}
+
+# ── Servers Transport ──────────────────────────────────────────────────────────
+serversTransport:
+  maxIdleConnsPerHost: 200
+  forwardingTimeouts:
+    dialTimeout: 30s
+    responseHeaderTimeout: 0s
+    idleConnTimeout: 90s
+    readIdleTimeout: 0s
+    pingTimeout: 15s
+  insecureSkipVerify: {{ serversTransport_insecureSkipVerify }}
+  disableHTTP2: false
+
+# ── Ping ───────────────────────────────────────────────────────────────────────
+ping:
+  entryPoint: traefik
+  terminatingStatusCode: 503
+  manualRouting: false

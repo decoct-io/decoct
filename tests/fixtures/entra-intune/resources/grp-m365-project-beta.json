@@ -1,0 +1,39 @@
+{
+  "@odata.type": "#microsoft.graph.group",
+  "id": "05e1e78b-5f96-53df-8eaf-3582eec6dd71",
+  "createdDateTime": "2024-06-15T10:30:00Z",
+  "modifiedDateTime": "2024-11-20T14:45:00Z",
+  "deletedDateTime": null,
+  "renewedDateTime": "2024-11-20T14:45:00Z",
+  "displayName": "M365-Project-Beta",
+  "description": "Microsoft 365 group for Project Beta collaboration",
+  "mailEnabled": true,
+  "mailNickname": "m365-project-beta",
+  "securityEnabled": false,
+  "groupTypes": [
+    "Unified"
+  ],
+  "membershipRule": null,
+  "membershipRuleProcessingState": null,
+  "allowExternalSenders": false,
+  "autoSubscribeNewMembers": false,
+  "hideFromAddressLists": false,
+  "hideFromOutlookClients": false,
+  "isAssignableToRole": false,
+  "isSubscribedByMail": true,
+  "securityIdentifier": "S-1-12-1-05e1e78b",
+  "onPremisesLastSyncDateTime": null,
+  "onPremisesSecurityIdentifier": null,
+  "onPremisesSyncEnabled": null,
+  "onPremisesProvisioningErrors": [],
+  "proxyAddresses": [
+    "SMTP:m365-project-beta@contoso.com"
+  ],
+  "mail": "m365-project-beta@contoso.com",
+  "visibility": "Public",
+  "preferredDataLocation": null,
+  "preferredLanguage": null,
+  "theme": null,
+  "resourceBehaviorOptions": [],
+  "resourceProvisioningOptions": []
+}

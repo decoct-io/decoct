@@ -1,0 +1,146 @@
+---
+# Setup Traefik
+# Ridgeline Data — ansible-setup-traefik
+
+- name: Setup Traefik
+  hosts: edge_servers
+  become: true
+  become_user: root
+  gather_facts: true
+  any_errors_fatal: false
+  ignore_errors: false
+  check_mode: false
+  no_log: false
+  run_once: false
+  order: inventory
+
+  vars:
+    traefik_version: "3.0"
+    api_key: "Tr@efikAPI_K3y"
+
+  tasks:
+    - name: Install packages via apt
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: false
+        force: false
+        purge: false
+        autoremove: false
+        autoclean: false
+        only_upgrade: false
+        force_apt_get: false
+        allow_unauthenticated: false
+        allow_downgrade: false
+        fail_on_autoremove: false
+        lock_timeout: 60
+        cache_valid_time: 0
+      loop:
+        - curl
+        - wget
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: true
+
+    - name: Copy configuration files
+      ansible.builtin.copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: root
+        group: root
+        mode: "0644"
+        backup: false
+        decrypt: true
+        follow: false
+        force: true
+        remote_src: false
+        unsafe_writes: false
+      loop:
+        - { src: "files/config.conf", dest: "/etc/ridgeline/config.conf" }
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: true
+
+    - name: Deploy templated configuration
+      ansible.builtin.template:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: root
+        group: root
+        mode: "0644"
+        backup: false
+        follow: false
+        force: true
+        lstrip_blocks: false
+        trim_blocks: true
+        unsafe_writes: false
+        output_encoding: utf-8
+      loop:
+        - { src: "templates/app.conf.j2", dest: "/etc/ridgeline/app.conf" }
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: true
+
+    - name: Enable and start service
+      ansible.builtin.systemd:
+        name: "{{ service_name | default('ridgeline') }}"
+        state: started
+        enabled: true
+        daemon_reload: false
+        daemon_reexec: false
+        no_block: false
+        scope: system
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: true
+
+    - name: Wait for service to be ready
+      ansible.builtin.wait_for:
+        port: "{{ app_port | default('8000') }}"
+        host: 127.0.0.1
+        connect_timeout: 5
+        delay: 0
+        sleep: 1
+        state: started
+        timeout: 300
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: false
+
+    - name: Verify service health endpoint
+      ansible.builtin.uri:
+        url: "http://localhost:{{ app_port | default('8000') }}/health"
+        method: GET
+        follow_redirects: safe
+        force: false
+        force_basic_auth: false
+        return_content: false
+        timeout: 30
+        use_proxy: true
+        validate_certs: true
+        status_code: 200
+      ignore_errors: false
+      check_mode: false
+      no_log: false
+      run_once: false
+      become: false
+
+  handlers:
+    - name: restart_traefik
+      ansible.builtin.systemd:
+        name: "{{ service_name | default('ridgeline') }}"
+        state: restarted
+        daemon_reload: false
+        daemon_reexec: false
+        no_block: false
+        scope: system

@@ -1,0 +1,7 @@
+display_name,location_type,is_trusted,ip_ranges,countries_and_regions,include_unknown_countries
+NL-Corporate-HQ,ip,true,10.0.0.0/8;172.16.0.0/12;203.0.113.0/24,none,false
+NL-Branch-Office-EU,ip,true,198.51.100.0/24;192.0.2.0/24,none,false
+NL-VPN-Gateway,ip,true,203.0.113.50/32;203.0.113.51/32,none,false
+NL-Blocked-Countries,country,false,none,KP;IR;SY;CU;RU,false
+NL-Allowed-Countries,country,false,none,US;GB;DE;FR;CA;AU;JP,true
+NL-Guest-Network,ip,false,10.99.0.0/16;172.31.0.0/16,none,false
