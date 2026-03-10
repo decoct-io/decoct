@@ -102,6 +102,9 @@ def refine_types(
                     representatives=list(reps),
                 ))
 
+        # Small-cluster guard: prevent shattering into near-singletons
+        merged = _merge_small_clusters(merged, config, signal_path_set)
+
         if len(merged) == 1:
             new_type_map[type_id] = entities
         else:
@@ -110,6 +113,68 @@ def refine_types(
                 new_type_map[refined_name] = sorted(group.entities, key=lambda e: e.id)
 
     return new_type_map
+
+
+def _merge_small_clusters(
+    merged: list[_ClusterGroup],
+    config: EntityGraphConfig,
+    signal_path_set: set[str],
+) -> list[_ClusterGroup]:
+    """Merge clusters below min_refinement_cluster_size into larger ones.
+
+    1. If ALL clusters are below the threshold → complete shatter: return one group.
+    2. For each small cluster, try to merge into the group with lowest average
+       anti-unification variable count (relaxed threshold: 2x max_anti_unify_variables).
+    3. Fallback: merge into the largest group.
+    """
+    min_size = config.min_refinement_cluster_size
+    if min_size <= 1:
+        return merged
+
+    large = [g for g in merged if len(g.entities) >= min_size]
+    small = [g for g in merged if len(g.entities) < min_size]
+
+    if not small:
+        return merged
+
+    # Complete shatter — ALL groups below threshold → don't split at all
+    if not large:
+        all_entities: list[Entity] = []
+        for g in merged:
+            all_entities.extend(g.entities)
+        return [_ClusterGroup(
+            entities=all_entities,
+            representatives=sorted(all_entities, key=lambda e: e.id)[:5],
+        )]
+
+    relaxed_limit = 2 * config.max_anti_unify_variables
+
+    for sg in small:
+        best_target: _ClusterGroup | None = None
+        best_avg = float("inf")
+
+        for lg in large:
+            var_counts = []
+            for r1 in sg.representatives:
+                for r2 in lg.representatives:
+                    result = anti_unify(r1, r2, restrict_paths=signal_path_set)
+                    var_counts.append(count_variables(result))
+
+            avg = mean(var_counts) if var_counts else float("inf")
+            if avg <= relaxed_limit and avg < best_avg:
+                best_avg = avg
+                best_target = lg
+
+        if best_target is None:
+            # Fallback: merge into largest group
+            best_target = max(large, key=lambda g: len(g.entities))
+
+        best_target.entities.extend(sg.entities)
+        best_target.representatives = sorted(
+            best_target.entities, key=lambda e: e.id,
+        )[:5]
+
+    return large
 
 
 class _ClusterGroup:

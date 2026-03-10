@@ -63,3 +63,24 @@ class TestHybridInfraE2E:
 
     def test_graph_entity_count(self, pipeline_result) -> None:  # type: ignore[no-untyped-def]
         assert len(pipeline_result.graph) == 100
+
+    def test_type_count_reduced(self, pipeline_result) -> None:  # type: ignore[no-untyped-def]
+        """Type count should be significantly less than 69 (the pre-fix count)."""
+        n_types = len(pipeline_result.type_map)
+        assert n_types < 50, f"Expected < 50 types, got {n_types}"
+
+    def test_ansible_grouped_as_single_type(self, pipeline_result) -> None:  # type: ignore[no-untyped-def]
+        """All ansible-playbook entities should be in one type."""
+        ansible_types = [
+            tid for tid, entities in pipeline_result.type_map.items()
+            if any(e.schema_type_hint == "ansible-playbook" for e in entities)
+        ]
+        assert len(ansible_types) == 1, f"Ansible in {len(ansible_types)} types: {ansible_types}"
+
+    def test_docker_compose_grouped_as_single_type(self, pipeline_result) -> None:  # type: ignore[no-untyped-def]
+        """All docker-compose entities should be in one type."""
+        compose_types = [
+            tid for tid, entities in pipeline_result.type_map.items()
+            if any(e.schema_type_hint == "docker-compose" for e in entities)
+        ]
+        assert len(compose_types) == 1, f"Docker compose in {len(compose_types)} types: {compose_types}"

@@ -19,7 +19,7 @@ def run_bootstrap_loop(
     Returns (final_type_map, final_profiles).
     """
     # Phase 2a: Coarse type seeding
-    type_map = seed_types_from_hints(graph.entities)
+    type_map = seed_types_from_hints(graph.entities, config)
 
     # Set discovered_type on entities
     for type_id, entities in type_map.items():

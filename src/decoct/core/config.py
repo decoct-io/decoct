@@ -24,6 +24,8 @@ class EntityGraphConfig:
     # Type discovery
     max_anti_unify_variables: int = 3
     small_group_floor: int = 8
+    min_refinement_cluster_size: int = 3
+    unhinted_jaccard_threshold: float = 0.4
 
     # FK detection
     fk_overlap_threshold: float = 0.5
