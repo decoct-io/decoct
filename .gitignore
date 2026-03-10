@@ -30,6 +30,7 @@ htmlcov/
 # OS
 .DS_Store
 Thumbs.db
+*:Zone.Identifier
 
 # decoct
 .decoct/
