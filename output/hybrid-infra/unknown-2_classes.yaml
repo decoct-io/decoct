@@ -1,20 +1,38 @@
 meta:
   entity_type: unknown-2
-  total_instances: 2
+  total_instances: 4
   max_inheritance_depth: 2
   tier_c_ref: unknown-2_instances.yaml
 base_class:
-  Install.wantedby: multi-user.target
-  Service.limitnofile: '65535'
-  Service.limitnproc: '4096'
-  Service.remainafterexit: 'true'
-  Service.type: oneshot
-  Unit.after: postgresql.service
+  ExposeAuthInfo: 'false'
+  FingerprintHash: sha256
+  GatewayPorts: 'false'
+  HostbasedAuthentication: 'false'
+  IgnoreRhosts: 'true'
+  IgnoreUserKnownHosts: 'false'
+  KerberosAuthentication: 'false'
+  PermitEmptyPasswords: 'false'
+  PermitTunnel: 'false'
+  PermitUserEnvironment: 'false'
+  PrintLastLog: 'true'
+  PubkeyAuthentication: 'true'
+  StrictModes: 'true'
+  SyslogFacility: AUTH
+  TCPKeepAlive: 'true'
+  X11DisplayOffset: '10'
+  X11UseLocalhost: 'true'
 classes:
+  AddressFamily_any_ClientAliveCountMax_3:
+    inherits: base
+    own_attrs:
+      AddressFamily: any
+      ClientAliveCountMax: '3'
+      Port: '22'
+    instance_count_inclusive: 3
   _base_only:
     inherits: base
     own_attrs: {}
-    instance_count_inclusive: 2
+    instance_count_inclusive: 1
 subclasses: {}
 assertions:
-  base_only_ratio: 1.0
+  base_only_ratio: 0.25

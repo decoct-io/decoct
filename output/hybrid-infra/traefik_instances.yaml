@@ -5,17 +5,10 @@ meta:
 class_assignments:
   _base_only:
     instances:
+    - traefik-dev
+  addInternals_false_noColor_false:
+    instances:
     - traefik-prod-dynamic
-  requestAcceptGraceTimeout_0s_idleTimeout_180s:
-    instances:
-    - traefik-dev
-    - traefik-prod-static
-    - traefik-staging
-subclass_assignments:
-  requestAcceptGraceTimeout_0s_idleTimeout_180s_writeTimeout_0s_requestAcceptG:
-    parent: requestAcceptGraceTimeout_0s_idleTimeout_180s
-    instances:
-    - traefik-dev
     - traefik-prod-static
     - traefik-staging
 instance_data:
@@ -45,146 +38,159 @@ instance_data:
     - 'true'
     - DEBUG
     - 'true'
+instance_attrs:
+  traefik-dev:
+    entryPoints:
+      web:
+        address: :80
+        transport.lifeCycle.requestAcceptGraceTimeout: 0s
+        transport.lifeCycle.graceTimeOut: 10s
+        transport.respondingTimeouts.readTimeout: 60s
+        transport.respondingTimeouts.writeTimeout: 0s
+        transport.respondingTimeouts.idleTimeout: 180s
+        forwardedHeaders.insecure: 'false'
+        proxyProtocol.insecure: 'false'
+        http2.maxConcurrentStreams: '250'
+        allowACMEByPass: 'false'
+        reusePort: 'false'
+        asDefault: 'false'
+      traefik:
+        address: :8080
+        transport.lifeCycle.requestAcceptGraceTimeout: 0s
+        transport.lifeCycle.graceTimeOut: 10s
+        transport.respondingTimeouts.readTimeout: 60s
+        transport.respondingTimeouts.writeTimeout: 0s
+        transport.respondingTimeouts.idleTimeout: 180s
+        forwardedHeaders.insecure: 'false'
+        proxyProtocol.insecure: 'false'
+        http2.maxConcurrentStreams: '250'
+        allowACMEByPass: 'false'
+        reusePort: 'false'
+        asDefault: 'false'
+  traefik-prod-static:
+    entryPoints:
+      web:
+        address: :80
+        transport.lifeCycle.requestAcceptGraceTimeout: 0s
+        transport.lifeCycle.graceTimeOut: 10s
+        transport.respondingTimeouts.readTimeout: 60s
+        transport.respondingTimeouts.writeTimeout: 0s
+        transport.respondingTimeouts.idleTimeout: 180s
+        forwardedHeaders.insecure: 'false'
+        proxyProtocol.insecure: 'false'
+        http2.maxConcurrentStreams: '250'
+        allowACMEByPass: 'false'
+        reusePort: 'false'
+        asDefault: 'false'
+      websecure:
+        address: :443
+        transport.lifeCycle.requestAcceptGraceTimeout: 0s
+        transport.lifeCycle.graceTimeOut: 10s
+        transport.respondingTimeouts.readTimeout: 60s
+        transport.respondingTimeouts.writeTimeout: 0s
+        transport.respondingTimeouts.idleTimeout: 180s
+        forwardedHeaders.insecure: 'false'
+        proxyProtocol.insecure: 'false'
+        http2.maxConcurrentStreams: '250'
+        allowACMEByPass: 'false'
+        reusePort: 'false'
+        asDefault: 'false'
+      traefik:
+        address: :8080
+        transport.lifeCycle.requestAcceptGraceTimeout: 0s
+        transport.lifeCycle.graceTimeOut: 10s
+        transport.respondingTimeouts.readTimeout: 60s
+        transport.respondingTimeouts.writeTimeout: 0s
+        transport.respondingTimeouts.idleTimeout: 180s
+        forwardedHeaders.insecure: 'false'
+        proxyProtocol.insecure: 'false'
+        http2.maxConcurrentStreams: '250'
+        allowACMEByPass: 'false'
+        reusePort: 'false'
+        asDefault: 'false'
+  traefik-staging:
+    entryPoints:
+      web:
+        address: :80
+        transport.lifeCycle.requestAcceptGraceTimeout: 0s
+        transport.lifeCycle.graceTimeOut: 10s
+        transport.respondingTimeouts.readTimeout: 60s
+        transport.respondingTimeouts.writeTimeout: 0s
+        transport.respondingTimeouts.idleTimeout: 180s
+        forwardedHeaders.insecure: 'false'
+        proxyProtocol.insecure: 'false'
+        http2.maxConcurrentStreams: '250'
+        allowACMEByPass: 'false'
+        reusePort: 'false'
+        asDefault: 'false'
+      websecure:
+        address: :443
+        transport.lifeCycle.requestAcceptGraceTimeout: 0s
+        transport.lifeCycle.graceTimeOut: 10s
+        transport.respondingTimeouts.readTimeout: 60s
+        transport.respondingTimeouts.writeTimeout: 0s
+        transport.respondingTimeouts.idleTimeout: 180s
+        forwardedHeaders.insecure: 'false'
+        proxyProtocol.insecure: 'false'
+        http2.maxConcurrentStreams: '250'
+        allowACMEByPass: 'false'
+        reusePort: 'false'
+        asDefault: 'false'
+      traefik:
+        address: :8080
+        transport.lifeCycle.requestAcceptGraceTimeout: 0s
+        transport.lifeCycle.graceTimeOut: 10s
+        transport.respondingTimeouts.readTimeout: 60s
+        transport.respondingTimeouts.writeTimeout: 0s
+        transport.respondingTimeouts.idleTimeout: 180s
+        forwardedHeaders.insecure: 'false'
+        proxyProtocol.insecure: 'false'
+        http2.maxConcurrentStreams: '250'
+        allowACMEByPass: 'false'
+        reusePort: 'false'
+        asDefault: 'false'
 overrides:
-  traefik-prod-dynamic:
+  traefik-dev:
     owner: _base_only
     delta:
-      accessLog.addInternals: 'false'
-      http.middlewares.compress.enabled: 'true'
-      http.middlewares.headers-security.enabled: 'true'
-      http.middlewares.rate-limit.enabled: 'true'
-      http.routers.admin.entryPoints: websecure
-      http.routers.admin.rule: Host(`admin.ridgeline.io`)
-      http.routers.admin.service: admin
-      http.routers.billing.entryPoints: websecure
-      http.routers.billing.rule: Host(`billing.ridgeline.io`)
-      http.routers.billing.service: billing
-      http.routers.core-api.entryPoints: websecure
-      http.routers.core-api.rule: Host(`api.ridgeline.io`)
-      http.routers.core-api.service: core-api
-      http.routers.docs.entryPoints: websecure
-      http.routers.docs.rule: Host(`docs.ridgeline.io`)
-      http.routers.docs.service: docs
-      http.routers.web-app.entryPoints: websecure
-      http.routers.web-app.rule: Host(`app.ridgeline.io`)
-      http.routers.web-app.service: web-app
-      log.noColor: 'false'
-      metrics.prometheus.addEntryPointsLabels: 'true'
-      metrics.prometheus.addInternals: 'false'
-      metrics.prometheus.addRoutersLabels: 'false'
-      metrics.prometheus.addServicesLabels: 'true'
-      metrics.prometheus.entryPoint: traefik
-      metrics.prometheus.manualRouting: 'false'
-      providers.file.directory: /etc/traefik/dynamic
-      providers.file.watch: 'true'
-  traefik-dev:
-    owner: 
-      requestAcceptGraceTimeout_0s_idleTimeout_180s_writeTimeout_0s_requestAcceptG
-    delta:
       accessLog.addInternals: 'true'
-      entryPoints.traefik.address: :8080
-      entryPoints.traefik.allowACMEByPass: 'false'
-      entryPoints.traefik.asDefault: 'false'
-      entryPoints.traefik.forwardedHeaders.insecure: 'false'
-      entryPoints.traefik.http2.maxConcurrentStreams: '250'
-      entryPoints.traefik.proxyProtocol.insecure: 'false'
-      entryPoints.traefik.reusePort: 'false'
-      entryPoints.traefik.transport.lifeCycle.graceTimeOut: 10s
-      entryPoints.web.address: :80
-      entryPoints.web.allowACMEByPass: 'false'
-      entryPoints.web.asDefault: 'false'
-      entryPoints.web.forwardedHeaders.insecure: 'false'
-      entryPoints.web.http2.maxConcurrentStreams: '250'
-      entryPoints.web.proxyProtocol.insecure: 'false'
-      entryPoints.web.reusePort: 'false'
-      entryPoints.web.transport.lifeCycle.graceTimeOut: 10s
-      entryPoints.web.transport.respondingTimeouts.readTimeout: 60s
-      entryPoints.web.transport.respondingTimeouts.writeTimeout: 0s
       log.noColor: 'true'
-  traefik-prod-static:
-    owner: 
-      requestAcceptGraceTimeout_0s_idleTimeout_180s_writeTimeout_0s_requestAcceptG
+  traefik-prod-dynamic:
+    owner: addInternals_false_noColor_false
     delta:
-      accessLog.addInternals: 'false'
-      entryPoints.traefik.address: :8080
-      entryPoints.traefik.allowACMEByPass: 'false'
-      entryPoints.traefik.asDefault: 'false'
-      entryPoints.traefik.forwardedHeaders.insecure: 'false'
-      entryPoints.traefik.http2.maxConcurrentStreams: '250'
-      entryPoints.traefik.proxyProtocol.insecure: 'false'
-      entryPoints.traefik.reusePort: 'false'
-      entryPoints.traefik.transport.lifeCycle.graceTimeOut: 10s
-      entryPoints.web.address: :80
-      entryPoints.web.allowACMEByPass: 'false'
-      entryPoints.web.asDefault: 'false'
-      entryPoints.web.forwardedHeaders.insecure: 'false'
-      entryPoints.web.http2.maxConcurrentStreams: '250'
-      entryPoints.web.proxyProtocol.insecure: 'false'
-      entryPoints.web.reusePort: 'false'
-      entryPoints.web.transport.lifeCycle.graceTimeOut: 10s
-      entryPoints.web.transport.respondingTimeouts.readTimeout: 60s
-      entryPoints.web.transport.respondingTimeouts.writeTimeout: 0s
-      entryPoints.websecure.address: :443
-      entryPoints.websecure.allowACMEByPass: 'false'
-      entryPoints.websecure.asDefault: 'false'
-      entryPoints.websecure.forwardedHeaders.insecure: 'false'
-      entryPoints.websecure.http2.maxConcurrentStreams: '250'
-      entryPoints.websecure.proxyProtocol.insecure: 'false'
-      entryPoints.websecure.reusePort: 'false'
-      entryPoints.websecure.transport.lifeCycle.graceTimeOut: 10s
-      entryPoints.websecure.transport.lifeCycle.requestAcceptGraceTimeout: 0s
-      entryPoints.websecure.transport.respondingTimeouts.idleTimeout: 180s
-      entryPoints.websecure.transport.respondingTimeouts.readTimeout: 60s
-      entryPoints.websecure.transport.respondingTimeouts.writeTimeout: 0s
-      log.noColor: 'false'
-      metrics.prometheus.addEntryPointsLabels: 'true'
-      metrics.prometheus.addInternals: 'false'
-      metrics.prometheus.addRoutersLabels: 'false'
-      metrics.prometheus.addServicesLabels: 'true'
-      metrics.prometheus.entryPoint: traefik
-      metrics.prometheus.manualRouting: 'false'
+      http.middlewares:
+        rate-limit:
+          enabled: 'true'
+        compress:
+          enabled: 'true'
+        headers-security:
+          enabled: 'true'
+      http.routers:
+        core-api:
+          rule: Host(`api.ridgeline.io`)
+          service: core-api
+          entryPoints: websecure
+        web-app:
+          rule: Host(`app.ridgeline.io`)
+          service: web-app
+          entryPoints: websecure
+        billing:
+          rule: Host(`billing.ridgeline.io`)
+          service: billing
+          entryPoints: websecure
+        admin:
+          rule: Host(`admin.ridgeline.io`)
+          service: admin
+          entryPoints: websecure
+        docs:
+          rule: Host(`docs.ridgeline.io`)
+          service: docs
+          entryPoints: websecure
       providers.file.directory: /etc/traefik/dynamic
       providers.file.watch: 'true'
-  traefik-staging:
-    owner: 
-      requestAcceptGraceTimeout_0s_idleTimeout_180s_writeTimeout_0s_requestAcceptG
+  traefik-prod-static:
+    owner: addInternals_false_noColor_false
     delta:
-      accessLog.addInternals: 'false'
-      entryPoints.traefik.address: :8080
-      entryPoints.traefik.allowACMEByPass: 'false'
-      entryPoints.traefik.asDefault: 'false'
-      entryPoints.traefik.forwardedHeaders.insecure: 'false'
-      entryPoints.traefik.http2.maxConcurrentStreams: '250'
-      entryPoints.traefik.proxyProtocol.insecure: 'false'
-      entryPoints.traefik.reusePort: 'false'
-      entryPoints.traefik.transport.lifeCycle.graceTimeOut: 10s
-      entryPoints.web.address: :80
-      entryPoints.web.allowACMEByPass: 'false'
-      entryPoints.web.asDefault: 'false'
-      entryPoints.web.forwardedHeaders.insecure: 'false'
-      entryPoints.web.http2.maxConcurrentStreams: '250'
-      entryPoints.web.proxyProtocol.insecure: 'false'
-      entryPoints.web.reusePort: 'false'
-      entryPoints.web.transport.lifeCycle.graceTimeOut: 10s
-      entryPoints.web.transport.respondingTimeouts.readTimeout: 60s
-      entryPoints.web.transport.respondingTimeouts.writeTimeout: 0s
-      entryPoints.websecure.address: :443
-      entryPoints.websecure.allowACMEByPass: 'false'
-      entryPoints.websecure.asDefault: 'false'
-      entryPoints.websecure.forwardedHeaders.insecure: 'false'
-      entryPoints.websecure.http2.maxConcurrentStreams: '250'
-      entryPoints.websecure.proxyProtocol.insecure: 'false'
-      entryPoints.websecure.reusePort: 'false'
-      entryPoints.websecure.transport.lifeCycle.graceTimeOut: 10s
-      entryPoints.websecure.transport.lifeCycle.requestAcceptGraceTimeout: 0s
-      entryPoints.websecure.transport.respondingTimeouts.idleTimeout: 180s
-      entryPoints.websecure.transport.respondingTimeouts.readTimeout: 60s
-      entryPoints.websecure.transport.respondingTimeouts.writeTimeout: 0s
-      log.noColor: 'false'
-      metrics.prometheus.addEntryPointsLabels: 'true'
-      metrics.prometheus.addInternals: 'false'
-      metrics.prometheus.addRoutersLabels: 'false'
-      metrics.prometheus.addServicesLabels: 'true'
-      metrics.prometheus.entryPoint: traefik
-      metrics.prometheus.manualRouting: 'false'
+      providers.file.directory: /etc/traefik/dynamic
+      providers.file.watch: 'true'
 foreign_keys: {}

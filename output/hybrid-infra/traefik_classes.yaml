@@ -34,27 +34,29 @@ base_class:
   serversTransport.forwardingTimeouts.readIdleTimeout: 0s
   serversTransport.forwardingTimeouts.responseHeaderTimeout: 0s
   serversTransport.maxIdleConnsPerHost: '200'
-  tls.options.default.minVersion: VersionTLS12
-  tls.options.default.sniStrict: 'false'
+  tls.options:
+    default:
+      minVersion: VersionTLS12
+      sniStrict: 'false'
 classes:
   _base_only:
     inherits: base
     own_attrs: {}
     instance_count_inclusive: 1
-  requestAcceptGraceTimeout_0s_idleTimeout_180s:
+  addInternals_false_noColor_false:
     inherits: base
     own_attrs:
-      entryPoints.traefik.transport.lifeCycle.requestAcceptGraceTimeout: 0s
-      entryPoints.traefik.transport.respondingTimeouts.idleTimeout: 180s
-      entryPoints.traefik.transport.respondingTimeouts.readTimeout: 60s
+      accessLog.addInternals: 'false'
+      log.noColor: 'false'
+      metrics:
+        prometheus:
+          addEntryPointsLabels: 'true'
+          addRoutersLabels: 'false'
+          addServicesLabels: 'true'
+          entryPoint: traefik
+          manualRouting: 'false'
+          addInternals: 'false'
     instance_count_inclusive: 3
-subclasses:
-  requestAcceptGraceTimeout_0s_idleTimeout_180s_writeTimeout_0s_requestAcceptG:
-    parent: requestAcceptGraceTimeout_0s_idleTimeout_180s
-    own_attrs:
-      entryPoints.traefik.transport.respondingTimeouts.writeTimeout: 0s
-      entryPoints.web.transport.lifeCycle.requestAcceptGraceTimeout: 0s
-      entryPoints.web.transport.respondingTimeouts.idleTimeout: 180s
-    instance_count: 3
+subclasses: {}
 assertions:
   base_only_ratio: 0.25

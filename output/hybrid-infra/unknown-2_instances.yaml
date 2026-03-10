@@ -1,39 +1,115 @@
 meta:
   entity_type: unknown-2
   tier_b_ref: unknown-2_classes.yaml
-  total_instances: 2
+  total_instances: 4
 class_assignments:
+  AddressFamily_any_ClientAliveCountMax_3:
+    instances:
+    - sshd-dev
+    - sshd-prod
+    - sshd-staging
   _base_only:
     instances:
-    - systemd-backup-svc
-    - systemd-report-gen-svc
+    - sshd-bastion
 instance_data:
   schema:
-  - Service.environment
-  - Service.execstart
-  - Service.group
-  - Service.timeoutstartsec
-  - Service.timeoutstopsec
-  - Service.user
-  - Service.workingdirectory
-  - Unit.description
+  - AllowStreamLocalForwarding
+  - ClientAliveInterval
+  - Compression
+  - KbdInteractiveAuthentication
+  - LogLevel
+  - LoginGraceTime
+  - MaxAuthTries
+  - MaxSessions
+  - PasswordAuthentication
+  - PermitUserRC
+  - PrintMotd
   records:
-    systemd-backup-svc:
-    - '"BACKUP_ENCRYPTION_KEY=Bkup3ncryptK3y!"'
-    - /opt/ridgeline/scripts/backup-all-dbs.sh
-    - root
-    - '600'
+    sshd-bastion:
+    - 'false'
     - '120'
-    - root
-    - /opt/ridgeline/scripts
-    - Ridgeline DB Backup Service
-    systemd-report-gen-svc:
-    - '"DATABASE_URL=postgresql://reports:R3portDB@db-prod-01:5432/reports"'
-    - /opt/ridgeline/report-gen/venv/bin/python -m report_gen.main
-    - ridgeline
+    - 'false'
+    - 'false'
+    - VERBOSE
+    - '30'
+    - '3'
+    - '1'
+    - 'false'
+    - 'false'
+    - 'false'
+    sshd-dev:
+    - 'true'
+    - '0'
+    - 'true'
+    - 'true'
+    - INFO
+    - '120'
+    - '6'
+    - '10'
+    - 'true'
+    - 'true'
+    - 'true'
+    sshd-prod:
+    - 'false'
     - '300'
+    - 'false'
+    - 'false'
+    - VERBOSE
     - '60'
-    - ridgeline
-    - /opt/ridgeline/report-gen
-    - Ridgeline Report Generator
+    - '3'
+    - '2'
+    - 'false'
+    - 'false'
+    - 'false'
+    sshd-staging:
+    - 'true'
+    - '0'
+    - 'true'
+    - 'true'
+    - INFO
+    - '120'
+    - '6'
+    - '10'
+    - 'true'
+    - 'true'
+    - 'true'
+instance_attrs:
+  sshd-bastion:
+    AllowUsers: deploy ops
+  sshd-prod:
+    AllowUsers: deploy ops admins
+overrides:
+  sshd-dev:
+    owner: AddressFamily_any_ClientAliveCountMax_3
+    delta:
+      AllowAgentForwarding: 'true'
+      AllowTcpForwarding: 'true'
+      PermitRootLogin: prohibit-password
+      X11Forwarding: 'true'
+  sshd-prod:
+    owner: AddressFamily_any_ClientAliveCountMax_3
+    delta:
+      AllowAgentForwarding: 'false'
+      AllowTcpForwarding: 'false'
+      Banner: /etc/ssh/banner.txt
+      PermitRootLogin: 'false'
+      X11Forwarding: 'false'
+  sshd-staging:
+    owner: AddressFamily_any_ClientAliveCountMax_3
+    delta:
+      AllowAgentForwarding: 'true'
+      AllowTcpForwarding: 'true'
+      PermitRootLogin: 'false'
+      X11Forwarding: 'false'
+  sshd-bastion:
+    owner: _base_only
+    delta:
+      AddressFamily: inet
+      AllowAgentForwarding: 'true'
+      AllowTcpForwarding: 'true'
+      Banner: /etc/ssh/banner.txt
+      ClientAliveCountMax: '2'
+      PermitRootLogin: 'false'
+      Port: '2222'
+      X11Forwarding: 'false'
 foreign_keys: {}

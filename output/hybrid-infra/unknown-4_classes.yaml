@@ -1,26 +1,28 @@
 meta:
   entity_type: unknown-4
-  total_instances: 5
+  total_instances: 2
   max_inheritance_depth: 2
   tier_c_ref: unknown-4_instances.yaml
 base_class:
-  Install.wantedby: multi-user.target
-  Service.group: ridgeline
-  Service.limitnofile: '65535'
-  Service.type: simple
-  Service.user: ridgeline
+  app.debug: 'false'
+  app.env: prod
+  app.name: ridgeline-platform
+  cache.backend: redis
+  cache.enabled: 'true'
+  cache.redis_url: redis://:R3disP@ss!@redis:6379/1
+  database.echo: 'false'
+  database.pool_recycle: '3600'
+  logging.file.compress: 'true'
+  logging.file.max_backups: '5'
+  logging.file.max_size: 100MB
+  logging.file.path: /var/log/ridgeline/app.log
+  logging.format: json
+  logging.handlers: console,file
 classes:
   _base_only:
     inherits: base
     own_attrs: {}
     instance_count_inclusive: 2
-  limitnproc_4096_timeoutstartsec_90:
-    inherits: base
-    own_attrs:
-      Service.limitnproc: '4096'
-      Service.timeoutstartsec: '90'
-      Service.timeoutstopsec: '90'
-    instance_count_inclusive: 3
 subclasses: {}
 assertions:
-  base_only_ratio: 0.4
+  base_only_ratio: 1.0

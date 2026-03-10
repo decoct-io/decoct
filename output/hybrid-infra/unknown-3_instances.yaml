@@ -1,9 +1,97 @@
 meta:
   entity_type: unknown-3
   tier_b_ref: unknown-3_classes.yaml
-  total_instances: 1
+  total_instances: 3
 class_assignments:
   _base_only:
     instances:
-    - systemd-web-app
+    - app-config-auth-jwt
+    - app-config-billing
+    - app-config-search
+instance_data:
+  schema:
+  - auth.api_key
+  - auth.jwt_expiry_seconds
+  - auth.jwt_issuer
+  - auth.jwt_refresh_expiry_seconds
+  - auth.jwt_secret
+  - cors.origins
+  - logging.level
+  - name
+  - rate_limiting.requests_per_minute
+  - redis.url
+  records:
+    app-config-auth-jwt:
+    - sk_live_4eC39HqLyjWDarjtT1zdp7dc
+    - '3600'
+    - ridgeline.io
+    - '86400'
+    - xK9mPqR7vL2nW5jF8hT3yB6cD4gA1sE
+    - https://app.ridgeline.io,https://admin.ridgeline.io
+    - info
+    - Auth Service JWT Config
+    - '1000'
+    - redis://:R3disP@ss!@redis:6379/0
+    app-config-billing:
+    - sk_live_4eC39HqLyjWDarjtT1zdp7dc
+    - '7200'
+    - billing.ridgeline.io
+    - '172800'
+    - B1lling_JWT_S3cret!
+    - https://app.ridgeline.io
+    - info
+    - Billing API Config
+    - '500'
+    - redis://:R3disP@ss!@redis:6379/1
+    app-config-search:
+    - sk_live_search_key_xyz
+    - '3600'
+    - ridgeline.io
+    - '86400'
+    - search_JWT_t0ken!
+    - https://app.ridgeline.io,https://admin.ridgeline.io
+    - warning
+    - Search Service Config
+    - '2000'
+    - redis://:R3disP@ss!@redis:6379/2
+instance_attrs:
+  app-config-auth-jwt:
+    auth.encryption_key: aes256_Enc4ypt10nK3y_Pr0d!
+    database.host: db-prod-01
+    database.name: auth
+    database.password: AuthP@ssw0rd
+    database.port: '5432'
+    database.user: auth_svc
+  app-config-billing:
+    auth.encryption_key: billing_Enc4ypt10nK3y!
+    database.host: db-legacy-01
+    database.name: billing
+    database.password: B1llingS3cret
+    database.port: '3306'
+    database.user: billing_svc
+overrides:
+  app-config-auth-jwt:
+    owner: _base_only
+    delta:
+      database.pool_size: '10'
+      database.pool_timeout: '30'
+      database.ssl: 'false'
+      features.mfa_required: 'true'
+      features.password_complexity: strict
+      features.session_rotation: 'true'
+  app-config-billing:
+    owner: _base_only
+    delta:
+      database.pool_size: '10'
+      database.pool_timeout: '30'
+      database.ssl: 'false'
+      features.auto_retry: 'true'
+      features.invoice_batching: 'false'
+      features.stripe_v2: 'true'
+  app-config-search:
+    owner: _base_only
+    delta:
+      features.autocomplete: 'true'
+      features.fuzzy_search: 'true'
+      features.index_cache: 'true'
 foreign_keys: {}

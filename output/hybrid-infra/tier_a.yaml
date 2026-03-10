@@ -1,100 +1,10 @@
 types:
   ansible-playbook:
-    count: 1
-    classes: 1
+    count: 16
+    classes: 2
     subclasses: 0
     tier_b_ref: ansible-playbook_classes.yaml
     tier_c_ref: ansible-playbook_instances.yaml
-  ansible-playbook_1:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: ansible-playbook_1_classes.yaml
-    tier_c_ref: ansible-playbook_1_instances.yaml
-  ansible-playbook_10:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: ansible-playbook_10_classes.yaml
-    tier_c_ref: ansible-playbook_10_instances.yaml
-  ansible-playbook_11:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: ansible-playbook_11_classes.yaml
-    tier_c_ref: ansible-playbook_11_instances.yaml
-  ansible-playbook_12:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: ansible-playbook_12_classes.yaml
-    tier_c_ref: ansible-playbook_12_instances.yaml
-  ansible-playbook_13:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: ansible-playbook_13_classes.yaml
-    tier_c_ref: ansible-playbook_13_instances.yaml
-  ansible-playbook_14:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: ansible-playbook_14_classes.yaml
-    tier_c_ref: ansible-playbook_14_instances.yaml
-  ansible-playbook_15:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: ansible-playbook_15_classes.yaml
-    tier_c_ref: ansible-playbook_15_instances.yaml
-  ansible-playbook_2:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: ansible-playbook_2_classes.yaml
-    tier_c_ref: ansible-playbook_2_instances.yaml
-  ansible-playbook_3:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: ansible-playbook_3_classes.yaml
-    tier_c_ref: ansible-playbook_3_instances.yaml
-  ansible-playbook_4:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: ansible-playbook_4_classes.yaml
-    tier_c_ref: ansible-playbook_4_instances.yaml
-  ansible-playbook_5:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: ansible-playbook_5_classes.yaml
-    tier_c_ref: ansible-playbook_5_instances.yaml
-  ansible-playbook_6:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: ansible-playbook_6_classes.yaml
-    tier_c_ref: ansible-playbook_6_instances.yaml
-  ansible-playbook_7:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: ansible-playbook_7_classes.yaml
-    tier_c_ref: ansible-playbook_7_instances.yaml
-  ansible-playbook_8:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: ansible-playbook_8_classes.yaml
-    tier_c_ref: ansible-playbook_8_instances.yaml
-  ansible-playbook_9:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: ansible-playbook_9_classes.yaml
-    tier_c_ref: ansible-playbook_9_instances.yaml
   cloud-init:
     count: 6
     classes: 2
@@ -102,107 +12,11 @@ types:
     tier_b_ref: cloud-init_classes.yaml
     tier_c_ref: cloud-init_instances.yaml
   docker-compose:
-    count: 1
-    classes: 1
+    count: 16
+    classes: 2
     subclasses: 0
     tier_b_ref: docker-compose_classes.yaml
     tier_c_ref: docker-compose_instances.yaml
-  docker-compose_1:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: docker-compose_1_classes.yaml
-    tier_c_ref: docker-compose_1_instances.yaml
-  docker-compose_10:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: docker-compose_10_classes.yaml
-    tier_c_ref: docker-compose_10_instances.yaml
-  docker-compose_11:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: docker-compose_11_classes.yaml
-    tier_c_ref: docker-compose_11_instances.yaml
-  docker-compose_12:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: docker-compose_12_classes.yaml
-    tier_c_ref: docker-compose_12_instances.yaml
-  docker-compose_13:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: docker-compose_13_classes.yaml
-    tier_c_ref: docker-compose_13_instances.yaml
-  docker-compose_14:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: docker-compose_14_classes.yaml
-    tier_c_ref: docker-compose_14_instances.yaml
-  docker-compose_15:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: docker-compose_15_classes.yaml
-    tier_c_ref: docker-compose_15_instances.yaml
-  docker-compose_16:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: docker-compose_16_classes.yaml
-    tier_c_ref: docker-compose_16_instances.yaml
-  docker-compose_2:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: docker-compose_2_classes.yaml
-    tier_c_ref: docker-compose_2_instances.yaml
-  docker-compose_3:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: docker-compose_3_classes.yaml
-    tier_c_ref: docker-compose_3_instances.yaml
-  docker-compose_4:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: docker-compose_4_classes.yaml
-    tier_c_ref: docker-compose_4_instances.yaml
-  docker-compose_5:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: docker-compose_5_classes.yaml
-    tier_c_ref: docker-compose_5_instances.yaml
-  docker-compose_6:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: docker-compose_6_classes.yaml
-    tier_c_ref: docker-compose_6_instances.yaml
-  docker-compose_7:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: docker-compose_7_classes.yaml
-    tier_c_ref: docker-compose_7_instances.yaml
-  docker-compose_8:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: docker-compose_8_classes.yaml
-    tier_c_ref: docker-compose_8_instances.yaml
-  docker-compose_9:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: docker-compose_9_classes.yaml
-    tier_c_ref: docker-compose_9_instances.yaml
   prometheus:
     count: 3
     classes: 1
@@ -212,174 +26,66 @@ types:
   traefik:
     count: 4
     classes: 2
-    subclasses: 1
+    subclasses: 0
     tier_b_ref: traefik_classes.yaml
     tier_c_ref: traefik_instances.yaml
   unknown-0:
-    count: 2
-    classes: 1
-    subclasses: 0
+    count: 6
+    classes: 2
+    subclasses: 1
     tier_b_ref: unknown-0_classes.yaml
     tier_c_ref: unknown-0_instances.yaml
   unknown-1:
-    count: 2
-    classes: 1
-    subclasses: 0
+    count: 5
+    classes: 2
+    subclasses: 1
     tier_b_ref: unknown-1_classes.yaml
     tier_c_ref: unknown-1_instances.yaml
   unknown-10:
-    count: 1
-    classes: 1
+    count: 8
+    classes: 2
     subclasses: 0
     tier_b_ref: unknown-10_classes.yaml
     tier_c_ref: unknown-10_instances.yaml
   unknown-11:
-    count: 1
+    count: 3
     classes: 1
     subclasses: 0
     tier_b_ref: unknown-11_classes.yaml
     tier_c_ref: unknown-11_instances.yaml
   unknown-12:
-    count: 1
+    count: 3
     classes: 1
     subclasses: 0
     tier_b_ref: unknown-12_classes.yaml
     tier_c_ref: unknown-12_instances.yaml
   unknown-13:
-    count: 1
+    count: 2
     classes: 1
     subclasses: 0
     tier_b_ref: unknown-13_classes.yaml
     tier_c_ref: unknown-13_instances.yaml
   unknown-14:
-    count: 1
+    count: 3
     classes: 1
     subclasses: 0
     tier_b_ref: unknown-14_classes.yaml
     tier_c_ref: unknown-14_instances.yaml
-  unknown-15:
+  unknown-2:
     count: 4
     classes: 2
-    subclasses: 1
-    tier_b_ref: unknown-15_classes.yaml
-    tier_c_ref: unknown-15_instances.yaml
-  unknown-16:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: unknown-16_classes.yaml
-    tier_c_ref: unknown-16_instances.yaml
-  unknown-17:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: unknown-17_classes.yaml
-    tier_c_ref: unknown-17_instances.yaml
-  unknown-18:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: unknown-18_classes.yaml
-    tier_c_ref: unknown-18_instances.yaml
-  unknown-19:
-    count: 2
-    classes: 1
-    subclasses: 0
-    tier_b_ref: unknown-19_classes.yaml
-    tier_c_ref: unknown-19_instances.yaml
-  unknown-2:
-    count: 2
-    classes: 1
     subclasses: 0
     tier_b_ref: unknown-2_classes.yaml
     tier_c_ref: unknown-2_instances.yaml
-  unknown-20:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: unknown-20_classes.yaml
-    tier_c_ref: unknown-20_instances.yaml
-  unknown-21:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: unknown-21_classes.yaml
-    tier_c_ref: unknown-21_instances.yaml
-  unknown-22:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: unknown-22_classes.yaml
-    tier_c_ref: unknown-22_instances.yaml
-  unknown-23:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: unknown-23_classes.yaml
-    tier_c_ref: unknown-23_instances.yaml
-  unknown-24:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: unknown-24_classes.yaml
-    tier_c_ref: unknown-24_instances.yaml
-  unknown-25:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: unknown-25_classes.yaml
-    tier_c_ref: unknown-25_instances.yaml
-  unknown-26:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: unknown-26_classes.yaml
-    tier_c_ref: unknown-26_instances.yaml
-  unknown-27:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: unknown-27_classes.yaml
-    tier_c_ref: unknown-27_instances.yaml
-  unknown-28:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: unknown-28_classes.yaml
-    tier_c_ref: unknown-28_instances.yaml
-  unknown-29:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: unknown-29_classes.yaml
-    tier_c_ref: unknown-29_instances.yaml
   unknown-3:
-    count: 1
+    count: 3
     classes: 1
     subclasses: 0
     tier_b_ref: unknown-3_classes.yaml
     tier_c_ref: unknown-3_instances.yaml
-  unknown-30:
-    count: 1
-    classes: 1
-    subclasses: 0
-    tier_b_ref: unknown-30_classes.yaml
-    tier_c_ref: unknown-30_instances.yaml
-  unknown-31:
-    count: 5
-    classes: 2
-    subclasses: 0
-    tier_b_ref: unknown-31_classes.yaml
-    tier_c_ref: unknown-31_instances.yaml
-  unknown-32:
-    count: 5
-    classes: 2
-    subclasses: 1
-    tier_b_ref: unknown-32_classes.yaml
-    tier_c_ref: unknown-32_instances.yaml
   unknown-4:
-    count: 5
-    classes: 2
+    count: 2
+    classes: 1
     subclasses: 0
     tier_b_ref: unknown-4_classes.yaml
     tier_c_ref: unknown-4_instances.yaml
@@ -390,131 +96,38 @@ types:
     tier_b_ref: unknown-5_classes.yaml
     tier_c_ref: unknown-5_instances.yaml
   unknown-6:
-    count: 1
+    count: 2
     classes: 1
     subclasses: 0
     tier_b_ref: unknown-6_classes.yaml
     tier_c_ref: unknown-6_instances.yaml
   unknown-7:
-    count: 1
-    classes: 1
+    count: 5
+    classes: 2
     subclasses: 0
     tier_b_ref: unknown-7_classes.yaml
     tier_c_ref: unknown-7_instances.yaml
   unknown-8:
-    count: 1
-    classes: 1
+    count: 6
+    classes: 2
     subclasses: 0
     tier_b_ref: unknown-8_classes.yaml
     tier_c_ref: unknown-8_instances.yaml
   unknown-9:
-    count: 2
+    count: 1
     classes: 1
     subclasses: 0
     tier_b_ref: unknown-9_classes.yaml
     tier_c_ref: unknown-9_instances.yaml
 assertions:
   ansible-playbook:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  ansible-playbook_1:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  ansible-playbook_10:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  ansible-playbook_11:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  ansible-playbook_12:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  ansible-playbook_13:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  ansible-playbook_14:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  ansible-playbook_15:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  ansible-playbook_2:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  ansible-playbook_3:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  ansible-playbook_4:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  ansible-playbook_5:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  ansible-playbook_6:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  ansible-playbook_7:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  ansible-playbook_8:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  ansible-playbook_9:
-    base_only_ratio: 1.0
+    base_only_ratio: 0.1875
     max_inheritance_depth: 2
   cloud-init:
     base_only_ratio: 0.3333
     max_inheritance_depth: 2
   docker-compose:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  docker-compose_1:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  docker-compose_10:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  docker-compose_11:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  docker-compose_12:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  docker-compose_13:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  docker-compose_14:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  docker-compose_15:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  docker-compose_16:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  docker-compose_2:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  docker-compose_3:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  docker-compose_4:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  docker-compose_5:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  docker-compose_6:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  docker-compose_7:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  docker-compose_8:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  docker-compose_9:
-    base_only_ratio: 1.0
+    base_only_ratio: 0.625
     max_inheritance_depth: 2
   prometheus:
     base_only_ratio: 1.0
@@ -523,13 +136,13 @@ assertions:
     base_only_ratio: 0.25
     max_inheritance_depth: 2
   unknown-0:
-    base_only_ratio: 1.0
+    base_only_ratio: 0.1667
     max_inheritance_depth: 2
   unknown-1:
-    base_only_ratio: 1.0
+    base_only_ratio: 0.2
     max_inheritance_depth: 2
   unknown-10:
-    base_only_ratio: 1.0
+    base_only_ratio: 0.25
     max_inheritance_depth: 2
   unknown-11:
     base_only_ratio: 1.0
@@ -543,68 +156,14 @@ assertions:
   unknown-14:
     base_only_ratio: 1.0
     max_inheritance_depth: 2
-  unknown-15:
-    base_only_ratio: 0.25
-    max_inheritance_depth: 2
-  unknown-16:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  unknown-17:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  unknown-18:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  unknown-19:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
   unknown-2:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  unknown-20:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  unknown-21:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  unknown-22:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  unknown-23:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  unknown-24:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  unknown-25:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  unknown-26:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  unknown-27:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  unknown-28:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  unknown-29:
-    base_only_ratio: 1.0
+    base_only_ratio: 0.25
     max_inheritance_depth: 2
   unknown-3:
     base_only_ratio: 1.0
     max_inheritance_depth: 2
-  unknown-30:
-    base_only_ratio: 1.0
-    max_inheritance_depth: 2
-  unknown-31:
-    base_only_ratio: 0.4
-    max_inheritance_depth: 2
-  unknown-32:
-    base_only_ratio: 0.2
-    max_inheritance_depth: 2
   unknown-4:
-    base_only_ratio: 0.4
+    base_only_ratio: 1.0
     max_inheritance_depth: 2
   unknown-5:
     base_only_ratio: 1.0
@@ -613,10 +172,10 @@ assertions:
     base_only_ratio: 1.0
     max_inheritance_depth: 2
   unknown-7:
-    base_only_ratio: 1.0
+    base_only_ratio: 0.4
     max_inheritance_depth: 2
   unknown-8:
-    base_only_ratio: 1.0
+    base_only_ratio: 0.3333
     max_inheritance_depth: 2
   unknown-9:
     base_only_ratio: 1.0

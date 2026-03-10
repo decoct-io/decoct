@@ -1,44 +1,18 @@
 meta:
   entity_type: unknown-11
-  total_instances: 1
+  total_instances: 3
   max_inheritance_depth: 2
   tier_c_ref: unknown-11_instances.yaml
 base_class:
-  app.debug: 'false'
-  app.env: prod
-  app.name: ridgeline-platform
-  app.version: v2
-  cache.backend: redis
-  cache.enabled: 'true'
-  cache.redis_url: redis://:R3disP@ss!@redis:6379/1
-  cache.ttl: '300'
-  cors.allow_credentials: 'true'
-  cors.enabled: 'true'
-  cors.methods: GET,POST,PUT,DELETE
-  cors.origins: https://app.ridgeline.io,https://admin.ridgeline.io
-  database.echo: 'false'
-  database.pool_recycle: '3600'
-  database.pool_size: '20'
-  database.pool_timeout: '30'
-  features.analytics_v2: 'true'
-  features.dark_mode: 'true'
-  features.new_billing: 'false'
-  logging.file.compress: 'true'
-  logging.file.max_backups: '5'
-  logging.file.max_size: 100MB
-  logging.file.path: /var/log/ridgeline/app.log
-  logging.format: json
-  logging.handlers: console,file
-  logging.level: INFO
-  rate_limiting.burst: '50'
-  rate_limiting.by: ip
-  rate_limiting.enabled: 'true'
-  rate_limiting.requests_per_minute: '1000'
+  ip-forward: 'true'
+  iptables: 'true'
+  log-driver: json-file
+  storage-driver: overlay2
 classes:
   _base_only:
     inherits: base
     own_attrs: {}
-    instance_count_inclusive: 1
+    instance_count_inclusive: 3
 subclasses: {}
 assertions:
   base_only_ratio: 1.0

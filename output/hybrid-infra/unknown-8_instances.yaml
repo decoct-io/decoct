@@ -1,9 +1,144 @@
 meta:
   entity_type: unknown-8
   tier_b_ref: unknown-8_classes.yaml
-  total_instances: 1
+  total_instances: 6
 class_assignments:
   _base_only:
     instances:
-    - ansible-inventory-dev
+    - sysctl-db-tuned
+    - sysctl-hardened
+  dirty_ratio_20_overcommit_memory_0:
+    instances:
+    - sysctl-app-server
+    - sysctl-dev
+    - sysctl-edge
+    - sysctl-monitoring
+instance_data:
+  schema:
+  - fs.file-max
+  - fs.inotify.max_user_watches
+  - kernel.pid_max
+  - net.core.netdev_max_backlog
+  - net.core.somaxconn
+  - net.ipv4.ip_local_port_range
+  - net.ipv4.tcp_fin_timeout
+  - net.ipv4.tcp_keepalive_time
+  - net.ipv4.tcp_max_syn_backlog
+  - net.ipv4.tcp_max_tw_buckets
+  - net.ipv4.tcp_rmem
+  - net.ipv4.tcp_tw_reuse
+  - net.ipv4.tcp_wmem
+  - vm.dirty_background_ratio
+  - vm.swappiness
+  records:
+    sysctl-app-server:
+    - '1048576'
+    - '65536'
+    - '32768'
+    - '1000'
+    - '128'
+    - 32768 60999
+    - '60'
+    - '7200'
+    - '128'
+    - '32768'
+    - 4096 87380 6291456
+    - '0'
+    - 4096 16384 4194304
+    - '10'
+    - '60'
+    sysctl-db-tuned:
+    - '2097152'
+    - '524288'
+    - '131072'
+    - '5000'
+    - '65535'
+    - 1024 65535
+    - '15'
+    - '600'
+    - '4096'
+    - '262144'
+    - 4096 87380 16777216
+    - '1'
+    - 4096 65536 16777216
+    - '10'
+    - '10'
+    sysctl-dev:
+    - '1048576'
+    - '65536'
+    - '32768'
+    - '1000'
+    - '128'
+    - 32768 60999
+    - '60'
+    - '7200'
+    - '128'
+    - '32768'
+    - 4096 87380 6291456
+    - '0'
+    - 4096 16384 4194304
+    - '10'
+    - '60'
+    sysctl-edge:
+    - '2097152'
+    - '524288'
+    - '131072'
+    - '5000'
+    - '65535'
+    - 1024 65535
+    - '10'
+    - '600'
+    - '4096'
+    - '262144'
+    - 4096 87380 16777216
+    - '1'
+    - 4096 65536 16777216
+    - '5'
+    - '30'
+    sysctl-hardened:
+    - '2097152'
+    - '524288'
+    - '131072'
+    - '5000'
+    - '65535'
+    - 1024 65535
+    - '10'
+    - '300'
+    - '4096'
+    - '262144'
+    - 4096 87380 16777216
+    - '1'
+    - 4096 65536 16777216
+    - '5'
+    - '10'
+    sysctl-monitoring:
+    - '1048576'
+    - '65536'
+    - '32768'
+    - '1000'
+    - '128'
+    - 32768 60999
+    - '60'
+    - '7200'
+    - '128'
+    - '32768'
+    - 4096 87380 6291456
+    - '0'
+    - 4096 16384 4194304
+    - '10'
+    - '60'
+overrides:
+  sysctl-db-tuned:
+    owner: _base_only
+    delta:
+      kernel.shmall: '16777216'
+      kernel.shmmax: '68719476736'
+      vm.dirty_ratio: '40'
+      vm.nr_hugepages: '1024'
+      vm.overcommit_memory: '0'
+  sysctl-hardened:
+    owner: _base_only
+    delta:
+      vm.dirty_ratio: '10'
+      vm.overcommit_memory: '2'
 foreign_keys: {}

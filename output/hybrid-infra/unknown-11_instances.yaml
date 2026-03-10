@@ -1,9 +1,70 @@
 meta:
   entity_type: unknown-11
   tier_b_ref: unknown-11_classes.yaml
-  total_instances: 1
+  total_instances: 3
 class_assignments:
   _base_only:
     instances:
-    - yaml-app-logging-config
+    - docker-daemon-ci
+    - docker-daemon-dev
+    - docker-daemon-prod
+instance_data:
+  schema:
+  - debug
+  - experimental
+  - live-restore
+  - log-opts.max-file
+  - log-opts.max-size
+  - userland-proxy
+  records:
+    docker-daemon-ci:
+    - 'false'
+    - 'false'
+    - 'false'
+    - '2'
+    - 10m
+    - 'false'
+    docker-daemon-dev:
+    - 'true'
+    - 'true'
+    - 'true'
+    - '3'
+    - 100m
+    - 'true'
+    docker-daemon-prod:
+    - 'false'
+    - 'false'
+    - 'true'
+    - '5'
+    - 50m
+    - 'false'
+instance_attrs:
+  docker-daemon-ci:
+    default-ulimits:
+      nofile:
+        Name: nofile
+        Soft: '65535'
+        Hard: '65535'
+  docker-daemon-dev:
+    default-ulimits:
+      nofile:
+        Name: nofile
+        Soft: '1024'
+        Hard: '1024'
+  docker-daemon-prod:
+    default-ulimits:
+      nofile:
+        Name: nofile
+        Soft: '65535'
+        Hard: '65535'
+overrides:
+  docker-daemon-dev:
+    owner: _base_only
+    delta:
+      insecure-registries: registry.ridgeline.internal:5000
+  docker-daemon-prod:
+    owner: _base_only
+    delta:
+      dns: 8.8.8.8,8.8.4.4
+      metrics-addr: 0.0.0.0:9323
 foreign_keys: {}
