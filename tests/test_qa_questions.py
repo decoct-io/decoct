@@ -18,6 +18,7 @@ from decoct.qa.questions import (
 
 FIXTURES = Path(__file__).parent / "fixtures"
 IOSXR_CONFIGS = FIXTURES / "iosxr" / "configs"
+HYBRID_INFRA_CONFIGS = FIXTURES / "hybrid-infra" / "configs"
 
 
 class TestGenerateQuestionBank:
@@ -178,3 +179,130 @@ class TestGenerateQuestionsCLI:
             "-c", str(IOSXR_CONFIGS), "-o", str(out2), "--seed", "42",
         ])
         assert out1.read_text() == out2.read_text()
+
+
+class TestOrderingQuestions:
+    def _make_hybrid_bank(
+        self, *, max_questions: int = 500, categories: list[QuestionCategory] | None = None,
+    ) -> QuestionBank:
+        from decoct.adapters.hybrid_infra import HybridInfraAdapter
+        return generate_question_bank(
+            HYBRID_INFRA_CONFIGS,
+            max_questions=max_questions,
+            categories=categories,
+            adapter=HybridInfraAdapter(),
+        )
+
+    def test_ordering_category_exists(self) -> None:
+        assert QuestionCategory.ORDERING.value == "ORDERING"
+
+    def test_ordering_questions_generated_hybrid_infra(self) -> None:
+        bank = self._make_hybrid_bank(categories=[QuestionCategory.ORDERING])
+        assert len(bank.pairs) > 0
+        assert all(q.category == QuestionCategory.ORDERING for q in bank.pairs)
+
+    def test_ordering_position_answer_correct(self) -> None:
+        """The 1st scrape config in prometheus-prod should be 'prometheus'."""
+        bank = self._make_hybrid_bank(categories=[QuestionCategory.ORDERING])
+        position_qs = [
+            q for q in bank.pairs
+            if "1st" in q.question and "prometheus-prod" in q.question and "scrape_configs" in q.question
+        ]
+        assert len(position_qs) == 1
+        assert position_qs[0].ground_truth.answer == "prometheus"
+
+    def test_ordering_before_after_answer_correct(self) -> None:
+        """The scrape config after 'prometheus' in prometheus-prod should be 'core-api'."""
+        bank = self._make_hybrid_bank(categories=[QuestionCategory.ORDERING])
+        after_qs = [
+            q for q in bank.pairs
+            if "immediately after prometheus" in q.question and "prometheus-prod" in q.question
+        ]
+        assert len(after_qs) == 1
+        assert after_qs[0].ground_truth.answer == "core-api"
+
+    def test_ordering_first_last_answer_correct(self) -> None:
+        """First/last scrape configs in prometheus-prod."""
+        bank = self._make_hybrid_bank(categories=[QuestionCategory.ORDERING])
+        first_qs = [
+            q for q in bank.pairs
+            if "first" in q.question and "prometheus-prod" in q.question and "scrape_configs" in q.question
+        ]
+        last_qs = [
+            q for q in bank.pairs
+            if "last" in q.question and "prometheus-prod" in q.question and "scrape_configs" in q.question
+        ]
+        assert len(first_qs) == 1
+        assert first_qs[0].ground_truth.answer == "prometheus"
+        assert len(last_qs) == 1
+        assert last_qs[0].ground_truth.answer == "node-exporter"
+
+    def test_ordering_requires_min_two_items(self) -> None:
+        """Lists with < 2 items with a name field should produce no ORDERING questions."""
+        from decoct.adapters.hybrid_infra import HybridInfraAdapter
+        from decoct.core.composite_value import CompositeValue
+        from decoct.core.entity_graph import EntityGraph
+        from decoct.core.types import Attribute, Entity
+
+        # Create a minimal entity with a 1-item list
+        graph = EntityGraph()
+        entity = Entity(id="single-item")
+        entity.attributes["tasks"] = Attribute(
+            path="tasks",
+            value=CompositeValue(data=[{"name": "only-task"}], kind="list"),
+            type="list",
+        )
+        graph.add_entity(entity)
+
+        # Generate ORDERING questions — should get none from this entity
+        bank = generate_question_bank(
+            HYBRID_INFRA_CONFIGS,
+            categories=[QuestionCategory.ORDERING],
+            adapter=HybridInfraAdapter(),
+        )
+        single_item_qs = [q for q in bank.pairs if "single-item" in q.question]
+        assert len(single_item_qs) == 0
+
+    def test_ordering_needs_name_field(self) -> None:
+        """Lists of dicts without a discoverable name field produce no ORDERING questions."""
+        from decoct.qa.questions import _find_name_field
+        items = [{"x": 1, "y": 2}, {"x": 3, "y": 4}]
+        assert _find_name_field(items) is None
+
+    def test_adapter_parameter_backward_compat(self) -> None:
+        """generate_question_bank without adapter still works (IOS-XR default)."""
+        bank = generate_question_bank(IOSXR_CONFIGS, max_questions=10)
+        assert len(bank.pairs) > 0
+
+    def test_adapter_parameter_hybrid_infra(self) -> None:
+        """Passing HybridInfraAdapter gets entities from hybrid-infra fixtures."""
+        bank = self._make_hybrid_bank(max_questions=10)
+        assert bank.entity_count > 0
+
+    def test_serialisation_roundtrip_ordering(self, tmp_path: Path) -> None:
+        """ORDERING questions survive save/load."""
+        bank = self._make_hybrid_bank(categories=[QuestionCategory.ORDERING], max_questions=50)
+        out = tmp_path / "ordering.json"
+        save_question_bank(bank, out)
+        loaded = load_question_bank(out)
+        assert len(loaded.pairs) == len(bank.pairs)
+        for orig, reloaded in zip(bank.pairs, loaded.pairs):
+            assert orig.category == reloaded.category == QuestionCategory.ORDERING
+            assert orig.ground_truth.answer == reloaded.ground_truth.answer
+
+    def test_cli_adapter_option(self, tmp_path: Path) -> None:
+        """CLI --adapter hybrid-infra invocation works."""
+        out = tmp_path / "questions.json"
+        runner = CliRunner()
+        result = runner.invoke(cli, [
+            "entity-graph", "generate-questions",
+            "-c", str(HYBRID_INFRA_CONFIGS),
+            "-o", str(out),
+            "--adapter", "hybrid-infra",
+            "--max-questions", "50",
+        ])
+        assert result.exit_code == 0, result.output
+        assert out.exists()
+        data = json.loads(out.read_text())
+        categories = {p["category"] for p in data["pairs"]}
+        assert "ORDERING" in categories
