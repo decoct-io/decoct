@@ -33,6 +33,7 @@ Thumbs.db
 
 # decoct
 .decoct/
+corpus/
 
 # Claude Code
 .claude/

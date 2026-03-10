@@ -61,6 +61,13 @@ target-version = "py310"
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W", "UP"]
 
+[tool.ruff.lint.per-file-ignores]
+# Spec-mandated UPPER_CASE function names (§2.4, §7.3)
+"src/decoct/core/canonical.py" = ["N802"]
+"src/decoct/core/hashing.py" = ["N802"]
+# Spec-mandated H_norm parameter name (§3.4)
+"src/decoct/analysis/tier_classifier.py" = ["N803"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 
