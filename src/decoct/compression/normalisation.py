@@ -120,10 +120,12 @@ def build_tier_c(
             delta = subclass_def.overrides[eid]
             overrides[eid] = {"owner": subclass_def.name, "delta": delta}
 
-    # 6. B-layer composite deltas only
+    # 6. B-layer composite deltas (includes A_BASE composites with per-entity deltas,
+    #    e.g. inner-decomposed map composites where the template ref is universal
+    #    but per-entity entry deltas vary)
     b_composite_deltas: dict[str, dict[str, Any]] = {}
     for (eid, path) in sorted(composite_deltas.keys()):
-        if path in type_profiles and type_profiles[path].final_role == FinalRole.B:
+        if path in type_profiles and type_profiles[path].final_role in (FinalRole.A_BASE, FinalRole.B):
             delta_val = composite_deltas[(eid, path)]
             b_composite_deltas.setdefault(eid, {})[path] = {"delta": copy.deepcopy(delta_val)}
 

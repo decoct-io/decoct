@@ -104,6 +104,7 @@ class CompositeTemplate:
     id: str
     content: Any  # The common elements
     variable_positions: list[Any] = field(default_factory=list)
+    decomp_kind: str = ""  # "" for v1, "map_inner" for inner map decomposition
 
 
 @dataclass

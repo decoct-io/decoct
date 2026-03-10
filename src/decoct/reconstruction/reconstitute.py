@@ -5,6 +5,7 @@ from __future__ import annotations
 import copy
 from typing import Any
 
+from decoct.core.composite_value import CompositeValue
 from decoct.core.types import (
     ABSENT,
     ClassHierarchy,
@@ -64,6 +65,29 @@ def _apply_composite_delta(base: Any, delta: Any) -> None:
                     base[idx] = val
 
 
+def _reconstruct_map_inner(
+    base_template: dict[str, str],
+    delta: dict[str, dict[str, Any]],
+) -> CompositeValue:
+    """Reconstruct a map composite from base template + per-entry deltas.
+
+    For each entry in the delta:
+    1. Start with a copy of the base template
+    2. Apply the entry delta (add/change keys, remove None-valued keys)
+    3. Collect into a map CompositeValue
+    """
+    result: dict[str, dict[str, str]] = {}
+    for entry_name, entry_delta in delta.items():
+        merged = dict(base_template)  # shallow copy
+        for k, v in entry_delta.items():
+            if v is None:
+                merged.pop(k, None)  # removed key
+            else:
+                merged[k] = v  # added or changed
+        result[entry_name] = merged
+    return CompositeValue.from_map(result)
+
+
 def _materialize_c_instance_value(
     path: str,
     encoded_value: Any,
@@ -73,6 +97,10 @@ def _materialize_c_instance_value(
     """Materialize a Tier C instance value (§9.1)."""
     if _is_encoded_c_template_value(path, encoded_value, path_template_ids):
         template = template_index[encoded_value["template"]]
+        if template.decomp_kind == "map_inner":
+            return _reconstruct_map_inner(
+                template.content, encoded_value.get("delta", {}),
+            )
         out = copy.deepcopy(template.content)
         if "delta" in encoded_value:
             _apply_composite_delta(out, encoded_value["delta"])
@@ -155,12 +183,20 @@ def reconstitute_entity(
         value = attrs[path]
         if isinstance(value, str) and value in path_template_ids[path]:
             template = template_index[value]
-            attrs[path] = copy.deepcopy(template.content)
+            if template.decomp_kind == "map_inner":
+                # Inner map decomposition: reconstruct from base + per-entry deltas
+                delta_data: dict[str, Any] = {}
+                if (entity_id in tier_c.b_composite_deltas
+                        and path in tier_c.b_composite_deltas[entity_id]):
+                    delta_data = tier_c.b_composite_deltas[entity_id][path].get("delta", {})
+                attrs[path] = _reconstruct_map_inner(template.content, delta_data)
+            else:
+                attrs[path] = copy.deepcopy(template.content)
 
-            if (entity_id in tier_c.b_composite_deltas
-                    and path in tier_c.b_composite_deltas[entity_id]):
-                delta_data = tier_c.b_composite_deltas[entity_id][path]
-                _apply_composite_delta(attrs[path], delta_data.get("delta", {}))
+                if (entity_id in tier_c.b_composite_deltas
+                        and path in tier_c.b_composite_deltas[entity_id]):
+                    b_delta = tier_c.b_composite_deltas[entity_id][path]
+                    _apply_composite_delta(attrs[path], b_delta.get("delta", {}))
 
     # 6. C-layer instance_attrs
     if entity_id in tier_c.instance_attrs:

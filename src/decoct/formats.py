@@ -128,9 +128,11 @@ def detect_platform(doc: Any) -> str | None:
     if not isinstance(doc, dict):
         return None
 
-    # Docker Compose: has "services" key with nested mappings
+    # Docker Compose: has "services" key with at least one service containing "image"
     if "services" in doc and isinstance(doc.get("services"), dict):
-        return "docker-compose"
+        svc = doc["services"]
+        if any(isinstance(v, dict) and "image" in v for v in svc.values()):
+            return "docker-compose"
 
     # Terraform state: has "version", "resources", "terraform_version"
     if "terraform_version" in doc and "resources" in doc:

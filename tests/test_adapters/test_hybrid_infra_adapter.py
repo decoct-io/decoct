@@ -6,6 +6,7 @@ from ruamel.yaml.comments import CommentedMap, CommentedSeq
 
 from decoct.adapters.hybrid_infra import (
     HybridInfraAdapter,
+    _is_homogeneous_map,
     flatten_doc,
 )
 from decoct.core.composite_value import CompositeValue
@@ -34,14 +35,52 @@ class TestYamlCompose(TestParseHelper):
         e = graph.get_entity(eid)
         assert eid == "compose-dev"
         assert e.schema_type_hint == "docker-compose"
-        # Services are nested dicts, should appear as dotted paths
-        assert any(p.startswith("services.") for p in e.attributes)
+        # Services are a homogeneous map → CompositeValue(kind="map")
+        assert "services" in e.attributes
+        cv = e.attributes["services"].value
+        assert isinstance(cv, CompositeValue)
+        assert cv.kind == "map"
 
-    def test_compose_service_attributes(self) -> None:
+    def test_compose_service_map_contents(self) -> None:
         graph, eid = self._parse_one("compose-dev.yaml")
         e = graph.get_entity(eid)
-        assert e.attributes["services.core-api.image"].value == "ridgeline/core-api:dev"
-        assert e.attributes["services.core-api.restart"].value == "unless-stopped"
+        cv = e.attributes["services"].value
+        assert isinstance(cv, CompositeValue)
+        assert "core-api" in cv.data
+        assert cv.data["core-api"]["image"] == "ridgeline/core-api:dev"
+        assert cv.data["core-api"]["restart"] == "unless-stopped"
+
+
+class TestYamlSingleServiceCompose(TestParseHelper):
+    """Single-service Docker Compose files should produce CompositeValue(kind='map')."""
+
+    def test_single_service_compose_has_map_composite(self) -> None:
+        graph, eid = self._parse_one("compose-billing-prod.yaml")
+        e = graph.get_entity(eid)
+        assert e.schema_type_hint == "docker-compose"
+        assert "services" in e.attributes
+        cv = e.attributes["services"].value
+        assert isinstance(cv, CompositeValue)
+        assert cv.kind == "map"
+        assert "billing-api" in cv.data
+
+    def test_report_service_compose_has_map_composite(self) -> None:
+        graph, eid = self._parse_one("compose-report-prod.yaml")
+        e = graph.get_entity(eid)
+        assert e.schema_type_hint == "docker-compose"
+        assert "services" in e.attributes
+        cv = e.attributes["services"].value
+        assert isinstance(cv, CompositeValue)
+        assert cv.kind == "map"
+
+
+class TestYamlServiceMesh(TestParseHelper):
+    """Service mesh YAML should NOT be classified as docker-compose."""
+
+    def test_service_mesh_not_docker_compose(self) -> None:
+        graph, eid = self._parse_one("yaml-app-service-mesh.yaml")
+        e = graph.get_entity(eid)
+        assert e.schema_type_hint != "docker-compose"
 
 
 class TestYamlAnsible(TestParseHelper):
@@ -269,3 +308,106 @@ class TestFlattenDocEdgeCases:
         flat, _ = flatten_doc(doc)
         assert flat["count"] == "42"
         assert flat["ratio"] == "3.14"
+
+    def test_homogeneous_map_becomes_composite(self) -> None:
+        """Dict of structurally similar dicts → CompositeValue(kind='map')."""
+        doc = CommentedMap()
+        services = CommentedMap()
+        svc1 = CommentedMap()
+        svc1["image"] = "nginx:latest"
+        svc1["restart"] = "always"
+        svc1["ports"] = "80:80"
+        svc2 = CommentedMap()
+        svc2["image"] = "redis:7"
+        svc2["restart"] = "always"
+        svc2["ports"] = "6379:6379"
+        services["web"] = svc1
+        services["cache"] = svc2
+        doc["services"] = services
+
+        flat, composites = flatten_doc(doc)
+        assert "services" in composites
+        cv = composites["services"]
+        assert isinstance(cv, CompositeValue)
+        assert cv.kind == "map"
+        assert "web" in cv.data
+        assert cv.data["web"]["image"] == "nginx:latest"
+        assert "cache" in cv.data
+        # No dotted services.* paths in flat attrs
+        assert not any(k.startswith("services.") for k in flat)
+
+    def test_heterogeneous_map_stays_flat(self) -> None:
+        """Dict with structurally different children remains flat attributes."""
+        doc = CommentedMap()
+        mixed = CommentedMap()
+        sub1 = CommentedMap()
+        sub1["a"] = "1"
+        sub2 = CommentedMap()
+        sub2["x"] = "2"
+        sub2["y"] = "3"
+        sub2["z"] = "4"
+        mixed["first"] = sub1
+        mixed["second"] = sub2
+        doc["config"] = mixed
+
+        flat, composites = flatten_doc(doc)
+        # Low Jaccard similarity → should NOT become composite
+        assert "config" not in composites
+        assert "config.first.a" in flat
+
+
+class TestIsHomogeneousMap:
+    """Tests for _is_homogeneous_map detection."""
+
+    def test_similar_children_detected(self) -> None:
+        m = CommentedMap()
+        a = CommentedMap()
+        a["image"] = "x"
+        a["restart"] = "y"
+        b = CommentedMap()
+        b["image"] = "z"
+        b["restart"] = "w"
+        m["svc1"] = a
+        m["svc2"] = b
+        assert _is_homogeneous_map(m) is True
+
+    def test_dissimilar_children_rejected(self) -> None:
+        m = CommentedMap()
+        a = CommentedMap()
+        a["x"] = "1"
+        b = CommentedMap()
+        b["y"] = "2"
+        b["z"] = "3"
+        m["first"] = a
+        m["second"] = b
+        assert _is_homogeneous_map(m) is False
+
+    def test_mixed_value_types_rejected(self) -> None:
+        """Map with non-dict children is not homogeneous."""
+        m = CommentedMap()
+        m["a"] = "scalar"
+        sub = CommentedMap()
+        sub["x"] = "1"
+        m["b"] = sub
+        assert _is_homogeneous_map(m) is False
+
+    def test_single_child_with_enough_keys_accepted(self) -> None:
+        """Single dict child with >= 2 keys is accepted as homogeneous map."""
+        m = CommentedMap()
+        sub = CommentedMap()
+        sub["image"] = "nginx:latest"
+        sub["restart"] = "always"
+        m["only"] = sub
+        assert _is_homogeneous_map(m) is True
+
+    def test_single_child_with_one_key_rejected(self) -> None:
+        """Single dict child with only 1 key is not worth compositing."""
+        m = CommentedMap()
+        sub = CommentedMap()
+        sub["x"] = "1"
+        m["only"] = sub
+        assert _is_homogeneous_map(m) is False
+
+    def test_scalar_value_rejected(self) -> None:
+        assert _is_homogeneous_map("not a dict") is False  # type: ignore[arg-type]
+        assert _is_homogeneous_map(42) is False  # type: ignore[arg-type]

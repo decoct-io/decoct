@@ -1,7 +1,7 @@
 """Composite value decomposition (§4).
 
-v1 stub: trivial clustering — one cluster per distinct value.
-Template = value itself, no variable positions.
+v1 stub for list composites: trivial clustering — one cluster per distinct value.
+Map composites use inner decomposition: pool entries, extract common base, store deltas.
 """
 
 from __future__ import annotations
@@ -23,6 +23,96 @@ from decoct.core.types import (
     CompositeTemplate,
     Entity,
 )
+
+
+def _decompose_map_inner(
+    type_id: str,
+    path: str,
+    entities: list[Entity],
+    config: EntityGraphConfig,
+) -> tuple[CompositeTemplate, dict[str, dict[str, dict[str, Any]]]] | None:
+    """Inner decomposition for kind='map' composites.
+
+    Pools all map entries across entities, finds common keys/values,
+    builds a shared template, and computes per-entity deltas.
+
+    Returns ``(template, entity_deltas)`` or ``None`` if no good template found.
+    ``entity_deltas`` maps ``entity_id -> {entry_name: {key: val_or_None}, ...}``.
+    """
+    # 1. Pool all map entries across entities
+    all_entries: list[dict[str, str]] = []
+    for e in entities:
+        if path not in e.attributes:
+            continue
+        cv = e.attributes[path].value
+        if not isinstance(cv, CompositeValue) or cv.kind != "map":
+            continue
+        for entry_dict in cv.data.values():
+            if isinstance(entry_dict, dict):
+                all_entries.append(entry_dict)
+
+    if len(all_entries) < 2:
+        return None
+
+    # 2. Find common keys: present in >= 50% of pooled entries
+    key_counts: Counter[str] = Counter()
+    for entry in all_entries:
+        for k in entry:
+            key_counts[k] += 1
+
+    n_entries = len(all_entries)
+    threshold = n_entries * 0.5
+    common_keys = sorted(k for k, c in key_counts.items() if c >= threshold)
+
+    if not common_keys:
+        return None
+
+    # 3. Find common values: most frequent value per common key
+    value_counts: dict[str, Counter[str]] = {k: Counter() for k in common_keys}
+    for entry in all_entries:
+        for k in common_keys:
+            if k in entry:
+                value_counts[k][entry[k]] += 1
+
+    template_data: dict[str, str] = {}
+    for k in common_keys:
+        if value_counts[k]:
+            template_data[k] = value_counts[k].most_common(1)[0][0]
+
+    # 4. Build template
+    template_id = f"{type_id}.{path}.T0"
+    template = CompositeTemplate(
+        id=template_id,
+        content=template_data,
+        variable_positions=[],
+        decomp_kind="map_inner",
+    )
+
+    # 5. Compute per-entity deltas
+    entity_deltas: dict[str, dict[str, dict[str, Any]]] = {}
+    for e in entities:
+        if path not in e.attributes:
+            continue
+        cv = e.attributes[path].value
+        if not isinstance(cv, CompositeValue) or cv.kind != "map":
+            continue
+
+        entry_deltas: dict[str, dict[str, Any]] = {}
+        for entry_name, entry_dict in cv.data.items():
+            delta: dict[str, Any] = {}
+            # Added or changed keys
+            for k, v in entry_dict.items():
+                if k not in template_data or v != template_data[k]:
+                    delta[k] = v
+            # Removed keys (in template but not in entry)
+            for k in template_data:
+                if k not in entry_dict:
+                    delta[k] = None
+            entry_deltas[entry_name] = delta
+
+        entity_deltas[e.id] = entry_deltas
+
+    return template, entity_deltas
 
 
 def decompose_composites(
@@ -66,6 +156,49 @@ def decompose_composites(
                 if path in e.attributes and isinstance(e.attributes[path].value, CompositeValue):
                     original_composite_values[(e.id, path)] = copy.deepcopy(e.attributes[path].value)
 
+            # Check if this is a map composite suitable for inner decomposition
+            map_entities = [
+                e for e in entities
+                if path in e.attributes
+                and isinstance(e.attributes[path].value, CompositeValue)
+                and e.attributes[path].value.kind == "map"
+            ]
+
+            if len(map_entities) >= config.min_composite_template_members:
+                result = _decompose_map_inner(type_id, path, entities, config)
+                if result is not None:
+                    template, entity_deltas = result
+                    template_index[template.id] = template
+                    templates_by_type_path[(type_id, path)] = [template.id]
+
+                    # Replace entity values with template refs, store deltas
+                    for e in entities:
+                        if path not in e.attributes:
+                            continue
+                        if not isinstance(e.attributes[path].value, CompositeValue):
+                            continue
+
+                        source = e.attributes[path].source
+                        e.attributes[path] = Attribute(
+                            path=path,
+                            value=template.id,
+                            type="composite_template_ref",
+                            source=source,
+                        )
+
+                        if e.id in entity_deltas:
+                            composite_deltas[(e.id, path)] = entity_deltas[e.id]
+
+                    # Re-profile after decomposition
+                    type_profiles[path] = _reprofile_decomposed_attribute(
+                        entities=entities,
+                        path=path,
+                        old_profile=type_profiles[path],
+                        config=config,
+                    )
+                    continue  # Skip v1 stub for this path
+
+            # v1 stub: trivial clustering for list composites
             # Count value support
             value_support: Counter[str] = Counter()
             for e in entities:

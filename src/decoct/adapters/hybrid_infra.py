@@ -141,6 +141,53 @@ def _parse_ini_tolerant(raw: str) -> CommentedMap:
 
 
 # ---------------------------------------------------------------------------
+# Homogeneous map detection
+# ---------------------------------------------------------------------------
+
+def _is_homogeneous_map(
+    value: Any,
+    min_children: int = 1,
+    jaccard_threshold: float = 0.5,
+) -> bool:
+    """Check if a dict-of-dicts has structurally similar children.
+
+    Returns True if ``value`` is a dict with >= ``min_children`` dict children
+    whose average pairwise Jaccard similarity of key sets >= ``jaccard_threshold``.
+
+    For a single child, Jaccard is not applicable — returns True if the child
+    is a dict with >= 2 keys (non-trivial structure worth treating as composite).
+    """
+    if not isinstance(value, (dict, CommentedMap)):
+        return False
+    children = [v for v in value.values() if isinstance(v, (dict, CommentedMap))]
+    if len(children) < min_children or len(children) != len(value):
+        return False
+
+    # Single child: accept if it has enough keys to be worth compositing
+    if len(children) == 1:
+        return len(children[0]) >= 2
+
+    key_sets = [frozenset(child.keys()) for child in children]
+
+    # Compute average pairwise Jaccard similarity
+    n = len(key_sets)
+
+    total_sim = 0.0
+    pair_count = 0
+    for i in range(n):
+        for j in range(i + 1, n):
+            union = key_sets[i] | key_sets[j]
+            if union:
+                total_sim += len(key_sets[i] & key_sets[j]) / len(union)
+            else:
+                total_sim += 1.0
+            pair_count += 1
+
+    avg_sim = total_sim / pair_count if pair_count else 0.0
+    return avg_sim >= jaccard_threshold
+
+
+# ---------------------------------------------------------------------------
 # Generic document flattening
 # ---------------------------------------------------------------------------
 
@@ -192,9 +239,16 @@ def flatten_doc(
             continue
 
         if isinstance(value, (dict, CommentedMap)):
-            child_flat, child_composites = flatten_doc(value, f"{path}.")
-            flat.update(child_flat)
-            composites.update(child_composites)
+            if _is_homogeneous_map(value):
+                # Map of similarly-structured items → CompositeValue(kind="map")
+                map_items: dict[str, dict[str, str]] = {}
+                for item_key, item_value in value.items():
+                    map_items[item_key] = _flatten_composite_item(item_value)
+                composites[path] = CompositeValue.from_map(map_items)
+            else:
+                child_flat, child_composites = flatten_doc(value, f"{path}.")
+                flat.update(child_flat)
+                composites.update(child_composites)
 
         elif isinstance(value, (list, CommentedSeq)):
             if len(value) == 0:
