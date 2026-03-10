@@ -1,0 +1,37 @@
+meta:
+  entity_type: entra-group
+  total_instances: 24
+  max_inheritance_depth: 2
+  tier_c_ref: entra-group_instances.yaml
+base_class:
+  allowExternalSenders: 'false'
+  autoSubscribeNewMembers: 'false'
+  isSubscribedByMail: 'true'
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 2
+  hideFromAddressLists_false_hideFromOutlookClients_:
+    inherits: base
+    own_attrs:
+      hideFromAddressLists: 'false'
+      hideFromOutlookClients: 'false'
+      securityEnabled: 'true'
+    instance_count_inclusive: 19
+  isAssignableToRole_false_securityEnabled_false:
+    inherits: base
+    own_attrs:
+      isAssignableToRole: 'false'
+      securityEnabled: 'false'
+      visibility: Public
+    instance_count_inclusive: 3
+subclasses:
+  hideFromAddressLists_false_hideFromOutlookClients__isAssignableToRole_false_mailE:
+    parent: hideFromAddressLists_false_hideFromOutlookClients_
+    own_attrs:
+      isAssignableToRole: 'false'
+      mailEnabled: 'false'
+    instance_count: 16
+assertions:
+  base_only_ratio: 0.0833

@@ -1,0 +1,71 @@
+meta:
+  entity_type: ansible-playbook_5
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: ansible-playbook_5_instances.yaml
+base_class:
+  any_errors_fatal: 'false'
+  become: 'false'
+  check_mode: 'false'
+  gather_facts: 'false'
+  hosts: app_servers
+  ignore_errors: 'true'
+  name: Emergency Rollback
+  no_log: 'false'
+  order: inventory
+  run_once: 'false'
+  tasks:
+  - name: Enable and start service
+    ansible.builtin.systemd.name: "{{ service_name | default('ridgeline') }}"
+    ansible.builtin.systemd.state: started
+    ansible.builtin.systemd.enabled: 'true'
+    ansible.builtin.systemd.daemon_reload: 'false'
+    ansible.builtin.systemd.daemon_reexec: 'false'
+    ansible.builtin.systemd.no_block: 'false'
+    ansible.builtin.systemd.scope: system
+    ignore_errors: 'false'
+    check_mode: 'false'
+    no_log: 'false'
+    run_once: 'false'
+    become: 'false'
+  - name: Wait for service to be ready
+    ansible.builtin.wait_for.port: "{{ app_port | default('8000') }}"
+    ansible.builtin.wait_for.host: 127.0.0.1
+    ansible.builtin.wait_for.connect_timeout: '5'
+    ansible.builtin.wait_for.delay: '0'
+    ansible.builtin.wait_for.sleep: '1'
+    ansible.builtin.wait_for.state: started
+    ansible.builtin.wait_for.timeout: '300'
+    ignore_errors: 'false'
+    check_mode: 'false'
+    no_log: 'false'
+    run_once: 'false'
+    become: 'false'
+  - name: Verify service health endpoint
+    ansible.builtin.uri.url: http://localhost:{{ app_port | default('8000') 
+      }}/health
+    ansible.builtin.uri.method: GET
+    ansible.builtin.uri.follow_redirects: safe
+    ansible.builtin.uri.force: 'false'
+    ansible.builtin.uri.force_basic_auth: 'false'
+    ansible.builtin.uri.return_content: 'false'
+    ansible.builtin.uri.timeout: '30'
+    ansible.builtin.uri.use_proxy: 'true'
+    ansible.builtin.uri.validate_certs: 'true'
+    ansible.builtin.uri.status_code: '200'
+    ignore_errors: 'false'
+    check_mode: 'false'
+    no_log: 'false'
+    run_once: 'false'
+    become: 'false'
+  vars.deploy_key: '-----BEGIN RSA PRIVATE KEY-----MIIEpAIBAAKCAQEA0Z3VS5JJcds3xfn/ygWep-----END
+    RSA PRIVATE KEY-----'
+  vars.rollback_version: previous
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

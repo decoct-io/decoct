@@ -1,0 +1,46 @@
+meta:
+  entity_type: unknown-16
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: unknown-16_instances.yaml
+base_class:
+  auth.api_key: sk_live_4eC39HqLyjWDarjtT1zdp7dc
+  auth.encryption_key: billing_Enc4ypt10nK3y!
+  auth.jwt_expiry_seconds: '7200'
+  auth.jwt_issuer: billing.ridgeline.io
+  auth.jwt_refresh_expiry_seconds: '172800'
+  auth.jwt_secret: B1lling_JWT_S3cret!
+  cors.allow_credentials: 'true'
+  cors.enabled: 'true'
+  cors.methods: GET,POST,PUT,DELETE
+  cors.origins: https://app.ridgeline.io
+  database.host: db-legacy-01
+  database.name: billing
+  database.password: B1llingS3cret
+  database.pool_size: '10'
+  database.pool_timeout: '30'
+  database.port: '3306'
+  database.ssl: 'false'
+  database.user: billing_svc
+  environment: prod
+  features.auto_retry: 'true'
+  features.invoice_batching: 'false'
+  features.stripe_v2: 'true'
+  logging.format: json
+  logging.level: info
+  logging.output: stdout
+  name: Billing API Config
+  rate_limiting.burst: '50'
+  rate_limiting.enabled: 'true'
+  rate_limiting.requests_per_minute: '500'
+  redis.pool_size: '5'
+  redis.timeout: '5'
+  redis.url: redis://:R3disP@ss!@redis:6379/1
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

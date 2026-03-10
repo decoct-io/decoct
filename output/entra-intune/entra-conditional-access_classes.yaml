@@ -1,0 +1,22 @@
+meta:
+  entity_type: entra-conditional-access
+  total_instances: 6
+  max_inheritance_depth: 2
+  tier_c_ref: entra-conditional-access_instances.yaml
+base_class:
+  sessionControls.disableResilienceDefaults: 'false'
+  state: enabled
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 2
+  includeUsers_All_operator_OR:
+    inherits: base
+    own_attrs:
+      conditions.users.includeUsers: All
+      grantControls.operator: OR
+    instance_count_inclusive: 4
+subclasses: {}
+assertions:
+  base_only_ratio: 0.3333

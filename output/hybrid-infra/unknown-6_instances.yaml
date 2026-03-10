@@ -1,0 +1,9 @@
+meta:
+  entity_type: unknown-6
+  tier_b_ref: unknown-6_classes.yaml
+  total_instances: 1
+class_assignments:
+  _base_only:
+    instances:
+    - ansible-inventory-prod
+foreign_keys: {}

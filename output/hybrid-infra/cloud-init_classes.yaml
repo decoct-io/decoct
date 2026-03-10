@@ -1,0 +1,46 @@
+meta:
+  entity_type: cloud-init
+  total_instances: 6
+  max_inheritance_depth: 2
+  tier_c_ref: cloud-init_instances.yaml
+base_class:
+  allow_public_ssh_keys: 'true'
+  apt.preserve_sources_list: 'false'
+  apt_pipelining: os
+  ca_certs.remove_defaults: 'false'
+  disable_ec2_metadata: 'false'
+  growpart.ignore_growroot_disabled: 'false'
+  growpart.mode: auto
+  manage_resolv_conf: 'false'
+  ntp.enabled: 'true'
+  ntp.ntp_client: auto
+  power_state.condition: 'true'
+  power_state.delay: now
+  power_state.timeout: '30'
+  preserve_hostname: 'false'
+  ssh.emit_keys_to_console: 'true'
+  ssh_deletekeys: 'true'
+  ssh_quiet_keygen: 'false'
+  users: default
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 2
+  servers_0_pool_ntp_org_1_pool_ntp_org_package_rebo:
+    inherits: base
+    own_attrs:
+      ntp.servers: 0.pool.ntp.org,1.pool.ntp.org
+      package_reboot_if_required: 'false'
+      timezone: America/New_York
+    instance_count_inclusive: 4
+subclasses:
+  servers_0_pool_ntp_org_1_pool_ntp_org_package_rebo_manage_etc_hosts_true_package_:
+    parent: servers_0_pool_ntp_org_1_pool_ntp_org_package_rebo
+    own_attrs:
+      manage_etc_hosts: 'true'
+      package_update: 'true'
+      package_upgrade: 'true'
+    instance_count: 4
+assertions:
+  base_only_ratio: 0.3333

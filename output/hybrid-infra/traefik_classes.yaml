@@ -1,0 +1,60 @@
+meta:
+  entity_type: traefik
+  total_instances: 4
+  max_inheritance_depth: 2
+  tier_c_ref: traefik_instances.yaml
+base_class:
+  accessLog.bufferingSize: '0'
+  accessLog.fields.defaultMode: keep
+  accessLog.fields.headers.defaultMode: drop
+  accessLog.filters.minDuration: '0'
+  accessLog.filters.retryAttempts: 'false'
+  accessLog.format: common
+  api.dashboard: 'true'
+  global.checkNewVersion: 'true'
+  global.sendAnonymousUsage: 'false'
+  log.compress: 'false'
+  log.format: common
+  log.maxAge: '0'
+  log.maxBackups: '0'
+  log.maxSize: '100'
+  ping.entryPoint: traefik
+  ping.manualRouting: 'false'
+  ping.terminatingStatusCode: '503'
+  providers.docker.allowEmptyServices: 'false'
+  providers.docker.endpoint: unix:///var/run/docker.sock
+  providers.docker.exposedByDefault: 'true'
+  providers.docker.useBindPortIP: 'false'
+  providers.docker.watch: 'true'
+  providers.providersThrottleDuration: 2s
+  serversTransport.disableHTTP2: 'false'
+  serversTransport.forwardingTimeouts.dialTimeout: 30s
+  serversTransport.forwardingTimeouts.idleConnTimeout: 90s
+  serversTransport.forwardingTimeouts.pingTimeout: 15s
+  serversTransport.forwardingTimeouts.readIdleTimeout: 0s
+  serversTransport.forwardingTimeouts.responseHeaderTimeout: 0s
+  serversTransport.maxIdleConnsPerHost: '200'
+  tls.options.default.minVersion: VersionTLS12
+  tls.options.default.sniStrict: 'false'
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+  requestAcceptGraceTimeout_0s_idleTimeout_180s:
+    inherits: base
+    own_attrs:
+      entryPoints.traefik.transport.lifeCycle.requestAcceptGraceTimeout: 0s
+      entryPoints.traefik.transport.respondingTimeouts.idleTimeout: 180s
+      entryPoints.traefik.transport.respondingTimeouts.readTimeout: 60s
+    instance_count_inclusive: 3
+subclasses:
+  requestAcceptGraceTimeout_0s_idleTimeout_180s_writeTimeout_0s_requestAcceptG:
+    parent: requestAcceptGraceTimeout_0s_idleTimeout_180s
+    own_attrs:
+      entryPoints.traefik.transport.respondingTimeouts.writeTimeout: 0s
+      entryPoints.web.transport.lifeCycle.requestAcceptGraceTimeout: 0s
+      entryPoints.web.transport.respondingTimeouts.idleTimeout: 180s
+    instance_count: 3
+assertions:
+  base_only_ratio: 0.25

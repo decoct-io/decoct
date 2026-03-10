@@ -1,0 +1,77 @@
+meta:
+  entity_type: entra-named-location
+  tier_b_ref: entra-named-location_classes.yaml
+  total_instances: 6
+class_assignments:
+  _base_only:
+    instances:
+    - NL-Allowed-Countries
+    - NL-Blocked-Countries
+    - NL-Branch-Office-EU
+    - NL-Corporate-HQ
+    - NL-Guest-Network
+    - NL-VPN-Gateway
+instance_data:
+  schema:
+  - _uuid
+  - displayName
+  - isTrusted
+  records:
+    NL-Allowed-Countries:
+    - a01e4f97-f752-52d6-997f-70c0ec360ca4
+    - NL-Allowed-Countries
+    - 'false'
+    NL-Blocked-Countries:
+    - a0e0a07d-7c12-528f-aaf0-46f8b7608f86
+    - NL-Blocked-Countries
+    - 'false'
+    NL-Branch-Office-EU:
+    - 29b9c12c-9bc3-596c-8e71-679f8174229a
+    - NL-Branch-Office-EU
+    - 'true'
+    NL-Corporate-HQ:
+    - 3bab498d-df1b-5aeb-9cd6-edb6a6e76a69
+    - NL-Corporate-HQ
+    - 'true'
+    NL-Guest-Network:
+    - aad86928-364e-51c2-abd3-9aadc528140b
+    - NL-Guest-Network
+    - 'false'
+    NL-VPN-Gateway:
+    - e3d2f8a6-e2ca-59e8-86f1-44e1979d50df
+    - NL-VPN-Gateway
+    - 'true'
+instance_attrs:
+  NL-Allowed-Countries:
+    countriesAndRegions: US, GB, DE, FR, CA, AU, JP
+    includeUnknownCountriesAndRegions: 'true'
+  NL-Blocked-Countries:
+    countriesAndRegions: KP, IR, SY, CU, RU
+    includeUnknownCountriesAndRegions: 'false'
+  NL-Branch-Office-EU:
+    ipRanges:
+    - cidrAddress: 198.51.100.0/24
+    - cidrAddress: 192.0.2.0/24
+  NL-Corporate-HQ:
+    ipRanges:
+    - cidrAddress: 10.0.0.0/8
+    - cidrAddress: 172.16.0.0/12
+    - cidrAddress: 203.0.113.0/24
+  NL-Guest-Network:
+    ipRanges:
+    - cidrAddress: 10.99.0.0/16
+    - cidrAddress: 172.31.0.0/16
+  NL-VPN-Gateway:
+    ipRanges:
+    - cidrAddress: 203.0.113.50/32
+    - cidrAddress: 203.0.113.51/32
+overrides:
+  NL-Allowed-Countries:
+    owner: _base_only
+    delta:
+      countryLookupMethod: clientIpAddress
+  NL-Blocked-Countries:
+    owner: _base_only
+    delta:
+      countryLookupMethod: clientIpAddress
+foreign_keys: {}

@@ -1,0 +1,149 @@
+meta:
+  entity_type: intune-app-protection
+  tier_b_ref: intune-app-protection_classes.yaml
+  total_instances: 4
+class_assignments:
+  _base_only:
+    instances:
+    - AP-Android-Standard
+    - AP-Android-Strict
+    - AP-iOS-Standard
+    - AP-iOS-Strict
+instance_data:
+  schema:
+  - _uuid
+  - contactSyncBlocked
+  - dataBackupBlocked
+  - description
+  - displayName
+  - fingerprintBlocked
+  - managedBrowserToOpenLinksRequired
+  - minimumPinLength
+  - periodOfflineBeforeAccessCheck
+  - periodOfflineBeforeWipeIsEnforced
+  - periodOnlineBeforeAccessCheck
+  - printBlocked
+  - saveAsBlocked
+  - simplePinBlocked
+  records:
+    AP-Android-Standard:
+    - b70e00b6-bfc8-5a4d-8fba-e33bfaa2a156
+    - 'false'
+    - 'false'
+    - Standard Android app protection policy
+    - AP-Android-Standard
+    - 'false'
+    - 'false'
+    - '4'
+    - PT720M
+    - P90D
+    - PT30M
+    - 'false'
+    - 'false'
+    - 'false'
+    AP-Android-Strict:
+    - 38de7010-ac82-52ab-9f6e-43c47208dab8
+    - 'true'
+    - 'true'
+    - Strict Android app protection with all restrictions
+    - AP-Android-Strict
+    - 'true'
+    - 'true'
+    - '6'
+    - PT360M
+    - P30D
+    - PT15M
+    - 'true'
+    - 'true'
+    - 'true'
+    AP-iOS-Standard:
+    - 20907902-749d-53dd-b5ad-e5f0e65130f5
+    - 'false'
+    - 'false'
+    - Standard iOS app protection policy
+    - AP-iOS-Standard
+    - 'false'
+    - 'false'
+    - '4'
+    - PT720M
+    - P90D
+    - PT30M
+    - 'false'
+    - 'false'
+    - 'false'
+    AP-iOS-Strict:
+    - f76d23c9-e4e4-5a7c-9822-5f7d468a90ec
+    - 'true'
+    - 'true'
+    - Strict iOS app protection with all restrictions
+    - AP-iOS-Strict
+    - 'true'
+    - 'true'
+    - '6'
+    - PT360M
+    - P30D
+    - PT15M
+    - 'true'
+    - 'true'
+    - 'true'
+instance_attrs:
+  AP-Android-Standard:
+    apps:
+    - mobileAppIdentifier.packageId: com.microsoft.office.outlook
+    - mobileAppIdentifier.packageId: com.microsoft.office.word
+    - mobileAppIdentifier.packageId: com.microsoft.office.excel
+    - mobileAppIdentifier.packageId: com.microsoft.teams
+    assignments:
+    - target.groupId: 496f4253-0480-5d9f-a32e-faad9a648cba
+  AP-Android-Strict:
+    apps:
+    - mobileAppIdentifier.packageId: com.microsoft.office.outlook
+    - mobileAppIdentifier.packageId: com.microsoft.office.word
+    - mobileAppIdentifier.packageId: com.microsoft.office.excel
+    - mobileAppIdentifier.packageId: com.microsoft.teams
+    - mobileAppIdentifier.packageId: com.microsoft.office.powerpoint
+    - mobileAppIdentifier.packageId: com.microsoft.sharepoint
+    assignments:
+    - target.groupId: 098e10db-f215-51c2-978d-687b16aa42f5
+    - target.groupId: 79dedecf-0247-52c4-80f0-32a82b42f6f9
+  AP-iOS-Standard:
+    apps:
+    - mobileAppIdentifier.bundleId: com.microsoft.Office.Outlook
+    - mobileAppIdentifier.bundleId: com.microsoft.Office.Word
+    - mobileAppIdentifier.bundleId: com.microsoft.Office.Excel
+    - mobileAppIdentifier.bundleId: com.microsoft.teams
+    assignments:
+    - target.groupId: da0f57dc-64a3-55d9-b2ad-9db34afcec0b
+  AP-iOS-Strict:
+    apps:
+    - mobileAppIdentifier.bundleId: com.microsoft.Office.Outlook
+    - mobileAppIdentifier.bundleId: com.microsoft.Office.Word
+    - mobileAppIdentifier.bundleId: com.microsoft.Office.Excel
+    - mobileAppIdentifier.bundleId: com.microsoft.teams
+    - mobileAppIdentifier.bundleId: com.microsoft.Office.PowerPoint
+    - mobileAppIdentifier.bundleId: com.microsoft.sharepoint
+    assignments:
+    - target.groupId: 098e10db-f215-51c2-978d-687b16aa42f5
+    - target.groupId: 79dedecf-0247-52c4-80f0-32a82b42f6f9
+overrides:
+  AP-Android-Standard:
+    owner: _base_only
+    delta:
+      disableAppEncryptionIfDeviceEncryptionIsEnabled: 'false'
+      encryptAppData: 'true'
+      screenCaptureBlocked: 'false'
+  AP-Android-Strict:
+    owner: _base_only
+    delta:
+      disableAppEncryptionIfDeviceEncryptionIsEnabled: 'false'
+      encryptAppData: 'true'
+      screenCaptureBlocked: 'false'
+  AP-iOS-Standard:
+    owner: _base_only
+    delta:
+      faceIdBlocked: 'false'
+  AP-iOS-Strict:
+    owner: _base_only
+    delta:
+      faceIdBlocked: 'false'
+foreign_keys: {}

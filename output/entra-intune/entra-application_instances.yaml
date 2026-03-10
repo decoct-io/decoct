@@ -1,0 +1,93 @@
+meta:
+  entity_type: entra-application
+  tier_b_ref: entra-application_classes.yaml
+  total_instances: 2
+class_assignments:
+  _base_only:
+    instances:
+    - App-API-Backend
+    - App-API-Gateway
+instance_data:
+  schema:
+  - _uuid
+  - appId
+  - displayName
+  - identifierUris
+  - signInAudience
+  records:
+    App-API-Backend:
+    - 1183d2b2-0ed9-5f80-b7a4-5c7adfd8e296
+    - 328ff003-8ec4-52c5-827d-8bc270bb442f
+    - App-API-Backend
+    - api://contoso-api-backend
+    - AzureADMyOrg
+    App-API-Gateway:
+    - e9d8598e-406a-51f9-8099-4afbb509babf
+    - 09bfc58f-4326-5719-a4dc-6af54ade2fb4
+    - App-API-Gateway
+    - api://contoso-api-gateway
+    - AzureADMultipleOrgs
+instance_attrs:
+  App-API-Backend:
+    api.oauth2PermissionScopes:
+      access_as_user:
+        adminConsentDescription: Allow the application to access App-API-Backend
+          on behalf of the signed-in user.
+        adminConsentDisplayName: access_as_user
+        isEnabled: 'true'
+        type: User
+        userConsentDescription: Allow the application to access App-API-Backend 
+          on your behalf.
+        userConsentDisplayName: access_as_user
+      read_all:
+        adminConsentDescription: Allow the application to access App-API-Backend
+          on behalf of the signed-in user.
+        adminConsentDisplayName: read_all
+        isEnabled: 'true'
+        type: User
+        userConsentDescription: Allow the application to access App-API-Backend 
+          on your behalf.
+        userConsentDisplayName: read_all
+      write_all:
+        adminConsentDescription: Allow the application to access App-API-Backend
+          on behalf of the signed-in user.
+        adminConsentDisplayName: write_all
+        isEnabled: 'true'
+        type: User
+        userConsentDescription: Allow the application to access App-API-Backend 
+          on your behalf.
+        userConsentDisplayName: write_all
+    requiredResourceAccess:
+    - resourceAppId: 00000003-0000-0000-c000-000000000000
+      resourceAccess.0.type: Scope
+  App-API-Gateway:
+    api.oauth2PermissionScopes:
+      gateway.read:
+        adminConsentDescription: Allow the application to access App-API-Gateway
+          on behalf of the signed-in user.
+        adminConsentDisplayName: gateway.read
+        isEnabled: 'true'
+        type: User
+        userConsentDescription: Allow the application to access App-API-Gateway 
+          on your behalf.
+        userConsentDisplayName: gateway.read
+      gateway.write:
+        adminConsentDescription: Allow the application to access App-API-Gateway
+          on behalf of the signed-in user.
+        adminConsentDisplayName: gateway.write
+        isEnabled: 'true'
+        type: User
+        userConsentDescription: Allow the application to access App-API-Gateway 
+          on your behalf.
+        userConsentDisplayName: gateway.write
+    requiredResourceAccess:
+    - resourceAppId: 00000003-0000-0000-c000-000000000000
+      resourceAccess.0.type: Scope
+    - resourceAppId: 00000003-0000-0000-c000-000000000000
+      resourceAccess.0.type: Scope
+overrides:
+  App-API-Gateway:
+    owner: _base_only
+    delta:
+      web.redirectUris: https://gateway.contoso.com/oauth2/callback
+foreign_keys: {}

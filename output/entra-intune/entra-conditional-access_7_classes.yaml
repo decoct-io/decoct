@@ -1,0 +1,25 @@
+meta:
+  entity_type: entra-conditional-access_7
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: entra-conditional-access_7_instances.yaml
+base_class:
+  _metadata.clientSecret: Abc123!@#SecretKey_2024
+  _metadata.policyVersion: '1.0'
+  _uuid: 611a19dc-e512-5068-8688-bd45be3d4a58
+  conditions.applications.includeApplications: All
+  conditions.clientAppTypes: browser, mobileAppsAndDesktopClients
+  conditions.users.includeGroups: SG-IT-Admins
+  displayName: CA-MFA-Global-Admins
+  grantControls.builtInControls: mfa
+  grantControls.operator: OR
+  sessionControls.disableResilienceDefaults: 'false'
+  state: enabled
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

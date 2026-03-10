@@ -1,0 +1,9 @@
+meta:
+  entity_type: unknown-28
+  tier_b_ref: unknown-28_classes.yaml
+  total_instances: 1
+class_assignments:
+  _base_only:
+    instances:
+    - package-json-admin-panel
+foreign_keys: {}

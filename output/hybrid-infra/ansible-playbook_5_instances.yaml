@@ -1,0 +1,9 @@
+meta:
+  entity_type: ansible-playbook_5
+  tier_b_ref: ansible-playbook_5_classes.yaml
+  total_instances: 1
+class_assignments:
+  _base_only:
+    instances:
+    - ansible-emergency-rollback
+foreign_keys: {}

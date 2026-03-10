@@ -1,0 +1,26 @@
+meta:
+  entity_type: entra-conditional-access_3
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: entra-conditional-access_3_instances.yaml
+base_class:
+  _uuid: 97a9a6a3-4ed6-5f92-bc0d-806efe539f73
+  conditions.applications.excludeApplications: 
+    00000003-0000-0ff1-ce00-000000000000
+  conditions.applications.includeApplications: All
+  conditions.clientAppTypes: browser, mobileAppsAndDesktopClients
+  conditions.platforms.includePlatforms: windows
+  conditions.users.includeGroups: SG-Engineering, SG-Finance-Users
+  displayName: CA-Compliant-Device-Internal
+  grantControls.builtInControls: compliantDevice
+  grantControls.operator: OR
+  sessionControls.disableResilienceDefaults: 'false'
+  state: enabled
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

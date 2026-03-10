@@ -1,0 +1,9 @@
+meta:
+  entity_type: ansible-playbook_4
+  tier_b_ref: ansible-playbook_4_classes.yaml
+  total_instances: 1
+class_assignments:
+  _base_only:
+    instances:
+    - ansible-deploy-web-app
+foreign_keys: {}

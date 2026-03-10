@@ -1,0 +1,126 @@
+meta:
+  entity_type: docker-compose_4
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: docker-compose_4_instances.yaml
+base_class:
+  networks.ci-network.attachable: 'false'
+  networks.ci-network.driver: bridge
+  networks.ci-network.enable_ipv6: 'false'
+  networks.ci-network.external: 'false'
+  networks.ci-network.internal: 'false'
+  services.core-api-test.command: pytest --cov=core_api -v
+  services.core-api-test.cpus: '1.0'
+  services.core-api-test.depends_on.postgres.condition: service_started
+  services.core-api-test.depends_on.postgres.required: 'true'
+  services.core-api-test.depends_on.postgres.restart: 'true'
+  services.core-api-test.deploy.replicas: '1'
+  services.core-api-test.deploy.restart_policy.condition: any
+  services.core-api-test.deploy.restart_policy.max_attempts: '0'
+  services.core-api-test.deploy.rollback_config.order: stop-first
+  services.core-api-test.deploy.rollback_config.parallelism: '1'
+  services.core-api-test.deploy.update_config.order: stop-first
+  services.core-api-test.deploy.update_config.parallelism: '1'
+  services.core-api-test.environment.API_KEY: sk_test_ci_key
+  services.core-api-test.environment.DATABASE_URL: 
+    postgresql://test:testpassword@postgres:5432/test_db
+  services.core-api-test.environment.JWT_SECRET: ci-jwt-secret
+  services.core-api-test.healthcheck.interval: 30s
+  services.core-api-test.healthcheck.retries: '3'
+  services.core-api-test.healthcheck.start_interval: 5s
+  services.core-api-test.healthcheck.start_period: 0s
+  services.core-api-test.healthcheck.timeout: 30s
+  services.core-api-test.image: ridgeline/core-api:${CI_COMMIT_SHA}
+  services.core-api-test.init: 'false'
+  services.core-api-test.logging.driver: json-file
+  services.core-api-test.mem_limit: 2g
+  services.core-api-test.networks: ci-network
+  services.core-api-test.privileged: 'false'
+  services.core-api-test.read_only: 'false'
+  services.core-api-test.restart: no
+  services.core-api-test.stdin_open: 'false'
+  services.core-api-test.tty: 'false'
+  services.mariadb.cpus: '0.5'
+  services.mariadb.deploy.replicas: '1'
+  services.mariadb.deploy.restart_policy.condition: any
+  services.mariadb.deploy.restart_policy.max_attempts: '0'
+  services.mariadb.deploy.rollback_config.order: stop-first
+  services.mariadb.deploy.rollback_config.parallelism: '1'
+  services.mariadb.deploy.update_config.order: stop-first
+  services.mariadb.deploy.update_config.parallelism: '1'
+  services.mariadb.environment.MARIADB_ROOT_PASSWORD: testpassword
+  services.mariadb.healthcheck.interval: 30s
+  services.mariadb.healthcheck.retries: '3'
+  services.mariadb.healthcheck.start_interval: 5s
+  services.mariadb.healthcheck.start_period: 0s
+  services.mariadb.healthcheck.test: CMD-SHELL,healthcheck.sh --connect 
+    --innodb_initialized
+  services.mariadb.healthcheck.timeout: 30s
+  services.mariadb.image: mariadb:10.11
+  services.mariadb.init: 'false'
+  services.mariadb.logging.driver: json-file
+  services.mariadb.mem_limit: 512m
+  services.mariadb.networks: ci-network
+  services.mariadb.privileged: 'false'
+  services.mariadb.read_only: 'false'
+  services.mariadb.restart: no
+  services.mariadb.stdin_open: 'false'
+  services.mariadb.tty: 'false'
+  services.postgres.cpus: '0.5'
+  services.postgres.deploy.replicas: '1'
+  services.postgres.deploy.restart_policy.condition: any
+  services.postgres.deploy.restart_policy.max_attempts: '0'
+  services.postgres.deploy.rollback_config.order: stop-first
+  services.postgres.deploy.rollback_config.parallelism: '1'
+  services.postgres.deploy.update_config.order: stop-first
+  services.postgres.deploy.update_config.parallelism: '1'
+  services.postgres.environment.POSTGRES_DB: test_db
+  services.postgres.environment.POSTGRES_PASSWORD: testpassword
+  services.postgres.healthcheck.interval: 30s
+  services.postgres.healthcheck.retries: '3'
+  services.postgres.healthcheck.start_interval: 5s
+  services.postgres.healthcheck.start_period: 0s
+  services.postgres.healthcheck.test: CMD-SHELL,pg_isready -U postgres
+  services.postgres.healthcheck.timeout: 30s
+  services.postgres.image: postgres:16-alpine
+  services.postgres.init: 'false'
+  services.postgres.logging.driver: json-file
+  services.postgres.mem_limit: 512m
+  services.postgres.networks: ci-network
+  services.postgres.privileged: 'false'
+  services.postgres.read_only: 'false'
+  services.postgres.restart: no
+  services.postgres.stdin_open: 'false'
+  services.postgres.tty: 'false'
+  services.redis.cpus: '0.1'
+  services.redis.deploy.replicas: '1'
+  services.redis.deploy.restart_policy.condition: any
+  services.redis.deploy.restart_policy.max_attempts: '0'
+  services.redis.deploy.rollback_config.order: stop-first
+  services.redis.deploy.rollback_config.parallelism: '1'
+  services.redis.deploy.update_config.order: stop-first
+  services.redis.deploy.update_config.parallelism: '1'
+  services.redis.healthcheck.interval: 30s
+  services.redis.healthcheck.retries: '3'
+  services.redis.healthcheck.start_interval: 5s
+  services.redis.healthcheck.start_period: 0s
+  services.redis.healthcheck.test: CMD-SHELL,redis-cli ping
+  services.redis.healthcheck.timeout: 30s
+  services.redis.image: redis:7-alpine
+  services.redis.init: 'false'
+  services.redis.logging.driver: json-file
+  services.redis.mem_limit: 128m
+  services.redis.networks: ci-network
+  services.redis.privileged: 'false'
+  services.redis.read_only: 'false'
+  services.redis.restart: no
+  services.redis.stdin_open: 'false'
+  services.redis.tty: 'false'
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

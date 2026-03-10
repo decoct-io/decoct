@@ -1,0 +1,9 @@
+meta:
+  entity_type: entra-conditional-access_9
+  tier_b_ref: entra-conditional-access_9_classes.yaml
+  total_instances: 1
+class_assignments:
+  _base_only:
+    instances:
+    - CA-SignIn-Risk-High-Block
+foreign_keys: {}

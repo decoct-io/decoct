@@ -1,0 +1,14 @@
+meta:
+  entity_type: entra-named-location
+  total_instances: 6
+  max_inheritance_depth: 2
+  tier_c_ref: entra-named-location_instances.yaml
+base_class: {}
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 6
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

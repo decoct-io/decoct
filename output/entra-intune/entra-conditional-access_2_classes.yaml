@@ -1,0 +1,18 @@
+meta:
+  entity_type: entra-conditional-access_2
+  total_instances: 2
+  max_inheritance_depth: 2
+  tier_c_ref: entra-conditional-access_2_instances.yaml
+base_class:
+  conditions.clientAppTypes: browser, mobileAppsAndDesktopClients
+  conditions.users.includeUsers: All
+  sessionControls.disableResilienceDefaults: 'false'
+  state: enabled
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 2
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

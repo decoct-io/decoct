@@ -1,0 +1,80 @@
+meta:
+  entity_type: entra-application_4
+  tier_b_ref: entra-application_4_classes.yaml
+  total_instances: 6
+class_assignments:
+  _base_only:
+    instances:
+    - App-Portal-SPA
+    - App-PowerBI-Embedded
+  requiredResourceAccess:
+    instances:
+    - App-Mobile-Android
+    - App-Mobile-iOS
+    - App-Portal-Web
+    - App-Teams-Bot
+instance_data:
+  schema:
+  - _uuid
+  - appId
+  - displayName
+  - isFallbackPublicClient
+  records:
+    App-Mobile-Android:
+    - 9e14e568-8cca-5c92-8849-8c7fe2ea9c49
+    - 00cbc6f0-e1f9-520c-84dd-f0daf3581c1c
+    - App-Mobile-Android
+    - 'true'
+    App-Mobile-iOS:
+    - 5443454c-d8a1-5278-960b-b6c87bf105a0
+    - 0b2849f6-7e8e-5e52-98cc-c831ba6b1e79
+    - App-Mobile-iOS
+    - 'true'
+    App-Portal-SPA:
+    - bf260ba1-7b36-59ae-a911-fdca16509870
+    - 6e79e700-0998-53f8-8e10-27e83df0ce2e
+    - App-Portal-SPA
+    - 'false'
+    App-Portal-Web:
+    - e22d8220-1420-58cc-ac3b-d857933e4fdd
+    - 63b992d8-f6af-59e6-b300-1ed0792b20b5
+    - App-Portal-Web
+    - 'false'
+    App-PowerBI-Embedded:
+    - b1723d20-ab89-518b-aec8-4a3a39b51ab3
+    - ea15b55a-af7a-5adb-855b-7e9248809cbf
+    - App-PowerBI-Embedded
+    - 'false'
+    App-Teams-Bot:
+    - 80f4350c-276a-5c76-87f5-c81d569ef185
+    - 216b2594-611d-503f-ba62-25bdbc6a7c61
+    - App-Teams-Bot
+    - 'false'
+instance_attrs:
+  App-Portal-Web:
+    web.redirectUris: https://portal.contoso.com/auth/callback, 
+      https://portal.contoso.com/silent-callback
+  App-PowerBI-Embedded:
+    web.redirectUris: https://reports.contoso.com/auth/callback
+  App-Teams-Bot:
+    web.redirectUris: https://teams-bot.contoso.com/auth/callback
+overrides:
+  App-Portal-SPA:
+    owner: _base_only
+    delta:
+      requiredResourceAccess:
+      - resourceAppId: 00000003-0000-0000-c000-000000000000
+        resourceAccess.0.type: Scope
+      spa.redirectUris: https://spa.contoso.com/auth, 
+        https://spa.contoso.com/callback
+  App-PowerBI-Embedded:
+    owner: _base_only
+    delta:
+      requiredResourceAccess:
+      - resourceAppId: 00000003-0000-0000-c000-000000000000
+        resourceAccess.0.type: Scope
+      - resourceAppId: 00000003-0000-0000-c000-000000000000
+        resourceAccess.0.type: Scope
+      - resourceAppId: 00000003-0000-0000-c000-000000000000
+        resourceAccess.0.type: Scope
+foreign_keys: {}

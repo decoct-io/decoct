@@ -1,0 +1,32 @@
+meta:
+  entity_type: entra-conditional-access_11
+  tier_b_ref: entra-conditional-access_11_classes.yaml
+  total_instances: 2
+class_assignments:
+  _base_only:
+    instances:
+    - CA-User-Risk-High-PasswordChange
+    - CA-User-Risk-Medium-MFA
+instance_data:
+  schema:
+  - _uuid
+  - conditions.userRiskLevels
+  - displayName
+  - grantControls.builtInControls
+  records:
+    CA-User-Risk-High-PasswordChange:
+    - b9abc224-0ed1-5af4-92f5-9eac01fe13c6
+    - high
+    - CA-User-Risk-High-PasswordChange
+    - passwordChange
+    CA-User-Risk-Medium-MFA:
+    - aa06fba8-162b-5c85-8542-5a636da0b30e
+    - medium
+    - CA-User-Risk-Medium-MFA
+    - mfa
+overrides:
+  CA-User-Risk-Medium-MFA:
+    owner: _base_only
+    delta:
+      conditions.users.excludeUsers: SG-External-Contractors
+foreign_keys: {}

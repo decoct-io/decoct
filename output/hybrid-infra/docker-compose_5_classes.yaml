@@ -1,0 +1,72 @@
+meta:
+  entity_type: docker-compose_5
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: docker-compose_5_instances.yaml
+base_class:
+  networks.app-network.attachable: 'false'
+  networks.app-network.driver: bridge
+  networks.app-network.enable_ipv6: 'false'
+  networks.app-network.external: 'false'
+  networks.app-network.internal: 'false'
+  services.db-backup.command: /scripts/backup-all.sh
+  services.db-backup.cpus: '1.0'
+  services.db-backup.deploy.replicas: '1'
+  services.db-backup.deploy.restart_policy.condition: any
+  services.db-backup.deploy.restart_policy.max_attempts: '0'
+  services.db-backup.deploy.rollback_config.order: stop-first
+  services.db-backup.deploy.rollback_config.parallelism: '1'
+  services.db-backup.deploy.update_config.order: stop-first
+  services.db-backup.deploy.update_config.parallelism: '1'
+  services.db-backup.environment.BACKUP_ENCRYPTION_KEY: Bkup3ncryptK3y!
+  services.db-backup.environment.MYSQL_PWD: M@riaDBr00t!
+  services.db-backup.environment.PGPASSWORD: Sup3rS3cretDB
+  services.db-backup.healthcheck.interval: 30s
+  services.db-backup.healthcheck.retries: '3'
+  services.db-backup.healthcheck.start_interval: 5s
+  services.db-backup.healthcheck.start_period: 0s
+  services.db-backup.healthcheck.timeout: 30s
+  services.db-backup.image: ridgeline/db-backup:1.0.0
+  services.db-backup.init: 'false'
+  services.db-backup.logging.driver: json-file
+  services.db-backup.mem_limit: 2g
+  services.db-backup.networks: app-network
+  services.db-backup.privileged: 'false'
+  services.db-backup.read_only: 'false'
+  services.db-backup.restart: no
+  services.db-backup.stdin_open: 'false'
+  services.db-backup.tty: 'false'
+  services.db-backup.volumes: /opt/ridgeline/backups:/backups
+  services.log-rotator.command: /scripts/rotate-logs.sh
+  services.log-rotator.cpus: '0.1'
+  services.log-rotator.deploy.replicas: '1'
+  services.log-rotator.deploy.restart_policy.condition: any
+  services.log-rotator.deploy.restart_policy.max_attempts: '0'
+  services.log-rotator.deploy.rollback_config.order: stop-first
+  services.log-rotator.deploy.rollback_config.parallelism: '1'
+  services.log-rotator.deploy.update_config.order: stop-first
+  services.log-rotator.deploy.update_config.parallelism: '1'
+  services.log-rotator.healthcheck.interval: 30s
+  services.log-rotator.healthcheck.retries: '3'
+  services.log-rotator.healthcheck.start_interval: 5s
+  services.log-rotator.healthcheck.start_period: 0s
+  services.log-rotator.healthcheck.timeout: 30s
+  services.log-rotator.image: ridgeline/log-rotator:1.0.0
+  services.log-rotator.init: 'false'
+  services.log-rotator.logging.driver: json-file
+  services.log-rotator.mem_limit: 256m
+  services.log-rotator.networks: app-network
+  services.log-rotator.privileged: 'false'
+  services.log-rotator.read_only: 'false'
+  services.log-rotator.restart: no
+  services.log-rotator.stdin_open: 'false'
+  services.log-rotator.tty: 'false'
+  services.log-rotator.volumes: /var/log/ridgeline:/logs
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

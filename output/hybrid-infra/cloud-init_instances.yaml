@@ -1,0 +1,121 @@
+meta:
+  entity_type: cloud-init
+  tier_b_ref: cloud-init_classes.yaml
+  total_instances: 6
+class_assignments:
+  _base_only:
+    instances:
+    - cloud-init-db-server
+    - cloud-init-dev-server
+  servers_0_pool_ntp_org_1_pool_ntp_org_package_rebo:
+    instances:
+    - cloud-init-app-server
+    - cloud-init-edge-server
+    - cloud-init-monitoring
+    - cloud-init-worker-server
+subclass_assignments:
+  servers_0_pool_ntp_org_1_pool_ntp_org_package_rebo_manage_etc_hosts_true_package_:
+    parent: servers_0_pool_ntp_org_1_pool_ntp_org_package_rebo
+    instances:
+    - cloud-init-app-server
+    - cloud-init-edge-server
+    - cloud-init-monitoring
+    - cloud-init-worker-server
+instance_data:
+  schema:
+  - hostname
+  - packages
+  records:
+    cloud-init-app-server:
+    - app-prod-01
+    - curl,wget,htop,vim,net-tools,python3-pip,docker-ce,docker-compose-plugin
+    cloud-init-db-server:
+    - db-prod-01
+    - curl,wget,htop,vim,postgresql-16,postgresql-client-16
+    cloud-init-dev-server:
+    - dev-01
+    - curl,wget,htop,vim,git,docker-ce,docker-compose-plugin,python3-pip,nodejs,npm
+    cloud-init-edge-server:
+    - edge-prod-01
+    - curl,wget,htop,vim,apt-transport-https
+    cloud-init-monitoring:
+    - mon-prod-01
+    - curl,wget,htop,vim,apt-transport-https
+    cloud-init-worker-server:
+    - worker-prod-01
+    - curl,wget,htop,vim,python3-pip,docker-ce,docker-compose-plugin,redis-tools
+instance_attrs:
+  cloud-init-app-server:
+    runcmd: systemctl enable docker,systemctl start docker
+    write_files:
+    - path: /etc/ridgeline/api.conf
+      content: ''
+      permissions: '0644'
+      append: 'false'
+      defer: 'false'
+  cloud-init-db-server:
+    runcmd: sysctl -p,systemctl enable postgresql,systemctl start postgresql
+    write_files:
+    - path: /etc/postgresql/16/main/pg_hba.conf
+      content: ''
+      permissions: '0644'
+      append: 'false'
+      defer: 'false'
+  cloud-init-edge-server:
+    runcmd: systemctl enable traefik
+    write_files:
+    - path: /etc/traefik/traefik.yaml
+      content: ''
+      permissions: '0644'
+      append: 'false'
+      defer: 'false'
+  cloud-init-worker-server:
+    runcmd: systemctl enable docker,systemctl start docker
+    write_files:
+    - path: /opt/ridgeline/worker.env
+      content: ''
+      permissions: '0644'
+      append: 'false'
+      defer: 'false'
+overrides:
+  cloud-init-db-server:
+    owner: _base_only
+    delta:
+      disable_root: 'true'
+      manage_etc_hosts: 'true'
+      ntp.servers: 0.pool.ntp.org,1.pool.ntp.org,2.pool.ntp.org
+      package_reboot_if_required: 'true'
+      package_update: 'true'
+      package_upgrade: 'true'
+      timezone: America/New_York
+  cloud-init-dev-server:
+    owner: _base_only
+    delta:
+      disable_root: 'false'
+      manage_etc_hosts: 'false'
+      ntp.servers: pool.ntp.org
+      package_reboot_if_required: 'false'
+      package_update: 'false'
+      package_upgrade: 'false'
+      timezone: UTC
+  cloud-init-app-server:
+    owner: 
+      servers_0_pool_ntp_org_1_pool_ntp_org_package_rebo_manage_etc_hosts_true_package_
+    delta:
+      disable_root: 'true'
+  cloud-init-edge-server:
+    owner: 
+      servers_0_pool_ntp_org_1_pool_ntp_org_package_rebo_manage_etc_hosts_true_package_
+    delta:
+      disable_root: 'true'
+  cloud-init-monitoring:
+    owner: 
+      servers_0_pool_ntp_org_1_pool_ntp_org_package_rebo_manage_etc_hosts_true_package_
+    delta:
+      disable_root: 'true'
+  cloud-init-worker-server:
+    owner: 
+      servers_0_pool_ntp_org_1_pool_ntp_org_package_rebo_manage_etc_hosts_true_package_
+    delta:
+      disable_root: 'true'
+foreign_keys: {}

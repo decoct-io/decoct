@@ -1,0 +1,87 @@
+meta:
+  entity_type: docker-compose_11
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: docker-compose_11_instances.yaml
+base_class:
+  networks.app-network.attachable: 'false'
+  networks.app-network.driver: bridge
+  networks.app-network.enable_ipv6: 'false'
+  networks.app-network.external: 'false'
+  networks.app-network.internal: 'false'
+  networks.monitoring.attachable: 'false'
+  networks.monitoring.driver: bridge
+  networks.monitoring.enable_ipv6: 'false'
+  networks.monitoring.external: 'false'
+  networks.monitoring.internal: 'false'
+  services.notification-svc.cpus: '0.5'
+  services.notification-svc.depends_on.redis.condition: service_started
+  services.notification-svc.depends_on.redis.required: 'true'
+  services.notification-svc.depends_on.redis.restart: 'true'
+  services.notification-svc.deploy.replicas: '2'
+  services.notification-svc.deploy.restart_policy.condition: any
+  services.notification-svc.deploy.restart_policy.max_attempts: '0'
+  services.notification-svc.deploy.rollback_config.order: stop-first
+  services.notification-svc.deploy.rollback_config.parallelism: '1'
+  services.notification-svc.deploy.update_config.order: stop-first
+  services.notification-svc.deploy.update_config.parallelism: '1'
+  services.notification-svc.environment.SENDGRID_API_KEY: SG.xxxxxxxxxxxxxxxxx
+  services.notification-svc.environment.SMTP_HOST: smtp.sendgrid.net
+  services.notification-svc.environment.SMTP_PASSWORD: SmtpP@ss123
+  services.notification-svc.environment.TWILIO_AUTH_TOKEN: tw_auth_t0ken_secret
+  services.notification-svc.healthcheck.interval: 30s
+  services.notification-svc.healthcheck.retries: '3'
+  services.notification-svc.healthcheck.start_interval: 5s
+  services.notification-svc.healthcheck.start_period: 10s
+  services.notification-svc.healthcheck.test: CMD-SHELL,curl -f 
+    http://localhost:8003/health
+  services.notification-svc.healthcheck.timeout: 30s
+  services.notification-svc.image: ridgeline/notification-svc:1.2.0
+  services.notification-svc.init: 'false'
+  services.notification-svc.labels.traefik.enable: 'true'
+  services.notification-svc.labels.traefik.http.routers.notif.rule: 
+    Host(`notify.ridgeline.io`)
+  services.notification-svc.logging.driver: json-file
+  services.notification-svc.mem_limit: 512m
+  services.notification-svc.networks: app-network,monitoring
+  services.notification-svc.ports: 8003:8003
+  services.notification-svc.privileged: 'false'
+  services.notification-svc.read_only: 'false'
+  services.notification-svc.restart: always
+  services.notification-svc.stdin_open: 'false'
+  services.notification-svc.tty: 'false'
+  services.redis.cpus: '0.25'
+  services.redis.deploy.replicas: '1'
+  services.redis.deploy.restart_policy.condition: any
+  services.redis.deploy.restart_policy.max_attempts: '0'
+  services.redis.deploy.rollback_config.order: stop-first
+  services.redis.deploy.rollback_config.parallelism: '1'
+  services.redis.deploy.update_config.order: stop-first
+  services.redis.deploy.update_config.parallelism: '1'
+  services.redis.environment.REDIS_PASSWORD: R3disP@ss!
+  services.redis.healthcheck.interval: 30s
+  services.redis.healthcheck.retries: '3'
+  services.redis.healthcheck.start_interval: 5s
+  services.redis.healthcheck.start_period: 0s
+  services.redis.healthcheck.test: CMD-SHELL,redis-cli ping
+  services.redis.healthcheck.timeout: 30s
+  services.redis.image: redis:7-alpine
+  services.redis.init: 'false'
+  services.redis.logging.driver: json-file
+  services.redis.mem_limit: 256m
+  services.redis.networks: app-network
+  services.redis.privileged: 'false'
+  services.redis.read_only: 'false'
+  services.redis.restart: unless-stopped
+  services.redis.stdin_open: 'false'
+  services.redis.tty: 'false'
+  services.redis.volumes: redis-notif-data:/data
+  volumes.redis-notif-data.external: 'false'
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

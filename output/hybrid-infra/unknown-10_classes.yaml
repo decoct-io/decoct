@@ -1,0 +1,23 @@
+meta:
+  entity_type: unknown-10
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: unknown-10_instances.yaml
+base_class:
+  api_key: sk_test_dev_key
+  backup_encryption_key: devbackup
+  db_password: devpassword
+  env: dev
+  grafana_admin_password: devgrafana
+  jwt_secret: dev-jwt-secret
+  redis_password: devredis
+  smtp_password: devsmtp
+  vault_password: devvault
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

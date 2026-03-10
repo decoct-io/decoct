@@ -1,0 +1,24 @@
+meta:
+  entity_type: entra-conditional-access_1
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: entra-conditional-access_1_instances.yaml
+base_class:
+  _uuid: 6e9105e2-4df0-580c-a0fb-1cc5da209d64
+  conditions.applications.includeApplications: All
+  conditions.clientAppTypes: exchangeActiveSync, other
+  conditions.users.excludeGroups: SG-IT-Admins
+  conditions.users.includeUsers: All
+  displayName: CA-Block-Legacy-Auth-Global
+  grantControls.builtInControls: block
+  grantControls.operator: OR
+  sessionControls.disableResilienceDefaults: 'false'
+  state: enabled
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

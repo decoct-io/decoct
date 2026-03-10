@@ -1,0 +1,305 @@
+meta:
+  entity_type: intune-compliance
+  tier_b_ref: intune-compliance_classes.yaml
+  total_instances: 10
+class_assignments:
+  _base_only:
+    instances:
+    - CP-Android-Corporate
+    - CP-Android-Standard
+    - CP-iOS-BYOD
+    - CP-iOS-Corporate-Managed
+    - CP-iOS-Standard
+    - CP-macOS-Secure-Workstation
+    - CP-macOS-Standard
+  configurationManagerComplianceRequired_false_early:
+    instances:
+    - CP-Win-Advanced-Security
+    - CP-Win-Basic-Security
+    - CP-Win-Kiosk-Devices
+subclass_assignments:
+  configurationManagerComplianceRequired_false_early_activeFirewallRequired_false_a:
+    parent: configurationManagerComplianceRequired_false_early
+    instances:
+    - CP-Win-Advanced-Security
+    - CP-Win-Basic-Security
+    - CP-Win-Kiosk-Devices
+instance_data:
+  schema:
+  - _uuid
+  - description
+  - deviceThreatProtectionEnabled
+  - deviceThreatProtectionRequiredSecurityLevel
+  - displayName
+  records:
+    CP-Android-Corporate:
+    - 7d3088a6-6a7a-5e2b-89a2-8b6a8bad05e6
+    - Strict Android compliance for corporate devices
+    - 'true'
+    - secured
+    - CP-Android-Corporate
+    CP-Android-Standard:
+    - 95e7cb4c-2ad7-54ce-8ca9-5a534b81ef0e
+    - Standard Android compliance policy
+    - 'false'
+    - unavailable
+    - CP-Android-Standard
+    CP-Win-Advanced-Security:
+    - 06b006d8-7319-5afc-8b8c-13d4e133889c
+    - Advanced Windows compliance with hardware security
+    - 'true'
+    - secured
+    - CP-Win-Advanced-Security
+    CP-Win-Basic-Security:
+    - 92455516-ef36-5f00-b129-db1a9d2c78d6
+    - Basic Windows 10 compliance for standard users
+    - 'false'
+    - unavailable
+    - CP-Win-Basic-Security
+    CP-Win-Kiosk-Devices:
+    - 0fc9bd15-e1c8-567f-b71e-f77d58585e0d
+    - Minimal compliance for shared kiosk Windows devices
+    - 'false'
+    - unavailable
+    - CP-Win-Kiosk-Devices
+    CP-iOS-BYOD:
+    - 6106ee17-83e8-54d5-a8f5-694023003586
+    - Lightweight compliance for BYOD iOS devices
+    - 'false'
+    - unavailable
+    - CP-iOS-BYOD
+    CP-iOS-Corporate-Managed:
+    - b1b668de-82d5-5089-a520-76682021c834
+    - Strict iOS compliance for corporate-managed devices
+    - 'true'
+    - secured
+    - CP-iOS-Corporate-Managed
+    CP-iOS-Standard:
+    - 5eef8562-2182-5a82-ab79-dafa40458d0e
+    - Standard iOS compliance policy
+    - 'false'
+    - unavailable
+    - CP-iOS-Standard
+    CP-macOS-Secure-Workstation:
+    - 248adf12-000a-51d1-9cbf-20fd427262ca
+    - High-security macOS workstation compliance
+    - 'true'
+    - secured
+    - CP-macOS-Secure-Workstation
+    CP-macOS-Standard:
+    - 913c41c1-0007-5121-b999-82354bd2fc6f
+    - Standard macOS compliance policy
+    - 'false'
+    - unavailable
+    - CP-macOS-Standard
+instance_attrs:
+  CP-Android-Corporate:
+    assignments:
+      template: intune-compliance.assignments.T0
+    passwordMinimumLength: '6'
+    passwordRequired: 'true'
+    passwordRequiredType: alphanumeric
+    scheduledActionsForRule:
+    - ruleName: PasswordRequired
+      scheduledActionConfigurations.0.actionType: block
+      scheduledActionConfigurations.0.gracePeriodHours: '4'
+      scheduledActionConfigurations.0.notificationTemplateId: ''
+    securityBlockJailbrokenDevices: 'true'
+    storageRequireEncryption: 'true'
+  CP-Android-Standard:
+    assignments:
+      template: intune-compliance.assignments.T0
+    passwordRequired: 'false'
+    passwordRequiredType: deviceDefault
+    scheduledActionsForRule:
+    - ruleName: PasswordRequired
+      scheduledActionConfigurations.0.actionType: block
+      scheduledActionConfigurations.0.gracePeriodHours: '24'
+      scheduledActionConfigurations.0.notificationTemplateId: ''
+    securityBlockJailbrokenDevices: 'false'
+    storageRequireEncryption: 'false'
+  CP-Win-Advanced-Security:
+    assignments:
+      template: intune-compliance.assignments.T2
+    bitLockerEnabled: 'true'
+    codeIntegrityEnabled: 'true'
+    passwordBlockSimple: 'true'
+    passwordMinimumLength: '8'
+    passwordRequired: 'true'
+    passwordRequiredType: alphanumeric
+    scheduledActionsForRule:
+    - ruleName: PasswordRequired
+      scheduledActionConfigurations.0.actionType: block
+      scheduledActionConfigurations.0.gracePeriodHours: '4'
+      scheduledActionConfigurations.0.notificationTemplateId: ''
+    secureBootEnabled: 'true'
+    storageRequireEncryption: 'true'
+  CP-Win-Basic-Security:
+    assignments:
+      template: intune-compliance.assignments.T2
+    bitLockerEnabled: 'false'
+    codeIntegrityEnabled: 'false'
+    passwordBlockSimple: 'false'
+    passwordRequired: 'false'
+    passwordRequiredType: deviceDefault
+    scheduledActionsForRule:
+    - ruleName: PasswordRequired
+      scheduledActionConfigurations.0.actionType: block
+      scheduledActionConfigurations.0.gracePeriodHours: '24'
+      scheduledActionConfigurations.0.notificationTemplateId: ''
+    secureBootEnabled: 'false'
+    storageRequireEncryption: 'false'
+  CP-Win-Kiosk-Devices:
+    assignments:
+    - target.groupId: acd95104-b130-537e-a46d-6e2219a3bc8f
+    bitLockerEnabled: 'false'
+    codeIntegrityEnabled: 'false'
+    passwordBlockSimple: 'false'
+    passwordRequired: 'false'
+    passwordRequiredType: deviceDefault
+    scheduledActionsForRule:
+    - ruleName: PasswordRequired
+      scheduledActionConfigurations.0.actionType: block
+      scheduledActionConfigurations.0.gracePeriodHours: '72'
+      scheduledActionConfigurations.0.notificationTemplateId: ''
+    secureBootEnabled: 'false'
+    storageRequireEncryption: 'true'
+  CP-iOS-BYOD:
+    assignments:
+    - target.groupId: f5843f0d-24e2-5506-9911-ebc899094fab
+    passcodeBlockSimple: 'false'
+    passcodeRequired: 'false'
+    passcodeRequiredType: deviceDefault
+    scheduledActionsForRule:
+    - ruleName: PasswordRequired
+      scheduledActionConfigurations.0.actionType: block
+      scheduledActionConfigurations.0.gracePeriodHours: '48'
+      scheduledActionConfigurations.0.notificationTemplateId: ''
+    securityBlockJailbrokenDevices: 'true'
+  CP-iOS-Corporate-Managed:
+    assignments:
+      template: intune-compliance.assignments.T1
+    passcodeBlockSimple: 'true'
+    passcodeRequired: 'true'
+    passcodeRequiredType: numeric
+    scheduledActionsForRule:
+    - ruleName: PasswordRequired
+      scheduledActionConfigurations.0.actionType: block
+      scheduledActionConfigurations.0.gracePeriodHours: '4'
+      scheduledActionConfigurations.0.notificationTemplateId: ''
+    securityBlockJailbrokenDevices: 'true'
+  CP-iOS-Standard:
+    assignments:
+      template: intune-compliance.assignments.T1
+    passcodeBlockSimple: 'false'
+    passcodeRequired: 'false'
+    passcodeRequiredType: deviceDefault
+    scheduledActionsForRule:
+    - ruleName: PasswordRequired
+      scheduledActionConfigurations.0.actionType: block
+      scheduledActionConfigurations.0.gracePeriodHours: '24'
+      scheduledActionConfigurations.0.notificationTemplateId: ''
+    securityBlockJailbrokenDevices: 'false'
+  CP-macOS-Secure-Workstation:
+    assignments:
+    - target.groupId: ad039121-ab39-5e68-aaa5-5814dc5ab927
+    firewallBlockAllIncoming: 'true'
+    firewallEnabled: 'true'
+    passwordBlockSimple: 'true'
+    passwordMinimumLength: '12'
+    passwordRequired: 'true'
+    passwordRequiredType: alphanumeric
+    scheduledActionsForRule:
+    - ruleName: PasswordRequired
+      scheduledActionConfigurations.0.actionType: block
+      scheduledActionConfigurations.0.gracePeriodHours: '4'
+      scheduledActionConfigurations.0.notificationTemplateId: ''
+    storageRequireEncryption: 'true'
+    systemIntegrityProtectionEnabled: 'true'
+  CP-macOS-Standard:
+    assignments:
+    - target.groupId: 061db63e-7d80-5c29-9f6c-acd9595a064e
+    firewallBlockAllIncoming: 'false'
+    firewallEnabled: 'false'
+    passwordBlockSimple: 'false'
+    passwordRequired: 'false'
+    passwordRequiredType: deviceDefault
+    scheduledActionsForRule:
+    - ruleName: PasswordRequired
+      scheduledActionConfigurations.0.actionType: block
+      scheduledActionConfigurations.0.gracePeriodHours: '24'
+      scheduledActionConfigurations.0.notificationTemplateId: ''
+    storageRequireEncryption: 'false'
+    systemIntegrityProtectionEnabled: 'false'
+overrides:
+  CP-Android-Corporate:
+    owner: _base_only
+    delta:
+      securityDisableUsbDebugging: 'false'
+      securityPreventInstallAppsFromUnknownSources: 'false'
+      securityRequireCompanyPortalAppIntegrity: 'false'
+      securityRequireGooglePlayServices: 'false'
+      securityRequireSafetyNetAttestationBasicIntegrity: 'false'
+      securityRequireSafetyNetAttestationCertifiedDevice: 'false'
+      securityRequireUpToDateSecurityProviders: 'false'
+      securityRequireVerifyApps: 'false'
+  CP-Android-Standard:
+    owner: _base_only
+    delta:
+      securityDisableUsbDebugging: 'false'
+      securityPreventInstallAppsFromUnknownSources: 'false'
+      securityRequireCompanyPortalAppIntegrity: 'false'
+      securityRequireGooglePlayServices: 'false'
+      securityRequireSafetyNetAttestationBasicIntegrity: 'false'
+      securityRequireSafetyNetAttestationCertifiedDevice: 'false'
+      securityRequireUpToDateSecurityProviders: 'false'
+      securityRequireVerifyApps: 'false'
+  CP-iOS-BYOD:
+    owner: _base_only
+    delta:
+      managedEmailProfileRequired: 'false'
+  CP-iOS-Corporate-Managed:
+    owner: _base_only
+    delta:
+      managedEmailProfileRequired: 'false'
+      passcodeMinimumLength: '6'
+  CP-iOS-Standard:
+    owner: _base_only
+    delta:
+      managedEmailProfileRequired: 'false'
+  CP-macOS-Secure-Workstation:
+    owner: _base_only
+    delta:
+      firewallEnableStealthMode: 'false'
+  CP-macOS-Standard:
+    owner: _base_only
+    delta:
+      firewallEnableStealthMode: 'false'
+  CP-Win-Advanced-Security:
+    owner: 
+      configurationManagerComplianceRequired_false_early_activeFirewallRequired_false_a
+    delta:
+      antivirusRequired: 'false'
+      defenderEnabled: 'false'
+      rtpEnabled: 'false'
+      signatureOutOfDate: 'false'
+      tpmRequired: 'false'
+  CP-Win-Basic-Security:
+    owner: 
+      configurationManagerComplianceRequired_false_early_activeFirewallRequired_false_a
+    delta:
+      antivirusRequired: 'false'
+      defenderEnabled: 'false'
+      rtpEnabled: 'false'
+      signatureOutOfDate: 'false'
+      tpmRequired: 'false'
+  CP-Win-Kiosk-Devices:
+    owner: 
+      configurationManagerComplianceRequired_false_early_activeFirewallRequired_false_a
+    delta:
+      antivirusRequired: 'false'
+      defenderEnabled: 'false'
+      rtpEnabled: 'false'
+      signatureOutOfDate: 'false'
+      tpmRequired: 'false'
+foreign_keys: {}

@@ -1,0 +1,113 @@
+meta:
+  entity_type: ansible-playbook_3
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: ansible-playbook_3_instances.yaml
+base_class:
+  any_errors_fatal: 'false'
+  become: 'false'
+  check_mode: 'false'
+  gather_facts: 'true'
+  handlers:
+  - name: restart_core_api
+    ansible.builtin.systemd.name: "{{ service_name | default('ridgeline') }}"
+    ansible.builtin.systemd.state: restarted
+    ansible.builtin.systemd.daemon_reload: 'false'
+    ansible.builtin.systemd.daemon_reexec: 'false'
+    ansible.builtin.systemd.no_block: 'false'
+    ansible.builtin.systemd.scope: system
+  hosts: app_servers
+  ignore_errors: 'false'
+  name: Deploy Core API
+  no_log: 'false'
+  order: inventory
+  run_once: 'false'
+  tasks:
+  - name: Install Python dependencies
+    ansible.builtin.pip.requirements: /opt/ridgeline/{{ app_name | 
+      default('app') }}/requirements.txt
+    ansible.builtin.pip.virtualenv: /opt/ridgeline/{{ app_name | default('app') 
+      }}/venv
+    ansible.builtin.pip.state: present
+    ansible.builtin.pip.editable: 'false'
+    ansible.builtin.pip.break_system_packages: 'false'
+    ansible.builtin.pip.virtualenv_site_packages: 'false'
+    ignore_errors: 'false'
+    check_mode: 'false'
+    no_log: 'false'
+    run_once: 'false'
+    become: 'false'
+  - name: Deploy templated configuration
+    ansible.builtin.template.src: '{{ item.src }}'
+    ansible.builtin.template.dest: '{{ item.dest }}'
+    ansible.builtin.template.owner: root
+    ansible.builtin.template.group: root
+    ansible.builtin.template.mode: '0644'
+    ansible.builtin.template.backup: 'false'
+    ansible.builtin.template.follow: 'false'
+    ansible.builtin.template.force: 'true'
+    ansible.builtin.template.lstrip_blocks: 'false'
+    ansible.builtin.template.trim_blocks: 'true'
+    ansible.builtin.template.unsafe_writes: 'false'
+    ansible.builtin.template.output_encoding: utf-8
+    loop.0.src: templates/app.conf.j2
+    loop.0.dest: /etc/ridgeline/app.conf
+    ignore_errors: 'false'
+    check_mode: 'false'
+    no_log: 'false'
+    run_once: 'false'
+    become: 'false'
+  - name: Enable and start service
+    ansible.builtin.systemd.name: "{{ service_name | default('ridgeline') }}"
+    ansible.builtin.systemd.state: started
+    ansible.builtin.systemd.enabled: 'true'
+    ansible.builtin.systemd.daemon_reload: 'false'
+    ansible.builtin.systemd.daemon_reexec: 'false'
+    ansible.builtin.systemd.no_block: 'false'
+    ansible.builtin.systemd.scope: system
+    ignore_errors: 'false'
+    check_mode: 'false'
+    no_log: 'false'
+    run_once: 'false'
+    become: 'false'
+  - name: Wait for service to be ready
+    ansible.builtin.wait_for.port: "{{ app_port | default('8000') }}"
+    ansible.builtin.wait_for.host: 127.0.0.1
+    ansible.builtin.wait_for.connect_timeout: '5'
+    ansible.builtin.wait_for.delay: '0'
+    ansible.builtin.wait_for.sleep: '1'
+    ansible.builtin.wait_for.state: started
+    ansible.builtin.wait_for.timeout: '300'
+    ignore_errors: 'false'
+    check_mode: 'false'
+    no_log: 'false'
+    run_once: 'false'
+    become: 'false'
+  - name: Verify service health endpoint
+    ansible.builtin.uri.url: http://localhost:{{ app_port | default('8000') 
+      }}/health
+    ansible.builtin.uri.method: GET
+    ansible.builtin.uri.follow_redirects: safe
+    ansible.builtin.uri.force: 'false'
+    ansible.builtin.uri.force_basic_auth: 'false'
+    ansible.builtin.uri.return_content: 'false'
+    ansible.builtin.uri.timeout: '30'
+    ansible.builtin.uri.use_proxy: 'true'
+    ansible.builtin.uri.validate_certs: 'true'
+    ansible.builtin.uri.status_code: '200'
+    ignore_errors: 'false'
+    check_mode: 'false'
+    no_log: 'false'
+    run_once: 'false'
+    become: 'false'
+  vars.app_port: '8000'
+  vars.app_version: 2.1.0
+  vars.db_password: Sup3rS3cretDB
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

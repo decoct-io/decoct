@@ -1,0 +1,42 @@
+meta:
+  entity_type: unknown-0
+  tier_b_ref: unknown-0_classes.yaml
+  total_instances: 2
+class_assignments:
+  _base_only:
+    instances:
+    - sshd-bastion
+    - sshd-prod
+instance_data:
+  schema:
+  - AddressFamily
+  - AllowAgentForwarding
+  - AllowTcpForwarding
+  - AllowUsers
+  - ClientAliveCountMax
+  - ClientAliveInterval
+  - LoginGraceTime
+  - MaxSessions
+  - Port
+  records:
+    sshd-bastion:
+    - inet
+    - 'true'
+    - 'true'
+    - deploy ops
+    - '2'
+    - '120'
+    - '30'
+    - '1'
+    - '2222'
+    sshd-prod:
+    - any
+    - 'false'
+    - 'false'
+    - deploy ops admins
+    - '3'
+    - '300'
+    - '60'
+    - '2'
+    - '22'
+foreign_keys: {}

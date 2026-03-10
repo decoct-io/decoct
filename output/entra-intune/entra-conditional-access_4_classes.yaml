@@ -1,0 +1,25 @@
+meta:
+  entity_type: entra-conditional-access_4
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: entra-conditional-access_4_instances.yaml
+base_class:
+  _uuid: 7e05c5a7-184e-59d3-9e48-0d7f16544ed6
+  conditions.applications.includeApplications: All
+  conditions.clientAppTypes: browser
+  conditions.users.includeUsers: All
+  displayName: CA-Disabled-Draft-TestPolicy
+  grantControls.builtInControls: mfa
+  grantControls.operator: OR
+  sessionControls.disableResilienceDefaults: 'false'
+  sessionControls.persistentBrowser.isEnabled: 'true'
+  sessionControls.persistentBrowser.mode: never
+  state: disabled
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

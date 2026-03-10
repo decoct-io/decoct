@@ -1,0 +1,16 @@
+meta:
+  entity_type: unknown-5
+  total_instances: 2
+  max_inheritance_depth: 2
+  tier_c_ref: unknown-5_instances.yaml
+base_class:
+  Install.wantedby: timers.target
+  Timer.persistent: 'true'
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 2
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

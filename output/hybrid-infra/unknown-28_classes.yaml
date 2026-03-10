@@ -1,0 +1,36 @@
+meta:
+  entity_type: unknown-28
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: unknown-28_instances.yaml
+base_class:
+  dependencies.@tanstack/react-table: ^8.11.0
+  dependencies.axios: ^1.6.5
+  dependencies.next: ^14.1.0
+  dependencies.react: ^18.2.0
+  dependencies.react-dom: ^18.2.0
+  dependencies.recharts: ^2.10.3
+  description: Ridgeline Admin Panel
+  devDependencies.@types/react: ^18.2.47
+  devDependencies.eslint: ^8.56.0
+  devDependencies.jest: ^29.7.0
+  devDependencies.typescript: ^5.3.3
+  engines.node: '>=20.0.0'
+  license: UNLICENSED
+  main: dist/server.js
+  name: '@ridgeline/admin-panel'
+  private: 'true'
+  scripts.build: next build
+  scripts.dev: next dev --port 8005
+  scripts.lint: eslint .
+  scripts.start: next start
+  scripts.test: jest
+  version: 1.0.0
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

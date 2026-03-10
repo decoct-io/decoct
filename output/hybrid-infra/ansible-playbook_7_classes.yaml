@@ -1,0 +1,98 @@
+meta:
+  entity_type: ansible-playbook_7
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: ansible-playbook_7_instances.yaml
+base_class:
+  any_errors_fatal: 'false'
+  become: 'true'
+  become_user: root
+  check_mode: 'false'
+  gather_facts: 'true'
+  hosts: db_servers
+  ignore_errors: 'false'
+  name: Setup Backup System
+  no_log: 'false'
+  order: inventory
+  run_once: 'false'
+  tasks:
+  - name: Install packages via apt
+    ansible.builtin.apt.name: '{{ item }}'
+    ansible.builtin.apt.state: present
+    ansible.builtin.apt.update_cache: 'false'
+    ansible.builtin.apt.force: 'false'
+    ansible.builtin.apt.purge: 'false'
+    ansible.builtin.apt.autoremove: 'false'
+    ansible.builtin.apt.autoclean: 'false'
+    ansible.builtin.apt.only_upgrade: 'false'
+    ansible.builtin.apt.force_apt_get: 'false'
+    ansible.builtin.apt.allow_unauthenticated: 'false'
+    ansible.builtin.apt.allow_downgrade: 'false'
+    ansible.builtin.apt.fail_on_autoremove: 'false'
+    ansible.builtin.apt.lock_timeout: '60'
+    ansible.builtin.apt.cache_valid_time: '0'
+    loop: curl,wget
+    ignore_errors: 'false'
+    check_mode: 'false'
+    no_log: 'false'
+    run_once: 'false'
+    become: 'true'
+  - name: Copy configuration files
+    ansible.builtin.copy.src: '{{ item.src }}'
+    ansible.builtin.copy.dest: '{{ item.dest }}'
+    ansible.builtin.copy.owner: root
+    ansible.builtin.copy.group: root
+    ansible.builtin.copy.mode: '0644'
+    ansible.builtin.copy.backup: 'false'
+    ansible.builtin.copy.decrypt: 'true'
+    ansible.builtin.copy.follow: 'false'
+    ansible.builtin.copy.force: 'true'
+    ansible.builtin.copy.remote_src: 'false'
+    ansible.builtin.copy.unsafe_writes: 'false'
+    loop.0.src: files/config.conf
+    loop.0.dest: /etc/ridgeline/config.conf
+    ignore_errors: 'false'
+    check_mode: 'false'
+    no_log: 'false'
+    run_once: 'false'
+    become: 'true'
+  - name: Configure scheduled backup
+    ansible.builtin.cron.name: ridgeline-backup
+    ansible.builtin.cron.job: /opt/ridgeline/scripts/backup-all-dbs.sh
+    ansible.builtin.cron.minute: '0'
+    ansible.builtin.cron.hour: '3'
+    ansible.builtin.cron.state: present
+    ansible.builtin.cron.backup: 'false'
+    ansible.builtin.cron.disabled: 'false'
+    ansible.builtin.cron.user: root
+    ignore_errors: 'false'
+    check_mode: 'false'
+    no_log: 'false'
+    run_once: 'false'
+    become: 'true'
+  - name: Set file permissions
+    ansible.builtin.file.path: /opt/ridgeline
+    ansible.builtin.file.state: directory
+    ansible.builtin.file.owner: ridgeline
+    ansible.builtin.file.group: ridgeline
+    ansible.builtin.file.mode: '0755'
+    ansible.builtin.file.follow: 'true'
+    ansible.builtin.file.force: 'false'
+    ansible.builtin.file.recurse: 'false'
+    ansible.builtin.file.unsafe_writes: 'false'
+    ignore_errors: 'false'
+    check_mode: 'false'
+    no_log: 'false'
+    run_once: 'false'
+    become: 'true'
+  vars.backup_dir: /opt/ridgeline/backups
+  vars.backup_retention: '30'
+  vars.encryption_key: Bkup3ncryptK3y!
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

@@ -1,0 +1,31 @@
+meta:
+  entity_type: unknown-7
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: unknown-7_instances.yaml
+base_class:
+  all.children.app_servers.hosts.app-staging-01.ansible_host: 
+    app-staging-01.ridgeline.internal
+  all.children.db_servers.hosts.db-staging-01.ansible_host: 
+    db-staging-01.ridgeline.internal
+  all.children.edge_servers.hosts.app-staging-01.ansible_host: 
+    app-staging-01.ridgeline.internal
+  all.children.legacy_db_servers.hosts.db-staging-01.ansible_host: 
+    db-staging-01.ridgeline.internal
+  all.children.monitoring_servers.hosts.app-staging-01.ansible_host: 
+    app-staging-01.ridgeline.internal
+  all.children.web_servers.hosts.app-staging-01.ansible_host: 
+    app-staging-01.ridgeline.internal
+  all.children.worker_servers.hosts.app-staging-01.ansible_host: 
+    app-staging-01.ridgeline.internal
+  all.vars.ansible_user: deploy
+  all.vars.dns_servers: 8.8.8.8,1.1.1.1
+  all.vars.ntp_server: ntp.ubuntu.com
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

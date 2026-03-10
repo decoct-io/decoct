@@ -1,0 +1,89 @@
+meta:
+  entity_type: unknown-4
+  tier_b_ref: unknown-4_classes.yaml
+  total_instances: 5
+class_assignments:
+  _base_only:
+    instances:
+    - systemd-analytics-worker
+    - systemd-legacy-dashboard
+  limitnproc_4096_timeoutstartsec_90:
+    instances:
+    - systemd-auth-service
+    - systemd-billing-api
+    - systemd-core-api
+instance_data:
+  schema:
+  - Service.environment
+  - Service.execstart
+  - Service.restart
+  - Service.restartsec
+  - Service.workingdirectory
+  - Unit.after
+  - Unit.description
+  - Unit.wants
+  records:
+    systemd-analytics-worker:
+    - '"DATABASE_URL=postgresql://analytics:An@lyticsDB@db-prod-03:5432/analytics","REDIS_PASSWORD=R3disP@ss!"'
+    - /opt/ridgeline/analytics/venv/bin/celery -A analytics.tasks worker 
+      --loglevel=info --concurrency=4
+    - on-failure
+    - '10'
+    - /opt/ridgeline/analytics
+    - network.target redis.service
+    - Ridgeline Analytics Worker
+    - redis.service
+    systemd-auth-service:
+    - '"DATABASE_URL=postgresql://auth:AuthP@ssw0rd@db-prod-01:5432/auth","JWT_SECRET=xK9mPqR7vL2nW5jF8hT3"'
+    - /opt/ridgeline/auth-service/venv/bin/uvicorn auth_svc.main:app --host 
+      0.0.0.0 --port 8001
+    - always
+    - '10'
+    - /opt/ridgeline/auth-service
+    - network.target postgresql.service
+    - Ridgeline Auth Service
+    - postgresql.service
+    systemd-billing-api:
+    - '"DATABASE_URL=mysql://billing:B1llingS3cret@db-legacy-01:3306/billing","STRIPE_API_KEY=sk_live_4eC39HqLyjWDarjtT1zdp7dc"'
+    - /opt/ridgeline/billing-api/venv/bin/uvicorn billing.main:app --host 
+      0.0.0.0 --port 8002
+    - on-failure
+    - '5'
+    - /opt/ridgeline/billing-api
+    - network.target mariadb.service
+    - Ridgeline Billing API Service
+    - mariadb.service
+    systemd-core-api:
+    - '"DATABASE_URL=postgresql://core:Sup3rS3cretDB@db-prod-01:5432/core"'
+    - /opt/ridgeline/core-api/venv/bin/uvicorn core_api.main:app --host 0.0.0.0 
+      --port 8000
+    - on-failure
+    - '5'
+    - /opt/ridgeline/core-api
+    - network.target postgresql.service
+    - Ridgeline Core API Service
+    - postgresql.service
+    systemd-legacy-dashboard:
+    - '"DATABASE_URL=mysql://legacy:L3gacyDBp@ss@db-legacy-01:3306/dashboard","SECRET_KEY=flask-s3cret-k3y-d0nt-t3ll"'
+    - /opt/ridgeline/legacy-dashboard/venv/bin/gunicorn -w 4 -b 0.0.0.0:5000 
+      dashboard.app:app
+    - always
+    - '5'
+    - /opt/ridgeline/legacy-dashboard
+    - network.target mariadb.service
+    - Ridgeline Legacy Dashboard (Flask)
+    - mariadb.service
+overrides:
+  systemd-analytics-worker:
+    owner: _base_only
+    delta:
+      Service.limitnproc: '8192'
+      Service.timeoutstartsec: '120'
+      Service.timeoutstopsec: '120'
+  systemd-legacy-dashboard:
+    owner: _base_only
+    delta:
+      Service.limitnproc: '4096'
+      Service.timeoutstartsec: '60'
+      Service.timeoutstopsec: '30'
+foreign_keys: {}

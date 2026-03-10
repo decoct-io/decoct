@@ -1,0 +1,61 @@
+meta:
+  entity_type: entra-cross-tenant
+  tier_b_ref: entra-cross-tenant_classes.yaml
+  total_instances: 3
+class_assignments:
+  _base_only:
+    instances:
+    - CTA-Default-Settings
+    - CTA-Partner-Contoso
+    - CTA-Partner-Fabrikam
+instance_data:
+  schema:
+  - _uuid
+  - b2bDirectConnectInbound.applications.accessType
+  - b2bDirectConnectInbound.usersAndGroups.accessType
+  - b2bDirectConnectOutbound.applications.accessType
+  - b2bDirectConnectOutbound.usersAndGroups.accessType
+  - displayName
+  - inboundTrust.isCompliantDeviceAccepted
+  - inboundTrust.isHybridAzureADJoinedDeviceAccepted
+  - inboundTrust.isMfaAccepted
+  - isServiceDefault
+  - tenantId
+  records:
+    CTA-Default-Settings:
+    - ad3c34b4-2437-5ff6-a24c-04fe42b68d33
+    - blocked
+    - blocked
+    - blocked
+    - blocked
+    - CTA-Default-Settings
+    - 'false'
+    - 'false'
+    - 'false'
+    - 'true'
+    - 00000000-0000-0000-0000-000000000000
+    CTA-Partner-Contoso:
+    - a60097ef-8e80-5b13-a9f5-d995f60dd960
+    - allowed
+    - allowed
+    - allowed
+    - allowed
+    - CTA-Partner-Contoso
+    - 'true'
+    - 'true'
+    - 'true'
+    - 'false'
+    - 72f988bf-86f1-41af-91ab-2d7cd011db47
+    CTA-Partner-Fabrikam:
+    - e526adba-f438-5c81-99f5-af57e257bb3d
+    - blocked
+    - blocked
+    - blocked
+    - blocked
+    - CTA-Partner-Fabrikam
+    - 'false'
+    - 'false'
+    - 'true'
+    - 'false'
+    - f8cdef31-a31e-4b4a-93e4-5f571e91255a
+foreign_keys: {}

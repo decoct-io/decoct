@@ -1,0 +1,31 @@
+meta:
+  entity_type: entra-group_1
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: entra-group_1_instances.yaml
+base_class:
+  _uuid: 138b16e0-f729-50d8-91b5-7b7bb287ddc1
+  allowExternalSenders: 'true'
+  autoSubscribeNewMembers: 'true'
+  description: Company-wide communications and announcements
+  displayName: M365-AllCompany-Comms
+  groupTypes: Unified
+  hideFromAddressLists: 'false'
+  hideFromOutlookClients: 'false'
+  isAssignableToRole: 'false'
+  isSubscribedByMail: 'true'
+  mail: m365-allcompany-comms@contoso.com
+  mailEnabled: 'true'
+  mailNickname: m365-allcompany-comms
+  proxyAddresses: SMTP:m365-allcompany-comms@contoso.com
+  securityEnabled: 'false'
+  securityIdentifier: S-1-12-1-138b16e0
+  visibility: Public
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

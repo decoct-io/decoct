@@ -1,0 +1,78 @@
+meta:
+  entity_type: docker-compose_7
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: docker-compose_7_instances.yaml
+base_class:
+  networks.dr-network.attachable: 'false'
+  networks.dr-network.driver: bridge
+  networks.dr-network.enable_ipv6: 'false'
+  networks.dr-network.external: 'false'
+  networks.dr-network.internal: 'false'
+  services.auth-service.cpus: '0.25'
+  services.auth-service.deploy.replicas: '1'
+  services.auth-service.deploy.restart_policy.condition: any
+  services.auth-service.deploy.restart_policy.max_attempts: '0'
+  services.auth-service.deploy.rollback_config.order: stop-first
+  services.auth-service.deploy.rollback_config.parallelism: '1'
+  services.auth-service.deploy.update_config.order: stop-first
+  services.auth-service.deploy.update_config.parallelism: '1'
+  services.auth-service.environment.DATABASE_URL: 
+    postgresql://auth:DR_AuthP@ssw0rd@db-dr-01:5432/auth
+  services.auth-service.environment.JWT_SECRET: dr-jwt-secret-failover
+  services.auth-service.healthcheck.interval: 30s
+  services.auth-service.healthcheck.retries: '3'
+  services.auth-service.healthcheck.start_interval: 5s
+  services.auth-service.healthcheck.start_period: 10s
+  services.auth-service.healthcheck.test: CMD-SHELL,curl -f 
+    http://localhost:8001/health
+  services.auth-service.healthcheck.timeout: 30s
+  services.auth-service.image: ridgeline/auth-service:1.8.0
+  services.auth-service.init: 'false'
+  services.auth-service.logging.driver: json-file
+  services.auth-service.mem_limit: 512m
+  services.auth-service.networks: dr-network
+  services.auth-service.ports: 8001:8001
+  services.auth-service.privileged: 'false'
+  services.auth-service.read_only: 'false'
+  services.auth-service.restart: always
+  services.auth-service.stdin_open: 'false'
+  services.auth-service.tty: 'false'
+  services.core-api.cpus: '0.5'
+  services.core-api.deploy.replicas: '1'
+  services.core-api.deploy.restart_policy.condition: any
+  services.core-api.deploy.restart_policy.max_attempts: '0'
+  services.core-api.deploy.rollback_config.order: stop-first
+  services.core-api.deploy.rollback_config.parallelism: '1'
+  services.core-api.deploy.update_config.order: stop-first
+  services.core-api.deploy.update_config.parallelism: '1'
+  services.core-api.environment.API_KEY: sk_live_dr_key_failover
+  services.core-api.environment.DATABASE_URL: 
+    postgresql://core:DR_Sup3rS3cretDB@db-dr-01:5432/core
+  services.core-api.environment.JWT_SECRET: dr-jwt-secret-failover
+  services.core-api.healthcheck.interval: 30s
+  services.core-api.healthcheck.retries: '3'
+  services.core-api.healthcheck.start_interval: 5s
+  services.core-api.healthcheck.start_period: 10s
+  services.core-api.healthcheck.test: CMD-SHELL,curl -f 
+    http://localhost:8000/health
+  services.core-api.healthcheck.timeout: 30s
+  services.core-api.image: ridgeline/core-api:2.1.0
+  services.core-api.init: 'false'
+  services.core-api.logging.driver: json-file
+  services.core-api.mem_limit: 1g
+  services.core-api.networks: dr-network
+  services.core-api.ports: 8000:8000
+  services.core-api.privileged: 'false'
+  services.core-api.read_only: 'false'
+  services.core-api.restart: always
+  services.core-api.stdin_open: 'false'
+  services.core-api.tty: 'false'
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

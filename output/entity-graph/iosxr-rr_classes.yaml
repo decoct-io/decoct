@@ -1,0 +1,136 @@
+meta:
+  entity_type: iosxr-rr
+  total_instances: 4
+  max_inheritance_depth: 2
+  tier_c_ref: iosxr-rr_instances.yaml
+base_class:
+  aaa: accounting commands 15 default start-stop group tacacs+
+  clock: timezone UTC 0
+  control-plane.!: 'true'
+  control-plane.management-plane.!: 'true'
+  control-plane.management-plane.inband.!: 'true'
+  control-plane.management-plane.inband.interface.all.allow: SNMP
+  domain: lookup disable
+  interface.Loopback0.shutdown: 'false'
+  interface.MgmtEth0/RP0/CPU0/0.shutdown: 'false'
+  interface.TenGigE0/0/0/0.arp: timeout 14400
+  interface.TenGigE0/0/0/0.bandwidth: '100000'
+  interface.TenGigE0/0/0/0.carrier-delay: down 0
+  interface.TenGigE0/0/0/0.cdp: 'true'
+  interface.TenGigE0/0/0/0.load-interval: '300'
+  interface.TenGigE0/0/0/0.mtu: '9216'
+  interface.TenGigE0/0/0/0.shutdown: 'false'
+  interface.TenGigE0/0/0/1.arp: timeout 14400
+  interface.TenGigE0/0/0/1.bandwidth: '100000'
+  interface.TenGigE0/0/0/1.carrier-delay: down 0
+  interface.TenGigE0/0/0/1.cdp: 'true'
+  interface.TenGigE0/0/0/1.load-interval: '300'
+  interface.TenGigE0/0/0/1.mtu: '9216'
+  interface.TenGigE0/0/0/1.shutdown: 'false'
+  interface.TenGigE0/0/0/2.arp: timeout 14400
+  interface.TenGigE0/0/0/2.bandwidth: '100000'
+  interface.TenGigE0/0/0/2.carrier-delay: down 0
+  interface.TenGigE0/0/0/2.cdp: 'true'
+  interface.TenGigE0/0/0/2.load-interval: '300'
+  interface.TenGigE0/0/0/2.mtu: '9216'
+  interface.TenGigE0/0/0/2.shutdown: 'false'
+  interface.TenGigE0/0/0/3.arp: timeout 14400
+  interface.TenGigE0/0/0/3.bandwidth: '100000'
+  interface.TenGigE0/0/0/3.carrier-delay: down 0
+  interface.TenGigE0/0/0/3.cdp: 'true'
+  interface.TenGigE0/0/0/3.load-interval: '300'
+  interface.TenGigE0/0/0/3.mtu: '9216'
+  interface.TenGigE0/0/0/3.shutdown: 'false'
+  line: default
+  line.exec-timeout: 15 0
+  line.session-timeout: '15'
+  line.transport: input ssh
+  logging: 10.255.1.1 vrf default severity info port default
+  mpls: ldp
+  mpls.!: 'true'
+  mpls.address-family: ipv4
+  mpls.discovery: targeted-hello hold-time 90
+  mpls.graceful-restart: 'true'
+  mpls.log: neighbor
+  ntp.server: 10.255.0.2
+  ntp.source: Loopback0
+  ntp.update-calendar: 'true'
+  router.bgp.65001.!: 'true'
+  router.bgp.65001.address-family: l2vpn-evpn
+  router.bgp.65001.address-family.ipv4-unicast.maximum-paths: ibgp 1
+  router.bgp.65001.bgp: log neighbor changes detail
+  router.bgp.65001.bgp.65002: 'true'
+  router.bgp.65001.bgp.65003: 'true'
+  router.bgp.65001.bgp.65004: 'true'
+  router.bgp.65001.bgp.65005: 'true'
+  router.bgp.65001.bgp.65006: 'true'
+  router.bgp.65001.distance: bgp 20 200 200
+  router.bgp.65001.graceful-restart: 'true'
+  router.bgp.65001.nsr: 'true'
+  router.bgp.65001.timers: bgp 60 180
+  router.isis.CORE.!: 'true'
+  router.isis.CORE.address-family.ipv4-unicast.metric-style: wide
+  router.isis.CORE.address-family.ipv4-unicast.mpls: traffic-eng router-id 
+    Loopback0
+  router.isis.CORE.address-family.ipv4-unicast.router-id: Loopback0
+  router.isis.CORE.address-family.ipv4-unicast.segment-routing: mpls sr-prefer
+  router.isis.CORE.address-family.ipv6-unicast.metric-style: wide
+  router.isis.CORE.address-family.ipv6-unicast.segment-routing: mpls sr-prefer
+  router.isis.CORE.interface.Loopback0.!: 'true'
+  router.isis.CORE.interface.Loopback0.address-family: ipv6 unicast
+  router.isis.CORE.interface.Loopback0.passive: 'true'
+  router.isis.CORE.interface.TenGigE0/0/0/0.!: 'true'
+  router.isis.CORE.interface.TenGigE0/0/0/0.address-family.ipv4-unicast.metric: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/0.address-family.ipv6-unicast.metric: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/0.csnp-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/0.hello-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/0.hello-multiplier: '3'
+  router.isis.CORE.interface.TenGigE0/0/0/0.point-to-point: 'true'
+  router.isis.CORE.interface.TenGigE0/0/0/0.retransmit-interval: '5'
+  router.isis.CORE.interface.TenGigE0/0/0/1.!: 'true'
+  router.isis.CORE.interface.TenGigE0/0/0/1.address-family.ipv4-unicast.metric: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/1.address-family.ipv6-unicast.metric: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/1.csnp-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/1.hello-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/1.hello-multiplier: '3'
+  router.isis.CORE.interface.TenGigE0/0/0/1.point-to-point: 'true'
+  router.isis.CORE.interface.TenGigE0/0/0/1.retransmit-interval: '5'
+  router.isis.CORE.interface.TenGigE0/0/0/2.!: 'true'
+  router.isis.CORE.interface.TenGigE0/0/0/2.address-family.ipv4-unicast.metric: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/2.address-family.ipv6-unicast.metric: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/2.csnp-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/2.hello-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/2.hello-multiplier: '3'
+  router.isis.CORE.interface.TenGigE0/0/0/2.point-to-point: 'true'
+  router.isis.CORE.interface.TenGigE0/0/0/2.retransmit-interval: '5'
+  router.isis.CORE.interface.TenGigE0/0/0/3.!: 'true'
+  router.isis.CORE.interface.TenGigE0/0/0/3.address-family.ipv4-unicast.metric: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/3.address-family.ipv6-unicast.metric: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/3.csnp-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/3.hello-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/3.hello-multiplier: '3'
+  router.isis.CORE.interface.TenGigE0/0/0/3.point-to-point: 'true'
+  router.isis.CORE.interface.TenGigE0/0/0/3.retransmit-interval: '5'
+  router.isis.CORE.is-type: level-2-only
+  router.isis.CORE.log: adjacency changes
+  router.isis.CORE.lsp-lifetime: '1200'
+  router.isis.CORE.lsp-mtu: '1497'
+  router.isis.CORE.lsp-refresh-interval: '900'
+  router.static.!: 'true'
+  router.static.address-family.ipv4-unicast.0.0.0.0/0: MgmtEth0/RP0/CPU0/0 
+    192.168.100.254
+  segment-routing.global-block: 16000 23999
+  segment-routing.local-block: 15000 15999
+  service: timestamps debug datetime msec localtime show-timezone
+  snmp-server: host 10.255.4.1 traps version 2c S3cr3tRO_c0mmunity
+  ssh: timeout 30
+  tacacs-server: host T4c4csK3y!2024 port 49
+  tacacs-server.key: 7 T4c4csK3y!2024
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 4
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

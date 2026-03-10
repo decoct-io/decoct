@@ -1,0 +1,25 @@
+meta:
+  entity_type: entra-conditional-access_9
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: entra-conditional-access_9_instances.yaml
+base_class:
+  _uuid: fffefef1-9a88-5725-b517-0dc930f3ab67
+  conditions.applications.includeApplications: All
+  conditions.clientAppTypes: browser, mobileAppsAndDesktopClients
+  conditions.signInRiskLevels: high
+  conditions.users.excludeUsers: SG-IT-Admins
+  conditions.users.includeUsers: All
+  displayName: CA-SignIn-Risk-High-Block
+  grantControls.builtInControls: block
+  grantControls.operator: OR
+  sessionControls.disableResilienceDefaults: 'true'
+  state: enabled
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

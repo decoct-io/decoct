@@ -1,0 +1,219 @@
+types:
+  entra-application:
+    count: 2
+    classes: 1
+    subclasses: 0
+    tier_b_ref: entra-application_classes.yaml
+    tier_c_ref: entra-application_instances.yaml
+  entra-application_1:
+    count: 1
+    classes: 1
+    subclasses: 0
+    tier_b_ref: entra-application_1_classes.yaml
+    tier_c_ref: entra-application_1_instances.yaml
+  entra-application_2:
+    count: 2
+    classes: 1
+    subclasses: 0
+    tier_b_ref: entra-application_2_classes.yaml
+    tier_c_ref: entra-application_2_instances.yaml
+  entra-application_3:
+    count: 1
+    classes: 1
+    subclasses: 0
+    tier_b_ref: entra-application_3_classes.yaml
+    tier_c_ref: entra-application_3_instances.yaml
+  entra-application_4:
+    count: 6
+    classes: 2
+    subclasses: 0
+    tier_b_ref: entra-application_4_classes.yaml
+    tier_c_ref: entra-application_4_instances.yaml
+  entra-conditional-access:
+    count: 6
+    classes: 2
+    subclasses: 0
+    tier_b_ref: entra-conditional-access_classes.yaml
+    tier_c_ref: entra-conditional-access_instances.yaml
+  entra-conditional-access_1:
+    count: 1
+    classes: 1
+    subclasses: 0
+    tier_b_ref: entra-conditional-access_1_classes.yaml
+    tier_c_ref: entra-conditional-access_1_instances.yaml
+  entra-conditional-access_10:
+    count: 1
+    classes: 1
+    subclasses: 0
+    tier_b_ref: entra-conditional-access_10_classes.yaml
+    tier_c_ref: entra-conditional-access_10_instances.yaml
+  entra-conditional-access_11:
+    count: 2
+    classes: 1
+    subclasses: 0
+    tier_b_ref: entra-conditional-access_11_classes.yaml
+    tier_c_ref: entra-conditional-access_11_instances.yaml
+  entra-conditional-access_2:
+    count: 2
+    classes: 1
+    subclasses: 0
+    tier_b_ref: entra-conditional-access_2_classes.yaml
+    tier_c_ref: entra-conditional-access_2_instances.yaml
+  entra-conditional-access_3:
+    count: 1
+    classes: 1
+    subclasses: 0
+    tier_b_ref: entra-conditional-access_3_classes.yaml
+    tier_c_ref: entra-conditional-access_3_instances.yaml
+  entra-conditional-access_4:
+    count: 1
+    classes: 1
+    subclasses: 0
+    tier_b_ref: entra-conditional-access_4_classes.yaml
+    tier_c_ref: entra-conditional-access_4_instances.yaml
+  entra-conditional-access_5:
+    count: 2
+    classes: 1
+    subclasses: 0
+    tier_b_ref: entra-conditional-access_5_classes.yaml
+    tier_c_ref: entra-conditional-access_5_instances.yaml
+  entra-conditional-access_6:
+    count: 1
+    classes: 1
+    subclasses: 0
+    tier_b_ref: entra-conditional-access_6_classes.yaml
+    tier_c_ref: entra-conditional-access_6_instances.yaml
+  entra-conditional-access_7:
+    count: 1
+    classes: 1
+    subclasses: 0
+    tier_b_ref: entra-conditional-access_7_classes.yaml
+    tier_c_ref: entra-conditional-access_7_instances.yaml
+  entra-conditional-access_8:
+    count: 1
+    classes: 1
+    subclasses: 0
+    tier_b_ref: entra-conditional-access_8_classes.yaml
+    tier_c_ref: entra-conditional-access_8_instances.yaml
+  entra-conditional-access_9:
+    count: 1
+    classes: 1
+    subclasses: 0
+    tier_b_ref: entra-conditional-access_9_classes.yaml
+    tier_c_ref: entra-conditional-access_9_instances.yaml
+  entra-cross-tenant:
+    count: 3
+    classes: 1
+    subclasses: 0
+    tier_b_ref: entra-cross-tenant_classes.yaml
+    tier_c_ref: entra-cross-tenant_instances.yaml
+  entra-group:
+    count: 24
+    classes: 3
+    subclasses: 1
+    tier_b_ref: entra-group_classes.yaml
+    tier_c_ref: entra-group_instances.yaml
+  entra-group_1:
+    count: 1
+    classes: 1
+    subclasses: 0
+    tier_b_ref: entra-group_1_classes.yaml
+    tier_c_ref: entra-group_1_instances.yaml
+  entra-named-location:
+    count: 6
+    classes: 1
+    subclasses: 0
+    tier_b_ref: entra-named-location_classes.yaml
+    tier_c_ref: entra-named-location_instances.yaml
+  intune-app-protection:
+    count: 4
+    classes: 1
+    subclasses: 0
+    tier_b_ref: intune-app-protection_classes.yaml
+    tier_c_ref: intune-app-protection_instances.yaml
+  intune-compliance:
+    count: 10
+    classes: 2
+    subclasses: 1
+    tier_b_ref: intune-compliance_classes.yaml
+    tier_c_ref: intune-compliance_instances.yaml
+  intune-device-config:
+    count: 8
+    classes: 2
+    subclasses: 0
+    tier_b_ref: intune-device-config_classes.yaml
+    tier_c_ref: intune-device-config_instances.yaml
+assertions:
+  entra-application:
+    base_only_ratio: 1.0
+    max_inheritance_depth: 2
+  entra-application_1:
+    base_only_ratio: 1.0
+    max_inheritance_depth: 2
+  entra-application_2:
+    base_only_ratio: 1.0
+    max_inheritance_depth: 2
+  entra-application_3:
+    base_only_ratio: 1.0
+    max_inheritance_depth: 2
+  entra-application_4:
+    base_only_ratio: 0.3333
+    max_inheritance_depth: 2
+  entra-conditional-access:
+    base_only_ratio: 0.3333
+    max_inheritance_depth: 2
+  entra-conditional-access_1:
+    base_only_ratio: 1.0
+    max_inheritance_depth: 2
+  entra-conditional-access_10:
+    base_only_ratio: 1.0
+    max_inheritance_depth: 2
+  entra-conditional-access_11:
+    base_only_ratio: 1.0
+    max_inheritance_depth: 2
+  entra-conditional-access_2:
+    base_only_ratio: 1.0
+    max_inheritance_depth: 2
+  entra-conditional-access_3:
+    base_only_ratio: 1.0
+    max_inheritance_depth: 2
+  entra-conditional-access_4:
+    base_only_ratio: 1.0
+    max_inheritance_depth: 2
+  entra-conditional-access_5:
+    base_only_ratio: 1.0
+    max_inheritance_depth: 2
+  entra-conditional-access_6:
+    base_only_ratio: 1.0
+    max_inheritance_depth: 2
+  entra-conditional-access_7:
+    base_only_ratio: 1.0
+    max_inheritance_depth: 2
+  entra-conditional-access_8:
+    base_only_ratio: 1.0
+    max_inheritance_depth: 2
+  entra-conditional-access_9:
+    base_only_ratio: 1.0
+    max_inheritance_depth: 2
+  entra-cross-tenant:
+    base_only_ratio: 1.0
+    max_inheritance_depth: 2
+  entra-group:
+    base_only_ratio: 0.0833
+    max_inheritance_depth: 2
+  entra-group_1:
+    base_only_ratio: 1.0
+    max_inheritance_depth: 2
+  entra-named-location:
+    base_only_ratio: 1.0
+    max_inheritance_depth: 2
+  intune-app-protection:
+    base_only_ratio: 1.0
+    max_inheritance_depth: 2
+  intune-compliance:
+    base_only_ratio: 0.7
+    max_inheritance_depth: 2
+  intune-device-config:
+    base_only_ratio: 0.25
+    max_inheritance_depth: 2
+topology: {}

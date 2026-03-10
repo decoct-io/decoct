@@ -1,0 +1,31 @@
+meta:
+  entity_type: entra-application_4
+  total_instances: 6
+  max_inheritance_depth: 2
+  tier_c_ref: entra-application_4_instances.yaml
+base_class:
+  api.requestedAccessTokenVersion: '2'
+  isDeviceOnlyAuthSupported: 'false'
+  nativeAuthenticationApisEnabled: none
+  oauth2RequiredPostResponse: 'false'
+  publisherDomain: contoso.com
+  signInAudience: AzureADMyOrg
+  web.implicitGrantSettings.enableAccessTokenIssuance: 'false'
+  web.implicitGrantSettings.enableIdTokenIssuance: 'false'
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 2
+  requiredResourceAccess:
+    inherits: base
+    own_attrs:
+      requiredResourceAccess:
+      - resourceAppId: 00000003-0000-0000-c000-000000000000
+        resourceAccess.0.type: Scope
+      - resourceAppId: 00000003-0000-0000-c000-000000000000
+        resourceAccess.0.type: Scope
+    instance_count_inclusive: 4
+subclasses: {}
+assertions:
+  base_only_ratio: 0.3333

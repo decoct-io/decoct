@@ -1,0 +1,43 @@
+meta:
+  entity_type: entra-cross-tenant
+  total_instances: 3
+  max_inheritance_depth: 2
+  tier_c_ref: entra-cross-tenant_instances.yaml
+base_class:
+  b2bCollaborationInbound.applications.accessType: allowed
+  b2bCollaborationInbound.applications.targets:
+  - target: AllApplications
+    targetType: application
+  b2bCollaborationInbound.usersAndGroups.accessType: allowed
+  b2bCollaborationInbound.usersAndGroups.targets:
+  - target: AllUsers
+    targetType: user
+  b2bCollaborationOutbound.applications.accessType: allowed
+  b2bCollaborationOutbound.applications.targets:
+  - target: AllApplications
+    targetType: application
+  b2bCollaborationOutbound.usersAndGroups.accessType: allowed
+  b2bCollaborationOutbound.usersAndGroups.targets:
+  - target: AllUsers
+    targetType: user
+  b2bDirectConnectInbound.applications.targets:
+  - target: AllApplications
+    targetType: application
+  b2bDirectConnectInbound.usersAndGroups.targets:
+  - target: AllUsers
+    targetType: user
+  b2bDirectConnectOutbound.applications.targets:
+  - target: AllApplications
+    targetType: application
+  b2bDirectConnectOutbound.usersAndGroups.targets:
+  - target: AllUsers
+    targetType: user
+  isServiceProvider: 'false'
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 3
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

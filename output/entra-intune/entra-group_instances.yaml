@@ -1,0 +1,336 @@
+meta:
+  entity_type: entra-group
+  tier_b_ref: entra-group_classes.yaml
+  total_instances: 24
+class_assignments:
+  _base_only:
+    instances:
+    - SG-Executive-Team
+    - SG-External-Contractors
+  hideFromAddressLists_false_hideFromOutlookClients_:
+    instances:
+    - DG-All-Corp-Android
+    - DG-All-Corp-Windows
+    - DG-All-Corp-iOS
+    - DG-All-Corp-macOS
+    - DG-All-Licensed-Users
+    - DG-Dept-Engineering
+    - DG-Dept-Sales
+    - DG-Remote-Workers
+    - RAG-Compliance-Admin-Role
+    - RAG-Global-Admin-Role
+    - RAG-Security-Admin-Role
+    - SG-Compliance-Officers
+    - SG-Engineering
+    - SG-Finance-Users
+    - SG-HR-Users
+    - SG-Helpdesk-Staff
+    - SG-IT-Admins
+    - SG-Marketing-Users
+    - SG-Security-Team
+  isAssignableToRole_false_securityEnabled_false:
+    instances:
+    - M365-Leadership-Team
+    - M365-Project-Alpha
+    - M365-Project-Beta
+subclass_assignments:
+  hideFromAddressLists_false_hideFromOutlookClients__isAssignableToRole_false_mailE:
+    parent: hideFromAddressLists_false_hideFromOutlookClients_
+    instances:
+    - DG-All-Corp-Android
+    - DG-All-Corp-Windows
+    - DG-All-Corp-iOS
+    - DG-All-Corp-macOS
+    - DG-All-Licensed-Users
+    - DG-Dept-Engineering
+    - DG-Dept-Sales
+    - DG-Remote-Workers
+    - SG-Compliance-Officers
+    - SG-Engineering
+    - SG-Finance-Users
+    - SG-HR-Users
+    - SG-Helpdesk-Staff
+    - SG-IT-Admins
+    - SG-Marketing-Users
+    - SG-Security-Team
+instance_data:
+  schema:
+  - _uuid
+  - description
+  - displayName
+  - mailNickname
+  - securityIdentifier
+  records:
+    DG-All-Corp-Android:
+    - 496f4253-0480-5d9f-a32e-faad9a648cba
+    - All corporate Android devices
+    - DG-All-Corp-Android
+    - dg-all-corp-android
+    - S-1-12-1-496f4253
+    DG-All-Corp-Windows:
+    - f936d44e-1763-5419-9d1c-c7f1e38f222a
+    - All corporate Windows devices
+    - DG-All-Corp-Windows
+    - dg-all-corp-windows
+    - S-1-12-1-f936d44e
+    DG-All-Corp-iOS:
+    - da0f57dc-64a3-55d9-b2ad-9db34afcec0b
+    - All corporate iOS devices
+    - DG-All-Corp-iOS
+    - dg-all-corp-ios
+    - S-1-12-1-da0f57dc
+    DG-All-Corp-macOS:
+    - 061db63e-7d80-5c29-9f6c-acd9595a064e
+    - All corporate macOS devices
+    - DG-All-Corp-macOS
+    - dg-all-corp-macos
+    - S-1-12-1-061db63e
+    DG-All-Licensed-Users:
+    - 62928865-84bb-5496-bf82-380b4ae2d9d4
+    - All users with assigned licenses
+    - DG-All-Licensed-Users
+    - dg-all-licensed-users
+    - S-1-12-1-62928865
+    DG-Dept-Engineering:
+    - 1746e2cd-87e4-55e9-8f40-530fb156eedb
+    - Dynamic group for engineering department
+    - DG-Dept-Engineering
+    - dg-dept-engineering
+    - S-1-12-1-1746e2cd
+    DG-Dept-Sales:
+    - ee2bcf52-3623-5546-a3c8-001481f0602f
+    - Dynamic group for sales department
+    - DG-Dept-Sales
+    - dg-dept-sales
+    - S-1-12-1-ee2bcf52
+    DG-Remote-Workers:
+    - c7ab825c-4116-5394-a58f-0a42a9843eff
+    - Users flagged as remote workers
+    - DG-Remote-Workers
+    - dg-remote-workers
+    - S-1-12-1-c7ab825c
+    M365-Leadership-Team:
+    - 310d6cef-c56a-55fb-97f8-d55b38064b7a
+    - Leadership team collaboration workspace
+    - M365-Leadership-Team
+    - m365-leadership-team
+    - S-1-12-1-310d6cef
+    M365-Project-Alpha:
+    - 668f5c29-2630-53bf-b311-2b1ee742f097
+    - Microsoft 365 group for Project Alpha collaboration
+    - M365-Project-Alpha
+    - m365-project-alpha
+    - S-1-12-1-668f5c29
+    M365-Project-Beta:
+    - 05e1e78b-5f96-53df-8eaf-3582eec6dd71
+    - Microsoft 365 group for Project Beta collaboration
+    - M365-Project-Beta
+    - m365-project-beta
+    - S-1-12-1-05e1e78b
+    RAG-Compliance-Admin-Role:
+    - 853d6351-bbdf-5660-a179-752f42773e2f
+    - Role-assignable group for Compliance Administrator
+    - RAG-Compliance-Admin-Role
+    - rag-compliance-admin-role
+    - S-1-12-1-853d6351
+    RAG-Global-Admin-Role:
+    - 8a692897-8d63-5614-9241-5f59c3ca44d0
+    - Role-assignable group for Global Administrator
+    - RAG-Global-Admin-Role
+    - rag-global-admin-role
+    - S-1-12-1-8a692897
+    RAG-Security-Admin-Role:
+    - b7835183-8a6b-5258-9a34-1d3f3aafb584
+    - Role-assignable group for Security Administrator
+    - RAG-Security-Admin-Role
+    - rag-security-admin-role
+    - S-1-12-1-b7835183
+    SG-Compliance-Officers:
+    - 23397235-b327-5217-8be4-f4782a181eec
+    - Regulatory compliance and audit team
+    - SG-Compliance-Officers
+    - sg-compliance-officers
+    - S-1-12-1-23397235
+    SG-Engineering:
+    - ad039121-ab39-5e68-aaa5-5814dc5ab927
+    - Software engineering department
+    - SG-Engineering
+    - sg-engineering
+    - S-1-12-1-ad039121
+    SG-Executive-Team:
+    - 79dedecf-0247-52c4-80f0-32a82b42f6f9
+    - C-suite and senior leadership
+    - SG-Executive-Team
+    - sg-executive-team
+    - S-1-12-1-79dedecf
+    SG-External-Contractors:
+    - f5843f0d-24e2-5506-9911-ebc899094fab
+    - External contractors and consultants
+    - SG-External-Contractors
+    - sg-external-contractors
+    - S-1-12-1-f5843f0d
+    SG-Finance-Users:
+    - 098e10db-f215-51c2-978d-687b16aa42f5
+    - Finance department members
+    - SG-Finance-Users
+    - sg-finance-users
+    - S-1-12-1-098e10db
+    SG-HR-Users:
+    - 9b7b97d1-ea64-5a3f-a189-46b386b025a7
+    - Human resources department members
+    - SG-HR-Users
+    - sg-hr-users
+    - S-1-12-1-9b7b97d1
+    SG-Helpdesk-Staff:
+    - 3ea665e7-c754-5c12-ac55-c7b80a32fe43
+    - Tier 1 and Tier 2 helpdesk support staff
+    - SG-Helpdesk-Staff
+    - sg-helpdesk-staff
+    - S-1-12-1-3ea665e7
+    SG-IT-Admins:
+    - acd95104-b130-537e-a46d-6e2219a3bc8f
+    - IT administrators with full system access
+    - SG-IT-Admins
+    - sg-it-admins
+    - S-1-12-1-acd95104
+    SG-Marketing-Users:
+    - a76aeb70-eac8-5954-b30c-fe27ae7c4fec
+    - Marketing and communications team
+    - SG-Marketing-Users
+    - sg-marketing-users
+    - S-1-12-1-a76aeb70
+    SG-Security-Team:
+    - 4f3afd34-9652-512d-9b53-4c7af985dd0b
+    - Security operations and incident response team
+    - SG-Security-Team
+    - sg-security-team
+    - S-1-12-1-4f3afd34
+instance_attrs:
+  DG-All-Corp-Android:
+    groupTypes: DynamicMembership
+    membershipRule: (device.deviceOSType -eq "AndroidEnterprise")
+  DG-All-Corp-Windows:
+    groupTypes: DynamicMembership
+    membershipRule: (device.deviceOSType -eq "Windows")
+  DG-All-Corp-iOS:
+    groupTypes: DynamicMembership
+    membershipRule: (device.deviceOSType -eq "iOS")
+  DG-All-Corp-macOS:
+    groupTypes: DynamicMembership
+    membershipRule: (device.deviceOSType -eq "macOS")
+  DG-All-Licensed-Users:
+    groupTypes: DynamicMembership
+    membershipRule: (user.assignedPlans -any (assignedPlan.servicePlanId -eq 
+      "efb87545-963c-4e0d-99df-69c6916d9eb0"))
+  DG-Dept-Engineering:
+    groupTypes: DynamicMembership
+    membershipRule: (user.department -eq "Engineering")
+  DG-Dept-Sales:
+    groupTypes: DynamicMembership
+    membershipRule: (user.department -eq "Sales")
+  DG-Remote-Workers:
+    groupTypes: DynamicMembership
+    membershipRule: (user.extensionAttribute1 -eq "Remote")
+  M365-Leadership-Team:
+    groupTypes: Unified
+    mail: m365-leadership-team@contoso.com
+    proxyAddresses: SMTP:m365-leadership-team@contoso.com
+  M365-Project-Alpha:
+    groupTypes: Unified
+    mail: m365-project-alpha@contoso.com
+    proxyAddresses: SMTP:m365-project-alpha@contoso.com
+  M365-Project-Beta:
+    groupTypes: Unified
+    mail: m365-project-beta@contoso.com
+    proxyAddresses: SMTP:m365-project-beta@contoso.com
+overrides:
+  SG-Executive-Team:
+    owner: _base_only
+    delta:
+      hideFromAddressLists: 'true'
+      hideFromOutlookClients: 'true'
+      isAssignableToRole: 'false'
+      mailEnabled: 'false'
+      securityEnabled: 'true'
+  SG-External-Contractors:
+    owner: _base_only
+    delta:
+      hideFromAddressLists: 'true'
+      hideFromOutlookClients: 'false'
+      isAssignableToRole: 'false'
+      mailEnabled: 'false'
+      securityEnabled: 'true'
+  RAG-Compliance-Admin-Role:
+    owner: hideFromAddressLists_false_hideFromOutlookClients_
+    delta:
+      isAssignableToRole: 'true'
+      mailEnabled: 'false'
+  RAG-Global-Admin-Role:
+    owner: hideFromAddressLists_false_hideFromOutlookClients_
+    delta:
+      isAssignableToRole: 'true'
+      mailEnabled: 'false'
+  RAG-Security-Admin-Role:
+    owner: hideFromAddressLists_false_hideFromOutlookClients_
+    delta:
+      isAssignableToRole: 'true'
+      mailEnabled: 'false'
+  M365-Leadership-Team:
+    owner: isAssignableToRole_false_securityEnabled_false
+    delta:
+      hideFromAddressLists: 'true'
+      hideFromOutlookClients: 'true'
+      mailEnabled: 'true'
+  M365-Project-Alpha:
+    owner: isAssignableToRole_false_securityEnabled_false
+    delta:
+      hideFromAddressLists: 'false'
+      hideFromOutlookClients: 'false'
+      mailEnabled: 'true'
+  M365-Project-Beta:
+    owner: isAssignableToRole_false_securityEnabled_false
+    delta:
+      hideFromAddressLists: 'false'
+      hideFromOutlookClients: 'false'
+      mailEnabled: 'true'
+  DG-All-Corp-Android:
+    owner: 
+      hideFromAddressLists_false_hideFromOutlookClients__isAssignableToRole_false_mailE
+    delta:
+      membershipRuleProcessingState: On
+  DG-All-Corp-Windows:
+    owner: 
+      hideFromAddressLists_false_hideFromOutlookClients__isAssignableToRole_false_mailE
+    delta:
+      membershipRuleProcessingState: On
+  DG-All-Corp-iOS:
+    owner: 
+      hideFromAddressLists_false_hideFromOutlookClients__isAssignableToRole_false_mailE
+    delta:
+      membershipRuleProcessingState: On
+  DG-All-Corp-macOS:
+    owner: 
+      hideFromAddressLists_false_hideFromOutlookClients__isAssignableToRole_false_mailE
+    delta:
+      membershipRuleProcessingState: On
+  DG-All-Licensed-Users:
+    owner: 
+      hideFromAddressLists_false_hideFromOutlookClients__isAssignableToRole_false_mailE
+    delta:
+      membershipRuleProcessingState: On
+  DG-Dept-Engineering:
+    owner: 
+      hideFromAddressLists_false_hideFromOutlookClients__isAssignableToRole_false_mailE
+    delta:
+      membershipRuleProcessingState: On
+  DG-Dept-Sales:
+    owner: 
+      hideFromAddressLists_false_hideFromOutlookClients__isAssignableToRole_false_mailE
+    delta:
+      membershipRuleProcessingState: On
+  DG-Remote-Workers:
+    owner: 
+      hideFromAddressLists_false_hideFromOutlookClients__isAssignableToRole_false_mailE
+    delta:
+      membershipRuleProcessingState: On
+foreign_keys: {}

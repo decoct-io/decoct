@@ -1,0 +1,62 @@
+meta:
+  entity_type: ansible-playbook_15
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: ansible-playbook_15_instances.yaml
+base_class:
+  any_errors_fatal: 'false'
+  become: 'true'
+  become_user: root
+  check_mode: 'false'
+  gather_facts: 'true'
+  hosts: all
+  ignore_errors: 'false'
+  name: Update System Packages
+  no_log: 'false'
+  order: inventory
+  run_once: 'false'
+  tasks:
+  - name: Install packages via apt
+    ansible.builtin.apt.name: '{{ item }}'
+    ansible.builtin.apt.state: present
+    ansible.builtin.apt.update_cache: 'false'
+    ansible.builtin.apt.force: 'false'
+    ansible.builtin.apt.purge: 'false'
+    ansible.builtin.apt.autoremove: 'false'
+    ansible.builtin.apt.autoclean: 'false'
+    ansible.builtin.apt.only_upgrade: 'false'
+    ansible.builtin.apt.force_apt_get: 'false'
+    ansible.builtin.apt.allow_unauthenticated: 'false'
+    ansible.builtin.apt.allow_downgrade: 'false'
+    ansible.builtin.apt.fail_on_autoremove: 'false'
+    ansible.builtin.apt.lock_timeout: '60'
+    ansible.builtin.apt.cache_valid_time: '0'
+    loop: curl,wget
+    ignore_errors: 'false'
+    check_mode: 'false'
+    no_log: 'false'
+    run_once: 'false'
+    become: 'true'
+  - name: Enable and start service
+    ansible.builtin.systemd.name: "{{ service_name | default('ridgeline') }}"
+    ansible.builtin.systemd.state: started
+    ansible.builtin.systemd.enabled: 'true'
+    ansible.builtin.systemd.daemon_reload: 'false'
+    ansible.builtin.systemd.daemon_reexec: 'false'
+    ansible.builtin.systemd.no_block: 'false'
+    ansible.builtin.systemd.scope: system
+    ignore_errors: 'false'
+    check_mode: 'false'
+    no_log: 'false'
+    run_once: 'false'
+    become: 'true'
+  vars.update_cache: yes
+  vars.upgrade: dist
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

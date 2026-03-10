@@ -1,0 +1,9 @@
+meta:
+  entity_type: entra-group_1
+  tier_b_ref: entra-group_1_classes.yaml
+  total_instances: 1
+class_assignments:
+  _base_only:
+    instances:
+    - M365-AllCompany-Comms
+foreign_keys: {}

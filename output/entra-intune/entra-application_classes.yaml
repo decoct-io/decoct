@@ -1,0 +1,22 @@
+meta:
+  entity_type: entra-application
+  total_instances: 2
+  max_inheritance_depth: 2
+  tier_c_ref: entra-application_instances.yaml
+base_class:
+  api.requestedAccessTokenVersion: '2'
+  isDeviceOnlyAuthSupported: 'false'
+  isFallbackPublicClient: 'false'
+  nativeAuthenticationApisEnabled: none
+  oauth2RequiredPostResponse: 'false'
+  publisherDomain: contoso.com
+  web.implicitGrantSettings.enableAccessTokenIssuance: 'false'
+  web.implicitGrantSettings.enableIdTokenIssuance: 'false'
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 2
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

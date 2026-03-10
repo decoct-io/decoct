@@ -1,0 +1,106 @@
+meta:
+  entity_type: unknown-15
+  tier_b_ref: unknown-15_classes.yaml
+  total_instances: 4
+class_assignments:
+  _base_only:
+    instances:
+    - pg-migration
+  listen_addresses_____max_replication_slots_10:
+    instances:
+    - pg-dev
+    - pg-prod-replica
+    - pg-staging
+subclass_assignments:
+  listen_addresses_____max_replication_slots_10_autovacuum_true_hot_standby_tr:
+    parent: listen_addresses_____max_replication_slots_10
+    instances:
+    - pg-dev
+    - pg-prod-replica
+    - pg-staging
+instance_data:
+  schema:
+  - log_connections
+  - log_disconnections
+  - log_statement
+  - log_timezone
+  - logging_collector
+  - maintenance_work_mem
+  - max_connections
+  - shared_buffers
+  records:
+    pg-dev:
+    - 'true'
+    - 'true'
+    - "'all'"
+    - "'UTC'"
+    - 'true'
+    - 64MB
+    - '100'
+    - 128MB
+    pg-migration:
+    - 'true'
+    - 'true'
+    - "'ddl'"
+    - "'UTC'"
+    - 'true'
+    - 1GB
+    - '20'
+    - 128MB
+    pg-prod-replica:
+    - 'false'
+    - 'false'
+    - "'none'"
+    - "'GMT'"
+    - 'false'
+    - 64MB
+    - '200'
+    - 256MB
+    pg-staging:
+    - 'false'
+    - 'false'
+    - "'none'"
+    - "'GMT'"
+    - 'false'
+    - 128MB
+    - '100'
+    - 512MB
+overrides:
+  pg-migration:
+    owner: _base_only
+    delta:
+      autovacuum: 'false'
+      effective_cache_size: 4GB
+      hot_standby: 'false'
+      jit: 'false'
+      listen_addresses: "'localhost'"
+      log_min_duration_statement: '-1'
+      max_replication_slots: '0'
+      max_wal_senders: '0'
+      synchronous_commit: 'false'
+      work_mem: 64MB
+  pg-dev:
+    owner: 
+      listen_addresses_____max_replication_slots_10_autovacuum_true_hot_standby_tr
+    delta:
+      effective_cache_size: 4GB
+      jit: 'true'
+      log_min_duration_statement: '0'
+      work_mem: 4MB
+  pg-prod-replica:
+    owner: 
+      listen_addresses_____max_replication_slots_10_autovacuum_true_hot_standby_tr
+    delta:
+      effective_cache_size: 4GB
+      jit: 'true'
+      log_min_duration_statement: '-1'
+      work_mem: 4MB
+  pg-staging:
+    owner: 
+      listen_addresses_____max_replication_slots_10_autovacuum_true_hot_standby_tr
+    delta:
+      effective_cache_size: 2GB
+      jit: 'true'
+      log_min_duration_statement: '-1'
+      work_mem: 4MB
+foreign_keys: {}

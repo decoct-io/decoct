@@ -1,0 +1,30 @@
+meta:
+  entity_type: entra-conditional-access_6
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: entra-conditional-access_6_instances.yaml
+base_class:
+  _uuid: a5e2e3de-e765-5167-a979-3e18e8cb5e9f
+  conditions.applications.includeApplications: All
+  conditions.clientAppTypes: browser, mobileAppsAndDesktopClients
+  conditions.locations.includeLocations: AllTrusted
+  conditions.users.includeUsers: All
+  displayName: CA-Location-Require-MFA-External
+  grantControls.builtInControls: mfa
+  grantControls.operator: OR
+  sessionControls.disableResilienceDefaults: 'false'
+  sessionControls.signInFrequency.authenticationType: 
+    primaryAndSecondaryAuthentication
+  sessionControls.signInFrequency.frequencyInterval: timeBased
+  sessionControls.signInFrequency.isEnabled: 'true'
+  sessionControls.signInFrequency.type: hours
+  sessionControls.signInFrequency.value: '4'
+  state: enabled
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

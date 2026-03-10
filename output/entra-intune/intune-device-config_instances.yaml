@@ -1,0 +1,192 @@
+meta:
+  entity_type: intune-device-config
+  tier_b_ref: intune-device-config_classes.yaml
+  total_instances: 8
+class_assignments:
+  _base_only:
+    instances:
+    - DC-Android-Corporate-Lockdown
+    - DC-Android-Kiosk
+  compliantAppListType_none_wiFiBlocked_false:
+    instances:
+    - DC-Android-BYOD
+    - DC-Android-Contractor
+    - DC-Android-Executive
+    - DC-Android-Field-Workers
+    - DC-Android-Lab-Devices
+    - DC-Android-Standard
+instance_data:
+  schema:
+  - _uuid
+  - bluetoothBlocked
+  - cameraBlocked
+  - description
+  - displayName
+  - factoryResetBlocked
+  - locationServicesBlocked
+  - nfcBlocked
+  - passwordRequired
+  - passwordRequiredType
+  - screenCaptureBlocked
+  - storageRequireDeviceEncryption
+  - webBrowserCookieSettings
+  records:
+    DC-Android-BYOD:
+    - f73053d5-f2f5-5992-9c46-90fdcb0bf8a4
+    - 'false'
+    - 'false'
+    - Minimal restrictions for personal Android devices
+    - DC-Android-BYOD
+    - 'false'
+    - 'false'
+    - 'false'
+    - 'false'
+    - deviceDefault
+    - 'false'
+    - 'false'
+    - browserDefault
+    DC-Android-Contractor:
+    - f9567356-d3fb-5b0c-be00-76d1bc8d490b
+    - 'false'
+    - 'false'
+    - Contractor Android device restrictions
+    - DC-Android-Contractor
+    - 'false'
+    - 'false'
+    - 'false'
+    - 'false'
+    - deviceDefault
+    - 'true'
+    - 'false'
+    - browserDefault
+    DC-Android-Corporate-Lockdown:
+    - 5ccdf1bb-8c13-5344-bbe8-cdaa5b839ef3
+    - 'true'
+    - 'true'
+    - Strict lockdown for corporate Android devices
+    - DC-Android-Corporate-Lockdown
+    - 'true'
+    - 'false'
+    - 'true'
+    - 'true'
+    - alphanumeric
+    - 'true'
+    - 'true'
+    - blockAll
+    DC-Android-Executive:
+    - df1fa9ad-af15-522e-9cb1-b27796cbeb1d
+    - 'false'
+    - 'true'
+    - Executive Android device configuration
+    - DC-Android-Executive
+    - 'false'
+    - 'false'
+    - 'false'
+    - 'true'
+    - alphanumeric
+    - 'true'
+    - 'true'
+    - browserDefault
+    DC-Android-Field-Workers:
+    - 5ca4fc4a-0bf2-54d5-a2b2-4ca0fe283b9b
+    - 'false'
+    - 'false'
+    - Field worker Android device with WiFi PSK
+    - DC-Android-Field-Workers
+    - 'false'
+    - 'true'
+    - 'false'
+    - 'true'
+    - numeric
+    - 'false'
+    - 'true'
+    - browserDefault
+    DC-Android-Kiosk:
+    - ffb07857-1b25-5c06-ba61-31fa806f5075
+    - 'true'
+    - 'true'
+    - Kiosk mode configuration for shared devices
+    - DC-Android-Kiosk
+    - 'true'
+    - 'true'
+    - 'true'
+    - 'true'
+    - numeric
+    - 'true'
+    - 'true'
+    - blockAll
+    DC-Android-Lab-Devices:
+    - 15b44472-fe4e-51c0-94f4-e5755a2f5b64
+    - 'false'
+    - 'false'
+    - Lab and testing Android device configuration
+    - DC-Android-Lab-Devices
+    - 'false'
+    - 'false'
+    - 'false'
+    - 'false'
+    - deviceDefault
+    - 'false'
+    - 'false'
+    - allowCurrentWebSite
+    DC-Android-Standard:
+    - 9799c46b-5a48-50ed-ae3d-878aac7a7678
+    - 'false'
+    - 'false'
+    - Standard configuration for Android devices
+    - DC-Android-Standard
+    - 'false'
+    - 'false'
+    - 'false'
+    - 'false'
+    - deviceDefault
+    - 'false'
+    - 'false'
+    - browserDefault
+instance_attrs:
+  DC-Android-BYOD:
+    assignments:
+      template: intune-device-config.assignments.T1
+  DC-Android-Contractor:
+    assignments:
+      template: intune-device-config.assignments.T1
+  DC-Android-Corporate-Lockdown:
+    assignments:
+      template: intune-device-config.assignments.T0
+    passwordMinimumLength: '8'
+  DC-Android-Executive:
+    assignments:
+    - target.groupId: 79dedecf-0247-52c4-80f0-32a82b42f6f9
+    passwordMinimumLength: '6'
+  DC-Android-Field-Workers:
+    assignments:
+    - target.groupId: c7ab825c-4116-5394-a58f-0a42a9843eff
+    passwordMinimumLength: '4'
+  DC-Android-Kiosk:
+    assignments:
+    - target.groupId: acd95104-b130-537e-a46d-6e2219a3bc8f
+    passwordMinimumLength: '4'
+  DC-Android-Lab-Devices:
+    assignments:
+    - target.groupId: ad039121-ab39-5e68-aaa5-5814dc5ab927
+  DC-Android-Standard:
+    assignments:
+      template: intune-device-config.assignments.T0
+overrides:
+  DC-Android-Corporate-Lockdown:
+    owner: _base_only
+    delta:
+      compliantAppListType: appsInListCompliant
+      wiFiBlocked: 'false'
+  DC-Android-Kiosk:
+    owner: _base_only
+    delta:
+      compliantAppListType: none
+      wiFiBlocked: 'true'
+  DC-Android-Field-Workers:
+    owner: compliantAppListType_none_wiFiBlocked_false
+    delta:
+      _networkConfig.securityType: wpaPersonal
+      _networkConfig.ssid: CorpWiFi
+      _networkConfig.wiFiPsk: W1F1P@ssw0rd!2024
+foreign_keys: {}

@@ -1,0 +1,117 @@
+meta:
+  entity_type: docker-compose_15
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: docker-compose_15_instances.yaml
+base_class:
+  networks.app-network.attachable: 'false'
+  networks.app-network.driver: bridge
+  networks.app-network.enable_ipv6: 'false'
+  networks.app-network.external: 'false'
+  networks.app-network.internal: 'false'
+  networks.monitoring.attachable: 'false'
+  networks.monitoring.driver: bridge
+  networks.monitoring.enable_ipv6: 'false'
+  networks.monitoring.external: 'false'
+  networks.monitoring.internal: 'false'
+  services.analytics-worker.command: celery -A analytics.tasks worker 
+    --loglevel=info --concurrency=4
+  services.analytics-worker.cpus: '2.0'
+  services.analytics-worker.depends_on.redis.condition: service_started
+  services.analytics-worker.depends_on.redis.required: 'true'
+  services.analytics-worker.depends_on.redis.restart: 'true'
+  services.analytics-worker.deploy.replicas: '4'
+  services.analytics-worker.deploy.restart_policy.condition: any
+  services.analytics-worker.deploy.restart_policy.max_attempts: '0'
+  services.analytics-worker.deploy.rollback_config.order: stop-first
+  services.analytics-worker.deploy.rollback_config.parallelism: '1'
+  services.analytics-worker.deploy.update_config.order: stop-first
+  services.analytics-worker.deploy.update_config.parallelism: '1'
+  services.analytics-worker.environment.CELERY_BROKER_URL: 
+    redis://:R3disP@ss!@redis:6379/0
+  services.analytics-worker.environment.DATABASE_URL: 
+    postgresql://analytics:An@lyticsDB@db-prod-03:5432/analytics
+  services.analytics-worker.environment.REDIS_PASSWORD: R3disP@ss!
+  services.analytics-worker.healthcheck.interval: 60s
+  services.analytics-worker.healthcheck.retries: '3'
+  services.analytics-worker.healthcheck.start_interval: 5s
+  services.analytics-worker.healthcheck.start_period: 30s
+  services.analytics-worker.healthcheck.test: CMD-SHELL,celery inspect ping
+  services.analytics-worker.healthcheck.timeout: 30s
+  services.analytics-worker.image: ridgeline/analytics-worker:2.1.0
+  services.analytics-worker.init: 'false'
+  services.analytics-worker.logging.driver: json-file
+  services.analytics-worker.mem_limit: 4g
+  services.analytics-worker.networks: app-network,monitoring
+  services.analytics-worker.privileged: 'false'
+  services.analytics-worker.read_only: 'false'
+  services.analytics-worker.restart: always
+  services.analytics-worker.stdin_open: 'false'
+  services.analytics-worker.tty: 'false'
+  services.analytics-worker.volumes: worker-data:/app/data
+  services.flower.cpus: '0.25'
+  services.flower.depends_on.redis.condition: service_started
+  services.flower.depends_on.redis.required: 'true'
+  services.flower.depends_on.redis.restart: 'true'
+  services.flower.deploy.replicas: '1'
+  services.flower.deploy.restart_policy.condition: any
+  services.flower.deploy.restart_policy.max_attempts: '0'
+  services.flower.deploy.rollback_config.order: stop-first
+  services.flower.deploy.rollback_config.parallelism: '1'
+  services.flower.deploy.update_config.order: stop-first
+  services.flower.deploy.update_config.parallelism: '1'
+  services.flower.environment.CELERY_BROKER_URL: 
+    redis://:R3disP@ss!@redis:6379/0
+  services.flower.environment.FLOWER_BASIC_AUTH: admin:Fl0werP@ss!
+  services.flower.healthcheck.interval: 30s
+  services.flower.healthcheck.retries: '3'
+  services.flower.healthcheck.start_interval: 5s
+  services.flower.healthcheck.start_period: 0s
+  services.flower.healthcheck.timeout: 30s
+  services.flower.image: mher/flower:2.0
+  services.flower.init: 'false'
+  services.flower.logging.driver: json-file
+  services.flower.mem_limit: 256m
+  services.flower.networks: app-network
+  services.flower.ports: 5555:5555
+  services.flower.privileged: 'false'
+  services.flower.read_only: 'false'
+  services.flower.restart: unless-stopped
+  services.flower.stdin_open: 'false'
+  services.flower.tty: 'false'
+  services.redis.cpus: '0.25'
+  services.redis.deploy.replicas: '1'
+  services.redis.deploy.restart_policy.condition: any
+  services.redis.deploy.restart_policy.max_attempts: '0'
+  services.redis.deploy.rollback_config.order: stop-first
+  services.redis.deploy.rollback_config.parallelism: '1'
+  services.redis.deploy.update_config.order: stop-first
+  services.redis.deploy.update_config.parallelism: '1'
+  services.redis.environment.REDIS_PASSWORD: R3disP@ss!
+  services.redis.healthcheck.interval: 30s
+  services.redis.healthcheck.retries: '3'
+  services.redis.healthcheck.start_interval: 5s
+  services.redis.healthcheck.start_period: 0s
+  services.redis.healthcheck.test: CMD-SHELL,redis-cli ping
+  services.redis.healthcheck.timeout: 30s
+  services.redis.image: redis:7-alpine
+  services.redis.init: 'false'
+  services.redis.logging.driver: json-file
+  services.redis.mem_limit: 256m
+  services.redis.networks: app-network
+  services.redis.privileged: 'false'
+  services.redis.read_only: 'false'
+  services.redis.restart: unless-stopped
+  services.redis.stdin_open: 'false'
+  services.redis.tty: 'false'
+  services.redis.volumes: redis-worker-data:/data
+  volumes.redis-worker-data.external: 'false'
+  volumes.worker-data.external: 'false'
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

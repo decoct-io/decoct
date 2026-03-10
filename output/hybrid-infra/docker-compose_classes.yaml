@@ -1,0 +1,123 @@
+meta:
+  entity_type: docker-compose
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: docker-compose_instances.yaml
+base_class:
+  networks.app-network.attachable: 'false'
+  networks.app-network.driver: bridge
+  networks.app-network.enable_ipv6: 'false'
+  networks.app-network.external: 'false'
+  networks.app-network.internal: 'false'
+  networks.monitoring.attachable: 'false'
+  networks.monitoring.driver: bridge
+  networks.monitoring.enable_ipv6: 'false'
+  networks.monitoring.external: 'false'
+  networks.monitoring.internal: 'false'
+  services.auth-service.cpus: '0.5'
+  services.auth-service.deploy.replicas: '1'
+  services.auth-service.deploy.restart_policy.condition: any
+  services.auth-service.deploy.restart_policy.max_attempts: '0'
+  services.auth-service.deploy.rollback_config.order: stop-first
+  services.auth-service.deploy.rollback_config.parallelism: '1'
+  services.auth-service.deploy.update_config.order: stop-first
+  services.auth-service.deploy.update_config.parallelism: '1'
+  services.auth-service.environment.DATABASE_URL: 
+    postgresql://auth:AuthP@ssw0rd@db-prod-01:5432/auth
+  services.auth-service.environment.JWT_SECRET: xK9mPqR7vL2nW5jF8hT3yB6cD4gA1sE
+  services.auth-service.environment.OAUTH_CLIENT_SECRET: ocs_Xm9pL7kR2vN4wQ8jT5
+  services.auth-service.healthcheck.interval: 30s
+  services.auth-service.healthcheck.retries: '3'
+  services.auth-service.healthcheck.start_interval: 5s
+  services.auth-service.healthcheck.start_period: 10s
+  services.auth-service.healthcheck.test: CMD-SHELL,curl -f 
+    http://localhost:8001/health
+  services.auth-service.healthcheck.timeout: 30s
+  services.auth-service.image: ridgeline/auth-service:1.8.0
+  services.auth-service.init: 'false'
+  services.auth-service.labels.traefik.enable: 'true'
+  services.auth-service.labels.traefik.http.routers.auth.rule: 
+    Host(`auth.ridgeline.io`)
+  services.auth-service.logging.driver: json-file
+  services.auth-service.mem_limit: 1g
+  services.auth-service.networks: app-network,monitoring
+  services.auth-service.ports: 8001:8001
+  services.auth-service.privileged: 'false'
+  services.auth-service.read_only: 'false'
+  services.auth-service.restart: always
+  services.auth-service.stdin_open: 'false'
+  services.auth-service.tty: 'false'
+  services.core-api.cpus: '1.0'
+  services.core-api.depends_on.redis.condition: service_started
+  services.core-api.depends_on.redis.required: 'true'
+  services.core-api.depends_on.redis.restart: 'true'
+  services.core-api.deploy.replicas: '2'
+  services.core-api.deploy.restart_policy.condition: any
+  services.core-api.deploy.restart_policy.max_attempts: '0'
+  services.core-api.deploy.rollback_config.order: stop-first
+  services.core-api.deploy.rollback_config.parallelism: '1'
+  services.core-api.deploy.update_config.order: stop-first
+  services.core-api.deploy.update_config.parallelism: '1'
+  services.core-api.environment.API_KEY: sk_live_4eC39HqLyjWDarjtT1zdp7dc
+  services.core-api.environment.DATABASE_URL: 
+    postgresql://core:Sup3rS3cretDB@db-prod-01:5432/core
+  services.core-api.environment.JWT_SECRET: xK9mPqR7vL2nW5jF8hT3yB6cD4gA1sE
+  services.core-api.environment.REDIS_URL: redis://:R3disP@ss!@redis:6379
+  services.core-api.healthcheck.interval: 30s
+  services.core-api.healthcheck.retries: '3'
+  services.core-api.healthcheck.start_interval: 5s
+  services.core-api.healthcheck.start_period: 10s
+  services.core-api.healthcheck.test: CMD-SHELL,curl -f 
+    http://localhost:8000/health
+  services.core-api.healthcheck.timeout: 30s
+  services.core-api.image: ridgeline/core-api:2.1.0
+  services.core-api.init: 'false'
+  services.core-api.labels.traefik.enable: 'true'
+  services.core-api.labels.traefik.http.routers.core-api.rule: 
+    Host(`api.ridgeline.io`)
+  services.core-api.logging.driver: json-file
+  services.core-api.mem_limit: 2g
+  services.core-api.networks: app-network,monitoring
+  services.core-api.ports: 8000:8000
+  services.core-api.privileged: 'false'
+  services.core-api.read_only: 'false'
+  services.core-api.restart: always
+  services.core-api.stdin_open: 'false'
+  services.core-api.tty: 'false'
+  services.core-api.volumes: 
+    /opt/ridgeline/core-api/data:/app/data,/opt/ridgeline/core-api/logs:/app/logs
+  services.redis.cpus: '0.25'
+  services.redis.deploy.replicas: '1'
+  services.redis.deploy.restart_policy.condition: any
+  services.redis.deploy.restart_policy.max_attempts: '0'
+  services.redis.deploy.rollback_config.order: stop-first
+  services.redis.deploy.rollback_config.parallelism: '1'
+  services.redis.deploy.update_config.order: stop-first
+  services.redis.deploy.update_config.parallelism: '1'
+  services.redis.environment.REDIS_PASSWORD: R3disP@ss!
+  services.redis.healthcheck.interval: 30s
+  services.redis.healthcheck.retries: '3'
+  services.redis.healthcheck.start_interval: 5s
+  services.redis.healthcheck.start_period: 0s
+  services.redis.healthcheck.test: CMD-SHELL,redis-cli ping
+  services.redis.healthcheck.timeout: 30s
+  services.redis.image: redis:7-alpine
+  services.redis.init: 'false'
+  services.redis.logging.driver: json-file
+  services.redis.mem_limit: 512m
+  services.redis.networks: app-network
+  services.redis.privileged: 'false'
+  services.redis.read_only: 'false'
+  services.redis.restart: no
+  services.redis.stdin_open: 'false'
+  services.redis.tty: 'false'
+  services.redis.volumes: redis-data:/data
+  volumes.redis-data.external: 'false'
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

@@ -1,0 +1,9 @@
+meta:
+  entity_type: unknown-12
+  tier_b_ref: unknown-12_classes.yaml
+  total_instances: 1
+class_assignments:
+  _base_only:
+    instances:
+    - yaml-app-feature-flags
+foreign_keys: {}

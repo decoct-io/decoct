@@ -1,0 +1,35 @@
+meta:
+  entity_type: unknown-30
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: unknown-30_instances.yaml
+base_class:
+  fs.file-max: '2097152'
+  fs.inotify.max_user_watches: '524288'
+  kernel.pid_max: '131072'
+  kernel.shmall: '16777216'
+  kernel.shmmax: '68719476736'
+  net.core.netdev_max_backlog: '5000'
+  net.core.somaxconn: '65535'
+  net.ipv4.ip_local_port_range: 1024 65535
+  net.ipv4.tcp_fin_timeout: '15'
+  net.ipv4.tcp_keepalive_time: '600'
+  net.ipv4.tcp_max_syn_backlog: '4096'
+  net.ipv4.tcp_max_tw_buckets: '262144'
+  net.ipv4.tcp_rmem: 4096 87380 16777216
+  net.ipv4.tcp_syncookies: '1'
+  net.ipv4.tcp_tw_reuse: '1'
+  net.ipv4.tcp_wmem: 4096 65536 16777216
+  vm.dirty_background_ratio: '10'
+  vm.dirty_ratio: '40'
+  vm.nr_hugepages: '1024'
+  vm.overcommit_memory: '0'
+  vm.swappiness: '10'
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

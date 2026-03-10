@@ -1,0 +1,27 @@
+meta:
+  entity_type: unknown-8
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: unknown-8_instances.yaml
+base_class:
+  all.children.app_servers.hosts.dev-01.ansible_host: dev-01.ridgeline.internal
+  all.children.db_servers.hosts.dev-01.ansible_host: dev-01.ridgeline.internal
+  all.children.edge_servers.hosts.dev-01.ansible_host: dev-01.ridgeline.internal
+  all.children.legacy_db_servers.hosts.dev-01.ansible_host: 
+    dev-01.ridgeline.internal
+  all.children.monitoring_servers.hosts.dev-01.ansible_host: 
+    dev-01.ridgeline.internal
+  all.children.web_servers.hosts.dev-01.ansible_host: dev-01.ridgeline.internal
+  all.children.worker_servers.hosts.dev-01.ansible_host: 
+    dev-01.ridgeline.internal
+  all.vars.ansible_user: deploy
+  all.vars.dns_servers: 1.1.1.1,8.8.8.8
+  all.vars.ntp_server: pool.ntp.org
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

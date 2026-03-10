@@ -1,0 +1,38 @@
+meta:
+  entity_type: entra-conditional-access_2
+  tier_b_ref: entra-conditional-access_2_classes.yaml
+  total_instances: 2
+class_assignments:
+  _base_only:
+    instances:
+    - CA-Compliant-Device-Azure
+    - CA-Compliant-Device-Office365
+instance_data:
+  schema:
+  - _uuid
+  - conditions.applications.includeApplications
+  - conditions.platforms.includePlatforms
+  - displayName
+  - grantControls.builtInControls
+  - grantControls.operator
+  records:
+    CA-Compliant-Device-Azure:
+    - d51e683e-391b-5aca-b898-1c0e3cad9a11
+    - 797f4846-ba00-4fd7-ba43-dac1f8f63013
+    - windows, macOS
+    - CA-Compliant-Device-Azure
+    - compliantDevice, mfa
+    - AND
+    CA-Compliant-Device-Office365:
+    - 1b97e96f-4e34-50b8-b0bd-a3a44ee5a5a9
+    - Office365
+    - windows, iOS, android
+    - CA-Compliant-Device-Office365
+    - compliantDevice
+    - OR
+overrides:
+  CA-Compliant-Device-Office365:
+    owner: _base_only
+    delta:
+      conditions.users.excludeUsers: SG-External-Contractors
+foreign_keys: {}

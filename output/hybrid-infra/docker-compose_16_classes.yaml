@@ -1,0 +1,48 @@
+meta:
+  entity_type: docker-compose_16
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: docker-compose_16_instances.yaml
+base_class:
+  app.debug: 'false'
+  app.env: prod
+  app.name: ridgeline-platform
+  app.version: v1
+  cache.backend: redis
+  cache.enabled: 'true'
+  cache.redis_url: redis://:R3disP@ss!@redis:6379/1
+  cache.ttl: '60'
+  database.echo: 'false'
+  database.pool_recycle: '3600'
+  database.pool_size: '10'
+  database.pool_timeout: '15'
+  logging.file.compress: 'true'
+  logging.file.max_backups: '5'
+  logging.file.max_size: 100MB
+  logging.file.path: /var/log/ridgeline/app.log
+  logging.format: json
+  logging.handlers: console,file
+  logging.level: WARNING
+  services.auth-service.retries: '2'
+  services.auth-service.timeout: '10'
+  services.auth-service.url: http://auth-service:8001
+  services.billing-api.retries: '3'
+  services.billing-api.timeout: '30'
+  services.billing-api.url: http://billing-api:8002
+  services.core-api.retries: '3'
+  services.core-api.timeout: '30'
+  services.core-api.url: http://core-api:8000
+  services.notification-svc.retries: '1'
+  services.notification-svc.timeout: '10'
+  services.notification-svc.url: http://notification-svc:8003
+  services.search-svc.retries: '2'
+  services.search-svc.timeout: '15'
+  services.search-svc.url: http://search-svc:8004
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

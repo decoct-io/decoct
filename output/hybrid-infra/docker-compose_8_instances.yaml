@@ -1,0 +1,9 @@
+meta:
+  entity_type: docker-compose_8
+  tier_b_ref: docker-compose_8_classes.yaml
+  total_instances: 1
+class_assignments:
+  _base_only:
+    instances:
+    - compose-edge-prod
+foreign_keys: {}

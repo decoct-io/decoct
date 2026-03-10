@@ -1,0 +1,78 @@
+meta:
+  entity_type: docker-compose_9
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: docker-compose_9_instances.yaml
+base_class:
+  networks.test-network.attachable: 'false'
+  networks.test-network.driver: bridge
+  networks.test-network.enable_ipv6: 'false'
+  networks.test-network.external: 'false'
+  networks.test-network.internal: 'false'
+  services.influxdb.cpus: '1.0'
+  services.influxdb.deploy.replicas: '1'
+  services.influxdb.deploy.restart_policy.condition: any
+  services.influxdb.deploy.restart_policy.max_attempts: '0'
+  services.influxdb.deploy.rollback_config.order: stop-first
+  services.influxdb.deploy.rollback_config.parallelism: '1'
+  services.influxdb.deploy.update_config.order: stop-first
+  services.influxdb.deploy.update_config.parallelism: '1'
+  services.influxdb.environment.DOCKER_INFLUXDB_INIT_BUCKET: k6
+  services.influxdb.environment.DOCKER_INFLUXDB_INIT_ORG: ridgeline
+  services.influxdb.environment.DOCKER_INFLUXDB_INIT_PASSWORD: Influx_S3cret!
+  services.influxdb.healthcheck.interval: 30s
+  services.influxdb.healthcheck.retries: '3'
+  services.influxdb.healthcheck.start_interval: 5s
+  services.influxdb.healthcheck.start_period: 10s
+  services.influxdb.healthcheck.test: CMD-SHELL,curl -f 
+    http://localhost:8086/health
+  services.influxdb.healthcheck.timeout: 30s
+  services.influxdb.image: influxdb:2.7
+  services.influxdb.init: 'false'
+  services.influxdb.logging.driver: json-file
+  services.influxdb.mem_limit: 2g
+  services.influxdb.networks: test-network
+  services.influxdb.ports: 8086:8086
+  services.influxdb.privileged: 'false'
+  services.influxdb.read_only: 'false'
+  services.influxdb.restart: no
+  services.influxdb.stdin_open: 'false'
+  services.influxdb.tty: 'false'
+  services.influxdb.volumes: influx-data:/var/lib/influxdb2
+  services.k6.command: run /scripts/stress-test.js
+  services.k6.cpus: '2.0'
+  services.k6.deploy.replicas: '1'
+  services.k6.deploy.restart_policy.condition: any
+  services.k6.deploy.restart_policy.max_attempts: '0'
+  services.k6.deploy.rollback_config.order: stop-first
+  services.k6.deploy.rollback_config.parallelism: '1'
+  services.k6.deploy.update_config.order: stop-first
+  services.k6.deploy.update_config.parallelism: '1'
+  services.k6.environment.API_KEY: sk_test_loadtest_key
+  services.k6.environment.K6_OUT: influxdb=http://influxdb:8086/k6
+  services.k6.environment.TARGET_URL: https://api.ridgeline.io
+  services.k6.healthcheck.interval: 30s
+  services.k6.healthcheck.retries: '3'
+  services.k6.healthcheck.start_interval: 5s
+  services.k6.healthcheck.start_period: 0s
+  services.k6.healthcheck.timeout: 30s
+  services.k6.image: grafana/k6:latest
+  services.k6.init: 'false'
+  services.k6.logging.driver: json-file
+  services.k6.mem_limit: 4g
+  services.k6.networks: test-network
+  services.k6.privileged: 'false'
+  services.k6.read_only: 'false'
+  services.k6.restart: no
+  services.k6.stdin_open: 'false'
+  services.k6.tty: 'false'
+  services.k6.volumes: ./load-tests:/scripts
+  volumes.influx-data.external: 'false'
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

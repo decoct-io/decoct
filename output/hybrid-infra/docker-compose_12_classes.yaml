@@ -1,0 +1,46 @@
+meta:
+  entity_type: docker-compose_12
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: docker-compose_12_instances.yaml
+base_class:
+  networks.app-network.attachable: 'false'
+  networks.app-network.driver: bridge
+  networks.app-network.enable_ipv6: 'false'
+  networks.app-network.external: 'false'
+  networks.app-network.internal: 'false'
+  services.report-generator.cpus: '1.0'
+  services.report-generator.deploy.replicas: '1'
+  services.report-generator.deploy.restart_policy.condition: any
+  services.report-generator.deploy.restart_policy.max_attempts: '0'
+  services.report-generator.deploy.rollback_config.order: stop-first
+  services.report-generator.deploy.rollback_config.parallelism: '1'
+  services.report-generator.deploy.update_config.order: stop-first
+  services.report-generator.deploy.update_config.parallelism: '1'
+  services.report-generator.environment.DATABASE_URL: 
+    postgresql://reports:R3portDB@db-prod-01:5432/reports
+  services.report-generator.environment.SMTP_PASSWORD: SmtpP@ss123
+  services.report-generator.healthcheck.interval: 30s
+  services.report-generator.healthcheck.retries: '3'
+  services.report-generator.healthcheck.start_interval: 5s
+  services.report-generator.healthcheck.start_period: 0s
+  services.report-generator.healthcheck.timeout: 30s
+  services.report-generator.image: ridgeline/report-generator:1.0.0
+  services.report-generator.init: 'false'
+  services.report-generator.logging.driver: json-file
+  services.report-generator.mem_limit: 2g
+  services.report-generator.networks: app-network
+  services.report-generator.privileged: 'false'
+  services.report-generator.read_only: 'false'
+  services.report-generator.restart: unless-stopped
+  services.report-generator.stdin_open: 'false'
+  services.report-generator.tty: 'false'
+  services.report-generator.volumes: /opt/ridgeline/reports:/app/output
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

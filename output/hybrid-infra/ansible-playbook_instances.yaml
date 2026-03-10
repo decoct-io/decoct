@@ -1,0 +1,9 @@
+meta:
+  entity_type: ansible-playbook
+  tier_b_ref: ansible-playbook_classes.yaml
+  total_instances: 1
+class_assignments:
+  _base_only:
+    instances:
+    - ansible-base-server
+foreign_keys: {}

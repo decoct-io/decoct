@@ -1,0 +1,42 @@
+meta:
+  entity_type: unknown-0
+  total_instances: 2
+  max_inheritance_depth: 2
+  tier_c_ref: unknown-0_instances.yaml
+base_class:
+  AllowStreamLocalForwarding: 'false'
+  Banner: /etc/ssh/banner.txt
+  Compression: 'false'
+  ExposeAuthInfo: 'false'
+  FingerprintHash: sha256
+  GatewayPorts: 'false'
+  HostbasedAuthentication: 'false'
+  IgnoreRhosts: 'true'
+  IgnoreUserKnownHosts: 'false'
+  KbdInteractiveAuthentication: 'false'
+  KerberosAuthentication: 'false'
+  LogLevel: VERBOSE
+  MaxAuthTries: '3'
+  PasswordAuthentication: 'false'
+  PermitEmptyPasswords: 'false'
+  PermitRootLogin: 'false'
+  PermitTunnel: 'false'
+  PermitUserEnvironment: 'false'
+  PermitUserRC: 'false'
+  PrintLastLog: 'true'
+  PrintMotd: 'false'
+  PubkeyAuthentication: 'true'
+  StrictModes: 'true'
+  SyslogFacility: AUTH
+  TCPKeepAlive: 'true'
+  X11DisplayOffset: '10'
+  X11Forwarding: 'false'
+  X11UseLocalhost: 'true'
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 2
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

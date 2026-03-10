@@ -1,0 +1,43 @@
+meta:
+  entity_type: entra-application_1
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: entra-application_1_instances.yaml
+base_class:
+  _uuid: e1239019-09e3-5e47-b353-8ebc10e4ad47
+  api.requestedAccessTokenVersion: '2'
+  appId: 2d1a241d-a476-5250-88f6-952e095d0f20
+  displayName: App-B2C-Customer-Portal
+  isDeviceOnlyAuthSupported: 'false'
+  isFallbackPublicClient: 'false'
+  nativeAuthenticationApisEnabled: none
+  oauth2RequiredPostResponse: 'false'
+  optionalClaims.accessToken:
+  - essential: 'false'
+    name: email
+  - essential: 'false'
+    name: family_name
+  - essential: 'false'
+    name: given_name
+  - _sentinel: 'true'
+  publisherDomain: contoso.com
+  requiredResourceAccess:
+  - resourceAppId: 00000003-0000-0000-c000-000000000000
+    resourceAccess.0.type: Scope
+  - resourceAppId: 00000003-0000-0000-c000-000000000000
+    resourceAccess.0.type: Scope
+  - resourceAppId: 00000003-0000-0000-c000-000000000000
+    resourceAccess.0.type: Scope
+  signInAudience: AzureADandPersonalMicrosoftAccount
+  spa.redirectUris: https://customers.contoso.com/spa-callback
+  web.implicitGrantSettings.enableAccessTokenIssuance: 'false'
+  web.implicitGrantSettings.enableIdTokenIssuance: 'false'
+  web.redirectUris: https://customers.contoso.com/auth/redirect
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

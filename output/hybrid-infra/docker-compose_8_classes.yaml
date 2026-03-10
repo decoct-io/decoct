@@ -1,0 +1,82 @@
+meta:
+  entity_type: docker-compose_8
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: docker-compose_8_instances.yaml
+base_class:
+  networks.app-network.attachable: 'false'
+  networks.app-network.driver: bridge
+  networks.app-network.enable_ipv6: 'false'
+  networks.app-network.external: 'false'
+  networks.app-network.internal: 'false'
+  networks.edge-network.attachable: 'false'
+  networks.edge-network.driver: bridge
+  networks.edge-network.enable_ipv6: 'false'
+  networks.edge-network.external: 'false'
+  networks.edge-network.internal: 'false'
+  services.docs-site.cpus: '0.1'
+  services.docs-site.deploy.replicas: '1'
+  services.docs-site.deploy.restart_policy.condition: any
+  services.docs-site.deploy.restart_policy.max_attempts: '0'
+  services.docs-site.deploy.rollback_config.order: stop-first
+  services.docs-site.deploy.rollback_config.parallelism: '1'
+  services.docs-site.deploy.update_config.order: stop-first
+  services.docs-site.deploy.update_config.parallelism: '1'
+  services.docs-site.healthcheck.interval: 30s
+  services.docs-site.healthcheck.retries: '3'
+  services.docs-site.healthcheck.start_interval: 5s
+  services.docs-site.healthcheck.start_period: 0s
+  services.docs-site.healthcheck.timeout: 30s
+  services.docs-site.image: ridgeline/docs-site:latest
+  services.docs-site.init: 'false'
+  services.docs-site.labels.traefik.enable: 'true'
+  services.docs-site.labels.traefik.http.routers.docs.rule: 
+    Host(`docs.ridgeline.io`)
+  services.docs-site.logging.driver: json-file
+  services.docs-site.mem_limit: 128m
+  services.docs-site.networks: edge-network
+  services.docs-site.ports: 8080:80
+  services.docs-site.privileged: 'false'
+  services.docs-site.read_only: 'true'
+  services.docs-site.restart: no
+  services.docs-site.stdin_open: 'false'
+  services.docs-site.tty: 'false'
+  services.docs-site.volumes: docs-html:/usr/share/nginx/html:ro
+  services.traefik.cpus: '0.5'
+  services.traefik.deploy.replicas: '1'
+  services.traefik.deploy.restart_policy.condition: any
+  services.traefik.deploy.restart_policy.max_attempts: '0'
+  services.traefik.deploy.rollback_config.order: stop-first
+  services.traefik.deploy.rollback_config.parallelism: '1'
+  services.traefik.deploy.update_config.order: stop-first
+  services.traefik.deploy.update_config.parallelism: '1'
+  services.traefik.environment.TRAEFIK_API_KEY: Tr@efikAPI_K3y
+  services.traefik.healthcheck.interval: 30s
+  services.traefik.healthcheck.retries: '3'
+  services.traefik.healthcheck.start_interval: 5s
+  services.traefik.healthcheck.start_period: 10s
+  services.traefik.healthcheck.test: CMD-SHELL,traefik healthcheck
+  services.traefik.healthcheck.timeout: 30s
+  services.traefik.image: traefik:v3.0
+  services.traefik.init: 'false'
+  services.traefik.logging.driver: json-file
+  services.traefik.mem_limit: 512m
+  services.traefik.networks: edge-network,app-network
+  services.traefik.ports: 80:80,443:443,8080:8080
+  services.traefik.privileged: 'false'
+  services.traefik.read_only: 'false'
+  services.traefik.restart: always
+  services.traefik.stdin_open: 'false'
+  services.traefik.tty: 'false'
+  services.traefik.volumes: 
+    /var/run/docker.sock:/var/run/docker.sock:ro,/opt/ridgeline/traefik:/etc/traefik,acme-data:/acme
+  volumes.acme-data.external: 'false'
+  volumes.docs-html.external: 'false'
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

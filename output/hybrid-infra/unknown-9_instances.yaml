@@ -1,0 +1,47 @@
+meta:
+  entity_type: unknown-9
+  tier_b_ref: unknown-9_classes.yaml
+  total_instances: 2
+class_assignments:
+  _base_only:
+    instances:
+    - ansible-vars-prod
+    - ansible-vars-staging
+instance_data:
+  schema:
+  - api_key
+  - backup_encryption_key
+  - db_password
+  - deploy_key
+  - env
+  - grafana_admin_password
+  - jwt_secret
+  - redis_password
+  - smtp_password
+  - vault_password
+  records:
+    ansible-vars-prod:
+    - sk_live_4eC39HqLyjWDarjtT1zdp7dc
+    - Bkup3ncryptK3y!
+    - Sup3rS3cretDB
+    - "-----BEGIN RSA PRIVATE KEY-----MIIEpAIBAAKCAQEA0Z3VS5JJcds3xfn/ygWep4TzAUGMg9nHcGp1K-----END
+      RSA PRIVATE KEY-----\n"
+    - prod
+    - Gr@fanaAdm1n!
+    - xK9mPqR7vL2nW5jF8hT3yB6cD4gA1sE
+    - R3disP@ss!
+    - SmtpP@ss123
+    - V@ultP@ssw0rd!
+    ansible-vars-staging:
+    - sk_test_staging_key_123
+    - StagingBkupK3y
+    - StagingDBp@ss
+    - "-----BEGIN RSA PRIVATE KEY-----MIIEowIBAAKCAQEAstaging+key+data+here-----END
+      RSA PRIVATE KEY-----\n"
+    - staging
+    - StagingGr@fana
+    - staging-jwt-secret-not-secure
+    - StagingR3dis
+    - StagingSmtpP@ss
+    - St@gingV@ult
+foreign_keys: {}

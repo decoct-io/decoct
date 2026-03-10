@@ -1,0 +1,24 @@
+meta:
+  entity_type: entra-conditional-access_10
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: entra-conditional-access_10_instances.yaml
+base_class:
+  _uuid: e1772c2e-3841-519b-80a9-6f90514717a5
+  conditions.applications.includeApplications: All
+  conditions.clientAppTypes: browser, mobileAppsAndDesktopClients
+  conditions.signInRiskLevels: medium, low
+  conditions.users.includeUsers: All
+  displayName: CA-SignIn-Risk-Medium-MFA
+  grantControls.builtInControls: mfa
+  grantControls.operator: OR
+  sessionControls.disableResilienceDefaults: 'false'
+  state: enabled
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

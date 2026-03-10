@@ -1,0 +1,39 @@
+meta:
+  entity_type: unknown-2
+  tier_b_ref: unknown-2_classes.yaml
+  total_instances: 2
+class_assignments:
+  _base_only:
+    instances:
+    - systemd-backup-svc
+    - systemd-report-gen-svc
+instance_data:
+  schema:
+  - Service.environment
+  - Service.execstart
+  - Service.group
+  - Service.timeoutstartsec
+  - Service.timeoutstopsec
+  - Service.user
+  - Service.workingdirectory
+  - Unit.description
+  records:
+    systemd-backup-svc:
+    - '"BACKUP_ENCRYPTION_KEY=Bkup3ncryptK3y!"'
+    - /opt/ridgeline/scripts/backup-all-dbs.sh
+    - root
+    - '600'
+    - '120'
+    - root
+    - /opt/ridgeline/scripts
+    - Ridgeline DB Backup Service
+    systemd-report-gen-svc:
+    - '"DATABASE_URL=postgresql://reports:R3portDB@db-prod-01:5432/reports"'
+    - /opt/ridgeline/report-gen/venv/bin/python -m report_gen.main
+    - ridgeline
+    - '300'
+    - '60'
+    - ridgeline
+    - /opt/ridgeline/report-gen
+    - Ridgeline Report Generator
+foreign_keys: {}

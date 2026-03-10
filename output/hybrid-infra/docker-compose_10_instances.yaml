@@ -1,0 +1,9 @@
+meta:
+  entity_type: docker-compose_10
+  tier_b_ref: docker-compose_10_classes.yaml
+  total_instances: 1
+class_assignments:
+  _base_only:
+    instances:
+    - compose-monitoring-prod
+foreign_keys: {}

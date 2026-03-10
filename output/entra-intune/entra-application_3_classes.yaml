@@ -1,0 +1,38 @@
+meta:
+  entity_type: entra-application_3
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: entra-application_3_instances.yaml
+base_class:
+  _uuid: 1cfb4d16-0c4d-5313-9abb-995e6af8dc11
+  api.requestedAccessTokenVersion: '2'
+  appId: 7ea7b940-e701-5fd5-9aa0-2dcc1aa4d7bc
+  displayName: App-Legacy-WinApp
+  isDeviceOnlyAuthSupported: 'true'
+  isFallbackPublicClient: 'true'
+  keyCredentials:
+  - displayName: CN=App-Legacy-WinApp
+    endDateTime: '2026-06-15T10:30:00Z'
+    key: 
+      LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURlVENDQW1HZ0F3SUJBZ0lVYTFiMmMzZDRlNWY2Zzdo
+    keyId: 1cfb4d16-0c4d-5313-9abb-995e6af8dc11-key-0
+    startDateTime: '2024-06-15T10:30:00Z'
+    type: AsymmetricX509Cert
+    usage: Verify
+  nativeAuthenticationApisEnabled: none
+  oauth2RequiredPostResponse: 'false'
+  publisherDomain: contoso.com
+  requiredResourceAccess:
+  - resourceAppId: 00000003-0000-0000-c000-000000000000
+    resourceAccess.0.type: Scope
+  signInAudience: AzureADMyOrg
+  web.implicitGrantSettings.enableAccessTokenIssuance: 'false'
+  web.implicitGrantSettings.enableIdTokenIssuance: 'false'
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

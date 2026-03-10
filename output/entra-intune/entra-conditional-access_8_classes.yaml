@@ -1,0 +1,31 @@
+meta:
+  entity_type: entra-conditional-access_8
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: entra-conditional-access_8_instances.yaml
+base_class:
+  _uuid: 303e5ac2-440a-5a8e-baa0-ffe8ad1eaa5c
+  conditions.applications.includeApplications: All
+  conditions.clientAppTypes: browser, mobileAppsAndDesktopClients
+  conditions.users.includeUsers: All
+  displayName: CA-Report-Only-AllUsers-MFA
+  grantControls.builtInControls: mfa
+  grantControls.operator: OR
+  sessionControls.disableResilienceDefaults: 'false'
+  sessionControls.persistentBrowser.isEnabled: 'true'
+  sessionControls.persistentBrowser.mode: always
+  sessionControls.signInFrequency.authenticationType: 
+    primaryAndSecondaryAuthentication
+  sessionControls.signInFrequency.frequencyInterval: timeBased
+  sessionControls.signInFrequency.isEnabled: 'true'
+  sessionControls.signInFrequency.type: hours
+  sessionControls.signInFrequency.value: '8'
+  state: enabledForReportingButNotEnforced
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

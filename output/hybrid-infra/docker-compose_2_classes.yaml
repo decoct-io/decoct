@@ -1,0 +1,80 @@
+meta:
+  entity_type: docker-compose_2
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: docker-compose_2_instances.yaml
+base_class:
+  networks.app-network.attachable: 'false'
+  networks.app-network.driver: bridge
+  networks.app-network.enable_ipv6: 'false'
+  networks.app-network.external: 'false'
+  networks.app-network.internal: 'false'
+  services.admin-panel.cpus: '0.25'
+  services.admin-panel.deploy.replicas: '1'
+  services.admin-panel.deploy.restart_policy.condition: any
+  services.admin-panel.deploy.restart_policy.max_attempts: '0'
+  services.admin-panel.deploy.rollback_config.order: stop-first
+  services.admin-panel.deploy.rollback_config.parallelism: '1'
+  services.admin-panel.deploy.update_config.order: stop-first
+  services.admin-panel.deploy.update_config.parallelism: '1'
+  services.admin-panel.environment.ADMIN_SECRET: Adm1nS3cretK3y
+  services.admin-panel.environment.DATABASE_URL: 
+    postgresql://admin:Adm1nDBp@ss@db-prod-01:5432/admin
+  services.admin-panel.healthcheck.interval: 30s
+  services.admin-panel.healthcheck.retries: '3'
+  services.admin-panel.healthcheck.start_interval: 5s
+  services.admin-panel.healthcheck.start_period: 0s
+  services.admin-panel.healthcheck.test: CMD-SHELL,curl -f 
+    http://localhost:8005/health
+  services.admin-panel.healthcheck.timeout: 30s
+  services.admin-panel.image: ridgeline/admin-panel:1.0.0
+  services.admin-panel.init: 'false'
+  services.admin-panel.labels.traefik.enable: 'true'
+  services.admin-panel.labels.traefik.http.routers.admin.rule: 
+    Host(`admin.ridgeline.io`)
+  services.admin-panel.logging.driver: json-file
+  services.admin-panel.mem_limit: 512m
+  services.admin-panel.networks: app-network
+  services.admin-panel.ports: 8005:8005
+  services.admin-panel.privileged: 'false'
+  services.admin-panel.read_only: 'false'
+  services.admin-panel.restart: always
+  services.admin-panel.stdin_open: 'false'
+  services.admin-panel.tty: 'false'
+  services.legacy-dashboard.cpus: '0.5'
+  services.legacy-dashboard.deploy.replicas: '1'
+  services.legacy-dashboard.deploy.restart_policy.condition: any
+  services.legacy-dashboard.deploy.restart_policy.max_attempts: '0'
+  services.legacy-dashboard.deploy.rollback_config.order: stop-first
+  services.legacy-dashboard.deploy.rollback_config.parallelism: '1'
+  services.legacy-dashboard.deploy.update_config.order: stop-first
+  services.legacy-dashboard.deploy.update_config.parallelism: '1'
+  services.legacy-dashboard.environment.DATABASE_URL: 
+    mysql://legacy:L3gacyDBp@ss@db-legacy-01:3306/dashboard
+  services.legacy-dashboard.environment.SECRET_KEY: flask-s3cret-k3y-d0nt-t3ll
+  services.legacy-dashboard.healthcheck.interval: 30s
+  services.legacy-dashboard.healthcheck.retries: '3'
+  services.legacy-dashboard.healthcheck.start_interval: 5s
+  services.legacy-dashboard.healthcheck.start_period: 0s
+  services.legacy-dashboard.healthcheck.test: CMD-SHELL,curl -f 
+    http://localhost:5000/health
+  services.legacy-dashboard.healthcheck.timeout: 30s
+  services.legacy-dashboard.image: ridgeline/legacy-dashboard:latest
+  services.legacy-dashboard.init: 'false'
+  services.legacy-dashboard.logging.driver: json-file
+  services.legacy-dashboard.mem_limit: 1g
+  services.legacy-dashboard.networks: app-network
+  services.legacy-dashboard.ports: 5000:5000
+  services.legacy-dashboard.privileged: 'false'
+  services.legacy-dashboard.read_only: 'false'
+  services.legacy-dashboard.restart: always
+  services.legacy-dashboard.stdin_open: 'false'
+  services.legacy-dashboard.tty: 'false'
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

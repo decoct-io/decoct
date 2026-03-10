@@ -1,0 +1,93 @@
+meta:
+  entity_type: docker-compose_13
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: docker-compose_13_instances.yaml
+base_class:
+  networks.app-network.attachable: 'false'
+  networks.app-network.driver: bridge
+  networks.app-network.enable_ipv6: 'false'
+  networks.app-network.external: 'false'
+  networks.app-network.internal: 'false'
+  networks.monitoring.attachable: 'false'
+  networks.monitoring.driver: bridge
+  networks.monitoring.enable_ipv6: 'false'
+  networks.monitoring.external: 'false'
+  networks.monitoring.internal: 'false'
+  services.elasticsearch.cpus: '2.0'
+  services.elasticsearch.deploy.replicas: '1'
+  services.elasticsearch.deploy.restart_policy.condition: any
+  services.elasticsearch.deploy.restart_policy.max_attempts: '0'
+  services.elasticsearch.deploy.rollback_config.order: stop-first
+  services.elasticsearch.deploy.rollback_config.parallelism: '1'
+  services.elasticsearch.deploy.update_config.order: stop-first
+  services.elasticsearch.deploy.update_config.parallelism: '1'
+  services.elasticsearch.environment.ELASTIC_PASSWORD: El@sticP@ss!
+  services.elasticsearch.environment.discovery.type: single-node
+  services.elasticsearch.environment.xpack.security.enabled: 'true'
+  services.elasticsearch.healthcheck.interval: 60s
+  services.elasticsearch.healthcheck.retries: '5'
+  services.elasticsearch.healthcheck.start_interval: 5s
+  services.elasticsearch.healthcheck.start_period: 60s
+  services.elasticsearch.healthcheck.test: CMD-SHELL,curl -f 
+    http://localhost:9200/_cluster/health
+  services.elasticsearch.healthcheck.timeout: 30s
+  services.elasticsearch.image: 
+    docker.elastic.co/elasticsearch/elasticsearch:8.13.0
+  services.elasticsearch.init: 'false'
+  services.elasticsearch.logging.driver: json-file
+  services.elasticsearch.mem_limit: 4g
+  services.elasticsearch.networks: app-network
+  services.elasticsearch.ports: 9200:9200,9300:9300
+  services.elasticsearch.privileged: 'false'
+  services.elasticsearch.read_only: 'false'
+  services.elasticsearch.restart: unless-stopped
+  services.elasticsearch.stdin_open: 'false'
+  services.elasticsearch.tty: 'false'
+  services.elasticsearch.volumes: es-data:/usr/share/elasticsearch/data
+  services.search-svc.cpus: '0.5'
+  services.search-svc.depends_on.elasticsearch.condition: service_started
+  services.search-svc.depends_on.elasticsearch.required: 'true'
+  services.search-svc.depends_on.elasticsearch.restart: 'true'
+  services.search-svc.deploy.replicas: '1'
+  services.search-svc.deploy.restart_policy.condition: any
+  services.search-svc.deploy.restart_policy.max_attempts: '0'
+  services.search-svc.deploy.rollback_config.order: stop-first
+  services.search-svc.deploy.rollback_config.parallelism: '1'
+  services.search-svc.deploy.update_config.order: stop-first
+  services.search-svc.deploy.update_config.parallelism: '1'
+  services.search-svc.environment.API_KEY: sk_live_search_key_xyz
+  services.search-svc.environment.ELASTICSEARCH_PASSWORD: El@sticP@ss!
+  services.search-svc.environment.ELASTICSEARCH_URL: http://elasticsearch:9200
+  services.search-svc.healthcheck.interval: 30s
+  services.search-svc.healthcheck.retries: '3'
+  services.search-svc.healthcheck.start_interval: 5s
+  services.search-svc.healthcheck.start_period: 15s
+  services.search-svc.healthcheck.test: CMD-SHELL,curl -f 
+    http://localhost:8004/health
+  services.search-svc.healthcheck.timeout: 30s
+  services.search-svc.image: ridgeline/search-svc:0.9.0
+  services.search-svc.init: 'false'
+  services.search-svc.labels.traefik.enable: 'true'
+  services.search-svc.labels.traefik.http.routers.search.rule: 
+    Host(`search.ridgeline.io`)
+  services.search-svc.logging.driver: json-file
+  services.search-svc.mem_limit: 1g
+  services.search-svc.networks: app-network,monitoring
+  services.search-svc.ports: 8004:8004
+  services.search-svc.privileged: 'false'
+  services.search-svc.read_only: 'false'
+  services.search-svc.restart: always
+  services.search-svc.stdin_open: 'false'
+  services.search-svc.tty: 'false'
+  services.search-svc.volumes: search-data:/app/data
+  volumes.es-data.external: 'false'
+  volumes.search-data.external: 'false'
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

@@ -1,0 +1,32 @@
+meta:
+  entity_type: entra-conditional-access_5
+  tier_b_ref: entra-conditional-access_5_classes.yaml
+  total_instances: 2
+class_assignments:
+  _base_only:
+    instances:
+    - CA-Location-Block-Countries
+    - CA-Named-Location-Corporate
+instance_data:
+  schema:
+  - _uuid
+  - conditions.locations.includeLocations
+  - displayName
+  - grantControls.builtInControls
+  records:
+    CA-Location-Block-Countries:
+    - 8e9d0a92-b18b-5d84-82a7-8644ac56df54
+    - NL-Blocked-Countries
+    - CA-Location-Block-Countries
+    - block
+    CA-Named-Location-Corporate:
+    - cb1626ab-0573-5b79-8a66-90dc93d657a8
+    - NL-Corporate-HQ
+    - CA-Named-Location-Corporate
+    - mfa
+overrides:
+  CA-Location-Block-Countries:
+    owner: _base_only
+    delta:
+      conditions.users.excludeUsers: SG-IT-Admins
+foreign_keys: {}

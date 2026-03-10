@@ -1,0 +1,113 @@
+meta:
+  entity_type: docker-compose_1
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: docker-compose_1_instances.yaml
+base_class:
+  networks.app-network.attachable: 'false'
+  networks.app-network.driver: bridge
+  networks.app-network.enable_ipv6: 'false'
+  networks.app-network.external: 'false'
+  networks.app-network.internal: 'false'
+  networks.monitoring.attachable: 'false'
+  networks.monitoring.driver: bridge
+  networks.monitoring.enable_ipv6: 'false'
+  networks.monitoring.external: 'false'
+  networks.monitoring.internal: 'false'
+  services.notification-svc.cpus: '0.25'
+  services.notification-svc.deploy.replicas: '1'
+  services.notification-svc.deploy.restart_policy.condition: any
+  services.notification-svc.deploy.restart_policy.max_attempts: '0'
+  services.notification-svc.deploy.rollback_config.order: stop-first
+  services.notification-svc.deploy.rollback_config.parallelism: '1'
+  services.notification-svc.deploy.update_config.order: stop-first
+  services.notification-svc.deploy.update_config.parallelism: '1'
+  services.notification-svc.environment.API_KEY: sk_live_notif_key_abc123
+  services.notification-svc.environment.SMTP_PASSWORD: SmtpP@ss123
+  services.notification-svc.healthcheck.interval: 30s
+  services.notification-svc.healthcheck.retries: '3'
+  services.notification-svc.healthcheck.start_interval: 5s
+  services.notification-svc.healthcheck.start_period: 0s
+  services.notification-svc.healthcheck.test: CMD-SHELL,curl -f 
+    http://localhost:8003/health
+  services.notification-svc.healthcheck.timeout: 30s
+  services.notification-svc.image: ridgeline/notification-svc:1.2.0
+  services.notification-svc.init: 'false'
+  services.notification-svc.logging.driver: json-file
+  services.notification-svc.mem_limit: 512m
+  services.notification-svc.networks: app-network
+  services.notification-svc.ports: 8003:8003
+  services.notification-svc.privileged: 'false'
+  services.notification-svc.read_only: 'false'
+  services.notification-svc.restart: unless-stopped
+  services.notification-svc.stdin_open: 'false'
+  services.notification-svc.tty: 'false'
+  services.search-svc.cpus: '0.5'
+  services.search-svc.deploy.replicas: '1'
+  services.search-svc.deploy.restart_policy.condition: any
+  services.search-svc.deploy.restart_policy.max_attempts: '0'
+  services.search-svc.deploy.rollback_config.order: stop-first
+  services.search-svc.deploy.rollback_config.parallelism: '1'
+  services.search-svc.deploy.update_config.order: stop-first
+  services.search-svc.deploy.update_config.parallelism: '1'
+  services.search-svc.environment.ELASTICSEARCH_PASSWORD: El@sticP@ss!
+  services.search-svc.healthcheck.interval: 60s
+  services.search-svc.healthcheck.retries: '5'
+  services.search-svc.healthcheck.start_interval: 5s
+  services.search-svc.healthcheck.start_period: 30s
+  services.search-svc.healthcheck.test: CMD-SHELL,curl -f 
+    http://localhost:8004/health
+  services.search-svc.healthcheck.timeout: 30s
+  services.search-svc.image: ridgeline/search-svc:0.9.0
+  services.search-svc.init: 'false'
+  services.search-svc.logging.driver: json-file
+  services.search-svc.mem_limit: 1g
+  services.search-svc.networks: app-network
+  services.search-svc.ports: 8004:8004
+  services.search-svc.privileged: 'false'
+  services.search-svc.read_only: 'false'
+  services.search-svc.restart: unless-stopped
+  services.search-svc.stdin_open: 'false'
+  services.search-svc.tty: 'false'
+  services.search-svc.volumes: search-data:/app/data
+  services.web-app.cpus: '0.5'
+  services.web-app.deploy.replicas: '2'
+  services.web-app.deploy.restart_policy.condition: any
+  services.web-app.deploy.restart_policy.max_attempts: '0'
+  services.web-app.deploy.rollback_config.order: stop-first
+  services.web-app.deploy.rollback_config.parallelism: '1'
+  services.web-app.deploy.update_config.order: stop-first
+  services.web-app.deploy.update_config.parallelism: '1'
+  services.web-app.environment.API_URL: http://core-api:8000
+  services.web-app.environment.NODE_ENV: production
+  services.web-app.environment.SESSION_SECRET: sEssI0nS3cret!
+  services.web-app.healthcheck.interval: 30s
+  services.web-app.healthcheck.retries: '3'
+  services.web-app.healthcheck.start_interval: 5s
+  services.web-app.healthcheck.start_period: 15s
+  services.web-app.healthcheck.test: CMD-SHELL,curl -f 
+    http://localhost:3000/health
+  services.web-app.healthcheck.timeout: 30s
+  services.web-app.image: ridgeline/web-app:3.0.0
+  services.web-app.init: 'false'
+  services.web-app.labels.traefik.enable: 'true'
+  services.web-app.labels.traefik.http.routers.web.rule: 
+    Host(`app.ridgeline.io`)
+  services.web-app.logging.driver: json-file
+  services.web-app.mem_limit: 1g
+  services.web-app.networks: app-network,monitoring
+  services.web-app.ports: 3000:3000
+  services.web-app.privileged: 'false'
+  services.web-app.read_only: 'false'
+  services.web-app.restart: always
+  services.web-app.stdin_open: 'false'
+  services.web-app.tty: 'false'
+  volumes.search-data.external: 'false'
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

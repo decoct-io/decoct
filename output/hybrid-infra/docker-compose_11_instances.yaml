@@ -1,0 +1,9 @@
+meta:
+  entity_type: docker-compose_11
+  tier_b_ref: docker-compose_11_classes.yaml
+  total_instances: 1
+class_assignments:
+  _base_only:
+    instances:
+    - compose-notification-prod
+foreign_keys: {}

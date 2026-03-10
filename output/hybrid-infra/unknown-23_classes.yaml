@@ -1,0 +1,29 @@
+meta:
+  entity_type: unknown-23
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: unknown-23_instances.yaml
+base_class:
+  debug: 'false'
+  default-ulimits.nofile.Hard: '65535'
+  default-ulimits.nofile.Name: nofile
+  default-ulimits.nofile.Soft: '65535'
+  dns: 8.8.8.8,8.8.4.4
+  experimental: 'false'
+  ip-forward: 'true'
+  iptables: 'true'
+  live-restore: 'true'
+  log-driver: json-file
+  log-opts.max-file: '5'
+  log-opts.max-size: 50m
+  metrics-addr: 0.0.0.0:9323
+  storage-driver: overlay2
+  userland-proxy: 'false'
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

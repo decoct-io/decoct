@@ -1,0 +1,46 @@
+meta:
+  entity_type: unknown-17
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: unknown-17_instances.yaml
+base_class:
+  auth.api_key: sk_live_4eC39HqLyjWDarjtT1zdp7dc
+  auth.encryption_key: aes256_Enc4ypt10nK3y_Pr0d!
+  auth.jwt_expiry_seconds: '3600'
+  auth.jwt_issuer: ridgeline.io
+  auth.jwt_refresh_expiry_seconds: '86400'
+  auth.jwt_secret: xK9mPqR7vL2nW5jF8hT3yB6cD4gA1sE
+  cors.allow_credentials: 'true'
+  cors.enabled: 'true'
+  cors.methods: GET,POST,PUT,DELETE
+  cors.origins: https://app.ridgeline.io,https://admin.ridgeline.io
+  database.host: db-prod-01
+  database.name: auth
+  database.password: AuthP@ssw0rd
+  database.pool_size: '10'
+  database.pool_timeout: '30'
+  database.port: '5432'
+  database.ssl: 'false'
+  database.user: auth_svc
+  environment: prod
+  features.mfa_required: 'true'
+  features.password_complexity: strict
+  features.session_rotation: 'true'
+  logging.format: json
+  logging.level: info
+  logging.output: stdout
+  name: Auth Service JWT Config
+  rate_limiting.burst: '50'
+  rate_limiting.enabled: 'true'
+  rate_limiting.requests_per_minute: '1000'
+  redis.pool_size: '5'
+  redis.timeout: '5'
+  redis.url: redis://:R3disP@ss!@redis:6379/0
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

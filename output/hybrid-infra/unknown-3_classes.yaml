@@ -1,0 +1,29 @@
+meta:
+  entity_type: unknown-3
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: unknown-3_instances.yaml
+base_class:
+  Install.wantedby: multi-user.target
+  Service.environment: '"NODE_ENV=production","PORT=3000"'
+  Service.execstart: /usr/bin/node /opt/ridgeline/web-app/server.js
+  Service.group: ridgeline
+  Service.limitnofile: '65535'
+  Service.limitnproc: '4096'
+  Service.restart: on-failure
+  Service.restartsec: '5'
+  Service.timeoutstartsec: '30'
+  Service.timeoutstopsec: '30'
+  Service.type: simple
+  Service.user: ridgeline
+  Service.workingdirectory: /opt/ridgeline/web-app
+  Unit.after: network.target
+  Unit.description: Ridgeline Web App (Node.js SSR)
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

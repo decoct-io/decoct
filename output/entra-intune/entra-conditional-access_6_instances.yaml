@@ -1,0 +1,9 @@
+meta:
+  entity_type: entra-conditional-access_6
+  tier_b_ref: entra-conditional-access_6_classes.yaml
+  total_instances: 1
+class_assignments:
+  _base_only:
+    instances:
+    - CA-Location-Require-MFA-External
+foreign_keys: {}

@@ -1,0 +1,191 @@
+meta:
+  entity_type: docker-compose_14
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: docker-compose_14_instances.yaml
+base_class:
+  networks.staging-network.attachable: 'false'
+  networks.staging-network.driver: bridge
+  networks.staging-network.enable_ipv6: 'false'
+  networks.staging-network.external: 'false'
+  networks.staging-network.internal: 'false'
+  services.auth-service.cpus: '0.25'
+  services.auth-service.deploy.replicas: '1'
+  services.auth-service.deploy.restart_policy.condition: any
+  services.auth-service.deploy.restart_policy.max_attempts: '0'
+  services.auth-service.deploy.rollback_config.order: stop-first
+  services.auth-service.deploy.rollback_config.parallelism: '1'
+  services.auth-service.deploy.update_config.order: stop-first
+  services.auth-service.deploy.update_config.parallelism: '1'
+  services.auth-service.environment.DATABASE_URL: 
+    postgresql://auth:StagingDBp@ss@db-staging-01:5432/auth_staging
+  services.auth-service.environment.JWT_SECRET: staging-jwt-secret-not-secure
+  services.auth-service.healthcheck.interval: 30s
+  services.auth-service.healthcheck.retries: '3'
+  services.auth-service.healthcheck.start_interval: 5s
+  services.auth-service.healthcheck.start_period: 0s
+  services.auth-service.healthcheck.test: CMD-SHELL,curl -f 
+    http://localhost:8001/health
+  services.auth-service.healthcheck.timeout: 30s
+  services.auth-service.image: ridgeline/auth-service:1.8.0-rc1
+  services.auth-service.init: 'false'
+  services.auth-service.logging.driver: json-file
+  services.auth-service.mem_limit: 512m
+  services.auth-service.networks: staging-network
+  services.auth-service.ports: 8001:8001
+  services.auth-service.privileged: 'false'
+  services.auth-service.read_only: 'false'
+  services.auth-service.restart: unless-stopped
+  services.auth-service.stdin_open: 'false'
+  services.auth-service.tty: 'false'
+  services.core-api.cpus: '0.5'
+  services.core-api.deploy.replicas: '1'
+  services.core-api.deploy.restart_policy.condition: any
+  services.core-api.deploy.restart_policy.max_attempts: '0'
+  services.core-api.deploy.rollback_config.order: stop-first
+  services.core-api.deploy.rollback_config.parallelism: '1'
+  services.core-api.deploy.update_config.order: stop-first
+  services.core-api.deploy.update_config.parallelism: '1'
+  services.core-api.environment.API_KEY: sk_test_staging_key_123
+  services.core-api.environment.DATABASE_URL: 
+    postgresql://core:StagingDBp@ss@db-staging-01:5432/core_staging
+  services.core-api.environment.JWT_SECRET: staging-jwt-secret-not-secure
+  services.core-api.healthcheck.interval: 30s
+  services.core-api.healthcheck.retries: '3'
+  services.core-api.healthcheck.start_interval: 5s
+  services.core-api.healthcheck.start_period: 0s
+  services.core-api.healthcheck.test: CMD-SHELL,curl -f 
+    http://localhost:8000/health
+  services.core-api.healthcheck.timeout: 30s
+  services.core-api.image: ridgeline/core-api:2.1.0-rc1
+  services.core-api.init: 'false'
+  services.core-api.logging.driver: json-file
+  services.core-api.mem_limit: 1g
+  services.core-api.networks: staging-network
+  services.core-api.ports: 8000:8000
+  services.core-api.privileged: 'false'
+  services.core-api.read_only: 'false'
+  services.core-api.restart: unless-stopped
+  services.core-api.stdin_open: 'false'
+  services.core-api.tty: 'false'
+  services.legacy-dashboard.cpus: '0.25'
+  services.legacy-dashboard.deploy.replicas: '1'
+  services.legacy-dashboard.deploy.restart_policy.condition: any
+  services.legacy-dashboard.deploy.restart_policy.max_attempts: '0'
+  services.legacy-dashboard.deploy.rollback_config.order: stop-first
+  services.legacy-dashboard.deploy.rollback_config.parallelism: '1'
+  services.legacy-dashboard.deploy.update_config.order: stop-first
+  services.legacy-dashboard.deploy.update_config.parallelism: '1'
+  services.legacy-dashboard.environment.DATABASE_URL: 
+    mysql://legacy:StagingDBp@ss@db-staging-01:3306/dashboard_staging
+  services.legacy-dashboard.environment.SECRET_KEY: staging-flask-secret
+  services.legacy-dashboard.healthcheck.interval: 30s
+  services.legacy-dashboard.healthcheck.retries: '3'
+  services.legacy-dashboard.healthcheck.start_interval: 5s
+  services.legacy-dashboard.healthcheck.start_period: 0s
+  services.legacy-dashboard.healthcheck.timeout: 30s
+  services.legacy-dashboard.image: ridgeline/legacy-dashboard:latest
+  services.legacy-dashboard.init: 'false'
+  services.legacy-dashboard.logging.driver: json-file
+  services.legacy-dashboard.mem_limit: 512m
+  services.legacy-dashboard.networks: staging-network
+  services.legacy-dashboard.ports: 5000:5000
+  services.legacy-dashboard.privileged: 'false'
+  services.legacy-dashboard.read_only: 'false'
+  services.legacy-dashboard.restart: unless-stopped
+  services.legacy-dashboard.stdin_open: 'false'
+  services.legacy-dashboard.tty: 'false'
+  services.mariadb.cpus: '0.5'
+  services.mariadb.deploy.replicas: '1'
+  services.mariadb.deploy.restart_policy.condition: any
+  services.mariadb.deploy.restart_policy.max_attempts: '0'
+  services.mariadb.deploy.rollback_config.order: stop-first
+  services.mariadb.deploy.rollback_config.parallelism: '1'
+  services.mariadb.deploy.update_config.order: stop-first
+  services.mariadb.deploy.update_config.parallelism: '1'
+  services.mariadb.environment.MARIADB_ROOT_PASSWORD: StagingM@riaDBp@ss
+  services.mariadb.healthcheck.interval: 30s
+  services.mariadb.healthcheck.retries: '3'
+  services.mariadb.healthcheck.start_interval: 5s
+  services.mariadb.healthcheck.start_period: 30s
+  services.mariadb.healthcheck.test: CMD-SHELL,healthcheck.sh --connect 
+    --innodb_initialized
+  services.mariadb.healthcheck.timeout: 30s
+  services.mariadb.image: mariadb:10.11
+  services.mariadb.init: 'false'
+  services.mariadb.logging.driver: json-file
+  services.mariadb.mem_limit: 512m
+  services.mariadb.networks: staging-network
+  services.mariadb.ports: 3306:3306
+  services.mariadb.privileged: 'false'
+  services.mariadb.read_only: 'false'
+  services.mariadb.restart: unless-stopped
+  services.mariadb.stdin_open: 'false'
+  services.mariadb.tty: 'false'
+  services.mariadb.volumes: maria-staging-data:/var/lib/mysql
+  services.postgres.cpus: '0.5'
+  services.postgres.deploy.replicas: '1'
+  services.postgres.deploy.restart_policy.condition: any
+  services.postgres.deploy.restart_policy.max_attempts: '0'
+  services.postgres.deploy.rollback_config.order: stop-first
+  services.postgres.deploy.rollback_config.parallelism: '1'
+  services.postgres.deploy.update_config.order: stop-first
+  services.postgres.deploy.update_config.parallelism: '1'
+  services.postgres.environment.POSTGRES_DB: core_staging
+  services.postgres.environment.POSTGRES_PASSWORD: StagingDBp@ss
+  services.postgres.healthcheck.interval: 30s
+  services.postgres.healthcheck.retries: '3'
+  services.postgres.healthcheck.start_interval: 5s
+  services.postgres.healthcheck.start_period: 10s
+  services.postgres.healthcheck.test: CMD-SHELL,pg_isready -U postgres
+  services.postgres.healthcheck.timeout: 30s
+  services.postgres.image: postgres:16-alpine
+  services.postgres.init: 'false'
+  services.postgres.logging.driver: json-file
+  services.postgres.mem_limit: 1g
+  services.postgres.networks: staging-network
+  services.postgres.ports: 5432:5432
+  services.postgres.privileged: 'false'
+  services.postgres.read_only: 'false'
+  services.postgres.restart: unless-stopped
+  services.postgres.stdin_open: 'false'
+  services.postgres.tty: 'false'
+  services.postgres.volumes: pg-staging-data:/var/lib/postgresql/data
+  services.web-app.cpus: '0.25'
+  services.web-app.deploy.replicas: '1'
+  services.web-app.deploy.restart_policy.condition: any
+  services.web-app.deploy.restart_policy.max_attempts: '0'
+  services.web-app.deploy.rollback_config.order: stop-first
+  services.web-app.deploy.rollback_config.parallelism: '1'
+  services.web-app.deploy.update_config.order: stop-first
+  services.web-app.deploy.update_config.parallelism: '1'
+  services.web-app.environment.API_URL: http://core-api:8000
+  services.web-app.environment.NODE_ENV: staging
+  services.web-app.healthcheck.interval: 30s
+  services.web-app.healthcheck.retries: '3'
+  services.web-app.healthcheck.start_interval: 5s
+  services.web-app.healthcheck.start_period: 0s
+  services.web-app.healthcheck.test: CMD-SHELL,curl -f 
+    http://localhost:3000/health
+  services.web-app.healthcheck.timeout: 30s
+  services.web-app.image: ridgeline/web-app:3.0.0-rc1
+  services.web-app.init: 'false'
+  services.web-app.logging.driver: json-file
+  services.web-app.mem_limit: 512m
+  services.web-app.networks: staging-network
+  services.web-app.ports: 3000:3000
+  services.web-app.privileged: 'false'
+  services.web-app.read_only: 'false'
+  services.web-app.restart: unless-stopped
+  services.web-app.stdin_open: 'false'
+  services.web-app.tty: 'false'
+  volumes.maria-staging-data.external: 'false'
+  volumes.pg-staging-data.external: 'false'
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

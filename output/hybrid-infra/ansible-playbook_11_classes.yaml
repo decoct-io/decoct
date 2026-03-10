@@ -1,0 +1,118 @@
+meta:
+  entity_type: ansible-playbook_11
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: ansible-playbook_11_instances.yaml
+base_class:
+  any_errors_fatal: 'false'
+  become: 'true'
+  become_user: root
+  check_mode: 'false'
+  gather_facts: 'true'
+  handlers:
+  - name: restart_node_exporter
+    ansible.builtin.systemd.name: "{{ service_name | default('ridgeline') }}"
+    ansible.builtin.systemd.state: restarted
+    ansible.builtin.systemd.daemon_reload: 'false'
+    ansible.builtin.systemd.daemon_reexec: 'false'
+    ansible.builtin.systemd.no_block: 'false'
+    ansible.builtin.systemd.scope: system
+  hosts: all
+  ignore_errors: 'false'
+  name: Setup Monitoring Agent
+  no_log: 'false'
+  order: inventory
+  run_once: 'false'
+  tasks:
+  - name: Download binary
+    ansible.builtin.get_url.url: "{{ download_url | default('https://github.com/ridgeline-data/releases/latest')
+      }}"
+    ansible.builtin.get_url.dest: /tmp/download
+    ansible.builtin.get_url.mode: '0755'
+    ansible.builtin.get_url.backup: 'false'
+    ansible.builtin.get_url.force: 'false'
+    ansible.builtin.get_url.force_basic_auth: 'false'
+    ansible.builtin.get_url.timeout: '10'
+    ansible.builtin.get_url.unsafe_writes: 'false'
+    ansible.builtin.get_url.use_proxy: 'true'
+    ansible.builtin.get_url.validate_certs: 'true'
+    ignore_errors: 'false'
+    check_mode: 'false'
+    no_log: 'false'
+    run_once: 'false'
+    become: 'true'
+  - name: Create application user
+    ansible.builtin.user.name: ridgeline
+    ansible.builtin.user.state: present
+    ansible.builtin.user.system: 'false'
+    ansible.builtin.user.create_home: 'true'
+    ansible.builtin.user.append: 'false'
+    ansible.builtin.user.force: 'false'
+    ansible.builtin.user.generate_ssh_key: 'false'
+    ansible.builtin.user.move_home: 'false'
+    ansible.builtin.user.non_unique: 'false'
+    ansible.builtin.user.remove: 'false'
+    ansible.builtin.user.update_password: always
+    ansible.builtin.user.shell: /bin/bash
+    ansible.builtin.user.home: /opt/ridgeline
+    ignore_errors: 'false'
+    check_mode: 'false'
+    no_log: 'false'
+    run_once: 'false'
+    become: 'true'
+  - name: Deploy templated configuration
+    ansible.builtin.template.src: '{{ item.src }}'
+    ansible.builtin.template.dest: '{{ item.dest }}'
+    ansible.builtin.template.owner: root
+    ansible.builtin.template.group: root
+    ansible.builtin.template.mode: '0644'
+    ansible.builtin.template.backup: 'false'
+    ansible.builtin.template.follow: 'false'
+    ansible.builtin.template.force: 'true'
+    ansible.builtin.template.lstrip_blocks: 'false'
+    ansible.builtin.template.trim_blocks: 'true'
+    ansible.builtin.template.unsafe_writes: 'false'
+    ansible.builtin.template.output_encoding: utf-8
+    loop.0.src: templates/app.conf.j2
+    loop.0.dest: /etc/ridgeline/app.conf
+    ignore_errors: 'false'
+    check_mode: 'false'
+    no_log: 'false'
+    run_once: 'false'
+    become: 'true'
+  - name: Enable and start service
+    ansible.builtin.systemd.name: "{{ service_name | default('ridgeline') }}"
+    ansible.builtin.systemd.state: started
+    ansible.builtin.systemd.enabled: 'true'
+    ansible.builtin.systemd.daemon_reload: 'false'
+    ansible.builtin.systemd.daemon_reexec: 'false'
+    ansible.builtin.systemd.no_block: 'false'
+    ansible.builtin.systemd.scope: system
+    ignore_errors: 'false'
+    check_mode: 'false'
+    no_log: 'false'
+    run_once: 'false'
+    become: 'true'
+  - name: Wait for service to be ready
+    ansible.builtin.wait_for.port: "{{ app_port | default('8000') }}"
+    ansible.builtin.wait_for.host: 127.0.0.1
+    ansible.builtin.wait_for.connect_timeout: '5'
+    ansible.builtin.wait_for.delay: '0'
+    ansible.builtin.wait_for.sleep: '1'
+    ansible.builtin.wait_for.state: started
+    ansible.builtin.wait_for.timeout: '300'
+    ignore_errors: 'false'
+    check_mode: 'false'
+    no_log: 'false'
+    run_once: 'false'
+    become: 'false'
+  vars.agent_version: 1.8.0
+  vars.prom_push_url: http://mon-prod-01:9091
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

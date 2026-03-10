@@ -1,0 +1,56 @@
+meta:
+  entity_type: intune-device-config
+  total_instances: 8
+  max_inheritance_depth: 2
+  tier_c_ref: intune-device-config_instances.yaml
+base_class:
+  appsBlockClipboardSharing: 'false'
+  appsBlockCopyPaste: 'false'
+  appsBlockYouTube: 'false'
+  cellularBlockDataRoaming: 'false'
+  cellularBlockMessaging: 'false'
+  cellularBlockVoiceRoaming: 'false'
+  cellularBlockWiFiTethering: 'false'
+  deviceSharingAllowed: 'false'
+  diagnosticDataBlockSubmission: 'false'
+  googleAccountBlockAutoSync: 'false'
+  googlePlayStoreBlocked: 'false'
+  kioskModeBlockSleepButton: 'false'
+  kioskModeBlockVolumeButtons: 'false'
+  passwordBlockFingerprintUnlock: 'false'
+  passwordBlockTrustAgents: 'false'
+  powerOffBlocked: 'false'
+  roleScopeTagIds: '0'
+  securityRequireVerifyApps: 'false'
+  storageBlockGoogleBackup: 'false'
+  storageBlockRemovableStorage: 'false'
+  storageRequireRemovableStorageEncryption: 'false'
+  version: '1'
+  voiceAssistantBlocked: 'false'
+  voiceDialingBlocked: 'false'
+  webBrowserBlockAutofill: 'false'
+  webBrowserBlockJavaScript: 'false'
+  webBrowserBlockPopups: 'false'
+  webBrowserBlocked: 'false'
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 2
+  compliantAppListType_none_wiFiBlocked_false:
+    inherits: base
+    own_attrs:
+      compliantAppListType: none
+      wiFiBlocked: 'false'
+    instance_count_inclusive: 6
+subclasses: {}
+composite_templates:
+  assignments:
+    intune-device-config.assignments.T0:
+      elements:
+      - target.groupId: 496f4253-0480-5d9f-a32e-faad9a648cba
+    intune-device-config.assignments.T1:
+      elements:
+      - target.groupId: f5843f0d-24e2-5506-9911-ebc899094fab
+assertions:
+  base_only_ratio: 0.25

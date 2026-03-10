@@ -1,0 +1,9 @@
+meta:
+  entity_type: entra-conditional-access_10
+  tier_b_ref: entra-conditional-access_10_classes.yaml
+  total_instances: 1
+class_assignments:
+  _base_only:
+    instances:
+    - CA-SignIn-Risk-Medium-MFA
+foreign_keys: {}

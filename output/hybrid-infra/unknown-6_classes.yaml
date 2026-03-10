@@ -1,0 +1,39 @@
+meta:
+  entity_type: unknown-6
+  total_instances: 1
+  max_inheritance_depth: 2
+  tier_c_ref: unknown-6_instances.yaml
+base_class:
+  all.children.app_servers.hosts.app-prod-01.ansible_host: 
+    app-prod-01.ridgeline.internal
+  all.children.app_servers.hosts.app-prod-02.ansible_host: 
+    app-prod-02.ridgeline.internal
+  all.children.app_servers.hosts.app-prod-03.ansible_host: 
+    app-prod-03.ridgeline.internal
+  all.children.db_servers.hosts.db-prod-01.ansible_host: 
+    db-prod-01.ridgeline.internal
+  all.children.db_servers.hosts.db-prod-02.ansible_host: 
+    db-prod-02.ridgeline.internal
+  all.children.db_servers.hosts.db-prod-03.ansible_host: 
+    db-prod-03.ridgeline.internal
+  all.children.edge_servers.hosts.edge-prod-01.ansible_host: 
+    edge-prod-01.ridgeline.internal
+  all.children.legacy_db_servers.hosts.db-legacy-01.ansible_host: 
+    db-legacy-01.ridgeline.internal
+  all.children.monitoring_servers.hosts.mon-prod-01.ansible_host: 
+    mon-prod-01.ridgeline.internal
+  all.children.web_servers.hosts.app-prod-02.ansible_host: 
+    app-prod-02.ridgeline.internal
+  all.children.worker_servers.hosts.worker-prod-01.ansible_host: 
+    worker-prod-01.ridgeline.internal
+  all.vars.ansible_user: deploy
+  all.vars.dns_servers: 8.8.8.8,8.8.4.4
+  all.vars.ntp_server: ntp.ubuntu.com
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

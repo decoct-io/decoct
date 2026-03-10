@@ -1,0 +1,21 @@
+meta:
+  entity_type: unknown-1
+  tier_b_ref: unknown-1_classes.yaml
+  total_instances: 2
+class_assignments:
+  _base_only:
+    instances:
+    - sshd-dev
+    - sshd-staging
+instance_data:
+  schema:
+  - PermitRootLogin
+  - X11Forwarding
+  records:
+    sshd-dev:
+    - prohibit-password
+    - 'true'
+    sshd-staging:
+    - 'false'
+    - 'false'
+foreign_keys: {}
