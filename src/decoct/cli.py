@@ -448,19 +448,30 @@ def stats(
 @click.option("--output", "-o", required=True, type=click.Path(), help="Output JSON path for question bank.")
 @click.option("--max-questions", default=200, show_default=True, help="Maximum questions to generate.")
 @click.option("--seed", default=42, show_default=True, help="Random seed for reproducibility.")
+@click.option(
+    "--adapter", "adapter_name", type=click.Choice(["iosxr", "hybrid-infra"]),
+    default="iosxr", show_default=True, help="Adapter for parsing config files.",
+)
 def generate_questions(
     config_dir: str,
     output: str,
     max_questions: int,
     seed: int,
+    adapter_name: str,
 ) -> None:
     """Generate ground-truth Q&A pairs from raw configs."""
     from decoct.qa.questions import generate_question_bank, save_question_bank
+
+    adapter_instance = None
+    if adapter_name == "hybrid-infra":
+        from decoct.adapters.hybrid_infra import HybridInfraAdapter
+        adapter_instance = HybridInfraAdapter()
 
     bank = generate_question_bank(
         Path(config_dir),
         max_questions=max_questions,
         seed=seed,
+        adapter=adapter_instance,
     )
     save_question_bank(bank, Path(output))
     click.echo(

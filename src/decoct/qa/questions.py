@@ -1,4 +1,4 @@
-"""Deterministic Q&A pair generation from raw IOS-XR configs."""
+"""Deterministic Q&A pair generation from entity-graph configs."""
 
 from __future__ import annotations
 
@@ -18,6 +18,7 @@ class QuestionCategory(Enum):
     EXISTENCE = "EXISTENCE"
     COMPARISON = "COMPARISON"
     COUNT = "COUNT"
+    ORDERING = "ORDERING"
 
 
 @dataclass
@@ -123,34 +124,81 @@ def _count_matching_paths(entity_attrs: dict[str, Any], prefix: str) -> int:
     return len(seen)
 
 
+_NAME_CANDIDATES = ["name", "job_name", "title", "id", "label"]
+
+_HYBRID_INFRA_EXTENSIONS = {"*.yaml", "*.yml", "*.json", "*.conf", "*.cnf"}
+
+
+def _find_name_field(items: list[dict[str, Any]]) -> str | None:
+    """Find a field that uniquely identifies items in a list composite."""
+    for candidate in _NAME_CANDIDATES:
+        values = [item.get(candidate) for item in items if isinstance(item, dict) and candidate in item]
+        if len(values) >= 2 and len(values) == len(set(values)):
+            return candidate
+    return None
+
+
+def _ordinal(n: int) -> str:
+    """Return ordinal string: 1 -> '1st', 2 -> '2nd', etc."""
+    if 11 <= n % 100 <= 13:
+        return f"{n}th"
+    return f"{n}{['th', 'st', 'nd', 'rd'][n % 10 if n % 10 < 4 else 0]}"
+
+
+def _item_label(path: str) -> str:
+    """Derive a human-readable item label from a composite path.
+
+    'tasks' -> 'task', 'scrape_configs' -> 'scrape config', etc.
+    """
+    segment = path.rsplit(".", 1)[-1]
+    # Depluralize naive: strip trailing 's'
+    if segment.endswith("s") and len(segment) > 2:
+        segment = segment[:-1]
+    return segment.replace("_", " ")
+
+
 def generate_question_bank(
     config_dir: Path,
     *,
     max_questions: int = 200,
     seed: int = 42,
     categories: list[QuestionCategory] | None = None,
+    adapter: Any | None = None,
 ) -> QuestionBank:
-    """Generate ground-truth Q&A pairs from raw IOS-XR configs.
+    """Generate ground-truth Q&A pairs from raw configs.
 
     Args:
-        config_dir: Directory containing .cfg files.
+        config_dir: Directory containing config files.
         max_questions: Maximum number of questions to generate.
         seed: Random seed for reproducibility.
         categories: Categories to include (all if None).
+        adapter: Adapter instance to use. Defaults to IosxrAdapter.
 
     Returns:
         QuestionBank with deterministic Q&A pairs.
     """
-    from decoct.adapters.iosxr import IosxrAdapter
+    from decoct.adapters.base import BaseAdapter
     from decoct.core.entity_graph import EntityGraph
 
-    adapter = IosxrAdapter()
+    if adapter is None:
+        from decoct.adapters.iosxr import IosxrAdapter
+        adapter = IosxrAdapter()
+
     graph = EntityGraph()
 
-    # Parse all .cfg files
-    cfg_files = sorted(config_dir.glob("*.cfg"))
-    for cfg in cfg_files:
-        adapter.parse_and_extract(str(cfg), graph)
+    # Discover files based on adapter type
+    if adapter.source_type() == "hybrid-infra":
+        all_files: list[Path] = []
+        for pattern in sorted(_HYBRID_INFRA_EXTENSIONS):
+            all_files.extend(config_dir.glob(pattern))
+        source_files = sorted(set(all_files))
+    else:
+        source_files = sorted(config_dir.glob("*.cfg"))
+
+    assert isinstance(adapter, BaseAdapter)
+    for src in source_files:
+        parsed = adapter.parse(str(src))
+        adapter.extract_entities(parsed, graph)
 
     if not graph.entities:
         return QuestionBank(source_dir=str(config_dir))
@@ -274,6 +322,90 @@ def generate_question_bank(
                         ground_truth=GroundTruth(
                             answer=str(count),
                             evidence_paths=[f"{entity.id}.{prefix}*"],
+                        ),
+                        entity_ids=[entity.id],
+                    ))
+
+    # --- ORDERING ---
+    if QuestionCategory.ORDERING in allowed:
+        from decoct.core.composite_value import CompositeValue
+
+        for entity in graph.entities:
+            for attr_path, attr in entity.attributes.items():
+                if not isinstance(attr.value, CompositeValue) or attr.value.kind != "list":
+                    continue
+                items = attr.value.data
+                if not isinstance(items, list) or len(items) < 2:
+                    continue
+                # Only lists of dicts with a discoverable name field
+                dict_items = [it for it in items if isinstance(it, dict)]
+                if len(dict_items) < 2:
+                    continue
+                name_field = _find_name_field(dict_items)
+                if name_field is None:
+                    continue
+
+                label = _item_label(attr_path)
+
+                # Position questions
+                for idx, item in enumerate(dict_items):
+                    name_val = item.get(name_field)
+                    if name_val is None:
+                        continue
+                    qid += 1
+                    candidates.append(QAPair(
+                        id=f"ord-{qid:04d}",
+                        category=QuestionCategory.ORDERING,
+                        question=f"What is the {_ordinal(idx + 1)} {label} in {entity.id}'s {attr_path}?",
+                        ground_truth=GroundTruth(
+                            answer=str(name_val),
+                            evidence_paths=[f"{entity.id}.{attr_path}[{idx}].{name_field}"],
+                        ),
+                        entity_ids=[entity.id],
+                    ))
+
+                # Before/After questions
+                for idx in range(len(dict_items) - 1):
+                    cur_name = dict_items[idx].get(name_field)
+                    next_name = dict_items[idx + 1].get(name_field)
+                    if cur_name is None or next_name is None:
+                        continue
+                    qid += 1
+                    candidates.append(QAPair(
+                        id=f"ord-{qid:04d}",
+                        category=QuestionCategory.ORDERING,
+                        question=f"What {label} comes immediately after {cur_name} in {entity.id}'s {attr_path}?",
+                        ground_truth=GroundTruth(
+                            answer=str(next_name),
+                            evidence_paths=[f"{entity.id}.{attr_path}[{idx + 1}].{name_field}"],
+                        ),
+                        entity_ids=[entity.id],
+                    ))
+
+                # First/Last questions
+                first_name = dict_items[0].get(name_field)
+                last_name = dict_items[-1].get(name_field)
+                if first_name is not None:
+                    qid += 1
+                    candidates.append(QAPair(
+                        id=f"ord-{qid:04d}",
+                        category=QuestionCategory.ORDERING,
+                        question=f"What is the first {label} in {entity.id}'s {attr_path}?",
+                        ground_truth=GroundTruth(
+                            answer=str(first_name),
+                            evidence_paths=[f"{entity.id}.{attr_path}[0].{name_field}"],
+                        ),
+                        entity_ids=[entity.id],
+                    ))
+                if last_name is not None:
+                    qid += 1
+                    candidates.append(QAPair(
+                        id=f"ord-{qid:04d}",
+                        category=QuestionCategory.ORDERING,
+                        question=f"What is the last {label} in {entity.id}'s {attr_path}?",
+                        ground_truth=GroundTruth(
+                            answer=str(last_name),
+                            evidence_paths=[f"{entity.id}.{attr_path}[{len(dict_items) - 1}].{name_field}"],
                         ),
                         entity_ids=[entity.id],
                     ))
