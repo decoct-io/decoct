@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import sys
+from datetime import datetime, timezone
 from io import StringIO
 from pathlib import Path
 from typing import Any
@@ -351,9 +352,204 @@ def assertion_learn(
         click.echo(assertions_yaml)
 
 
+@cli.command()
+@click.argument("files", nargs=-1, type=click.Path(exists=True))
+@click.option("--assertions", "assertions_path", type=click.Path(exists=True), help="Assertions file for full tier.")
+@click.option("--format", "fmt", type=click.Choice(["markdown", "json"]), default="markdown", show_default=True)
+@click.option("--output", "-o", type=click.Path(), help="Output file.")
+@click.option("--recursive", "-r", is_flag=True, help="Recurse into subdirectories.")
+@click.option("--verbose", "-v", is_flag=True, help="Show per-pass timing details.")
+@click.option("--encoding", default="cl100k_base", show_default=True, help="Tiktoken encoding for token counting.")
+def benchmark(
+    files: tuple[str, ...],
+    assertions_path: str | None,
+    fmt: str,
+    output: str | None,
+    recursive: bool,
+    verbose: bool,
+    encoding: str,
+) -> None:
+    """Benchmark compression performance across a corpus of config files.
+
+    Runs the pipeline at three tiers (generic, schema, full) and reports
+    per-file and aggregate token savings.
+    """
+    from decoct.benchmark import format_report_json, format_report_markdown, run_benchmark
+
+    if not files:
+        click.echo("Error: at least one file or directory is required.", err=True)
+        sys.exit(1)
+
+    report = run_benchmark(
+        list(files),
+        assertions_path=assertions_path,
+        encoding=encoding,
+        recursive=recursive,
+    )
+
+    if not report.files:
+        click.echo("No files processed.", err=True)
+        sys.exit(1)
+
+    if fmt == "json":
+        result = format_report_json(report)
+    else:
+        result = format_report_markdown(report, verbose=verbose)
+
+    if output:
+        Path(output).write_text(result + "\n")
+        click.echo(f"Report written to {output}", err=True)
+    else:
+        click.echo(result)
+
+
 @cli.group()
 def schema() -> None:
     """Schema management commands."""
+
+
+@cli.group(name="entity-graph")
+def entity_graph() -> None:
+    """Entity-graph pipeline commands."""
+
+
+@entity_graph.command()
+@click.option("--input-dir", "-i", required=True, type=click.Path(exists=True), help="Raw input config dir.")
+@click.option("--output-dir", "-o", required=True, type=click.Path(exists=True), help="Entity-graph output dir.")
+@click.option("--format", "fmt", type=click.Choice(["markdown", "json"]), default="markdown", show_default=True)
+@click.option("--output", type=click.Path(), help="Write report to file.")
+@click.option("--encoding", default="cl100k_base", show_default=True, help="Tiktoken encoding for token counting.")
+def stats(
+    input_dir: str,
+    output_dir: str,
+    fmt: str,
+    output: str | None,
+    encoding: str,
+) -> None:
+    """Report entity-graph compression statistics."""
+    from decoct.entity_graph_stats import compute_stats, format_stats_json, format_stats_markdown
+
+    report = compute_stats(Path(input_dir), Path(output_dir), encoding=encoding)
+
+    if fmt == "json":
+        result = format_stats_json(report)
+    else:
+        result = format_stats_markdown(report)
+
+    if output:
+        Path(output).write_text(result + "\n")
+        click.echo(f"Report written to {output}", err=True)
+    else:
+        click.echo(result)
+
+
+@entity_graph.command(name="generate-questions")
+@click.option("--config-dir", "-c", required=True, type=click.Path(exists=True), help="Directory of raw config files.")
+@click.option("--output", "-o", required=True, type=click.Path(), help="Output JSON path for question bank.")
+@click.option("--max-questions", default=200, show_default=True, help="Maximum questions to generate.")
+@click.option("--seed", default=42, show_default=True, help="Random seed for reproducibility.")
+def generate_questions(
+    config_dir: str,
+    output: str,
+    max_questions: int,
+    seed: int,
+) -> None:
+    """Generate ground-truth Q&A pairs from raw configs."""
+    from decoct.qa.questions import generate_question_bank, save_question_bank
+
+    bank = generate_question_bank(
+        Path(config_dir),
+        max_questions=max_questions,
+        seed=seed,
+    )
+    save_question_bank(bank, Path(output))
+    click.echo(
+        f"Generated {len(bank.pairs)} questions from {bank.entity_count} entities "
+        f"({bank.type_count} types). Written to {output}",
+        err=True,
+    )
+
+
+@entity_graph.command(name="evaluate")
+@click.option("--questions", "-q", required=True, type=click.Path(exists=True), help="Question bank JSON file.")
+@click.option("--config-dir", "-c", type=click.Path(exists=True), help="Directory of raw configs (for raw condition).")
+@click.option("--output-dir", type=click.Path(exists=True), help="Entity-graph output dir (for compressed condition).")
+@click.option("--manual", type=click.Path(exists=True), help="Reader manual .md file to prepend to compressed context.")
+@click.option(
+    "--condition", type=click.Choice(["raw", "compressed", "both"]), default="both", show_default=True,
+    help="Which conditions to evaluate.",
+)
+@click.option("--model", default="claude-sonnet-4-20250514", show_default=True, help="Anthropic model to use.")
+@click.option("--format", "fmt", type=click.Choice(["markdown", "json"]), default="markdown", show_default=True)
+@click.option("--output", "-o", type=click.Path(), help="Write report to file.")
+@click.option("--encoding", default="cl100k_base", show_default=True, help="Tiktoken encoding for token counting.")
+def evaluate(
+    questions: str,
+    config_dir: str | None,
+    output_dir: str | None,
+    manual: str | None,
+    condition: str,
+    model: str,
+    fmt: str,
+    output: str | None,
+    encoding: str,
+) -> None:
+    """Evaluate LLM comprehension on raw vs compressed representations.
+
+    Requires the anthropic SDK: pip install decoct[llm]
+    """
+    from decoct.qa.evaluate import (
+        EvaluationReport,
+        build_compressed_context,
+        build_raw_context,
+        evaluate_questions,
+        format_evaluation_json,
+        format_evaluation_markdown,
+    )
+    from decoct.qa.questions import load_question_bank
+
+    bank = load_question_bank(Path(questions))
+    report = EvaluationReport(
+        timestamp=datetime.now(tz=timezone.utc).isoformat(),
+        question_count=len(bank.pairs),
+    )
+
+    conditions = []
+    if condition in ("raw", "both"):
+        if not config_dir:
+            click.echo("Error: --config-dir required for raw condition.", err=True)
+            sys.exit(1)
+        conditions.append("raw")
+    if condition in ("compressed", "both"):
+        if not output_dir:
+            click.echo("Error: --output-dir required for compressed condition.", err=True)
+            sys.exit(1)
+        conditions.append("compressed")
+
+    for cond in conditions:
+        click.echo(f"Evaluating {cond} condition...", err=True)
+        if cond == "raw":
+            context = build_raw_context(Path(config_dir))  # type: ignore[arg-type]
+        else:
+            manual_path = Path(manual) if manual else None
+            context = build_compressed_context(Path(output_dir), manual_path)  # type: ignore[arg-type]
+
+        run = evaluate_questions(
+            context, bank, condition=cond, model=model, encoding=encoding,
+        )
+        report.runs.append(run)
+        click.echo(f"  {cond}: {run.accuracy:.1%} accuracy ({len(run.results)} questions)", err=True)
+
+    if fmt == "json":
+        result = format_evaluation_json(report)
+    else:
+        result = format_evaluation_markdown(report)
+
+    if output:
+        Path(output).write_text(result + "\n")
+        click.echo(f"Report written to {output}", err=True)
+    else:
+        click.echo(result)
 
 
 @schema.command()
