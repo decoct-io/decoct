@@ -1,7 +1,7 @@
 """Tests for EntityGraph: entity add/get, relationship deduplication."""
 
 from decoct.core.entity_graph import EntityGraph
-from decoct.core.types import Attribute, Entity
+from decoct.core.types import Entity
 
 
 class TestEntityGraph:

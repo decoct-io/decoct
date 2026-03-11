@@ -49,10 +49,9 @@ b_composite_deltas:
         core-api:
           image: ridgeline/core-api:2.1.0
           restart: always
-          environment.DATABASE_URL: 
-            postgresql://core:Sup3rS3cretDB@db-prod-01:5432/core
-          environment.API_KEY: sk_live_4eC39HqLyjWDarjtT1zdp7dc
-          environment.JWT_SECRET: xK9mPqR7vL2nW5jF8hT3yB6cD4gA1sE
+          environment.DATABASE_URL: '[REDACTED]'
+          environment.API_KEY: '[REDACTED]'
+          environment.JWT_SECRET: '[REDACTED]'
           environment.REDIS_URL: redis://:R3disP@ss!@redis:6379
           volumes: 
             /opt/ridgeline/core-api/data:/app/data,/opt/ridgeline/core-api/logs:/app/logs
@@ -71,9 +70,8 @@ b_composite_deltas:
           image: ridgeline/auth-service:1.8.0
           restart: always
           ports: 8001:8001
-          environment.DATABASE_URL: 
-            postgresql://auth:AuthP@ssw0rd@db-prod-01:5432/auth
-          environment.JWT_SECRET: xK9mPqR7vL2nW5jF8hT3yB6cD4gA1sE
+          environment.DATABASE_URL: '[REDACTED]'
+          environment.JWT_SECRET: '[REDACTED]'
           environment.OAUTH_CLIENT_SECRET: ocs_Xm9pL7kR2vN4wQ8jT5
           labels.traefik.enable: 'true'
           labels.traefik.http.routers.auth.rule: Host(`auth.ridgeline.io`)
@@ -137,8 +135,7 @@ b_composite_deltas:
           image: ridgeline/admin-panel:1.0.0
           restart: always
           ports: 8005:8005
-          environment.DATABASE_URL: 
-            postgresql://admin:Adm1nDBp@ss@db-prod-01:5432/admin
+          environment.DATABASE_URL: '[REDACTED]'
           environment.ADMIN_SECRET: Adm1nS3cretK3y
           labels.traefik.enable: 'true'
           labels.traefik.http.routers.admin.rule: Host(`admin.ridgeline.io`)
@@ -149,8 +146,7 @@ b_composite_deltas:
           image: ridgeline/legacy-dashboard:latest
           restart: always
           ports: 5000:5000
-          environment.DATABASE_URL: 
-            mysql://legacy:L3gacyDBp@ss@db-legacy-01:3306/dashboard
+          environment.DATABASE_URL: '[REDACTED]'
           environment.SECRET_KEY: flask-s3cret-k3y-d0nt-t3ll
           healthcheck.test: "['CMD-SHELL', 'curl -f http://localhost:5000/health']"
           mem_limit: 1g
@@ -166,9 +162,8 @@ b_composite_deltas:
           image: ridgeline/billing-api:1.3.0
           restart: always
           ports: 8002:8002
-          environment.DATABASE_URL: 
-            mysql://billing:B1llingS3cret@db-legacy-01:3306/billing
-          environment.STRIPE_API_KEY: sk_live_4eC39HqLyjWDarjtT1zdp7dc
+          environment.DATABASE_URL: '[REDACTED]'
+          environment.STRIPE_API_KEY: '[REDACTED]'
           environment.ENCRYPTION_KEY: Enc4ypt10nK3y!
           labels.traefik.enable: 'true'
           labels.traefik.http.routers.billing.rule: Host(`billing.ridgeline.io`)
@@ -187,8 +182,7 @@ b_composite_deltas:
           image: ridgeline/core-api:${CI_COMMIT_SHA}
           restart: no
           command: pytest --cov=core_api -v
-          environment.DATABASE_URL: 
-            postgresql://test:testpassword@postgres:5432/test_db
+          environment.DATABASE_URL: '[REDACTED]'
           environment.API_KEY: sk_test_ci_key
           environment.JWT_SECRET: ci-jwt-secret
           depends_on.postgres.condition: service_started
@@ -261,8 +255,7 @@ b_composite_deltas:
           image: ridgeline/core-api:dev
           stdin_open: 'true'
           tty: 'true'
-          environment.DATABASE_URL: 
-            postgresql://core:devpassword@postgres:5432/core_dev
+          environment.DATABASE_URL: '[REDACTED]'
           environment.API_KEY: sk_test_dev_key
           environment.JWT_SECRET: dev-jwt-secret
           environment.DEBUG: 'true'
@@ -328,8 +321,7 @@ b_composite_deltas:
         core-api:
           image: ridgeline/core-api:2.1.0
           restart: always
-          environment.DATABASE_URL: 
-            postgresql://core:DR_Sup3rS3cretDB@db-dr-01:5432/core
+          environment.DATABASE_URL: '[REDACTED]'
           environment.API_KEY: sk_live_dr_key_failover
           environment.JWT_SECRET: dr-jwt-secret-failover
           networks: dr-network
@@ -341,8 +333,7 @@ b_composite_deltas:
           image: ridgeline/auth-service:1.8.0
           restart: always
           ports: 8001:8001
-          environment.DATABASE_URL: 
-            postgresql://auth:DR_AuthP@ssw0rd@db-dr-01:5432/auth
+          environment.DATABASE_URL: '[REDACTED]'
           environment.JWT_SECRET: dr-jwt-secret-failover
           networks: dr-network
           healthcheck.test: "['CMD-SHELL', 'curl -f http://localhost:8001/health']"
@@ -496,8 +487,7 @@ b_composite_deltas:
       delta:
         report-generator:
           image: ridgeline/report-generator:1.0.0
-          environment.DATABASE_URL: 
-            postgresql://reports:R3portDB@db-prod-01:5432/reports
+          environment.DATABASE_URL: '[REDACTED]'
           environment.SMTP_PASSWORD: SmtpP@ss123
           volumes: /opt/ridgeline/reports:/app/output
           mem_limit: 2g
@@ -552,8 +542,7 @@ b_composite_deltas:
       delta:
         core-api:
           image: ridgeline/core-api:2.1.0-rc1
-          environment.DATABASE_URL: 
-            postgresql://core:StagingDBp@ss@db-staging-01:5432/core_staging
+          environment.DATABASE_URL: '[REDACTED]'
           environment.API_KEY: sk_test_staging_key_123
           environment.JWT_SECRET: staging-jwt-secret-not-secure
           networks: staging-network
@@ -563,8 +552,7 @@ b_composite_deltas:
         auth-service:
           image: ridgeline/auth-service:1.8.0-rc1
           ports: 8001:8001
-          environment.DATABASE_URL: 
-            postgresql://auth:StagingDBp@ss@db-staging-01:5432/auth_staging
+          environment.DATABASE_URL: '[REDACTED]'
           environment.JWT_SECRET: staging-jwt-secret-not-secure
           networks: staging-network
           healthcheck.test: "['CMD-SHELL', 'curl -f http://localhost:8001/health']"
@@ -582,8 +570,7 @@ b_composite_deltas:
         legacy-dashboard:
           image: ridgeline/legacy-dashboard:latest
           ports: 5000:5000
-          environment.DATABASE_URL: 
-            mysql://legacy:StagingDBp@ss@db-staging-01:3306/dashboard_staging
+          environment.DATABASE_URL: '[REDACTED]'
           environment.SECRET_KEY: staging-flask-secret
           networks: staging-network
           cpus: '0.25'
@@ -623,8 +610,7 @@ b_composite_deltas:
           restart: always
           command: celery -A analytics.tasks worker --loglevel=info 
             --concurrency=4
-          environment.DATABASE_URL: 
-            postgresql://analytics:An@lyticsDB@db-prod-03:5432/analytics
+          environment.DATABASE_URL: '[REDACTED]'
           environment.REDIS_PASSWORD: R3disP@ss!
           environment.CELERY_BROKER_URL: redis://:R3disP@ss!@redis:6379/0
           volumes: worker-data:/app/data

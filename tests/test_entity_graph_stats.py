@@ -9,7 +9,6 @@ from click.testing import CliRunner
 
 from decoct.cli import cli
 from decoct.entity_graph_stats import (
-    EntityGraphStatsReport,
     compute_stats,
     format_stats_json,
     format_stats_markdown,
@@ -17,7 +16,7 @@ from decoct.entity_graph_stats import (
 
 FIXTURES = Path(__file__).parent / "fixtures"
 IOSXR_CONFIGS = FIXTURES / "iosxr" / "configs"
-ENTITY_GRAPH_OUTPUT = Path(__file__).parent.parent / "output" / "entity-graph"
+ENTITY_GRAPH_OUTPUT = Path(__file__).parent.parent / "output" / "iosxr"
 
 
 class TestComputeStats:

@@ -198,7 +198,6 @@ instance_attrs:
       template: ansible-playbook.tasks.T1
     vars.app_port: '8001'
     vars.app_version: 1.8.0
-    vars.db_password: AuthP@ssw0rd
   ansible-deploy-billing-api:
     handlers:
     - name: restart_billing_api
@@ -212,7 +211,6 @@ instance_attrs:
       template: ansible-playbook.tasks.T1
     vars.app_port: '8002'
     vars.app_version: 1.3.0
-    vars.db_password: B1llingS3cret
   ansible-deploy-core-api:
     handlers:
     - name: restart_core_api
@@ -226,7 +224,6 @@ instance_attrs:
       template: ansible-playbook.tasks.T1
     vars.app_port: '8000'
     vars.app_version: 2.1.0
-    vars.db_password: Sup3rS3cretDB
   ansible-deploy-web-app:
     handlers:
     - name: restart_web_app
@@ -676,7 +673,6 @@ instance_attrs:
       ansible.builtin.systemd.scope: system
     tasks:
       template: ansible-playbook.tasks.T0
-    vars.db_password: M@riaDBr00t!
   ansible-setup-monitoring-agent:
     handlers:
     - name: restart_node_exporter
@@ -780,7 +776,6 @@ instance_attrs:
       ansible.builtin.systemd.scope: system
     tasks:
       template: ansible-playbook.tasks.T0
-    vars.db_password: Sup3rS3cretDB
   ansible-setup-prometheus:
     handlers:
     - name: restart_prometheus
@@ -1048,8 +1043,7 @@ overrides:
       any_errors_fatal: 'false'
       gather_facts: 'false'
       ignore_errors: 'true'
-      vars.deploy_key: '-----BEGIN RSA PRIVATE KEY-----MIIEpAIBAAKCAQEA0Z3VS5JJcds3xfn/ygWep-----END
-        RSA PRIVATE KEY-----'
+      vars.deploy_key: '[REDACTED]'
       vars.rollback_version: previous
   ansible-setup-mariadb:
     owner: _base_only
@@ -1058,6 +1052,7 @@ overrides:
       become_user: root
       gather_facts: 'true'
       ignore_errors: 'false'
+      vars.db_password: '[REDACTED]'
       vars.maria_data_dir: /var/lib/mysql
       vars.maria_version: '10.11'
   ansible-setup-postgresql:
@@ -1067,6 +1062,7 @@ overrides:
       become_user: root
       gather_facts: 'true'
       ignore_errors: 'false'
+      vars.db_password: '[REDACTED]'
       vars.pg_data_dir: /var/lib/postgresql/16/main
       vars.pg_version: '16'
   ansible-base-server:
@@ -1077,11 +1073,17 @@ overrides:
   ansible-deploy-auth-service:
     owner: any_errors_fatal_false_gather_facts_true
     delta:
-      vars.jwt_secret: xK9mPqR7vL2nW5jF8hT3yB6cD4gA1sE
+      vars.db_password: '[REDACTED]'
+      vars.jwt_secret: '[REDACTED]'
   ansible-deploy-billing-api:
     owner: any_errors_fatal_false_gather_facts_true
     delta:
-      vars.stripe_key: sk_live_4eC39HqLyjWDarjtT1zdp7dc
+      vars.db_password: '[REDACTED]'
+      vars.stripe_key: '[REDACTED]'
+  ansible-deploy-core-api:
+    owner: any_errors_fatal_false_gather_facts_true
+    delta:
+      vars.db_password: '[REDACTED]'
   ansible-deploy-web-app:
     owner: any_errors_fatal_false_gather_facts_true
     delta:
@@ -1099,7 +1101,7 @@ overrides:
       become_user: root
       vars.backup_dir: /opt/ridgeline/backups
       vars.backup_retention: '30'
-      vars.encryption_key: Bkup3ncryptK3y!
+      vars.encryption_key: '[REDACTED]'
   ansible-setup-cloud-init:
     owner: any_errors_fatal_false_gather_facts_true
     delta:
@@ -1127,7 +1129,7 @@ overrides:
     owner: any_errors_fatal_false_gather_facts_true
     delta:
       become_user: root
-      vars.api_key: Tr@efikAPI_K3y
+      vars.api_key: '[REDACTED]'
       vars.traefik_version: '3.0'
   ansible-update-packages:
     owner: any_errors_fatal_false_gather_facts_true

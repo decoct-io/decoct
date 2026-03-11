@@ -1,0 +1,177 @@
+meta:
+  entity_type: systemd-unit
+  tier_b_ref: systemd-unit_classes.yaml
+  total_instances: 10
+class_assignments:
+  _base_only:
+    instances:
+    - systemd-backup-timer
+    - systemd-report-gen-timer
+    - systemd-web-app
+  wantedby_multi_user_target_environment__REDACTED:
+    instances:
+    - systemd-analytics-worker
+    - systemd-auth-service
+    - systemd-backup-svc
+    - systemd-billing-api
+    - systemd-core-api
+    - systemd-legacy-dashboard
+    - systemd-report-gen-svc
+subclass_assignments:
+  wantedby_multi_user_target_environment__REDACTED_group_ridgeline_limitnproc_409:
+    parent: wantedby_multi_user_target_environment__REDACTED
+    instances:
+    - systemd-auth-service
+    - systemd-billing-api
+    - systemd-core-api
+    - systemd-legacy-dashboard
+    - systemd-report-gen-svc
+instance_data:
+  schema:
+  - Unit.description
+  records:
+    systemd-analytics-worker:
+    - Ridgeline Analytics Worker
+    systemd-auth-service:
+    - Ridgeline Auth Service
+    systemd-backup-svc:
+    - Ridgeline DB Backup Service
+    systemd-backup-timer:
+    - Ridgeline DB Backup Timer
+    systemd-billing-api:
+    - Ridgeline Billing API Service
+    systemd-core-api:
+    - Ridgeline Core API Service
+    systemd-legacy-dashboard:
+    - Ridgeline Legacy Dashboard (Flask)
+    systemd-report-gen-svc:
+    - Ridgeline Report Generator
+    systemd-report-gen-timer:
+    - Ridgeline Report Generator Timer
+    systemd-web-app:
+    - Ridgeline Web App (Node.js SSR)
+instance_attrs:
+  systemd-analytics-worker:
+    Service.execstart: /opt/ridgeline/analytics/venv/bin/celery -A 
+      analytics.tasks worker --loglevel=info --concurrency=4
+    Service.restart: on-failure
+    Service.restartsec: '10'
+    Service.timeoutstartsec: '120'
+    Service.timeoutstopsec: '120'
+    Service.type: simple
+    Service.workingdirectory: /opt/ridgeline/analytics
+    Unit.after: network.target redis.service
+    Unit.wants: redis.service
+  systemd-auth-service:
+    Service.execstart: /opt/ridgeline/auth-service/venv/bin/uvicorn 
+      auth_svc.main:app --host 0.0.0.0 --port 8001
+    Service.restart: always
+    Service.restartsec: '10'
+    Service.timeoutstartsec: '90'
+    Service.timeoutstopsec: '90'
+    Service.type: simple
+    Service.workingdirectory: /opt/ridgeline/auth-service
+    Unit.after: network.target postgresql.service
+    Unit.wants: postgresql.service
+  systemd-backup-svc:
+    Service.execstart: /opt/ridgeline/scripts/backup-all-dbs.sh
+    Service.timeoutstartsec: '600'
+    Service.timeoutstopsec: '120'
+    Service.type: oneshot
+    Service.workingdirectory: /opt/ridgeline/scripts
+    Unit.after: postgresql.service
+  systemd-backup-timer:
+    Timer.oncalendar: '*-*-* 03:00:00'
+    Timer.unit: db-backup.service
+  systemd-billing-api:
+    Service.execstart: /opt/ridgeline/billing-api/venv/bin/uvicorn 
+      billing.main:app --host 0.0.0.0 --port 8002
+    Service.restart: on-failure
+    Service.restartsec: '5'
+    Service.timeoutstartsec: '90'
+    Service.timeoutstopsec: '90'
+    Service.type: simple
+    Service.workingdirectory: /opt/ridgeline/billing-api
+    Unit.after: network.target mariadb.service
+    Unit.wants: mariadb.service
+  systemd-core-api:
+    Service.execstart: /opt/ridgeline/core-api/venv/bin/uvicorn 
+      core_api.main:app --host 0.0.0.0 --port 8000
+    Service.restart: on-failure
+    Service.restartsec: '5'
+    Service.timeoutstartsec: '90'
+    Service.timeoutstopsec: '90'
+    Service.type: simple
+    Service.workingdirectory: /opt/ridgeline/core-api
+    Unit.after: network.target postgresql.service
+    Unit.wants: postgresql.service
+  systemd-legacy-dashboard:
+    Service.execstart: /opt/ridgeline/legacy-dashboard/venv/bin/gunicorn -w 4 -b
+      0.0.0.0:5000 dashboard.app:app
+    Service.restart: always
+    Service.restartsec: '5'
+    Service.timeoutstartsec: '60'
+    Service.timeoutstopsec: '30'
+    Service.type: simple
+    Service.workingdirectory: /opt/ridgeline/legacy-dashboard
+    Unit.after: network.target mariadb.service
+    Unit.wants: mariadb.service
+  systemd-report-gen-svc:
+    Service.execstart: /opt/ridgeline/report-gen/venv/bin/python -m 
+      report_gen.main
+    Service.timeoutstartsec: '300'
+    Service.timeoutstopsec: '60'
+    Service.type: oneshot
+    Service.workingdirectory: /opt/ridgeline/report-gen
+    Unit.after: postgresql.service
+  systemd-report-gen-timer:
+    Timer.oncalendar: '*-*-* 02:00:00'
+    Timer.unit: report-generator.service
+  systemd-web-app:
+    Service.execstart: /usr/bin/node /opt/ridgeline/web-app/server.js
+    Service.restart: on-failure
+    Service.restartsec: '5'
+    Service.timeoutstartsec: '30'
+    Service.timeoutstopsec: '30'
+    Service.type: simple
+    Service.workingdirectory: /opt/ridgeline/web-app
+    Unit.after: network.target
+overrides:
+  systemd-backup-timer:
+    owner: _base_only
+    delta:
+      Install.wantedby: timers.target
+      Timer.persistent: 'true'
+  systemd-report-gen-timer:
+    owner: _base_only
+    delta:
+      Install.wantedby: timers.target
+      Timer.persistent: 'true'
+  systemd-web-app:
+    owner: _base_only
+    delta:
+      Install.wantedby: multi-user.target
+      Service.environment: '"NODE_ENV=production","PORT=3000"'
+      Service.group: ridgeline
+      Service.limitnofile: '65535'
+      Service.limitnproc: '4096'
+      Service.user: ridgeline
+  systemd-analytics-worker:
+    owner: wantedby_multi_user_target_environment__REDACTED
+    delta:
+      Service.group: ridgeline
+      Service.limitnproc: '8192'
+      Service.user: ridgeline
+  systemd-backup-svc:
+    owner: wantedby_multi_user_target_environment__REDACTED
+    delta:
+      Service.group: root
+      Service.limitnproc: '4096'
+      Service.remainafterexit: 'true'
+      Service.user: root
+  systemd-report-gen-svc:
+    owner: 
+      wantedby_multi_user_target_environment__REDACTED_group_ridgeline_limitnproc_409
+    delta:
+      Service.remainafterexit: 'true'
+foreign_keys: {}

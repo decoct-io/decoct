@@ -1,0 +1,21 @@
+meta:
+  subject: vacuum-cost-management
+  description: Parameters controlling the resource usage of VACUUM operations.
+  source_type: postgresql
+  total_instances: 6
+base_class:
+  vacuum_buffer_usage_limit: 2MB
+  vacuum_cost_delay: '0'
+  vacuum_cost_limit: '200'
+  vacuum_cost_page_dirty: '20'
+  vacuum_cost_page_hit: '1'
+  vacuum_cost_page_miss: '2'
+class_assignments:
+  _base_only:
+    instances:
+    - pg-dev
+    - pg-migration
+    - pg-prod-analytics
+    - pg-prod-primary
+    - pg-prod-replica
+    - pg-staging

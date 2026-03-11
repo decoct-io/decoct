@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generate hybrid infrastructure test fixtures from CSV inputs + Jinja2 templates.
 
-Produces ~100 mixed-format files (YAML + JSON + INI) exercising 8 bundled schemas
+Produces ~100 mixed-format files (YAML + JSON + INI) spanning 8+ platform types
 across all three supported input formats. Represents a realistic SaaS deployment
 ("Ridgeline Data") with intentional inconsistencies and embedded secrets.
 
@@ -23,7 +23,6 @@ import json
 import re
 import sys
 from collections import defaultdict
-from io import StringIO
 from pathlib import Path
 
 import yaml

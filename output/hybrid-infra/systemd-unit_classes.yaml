@@ -1,0 +1,28 @@
+meta:
+  entity_type: systemd-unit
+  total_instances: 10
+  max_inheritance_depth: 2
+  tier_c_ref: systemd-unit_instances.yaml
+base_class: {}
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 3
+  wantedby_multi_user_target_environment__REDACTED:
+    inherits: base
+    own_attrs:
+      Install.wantedby: multi-user.target
+      Service.environment: '[REDACTED]'
+      Service.limitnofile: '65535'
+    instance_count_inclusive: 7
+subclasses:
+  wantedby_multi_user_target_environment__REDACTED_group_ridgeline_limitnproc_409:
+    parent: wantedby_multi_user_target_environment__REDACTED
+    own_attrs:
+      Service.group: ridgeline
+      Service.limitnproc: '4096'
+      Service.user: ridgeline
+    instance_count: 5
+assertions:
+  base_only_ratio: 0.3

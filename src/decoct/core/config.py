@@ -36,3 +36,11 @@ class EntityGraphConfig:
 
     # Token estimation
     token_cost_class_ref: int = 4
+
+    # Source fidelity validation (Phase 1)
+    source_fidelity_mode: str = "error"  # "error", "warn", or "skip"
+
+    # Secrets masking (Phase 0)
+    secrets_entropy_threshold_b64: float = 4.5
+    secrets_entropy_threshold_hex: float = 3.0
+    secrets_min_entropy_length: int = 16

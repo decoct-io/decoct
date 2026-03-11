@@ -1,0 +1,43 @@
+meta:
+  subject: query-planning-and-optimization
+  description: Parameters influencing the PostgreSQL query planner and 
+    execution.
+  source_type: postgresql
+  total_instances: 6
+base_class:
+  constraint_exclusion: partition
+  cpu_index_tuple_cost: '0.005'
+  cpu_operator_cost: '0.0025'
+  cpu_tuple_cost: '0.01'
+  cursor_tuple_fraction: '0.1'
+  enable_partitionwise_aggregate: 'false'
+  enable_partitionwise_join: 'false'
+  from_collapse_limit: '8'
+  geqo: 'true'
+  geqo_effort: '5'
+  geqo_generations: '0'
+  geqo_pool_size: '0'
+  geqo_seed: '0'
+  geqo_selection_bias: '2.0'
+  geqo_threshold: '12'
+  jit_above_cost: '100000'
+  jit_inline_above_cost: '500000'
+  jit_optimize_above_cost: '500000'
+  join_collapse_limit: '8'
+  min_parallel_index_scan_size: 512kB
+  min_parallel_table_scan_size: 8MB
+  parallel_leader_participation: 'true'
+  parallel_setup_cost: '1000'
+  parallel_tuple_cost: '0.1'
+  plan_cache_mode: auto
+  recursive_worktable_factor: '10.0'
+  seq_page_cost: '1.0'
+class_assignments:
+  _base_only:
+    instances:
+    - pg-dev
+    - pg-migration
+    - pg-prod-analytics
+    - pg-prod-primary
+    - pg-prod-replica
+    - pg-staging

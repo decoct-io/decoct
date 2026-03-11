@@ -1,0 +1,228 @@
+meta:
+  entity_type: iosxr-access-pe
+  total_instances: 60
+  max_inheritance_depth: 2
+  tier_c_ref: iosxr-access-pe_instances.yaml
+base_class:
+  aaa.accounting.commands: 15 default start-stop group tacacs+
+  aaa.accounting.exec: default start-stop group tacacs+
+  aaa.authentication: login default group tacacs+ local
+  aaa.authorization.commands: 15 default group tacacs+ local
+  aaa.authorization.exec: default group tacacs+ local
+  clock: timezone UTC 0
+  control-plane.management-plane.inband.interface.all.allow.SNMP: 'true'
+  control-plane.management-plane.inband.interface.all.allow.SSH: 'true'
+  domain.lookup: disable
+  domain.name: lab.example.com
+  domain.name-server.10.255.2.1: 'true'
+  domain.name-server.10.255.2.2: 'true'
+  evpn.evis: iosxr-access-pe.evpn.evis.T0
+  interface.BVI100.ipv4: address 10.0.1.100 255.255.255.0
+  interface.BVI100.shutdown: 'false'
+  interface.BVI200.ipv4: address 10.0.1.200 255.255.255.0
+  interface.BVI200.shutdown: 'false'
+  interface.BVI300.ipv4: address 10.0.1.300 255.255.255.0
+  interface.BVI300.shutdown: 'false'
+  interface.Bundle-Ether100.100: l2transport
+  interface.Bundle-Ether100.100.encapsulation: dot1q 100
+  interface.Bundle-Ether200.200: l2transport
+  interface.Bundle-Ether200.200.encapsulation: dot1q 200
+  interface.Bundle-Ether300.300: l2transport
+  interface.Bundle-Ether300.300.encapsulation: dot1q 300
+  interface.Loopback0.shutdown: 'false'
+  interface.MgmtEth0/RP0/CPU0/0.shutdown: 'false'
+  interface.TenGigE0/0/0/0.arp: timeout 14400
+  interface.TenGigE0/0/0/0.bandwidth: '100000'
+  interface.TenGigE0/0/0/0.carrier-delay.down: '0'
+  interface.TenGigE0/0/0/0.carrier-delay.up: '0'
+  interface.TenGigE0/0/0/0.cdp: 'true'
+  interface.TenGigE0/0/0/0.load-interval: '300'
+  interface.TenGigE0/0/0/0.mtu: '9216'
+  interface.TenGigE0/0/0/0.shutdown: 'false'
+  interface.TenGigE0/0/0/1.arp: timeout 14400
+  interface.TenGigE0/0/0/1.bandwidth: '100000'
+  interface.TenGigE0/0/0/1.carrier-delay.down: '0'
+  interface.TenGigE0/0/0/1.carrier-delay.up: '0'
+  interface.TenGigE0/0/0/1.cdp: 'true'
+  interface.TenGigE0/0/0/1.load-interval: '300'
+  interface.TenGigE0/0/0/1.mtu: '9216'
+  interface.TenGigE0/0/0/1.shutdown: 'false'
+  line: default
+  line.exec-timeout: 15 0
+  line.session-timeout: '15'
+  line.transport: input ssh
+  logging.10.255.1.1: vrf default severity info port default
+  logging.buffered: 307200 debugging
+  logging.console: informational
+  logging.events: link-status
+  logging.monitor: debugging
+  logging.source-interface: Loopback0
+  logging.trap: informational
+  mpls: ldp
+  mpls.address-family: ipv4
+  mpls.discovery.hello.hold-time: '15'
+  mpls.discovery.hello.interval: '5'
+  mpls.discovery.targeted-hello.hold-time: '90'
+  mpls.discovery.targeted-hello.interval: '10'
+  mpls.graceful-restart: 'true'
+  mpls.log: neighbor
+  ntp.server.10.255.0.1: 'true'
+  ntp.server.10.255.0.2: 'true'
+  ntp.source: Loopback0
+  ntp.update-calendar: 'true'
+  router.isis.CORE.address-family.ipv4-unicast.metric-style: wide
+  router.isis.CORE.address-family.ipv4-unicast.mpls.traffic-eng.level-2-only: 'true'
+  router.isis.CORE.address-family.ipv4-unicast.mpls.traffic-eng.router-id: 
+    Loopback0
+  router.isis.CORE.address-family.ipv4-unicast.router-id: Loopback0
+  router.isis.CORE.address-family.ipv4-unicast.segment-routing: mpls sr-prefer
+  router.isis.CORE.address-family.ipv6-unicast.metric-style: wide
+  router.isis.CORE.address-family.ipv6-unicast.segment-routing: mpls sr-prefer
+  router.isis.CORE.interface.Loopback0.address-family: ipv6 unicast
+  router.isis.CORE.interface.Loopback0.passive: 'true'
+  router.isis.CORE.interface.TenGigE0/0/0/0.address-family.ipv4-unicast.metric: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/0.address-family.ipv6-unicast.metric: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/0.csnp-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/0.hello-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/0.hello-multiplier: '3'
+  router.isis.CORE.interface.TenGigE0/0/0/0.point-to-point: 'true'
+  router.isis.CORE.interface.TenGigE0/0/0/0.retransmit-interval: '5'
+  router.isis.CORE.interface.TenGigE0/0/0/1.address-family.ipv4-unicast.metric: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/1.address-family.ipv6-unicast.metric: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/1.csnp-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/1.hello-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/1.hello-multiplier: '3'
+  router.isis.CORE.interface.TenGigE0/0/0/1.point-to-point: 'true'
+  router.isis.CORE.interface.TenGigE0/0/0/1.retransmit-interval: '5'
+  router.isis.CORE.is-type: level-2-only
+  router.isis.CORE.log: adjacency changes
+  router.isis.CORE.lsp-lifetime: '1200'
+  router.isis.CORE.lsp-mtu: '1497'
+  router.isis.CORE.lsp-refresh-interval: '900'
+  router.static.address-family.ipv4-unicast.0.0.0.0/0: MgmtEth0/RP0/CPU0/0 
+    192.168.101.254
+  segment-routing.global-block: 16000 23999
+  segment-routing.local-block: 15000 15999
+  service.timestamps.debug: datetime msec localtime show-timezone
+  service.timestamps.log: datetime msec localtime show-timezone
+  snmp-server.community.S3cr3tRO_c0mmunity: RO
+  snmp-server.community.S3cr3tRW_c0mmunity: RW
+  snmp-server.contact: noc@example.com
+  snmp-server.enable.traps.bgp: 'true'
+  snmp-server.enable.traps.isis: 'true'
+  snmp-server.enable.traps.snmp: linkdown linkup
+  snmp-server.host: '[REDACTED]'
+  snmp-server.trap-source: Loopback0
+  ssh.server.logging: 'true'
+  ssh.server.rate-limit: '60'
+  ssh.server.v2: 'true'
+  ssh.timeout: '30'
+  tacacs-server: host T4c4csK3y!2024 port 49
+  tacacs-server.key: 7 T4c4csK3y!2024
+classes:
+  ebgp_1_ibgp_1:
+    inherits: base
+    own_attrs:
+      router.bgp.65002.address-family.ipv4-unicast.maximum-paths.ebgp: '1'
+      router.bgp.65002.address-family.ipv4-unicast.maximum-paths.ibgp: '1'
+      router.bgp.65002.neighbors:
+        10.0.0.11:
+          remote-as: '65002'
+          description: RR-1
+          update-source: Loopback0
+          address-family.ipv4-unicast.soft-reconfiguration: inbound always
+          address-family.vpnv4-unicast.soft-reconfiguration: inbound always
+          address-family.l2vpn-evpn.soft-reconfiguration: inbound always
+          advertisement-interval: '30'
+          timers: 60 180
+        10.0.0.12:
+          remote-as: '65002'
+          description: RR-2
+          update-source: Loopback0
+          address-family.ipv4-unicast.soft-reconfiguration: inbound always
+          address-family.vpnv4-unicast.soft-reconfiguration: inbound always
+          address-family.l2vpn-evpn.soft-reconfiguration: inbound always
+          advertisement-interval: '30'
+          timers: 60 180
+    instance_count_inclusive: 20
+  ebgp_1_ibgp_1_1:
+    inherits: base
+    own_attrs:
+      router.bgp.65003.address-family.ipv4-unicast.maximum-paths.ebgp: '1'
+      router.bgp.65003.address-family.ipv4-unicast.maximum-paths.ibgp: '1'
+      router.bgp.65003.neighbors:
+        10.0.0.13:
+          remote-as: '65003'
+          description: RR-1
+          update-source: Loopback0
+          address-family.ipv4-unicast.soft-reconfiguration: inbound always
+          address-family.vpnv4-unicast.soft-reconfiguration: inbound always
+          address-family.l2vpn-evpn.soft-reconfiguration: inbound always
+          advertisement-interval: '30'
+          timers: 60 180
+        10.0.0.14:
+          remote-as: '65003'
+          description: RR-2
+          update-source: Loopback0
+          address-family.ipv4-unicast.soft-reconfiguration: inbound always
+          address-family.vpnv4-unicast.soft-reconfiguration: inbound always
+          address-family.l2vpn-evpn.soft-reconfiguration: inbound always
+          advertisement-interval: '30'
+          timers: 60 180
+    instance_count_inclusive: 20
+  ebgp_1_ibgp_1_2:
+    inherits: base
+    own_attrs:
+      router.bgp.65004.address-family.ipv4-unicast.maximum-paths.ebgp: '1'
+      router.bgp.65004.address-family.ipv4-unicast.maximum-paths.ibgp: '1'
+      router.bgp.65004.neighbors:
+        10.0.0.11:
+          remote-as: '65004'
+          description: RR-1
+          update-source: Loopback0
+          address-family.ipv4-unicast.soft-reconfiguration: inbound always
+          address-family.vpnv4-unicast.soft-reconfiguration: inbound always
+          address-family.l2vpn-evpn.soft-reconfiguration: inbound always
+          advertisement-interval: '30'
+          timers: 60 180
+        10.0.0.13:
+          remote-as: '65004'
+          description: RR-2
+          update-source: Loopback0
+          address-family.ipv4-unicast.soft-reconfiguration: inbound always
+          address-family.vpnv4-unicast.soft-reconfiguration: inbound always
+          address-family.l2vpn-evpn.soft-reconfiguration: inbound always
+          advertisement-interval: '30'
+          timers: 60 180
+    instance_count_inclusive: 20
+subclasses:
+  ebgp_1_ibgp_1_1_identifier_64512_65001_true:
+    parent: ebgp_1_ibgp_1_1
+    own_attrs:
+      router.bgp.65003.bgp.confederation.identifier: '64512'
+      router.bgp.65003.bgp.confederation.peers.65001: 'true'
+      router.bgp.65003.bgp.confederation.peers.65002: 'true'
+    instance_count: 20
+  ebgp_1_ibgp_1_2_identifier_64512_65001_true:
+    parent: ebgp_1_ibgp_1_2
+    own_attrs:
+      router.bgp.65004.bgp.confederation.identifier: '64512'
+      router.bgp.65004.bgp.confederation.peers.65001: 'true'
+      router.bgp.65004.bgp.confederation.peers.65002: 'true'
+    instance_count: 20
+  ebgp_1_ibgp_1_identifier_64512_65001_true:
+    parent: ebgp_1_ibgp_1
+    own_attrs:
+      router.bgp.65002.bgp.confederation.identifier: '64512'
+      router.bgp.65002.bgp.confederation.peers.65001: 'true'
+      router.bgp.65002.bgp.confederation.peers.65003: 'true'
+    instance_count: 20
+composite_templates:
+  evpn.evis:
+    iosxr-access-pe.evpn.evis.T0:
+      elements:
+        advertise-mac: 'true'
+        bgp.route-target.export: 65002:10000
+        bgp.route-target.import: 65002:10000
+assertions:
+  base_only_ratio: 0.0

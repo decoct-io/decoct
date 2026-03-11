@@ -1,0 +1,21 @@
+meta:
+  subject: general-settings
+  description: General SSH daemon configuration settings.
+  source_type: sshd
+  total_instances: 4
+base_class:
+  FingerprintHash: sha256
+  GatewayPorts: 'false'
+  PermitTunnel: 'false'
+  PrintLastLog: 'true'
+  SyslogFacility: AUTH
+  TCPKeepAlive: 'true'
+  X11DisplayOffset: '10'
+  X11UseLocalhost: 'true'
+class_assignments:
+  _base_only:
+    instances:
+    - sshd-bastion
+    - sshd-dev
+    - sshd-prod
+    - sshd-staging

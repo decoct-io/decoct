@@ -1,0 +1,318 @@
+meta:
+  subject: bgp-routing
+  description: Configuration for the BGP routing protocol, including address 
+    families, maximum paths, timers, and graceful restart.
+  source_type: iosxr-access-pe
+  total_instances: 60
+classes:
+  address_family_l2vpn_evpn_maximum_paths_ibgp_1:
+    inherits: base
+    own_attrs:
+      router.bgp.65002.address-family: l2vpn-evpn
+      router.bgp.65002.address-family.ipv4-unicast.maximum-paths: ibgp 1
+      router.bgp.65002.bgp: log neighbor changes detail
+    instance_count_inclusive: 20
+  address_family_l2vpn_evpn_maximum_paths_ibgp_1_1:
+    inherits: base
+    own_attrs:
+      router.bgp.65003.address-family: l2vpn-evpn
+      router.bgp.65003.address-family.ipv4-unicast.maximum-paths: ibgp 1
+      router.bgp.65003.bgp: log neighbor changes detail
+    instance_count_inclusive: 20
+  address_family_l2vpn_evpn_maximum_paths_ibgp_1_2:
+    inherits: base
+    own_attrs:
+      router.bgp.65004.address-family: l2vpn-evpn
+      router.bgp.65004.address-family.ipv4-unicast.maximum-paths: ibgp 1
+      router.bgp.65004.bgp: log neighbor changes detail
+    instance_count_inclusive: 20
+subclasses:
+  address_family_l2vpn_evpn_maximum_paths_ibgp_1_1_distance_bgp_20_200_200_gracef:
+    parent: address_family_l2vpn_evpn_maximum_paths_ibgp_1_1
+    own_attrs:
+      router.bgp.65003.distance: bgp 20 200 200
+      router.bgp.65003.graceful-restart: 'true'
+      router.bgp.65003.timers: bgp 60 180
+    instance_count: 20
+  address_family_l2vpn_evpn_maximum_paths_ibgp_1_2_distance_bgp_20_200_200_gracef:
+    parent: address_family_l2vpn_evpn_maximum_paths_ibgp_1_2
+    own_attrs:
+      router.bgp.65004.distance: bgp 20 200 200
+      router.bgp.65004.graceful-restart: 'true'
+      router.bgp.65004.timers: bgp 60 180
+    instance_count: 20
+  address_family_l2vpn_evpn_maximum_paths_ibgp_1_distance_bgp_20_200_200_gracef:
+    parent: address_family_l2vpn_evpn_maximum_paths_ibgp_1
+    own_attrs:
+      router.bgp.65002.distance: bgp 20 200 200
+      router.bgp.65002.graceful-restart: 'true'
+      router.bgp.65002.timers: bgp 60 180
+    instance_count: 20
+class_assignments:
+  address_family_l2vpn_evpn_maximum_paths_ibgp_1:
+    instances:
+    - APE-R1-01..APE-R1-20
+  address_family_l2vpn_evpn_maximum_paths_ibgp_1_1:
+    instances:
+    - APE-R2-01..APE-R2-20
+  address_family_l2vpn_evpn_maximum_paths_ibgp_1_2:
+    instances:
+    - APE-R3-01..APE-R3-20
+subclass_assignments:
+  address_family_l2vpn_evpn_maximum_paths_ibgp_1_1_distance_bgp_20_200_200_gracef:
+    parent: address_family_l2vpn_evpn_maximum_paths_ibgp_1_1
+    instances:
+    - APE-R2-01..APE-R2-20
+  address_family_l2vpn_evpn_maximum_paths_ibgp_1_2_distance_bgp_20_200_200_gracef:
+    parent: address_family_l2vpn_evpn_maximum_paths_ibgp_1_2
+    instances:
+    - APE-R3-01..APE-R3-20
+  address_family_l2vpn_evpn_maximum_paths_ibgp_1_distance_bgp_20_200_200_gracef:
+    parent: address_family_l2vpn_evpn_maximum_paths_ibgp_1
+    instances:
+    - APE-R1-01..APE-R1-20
+instance_data:
+  schema:
+  - hostname
+  records:
+    APE-R1-01:
+    - APE-R1-01
+    APE-R1-02:
+    - APE-R1-02
+    APE-R1-03:
+    - APE-R1-03
+    APE-R1-04:
+    - APE-R1-04
+    APE-R1-05:
+    - APE-R1-05
+    APE-R1-06:
+    - APE-R1-06
+    APE-R1-07:
+    - APE-R1-07
+    APE-R1-08:
+    - APE-R1-08
+    APE-R1-09:
+    - APE-R1-09
+    APE-R1-10:
+    - APE-R1-10
+    APE-R1-11:
+    - APE-R1-11
+    APE-R1-12:
+    - APE-R1-12
+    APE-R1-13:
+    - APE-R1-13
+    APE-R1-14:
+    - APE-R1-14
+    APE-R1-15:
+    - APE-R1-15
+    APE-R1-16:
+    - APE-R1-16
+    APE-R1-17:
+    - APE-R1-17
+    APE-R1-18:
+    - APE-R1-18
+    APE-R1-19:
+    - APE-R1-19
+    APE-R1-20:
+    - APE-R1-20
+    APE-R2-01:
+    - APE-R2-01
+    APE-R2-02:
+    - APE-R2-02
+    APE-R2-03:
+    - APE-R2-03
+    APE-R2-04:
+    - APE-R2-04
+    APE-R2-05:
+    - APE-R2-05
+    APE-R2-06:
+    - APE-R2-06
+    APE-R2-07:
+    - APE-R2-07
+    APE-R2-08:
+    - APE-R2-08
+    APE-R2-09:
+    - APE-R2-09
+    APE-R2-10:
+    - APE-R2-10
+    APE-R2-11:
+    - APE-R2-11
+    APE-R2-12:
+    - APE-R2-12
+    APE-R2-13:
+    - APE-R2-13
+    APE-R2-14:
+    - APE-R2-14
+    APE-R2-15:
+    - APE-R2-15
+    APE-R2-16:
+    - APE-R2-16
+    APE-R2-17:
+    - APE-R2-17
+    APE-R2-18:
+    - APE-R2-18
+    APE-R2-19:
+    - APE-R2-19
+    APE-R2-20:
+    - APE-R2-20
+    APE-R3-01:
+    - APE-R3-01
+    APE-R3-02:
+    - APE-R3-02
+    APE-R3-03:
+    - APE-R3-03
+    APE-R3-04:
+    - APE-R3-04
+    APE-R3-05:
+    - APE-R3-05
+    APE-R3-06:
+    - APE-R3-06
+    APE-R3-07:
+    - APE-R3-07
+    APE-R3-08:
+    - APE-R3-08
+    APE-R3-09:
+    - APE-R3-09
+    APE-R3-10:
+    - APE-R3-10
+    APE-R3-11:
+    - APE-R3-11
+    APE-R3-12:
+    - APE-R3-12
+    APE-R3-13:
+    - APE-R3-13
+    APE-R3-14:
+    - APE-R3-14
+    APE-R3-15:
+    - APE-R3-15
+    APE-R3-16:
+    - APE-R3-16
+    APE-R3-17:
+    - APE-R3-17
+    APE-R3-18:
+    - APE-R3-18
+    APE-R3-19:
+    - APE-R3-19
+    APE-R3-20:
+    - APE-R3-20
+instance_attrs:
+  APE-R1-01:
+    router.bgp.65002.address-family.ipv4-unicast.network: 10.0.1.1/32
+  APE-R1-02:
+    router.bgp.65002.address-family.ipv4-unicast.network: 10.0.1.2/32
+  APE-R1-03:
+    router.bgp.65002.address-family.ipv4-unicast.network: 10.0.1.3/32
+  APE-R1-04:
+    router.bgp.65002.address-family.ipv4-unicast.network: 10.0.1.4/32
+  APE-R1-05:
+    router.bgp.65002.address-family.ipv4-unicast.network: 10.0.1.5/32
+  APE-R1-06:
+    router.bgp.65002.address-family.ipv4-unicast.network: 10.0.1.6/32
+  APE-R1-07:
+    router.bgp.65002.address-family.ipv4-unicast.network: 10.0.1.7/32
+  APE-R1-08:
+    router.bgp.65002.address-family.ipv4-unicast.network: 10.0.1.8/32
+  APE-R1-09:
+    router.bgp.65002.address-family.ipv4-unicast.network: 10.0.1.9/32
+  APE-R1-10:
+    router.bgp.65002.address-family.ipv4-unicast.network: 10.0.1.10/32
+  APE-R1-11:
+    router.bgp.65002.address-family.ipv4-unicast.network: 10.0.1.11/32
+  APE-R1-12:
+    router.bgp.65002.address-family.ipv4-unicast.network: 10.0.1.12/32
+  APE-R1-13:
+    router.bgp.65002.address-family.ipv4-unicast.network: 10.0.1.13/32
+  APE-R1-14:
+    router.bgp.65002.address-family.ipv4-unicast.network: 10.0.1.14/32
+  APE-R1-15:
+    router.bgp.65002.address-family.ipv4-unicast.network: 10.0.1.15/32
+  APE-R1-16:
+    router.bgp.65002.address-family.ipv4-unicast.network: 10.0.1.16/32
+  APE-R1-17:
+    router.bgp.65002.address-family.ipv4-unicast.network: 10.0.1.17/32
+  APE-R1-18:
+    router.bgp.65002.address-family.ipv4-unicast.network: 10.0.1.18/32
+  APE-R1-19:
+    router.bgp.65002.address-family.ipv4-unicast.network: 10.0.1.19/32
+  APE-R1-20:
+    router.bgp.65002.address-family.ipv4-unicast.network: 10.0.1.20/32
+  APE-R2-01:
+    router.bgp.65003.address-family.ipv4-unicast.network: 10.0.1.21/32
+  APE-R2-02:
+    router.bgp.65003.address-family.ipv4-unicast.network: 10.0.1.22/32
+  APE-R2-03:
+    router.bgp.65003.address-family.ipv4-unicast.network: 10.0.1.23/32
+  APE-R2-04:
+    router.bgp.65003.address-family.ipv4-unicast.network: 10.0.1.24/32
+  APE-R2-05:
+    router.bgp.65003.address-family.ipv4-unicast.network: 10.0.1.25/32
+  APE-R2-06:
+    router.bgp.65003.address-family.ipv4-unicast.network: 10.0.1.26/32
+  APE-R2-07:
+    router.bgp.65003.address-family.ipv4-unicast.network: 10.0.1.27/32
+  APE-R2-08:
+    router.bgp.65003.address-family.ipv4-unicast.network: 10.0.1.28/32
+  APE-R2-09:
+    router.bgp.65003.address-family.ipv4-unicast.network: 10.0.1.29/32
+  APE-R2-10:
+    router.bgp.65003.address-family.ipv4-unicast.network: 10.0.1.30/32
+  APE-R2-11:
+    router.bgp.65003.address-family.ipv4-unicast.network: 10.0.1.31/32
+  APE-R2-12:
+    router.bgp.65003.address-family.ipv4-unicast.network: 10.0.1.32/32
+  APE-R2-13:
+    router.bgp.65003.address-family.ipv4-unicast.network: 10.0.1.33/32
+  APE-R2-14:
+    router.bgp.65003.address-family.ipv4-unicast.network: 10.0.1.34/32
+  APE-R2-15:
+    router.bgp.65003.address-family.ipv4-unicast.network: 10.0.1.35/32
+  APE-R2-16:
+    router.bgp.65003.address-family.ipv4-unicast.network: 10.0.1.36/32
+  APE-R2-17:
+    router.bgp.65003.address-family.ipv4-unicast.network: 10.0.1.37/32
+  APE-R2-18:
+    router.bgp.65003.address-family.ipv4-unicast.network: 10.0.1.38/32
+  APE-R2-19:
+    router.bgp.65003.address-family.ipv4-unicast.network: 10.0.1.39/32
+  APE-R2-20:
+    router.bgp.65003.address-family.ipv4-unicast.network: 10.0.1.40/32
+  APE-R3-01:
+    router.bgp.65004.address-family.ipv4-unicast.network: 10.0.1.41/32
+  APE-R3-02:
+    router.bgp.65004.address-family.ipv4-unicast.network: 10.0.1.42/32
+  APE-R3-03:
+    router.bgp.65004.address-family.ipv4-unicast.network: 10.0.1.43/32
+  APE-R3-04:
+    router.bgp.65004.address-family.ipv4-unicast.network: 10.0.1.44/32
+  APE-R3-05:
+    router.bgp.65004.address-family.ipv4-unicast.network: 10.0.1.45/32
+  APE-R3-06:
+    router.bgp.65004.address-family.ipv4-unicast.network: 10.0.1.46/32
+  APE-R3-07:
+    router.bgp.65004.address-family.ipv4-unicast.network: 10.0.1.47/32
+  APE-R3-08:
+    router.bgp.65004.address-family.ipv4-unicast.network: 10.0.1.48/32
+  APE-R3-09:
+    router.bgp.65004.address-family.ipv4-unicast.network: 10.0.1.49/32
+  APE-R3-10:
+    router.bgp.65004.address-family.ipv4-unicast.network: 10.0.1.50/32
+  APE-R3-11:
+    router.bgp.65004.address-family.ipv4-unicast.network: 10.0.1.51/32
+  APE-R3-12:
+    router.bgp.65004.address-family.ipv4-unicast.network: 10.0.1.52/32
+  APE-R3-13:
+    router.bgp.65004.address-family.ipv4-unicast.network: 10.0.1.53/32
+  APE-R3-14:
+    router.bgp.65004.address-family.ipv4-unicast.network: 10.0.1.54/32
+  APE-R3-15:
+    router.bgp.65004.address-family.ipv4-unicast.network: 10.0.1.55/32
+  APE-R3-16:
+    router.bgp.65004.address-family.ipv4-unicast.network: 10.0.1.56/32
+  APE-R3-17:
+    router.bgp.65004.address-family.ipv4-unicast.network: 10.0.1.57/32
+  APE-R3-18:
+    router.bgp.65004.address-family.ipv4-unicast.network: 10.0.1.58/32
+  APE-R3-19:
+    router.bgp.65004.address-family.ipv4-unicast.network: 10.0.1.59/32
+  APE-R3-20:
+    router.bgp.65004.address-family.ipv4-unicast.network: 10.0.1.60/32

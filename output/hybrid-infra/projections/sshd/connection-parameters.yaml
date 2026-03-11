@@ -1,0 +1,22 @@
+meta:
+  subject: connection-parameters
+  description: Parameters governing SSH connection behavior and limits.
+  source_type: sshd
+  total_instances: 4
+classes:
+  AddressFamily_any_ClientAliveCountMax_3:
+    inherits: base
+    own_attrs:
+      AddressFamily: any
+      ClientAliveCountMax: '3'
+      Port: '22'
+    instance_count_inclusive: 3
+class_assignments:
+  AddressFamily_any_ClientAliveCountMax_3:
+    instances:
+    - sshd-dev
+    - sshd-prod
+    - sshd-staging
+  _base_only:
+    instances:
+    - sshd-bastion

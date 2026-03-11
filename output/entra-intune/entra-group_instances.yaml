@@ -1,13 +1,40 @@
 meta:
   entity_type: entra-group
   tier_b_ref: entra-group_classes.yaml
-  total_instances: 24
+  total_instances: 25
 class_assignments:
   _base_only:
     instances:
+    - M365-AllCompany-Comms
+    - M365-Leadership-Team
     - SG-Executive-Team
+  allowExternalSenders_false_autoSubscribeNewMembers:
+    instances:
+    - DG-All-Corp-Android
+    - DG-All-Corp-Windows
+    - DG-All-Corp-iOS
+    - DG-All-Corp-macOS
+    - DG-All-Licensed-Users
+    - DG-Dept-Engineering
+    - DG-Dept-Sales
+    - DG-Remote-Workers
+    - M365-Project-Alpha
+    - M365-Project-Beta
+    - RAG-Compliance-Admin-Role
+    - RAG-Global-Admin-Role
+    - RAG-Security-Admin-Role
+    - SG-Compliance-Officers
+    - SG-Engineering
     - SG-External-Contractors
-  hideFromAddressLists_false_hideFromOutlookClients_:
+    - SG-Finance-Users
+    - SG-HR-Users
+    - SG-Helpdesk-Staff
+    - SG-IT-Admins
+    - SG-Marketing-Users
+    - SG-Security-Team
+subclass_assignments:
+  allowExternalSenders_false_autoSubscribeNewMembers_hideFromAddressLists_false_mai:
+    parent: allowExternalSenders_false_autoSubscribeNewMembers
     instances:
     - DG-All-Corp-Android
     - DG-All-Corp-Windows
@@ -20,31 +47,6 @@ class_assignments:
     - RAG-Compliance-Admin-Role
     - RAG-Global-Admin-Role
     - RAG-Security-Admin-Role
-    - SG-Compliance-Officers
-    - SG-Engineering
-    - SG-Finance-Users
-    - SG-HR-Users
-    - SG-Helpdesk-Staff
-    - SG-IT-Admins
-    - SG-Marketing-Users
-    - SG-Security-Team
-  isAssignableToRole_false_securityEnabled_false:
-    instances:
-    - M365-Leadership-Team
-    - M365-Project-Alpha
-    - M365-Project-Beta
-subclass_assignments:
-  hideFromAddressLists_false_hideFromOutlookClients__isAssignableToRole_false_mailE:
-    parent: hideFromAddressLists_false_hideFromOutlookClients_
-    instances:
-    - DG-All-Corp-Android
-    - DG-All-Corp-Windows
-    - DG-All-Corp-iOS
-    - DG-All-Corp-macOS
-    - DG-All-Licensed-Users
-    - DG-Dept-Engineering
-    - DG-Dept-Sales
-    - DG-Remote-Workers
     - SG-Compliance-Officers
     - SG-Engineering
     - SG-Finance-Users
@@ -109,6 +111,12 @@ instance_data:
     - DG-Remote-Workers
     - dg-remote-workers
     - S-1-12-1-c7ab825c
+    M365-AllCompany-Comms:
+    - 138b16e0-f729-50d8-91b5-7b7bb287ddc1
+    - Company-wide communications and announcements
+    - M365-AllCompany-Comms
+    - m365-allcompany-comms
+    - S-1-12-1-138b16e0
     M365-Leadership-Team:
     - 310d6cef-c56a-55fb-97f8-d55b38064b7a
     - Leadership team collaboration workspace
@@ -220,8 +228,7 @@ instance_attrs:
     membershipRule: (device.deviceOSType -eq "macOS")
   DG-All-Licensed-Users:
     groupTypes: DynamicMembership
-    membershipRule: (user.assignedPlans -any (assignedPlan.servicePlanId -eq 
-      "efb87545-963c-4e0d-99df-69c6916d9eb0"))
+    membershipRule: '[REDACTED]'
   DG-Dept-Engineering:
     groupTypes: DynamicMembership
     membershipRule: (user.department -eq "Engineering")
@@ -231,6 +238,10 @@ instance_attrs:
   DG-Remote-Workers:
     groupTypes: DynamicMembership
     membershipRule: (user.extensionAttribute1 -eq "Remote")
+  M365-AllCompany-Comms:
+    groupTypes: Unified
+    mail: m365-allcompany-comms@contoso.com
+    proxyAddresses: SMTP:m365-allcompany-comms@contoso.com
   M365-Leadership-Team:
     groupTypes: Unified
     mail: m365-leadership-team@contoso.com
@@ -244,93 +255,162 @@ instance_attrs:
     mail: m365-project-beta@contoso.com
     proxyAddresses: SMTP:m365-project-beta@contoso.com
 overrides:
+  M365-AllCompany-Comms:
+    owner: _base_only
+    delta:
+      allowExternalSenders: 'true'
+      autoSubscribeNewMembers: 'true'
+      hideFromAddressLists: 'false'
+      hideFromOutlookClients: 'false'
+      isAssignableToRole: 'false'
+      mailEnabled: 'true'
+      securityEnabled: 'false'
+      visibility: Public
+  M365-Leadership-Team:
+    owner: _base_only
+    delta:
+      allowExternalSenders: 'false'
+      autoSubscribeNewMembers: 'false'
+      hideFromAddressLists: 'true'
+      hideFromOutlookClients: 'true'
+      isAssignableToRole: 'false'
+      mailEnabled: 'true'
+      securityEnabled: 'false'
+      visibility: Public
   SG-Executive-Team:
     owner: _base_only
     delta:
+      allowExternalSenders: 'false'
+      autoSubscribeNewMembers: 'false'
       hideFromAddressLists: 'true'
       hideFromOutlookClients: 'true'
       isAssignableToRole: 'false'
       mailEnabled: 'false'
       securityEnabled: 'true'
-  SG-External-Contractors:
-    owner: _base_only
-    delta:
-      hideFromAddressLists: 'true'
-      hideFromOutlookClients: 'false'
-      isAssignableToRole: 'false'
-      mailEnabled: 'false'
-      securityEnabled: 'true'
-  RAG-Compliance-Admin-Role:
-    owner: hideFromAddressLists_false_hideFromOutlookClients_
-    delta:
-      isAssignableToRole: 'true'
-      mailEnabled: 'false'
-  RAG-Global-Admin-Role:
-    owner: hideFromAddressLists_false_hideFromOutlookClients_
-    delta:
-      isAssignableToRole: 'true'
-      mailEnabled: 'false'
-  RAG-Security-Admin-Role:
-    owner: hideFromAddressLists_false_hideFromOutlookClients_
-    delta:
-      isAssignableToRole: 'true'
-      mailEnabled: 'false'
-  M365-Leadership-Team:
-    owner: isAssignableToRole_false_securityEnabled_false
-    delta:
-      hideFromAddressLists: 'true'
-      hideFromOutlookClients: 'true'
-      mailEnabled: 'true'
   M365-Project-Alpha:
-    owner: isAssignableToRole_false_securityEnabled_false
+    owner: allowExternalSenders_false_autoSubscribeNewMembers
     delta:
       hideFromAddressLists: 'false'
-      hideFromOutlookClients: 'false'
+      isAssignableToRole: 'false'
       mailEnabled: 'true'
+      securityEnabled: 'false'
+      visibility: Public
   M365-Project-Beta:
-    owner: isAssignableToRole_false_securityEnabled_false
+    owner: allowExternalSenders_false_autoSubscribeNewMembers
     delta:
       hideFromAddressLists: 'false'
-      hideFromOutlookClients: 'false'
+      isAssignableToRole: 'false'
       mailEnabled: 'true'
+      securityEnabled: 'false'
+      visibility: Public
+  SG-External-Contractors:
+    owner: allowExternalSenders_false_autoSubscribeNewMembers
+    delta:
+      hideFromAddressLists: 'true'
+      isAssignableToRole: 'false'
+      mailEnabled: 'false'
+      securityEnabled: 'true'
   DG-All-Corp-Android:
     owner: 
-      hideFromAddressLists_false_hideFromOutlookClients__isAssignableToRole_false_mailE
+      allowExternalSenders_false_autoSubscribeNewMembers_hideFromAddressLists_false_mai
     delta:
+      isAssignableToRole: 'false'
       membershipRuleProcessingState: On
   DG-All-Corp-Windows:
     owner: 
-      hideFromAddressLists_false_hideFromOutlookClients__isAssignableToRole_false_mailE
+      allowExternalSenders_false_autoSubscribeNewMembers_hideFromAddressLists_false_mai
     delta:
+      isAssignableToRole: 'false'
       membershipRuleProcessingState: On
   DG-All-Corp-iOS:
     owner: 
-      hideFromAddressLists_false_hideFromOutlookClients__isAssignableToRole_false_mailE
+      allowExternalSenders_false_autoSubscribeNewMembers_hideFromAddressLists_false_mai
     delta:
+      isAssignableToRole: 'false'
       membershipRuleProcessingState: On
   DG-All-Corp-macOS:
     owner: 
-      hideFromAddressLists_false_hideFromOutlookClients__isAssignableToRole_false_mailE
+      allowExternalSenders_false_autoSubscribeNewMembers_hideFromAddressLists_false_mai
     delta:
+      isAssignableToRole: 'false'
       membershipRuleProcessingState: On
   DG-All-Licensed-Users:
     owner: 
-      hideFromAddressLists_false_hideFromOutlookClients__isAssignableToRole_false_mailE
+      allowExternalSenders_false_autoSubscribeNewMembers_hideFromAddressLists_false_mai
     delta:
+      isAssignableToRole: 'false'
       membershipRuleProcessingState: On
   DG-Dept-Engineering:
     owner: 
-      hideFromAddressLists_false_hideFromOutlookClients__isAssignableToRole_false_mailE
+      allowExternalSenders_false_autoSubscribeNewMembers_hideFromAddressLists_false_mai
     delta:
+      isAssignableToRole: 'false'
       membershipRuleProcessingState: On
   DG-Dept-Sales:
     owner: 
-      hideFromAddressLists_false_hideFromOutlookClients__isAssignableToRole_false_mailE
+      allowExternalSenders_false_autoSubscribeNewMembers_hideFromAddressLists_false_mai
     delta:
+      isAssignableToRole: 'false'
       membershipRuleProcessingState: On
   DG-Remote-Workers:
     owner: 
-      hideFromAddressLists_false_hideFromOutlookClients__isAssignableToRole_false_mailE
+      allowExternalSenders_false_autoSubscribeNewMembers_hideFromAddressLists_false_mai
     delta:
+      isAssignableToRole: 'false'
       membershipRuleProcessingState: On
+  RAG-Compliance-Admin-Role:
+    owner: 
+      allowExternalSenders_false_autoSubscribeNewMembers_hideFromAddressLists_false_mai
+    delta:
+      isAssignableToRole: 'true'
+  RAG-Global-Admin-Role:
+    owner: 
+      allowExternalSenders_false_autoSubscribeNewMembers_hideFromAddressLists_false_mai
+    delta:
+      isAssignableToRole: 'true'
+  RAG-Security-Admin-Role:
+    owner: 
+      allowExternalSenders_false_autoSubscribeNewMembers_hideFromAddressLists_false_mai
+    delta:
+      isAssignableToRole: 'true'
+  SG-Compliance-Officers:
+    owner: 
+      allowExternalSenders_false_autoSubscribeNewMembers_hideFromAddressLists_false_mai
+    delta:
+      isAssignableToRole: 'false'
+  SG-Engineering:
+    owner: 
+      allowExternalSenders_false_autoSubscribeNewMembers_hideFromAddressLists_false_mai
+    delta:
+      isAssignableToRole: 'false'
+  SG-Finance-Users:
+    owner: 
+      allowExternalSenders_false_autoSubscribeNewMembers_hideFromAddressLists_false_mai
+    delta:
+      isAssignableToRole: 'false'
+  SG-HR-Users:
+    owner: 
+      allowExternalSenders_false_autoSubscribeNewMembers_hideFromAddressLists_false_mai
+    delta:
+      isAssignableToRole: 'false'
+  SG-Helpdesk-Staff:
+    owner: 
+      allowExternalSenders_false_autoSubscribeNewMembers_hideFromAddressLists_false_mai
+    delta:
+      isAssignableToRole: 'false'
+  SG-IT-Admins:
+    owner: 
+      allowExternalSenders_false_autoSubscribeNewMembers_hideFromAddressLists_false_mai
+    delta:
+      isAssignableToRole: 'false'
+  SG-Marketing-Users:
+    owner: 
+      allowExternalSenders_false_autoSubscribeNewMembers_hideFromAddressLists_false_mai
+    delta:
+      isAssignableToRole: 'false'
+  SG-Security-Team:
+    owner: 
+      allowExternalSenders_false_autoSubscribeNewMembers_hideFromAddressLists_false_mai
+    delta:
+      isAssignableToRole: 'false'
 foreign_keys: {}

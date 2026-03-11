@@ -1,0 +1,54 @@
+meta:
+  entity_type: ansible-vars
+  tier_b_ref: ansible-vars_classes.yaml
+  total_instances: 3
+class_assignments:
+  _base_only:
+    instances:
+    - ansible-vars-dev
+    - ansible-vars-prod
+    - ansible-vars-staging
+instance_data:
+  schema:
+  - backup_encryption_key
+  - env
+  - grafana_admin_password
+  - jwt_secret
+  - redis_password
+  - smtp_password
+  - vault_password
+  records:
+    ansible-vars-dev:
+    - devbackup
+    - dev
+    - devgrafana
+    - dev-jwt-secret
+    - devredis
+    - devsmtp
+    - devvault
+    ansible-vars-prod:
+    - Bkup3ncryptK3y!
+    - prod
+    - Gr@fanaAdm1n!
+    - '[REDACTED]'
+    - R3disP@ss!
+    - SmtpP@ss123
+    - V@ultP@ssw0rd!
+    ansible-vars-staging:
+    - StagingBkupK3y
+    - staging
+    - StagingGr@fana
+    - staging-jwt-secret-not-secure
+    - StagingR3dis
+    - StagingSmtpP@ss
+    - St@gingV@ult
+overrides:
+  ansible-vars-prod:
+    owner: _base_only
+    delta:
+      deploy_key: '[REDACTED]'
+  ansible-vars-staging:
+    owner: _base_only
+    delta:
+      deploy_key: '[REDACTED]'
+foreign_keys: {}

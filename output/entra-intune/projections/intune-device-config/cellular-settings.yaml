@@ -1,0 +1,21 @@
+meta:
+  subject: cellular-settings
+  description: Configuration settings for cellular data and roaming.
+  source_type: intune-device-config
+  total_instances: 8
+base_class:
+  cellularBlockDataRoaming: 'false'
+  cellularBlockMessaging: 'false'
+  cellularBlockVoiceRoaming: 'false'
+  cellularBlockWiFiTethering: 'false'
+class_assignments:
+  _base_only:
+    instances:
+    - DC-Android-BYOD
+    - DC-Android-Contractor
+    - DC-Android-Corporate-Lockdown
+    - DC-Android-Executive
+    - DC-Android-Field-Workers
+    - DC-Android-Kiosk
+    - DC-Android-Lab-Devices
+    - DC-Android-Standard

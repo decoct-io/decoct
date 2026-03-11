@@ -1,26 +1,26 @@
 # Hybrid Infrastructure Fixture — "Ridgeline Data"
 
-Third fixture generator for decoct benchmarking. The previous two: IOS-XR (86 `.cfg`
-files, 1 schema) and Entra-Intune (88 `.json` files, 2 schemas). This one is the crown
-jewel: **~100 mixed-format files (YAML + JSON + INI) exercising 8 bundled schemas
-simultaneously** across all three supported input formats. It represents a realistic,
-organically-grown SaaS deployment — messy, inconsistent, and full of defaults to strip.
+Third fixture corpus for the entity-graph pipeline. The previous two: IOS-XR (86 `.cfg`
+files) and Entra-Intune (88 `.json` files). This one is the crown jewel:
+**~100 mixed-format files (YAML + JSON + INI) spanning 8+ platform types** across all
+three supported input formats. It represents a realistic, organically-grown SaaS
+deployment — messy, inconsistent, and ideal for testing fleet-scale compression.
 
-## Schema Coverage
+## Platform Type Coverage
 
-| Schema | Defaults | Covered Here |
+| Platform Type | Format | Covered Here |
 |---|---|---|
-| docker-compose | 47 | yes |
-| ansible-playbook | 151 | yes |
-| postgresql | 191 | yes |
-| mariadb-mysql | 92 | yes |
-| traefik | 69 | yes |
-| cloud-init | 71 | yes |
-| prometheus | 68 | yes |
-| sshd-config | 42 | yes |
+| Docker Compose | YAML | yes |
+| Ansible playbooks | YAML | yes |
+| PostgreSQL | INI (.conf) | yes |
+| MariaDB/MySQL | INI (.cnf) | yes |
+| Traefik | YAML | yes |
+| Cloud-init | YAML | yes |
+| Prometheus | YAML | yes |
+| sshd_config | INI (.conf) | yes |
 
-This generator alone covers **8 schemas with 731 combined defaults** — more default
-coverage than the other two generators combined.
+This corpus covers **8 platform types across 3 input formats** — the most diverse
+fixture set in the project.
 
 ---
 
@@ -119,7 +119,7 @@ pipeline has its own Compose file that nobody remembers creating.
   `net.core.somaxconn=65535`; app servers use defaults; dev has `vm.swappiness=60`
   (the kernel default nobody changed)
 
-## Secrets Scattered Everywhere (for strip-secrets testing)
+## Secrets Scattered Everywhere (for secret masking testing)
 
 - Docker Compose `environment` vars: `DB_PASSWORD=`, `API_KEY=sk_live_`,
   `JWT_SECRET=`, `REDIS_PASSWORD=`
@@ -133,9 +133,9 @@ pipeline has its own Compose file that nobody remembers creating.
 
 ## Fixture Inventory (100 files)
 
-### YAML (54 files, 5 schemas + schema-less)
+### YAML (54 files, 5 platform types + untyped)
 
-| Type | Schema | Count | Description |
+| Type | Platform | Count | Description |
 |---|---|---|---|
 | Docker Compose | docker-compose | 16 | Stacks across prod/staging/dev/CI with 2-6 services each |
 | Ansible playbooks | ansible-playbook | 16 | Server provisioning, app deploy, DB setup, security, backups, rollback |
@@ -145,7 +145,7 @@ pipeline has its own Compose file that nobody remembers creating.
 | Prometheus | prometheus | 3 | Prod (15 targets), staging (8), dev (3) |
 | App configs (YAML) | — | 3 | FastAPI logging config, feature flags, service mesh |
 
-### JSON (15 files, no existing schemas)
+### JSON (15 files)
 
 | Type | Count | Description |
 |---|---|---|
@@ -154,9 +154,9 @@ pipeline has its own Compose file that nobody remembers creating.
 | Docker daemon.json | 3 | Prod, dev, CI (different logging/storage) |
 | App configs (JSON) | 3 | Auth JWT config, billing API config, search config |
 
-### INI (31 files, 3 schemas + schema-less)
+### INI (31 files, 3 platform types + untyped)
 
-| Type | Schema | Extension | Count | Description |
+| Type | Platform | Extension | Count | Description |
 |---|---|---|---|---|
 | PostgreSQL | postgresql | .conf | 6 | Primary, replica, analytics, staging, dev, migration |
 | MariaDB | mariadb-mysql | .cnf | 5 | Legacy-main, legacy-billing, staging, dev, galera-node |
@@ -181,20 +181,18 @@ python tests/fixtures/hybrid-infra/generate/generate_configs.py
   ├────────┼───────┼───────────────────────────────────────────────────────────────────┤
   │ YAML   │ 54    │ docker-compose, ansible-playbook, cloud-init, traefik, prometheus │
   ├────────┼───────┼───────────────────────────────────────────────────────────────────┤
-  │ JSON   │ 15    │ (strip-secrets + generic passes)                                  │
+  │ JSON   │ 15    │ tfvars, package.json, docker-daemon, app configs                  │
   ├────────┼───────┼───────────────────────────────────────────────────────────────────┤
-  │ INI    │ 31    │ postgresql, mariadb-mysql, sshd-config                            │
+  │ INI    │ 31    │ postgresql, mariadb-mysql, sshd-config, systemd, sysctl           │
   ├────────┼───────┼───────────────────────────────────────────────────────────────────┤
-  │ Total  │ 100   │ 8 schemas, 731 combined defaults                                  │
+  │ Total  │ 100   │ 8+ platform types across 3 input formats                          │
   └────────┴───────┴───────────────────────────────────────────────────────────────────┘
 
   Verification results:
   - 54 YAML files parse cleanly with yaml.safe_load
   - 15 JSON files parse cleanly with json.loads
   - 31 INI files parse cleanly
-  - 43 files contain embedded secrets (for strip-secrets testing)
-  - All 8 schemas have defaults embedded across their fixture files
-  - Decoct spot-checks: 32.7% reduction on Docker Compose, 72.5% on PostgreSQL
+  - 43 files contain embedded secrets (for secret masking testing)
 
   Files created: ~50 new files
   - generate_configs.py — main generator script

@@ -1,0 +1,25 @@
+meta:
+  entity_type: app-config-json
+  total_instances: 3
+  max_inheritance_depth: 2
+  tier_c_ref: app-config-json_instances.yaml
+base_class:
+  auth.api_key: '[REDACTED]'
+  cors.allow_credentials: 'true'
+  cors.enabled: 'true'
+  cors.methods: GET,POST,PUT,DELETE
+  environment: prod
+  logging.format: json
+  logging.output: stdout
+  rate_limiting.burst: '50'
+  rate_limiting.enabled: 'true'
+  redis.pool_size: '5'
+  redis.timeout: '5'
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 3
+subclasses: {}
+assertions:
+  base_only_ratio: 1.0

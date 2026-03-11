@@ -1,0 +1,21 @@
+meta:
+  subject: background-writer-and-checkpoints
+  description: Configuration for the background writer and checkpoint processes.
+  source_type: postgresql
+  total_instances: 6
+base_class:
+  backend_flush_after: '0'
+  bgwriter_delay: 200ms
+  bgwriter_lru_maxpages: '100'
+  bgwriter_lru_multiplier: '2.0'
+  checkpoint_completion_target: '0.9'
+  checkpoint_warning: 30s
+class_assignments:
+  _base_only:
+    instances:
+    - pg-dev
+    - pg-migration
+    - pg-prod-analytics
+    - pg-prod-primary
+    - pg-prod-replica
+    - pg-staging

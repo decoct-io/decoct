@@ -12,9 +12,10 @@ from __future__ import annotations
 
 import os
 import warnings
+from collections.abc import Callable
 from io import StringIO
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
 from ruamel.yaml import YAML
 
@@ -24,7 +25,7 @@ from decoct.adapters.ingestion_models import (
     IngestionSpec,
 )
 from decoct.core.types import Entity
-from decoct.learn import extract_yaml_block
+from decoct.llm_utils import extract_yaml_block
 
 _MAX_CHARS_PER_CLUSTER = 50_000
 _MAX_SAMPLES_PER_CLUSTER = 3

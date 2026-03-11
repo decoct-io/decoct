@@ -1,0 +1,1019 @@
+meta:
+  subject: interfaces
+  description: Interface configuration including IP addressing, MTU, and 
+    descriptions
+  source_type: iosxr-access-pe
+  total_instances: 60
+base_class:
+  interface.BVI100.ipv4: address 10.0.1.100 255.255.255.0
+  interface.BVI100.shutdown: 'false'
+  interface.BVI200.ipv4: address 10.0.1.200 255.255.255.0
+  interface.BVI200.shutdown: 'false'
+  interface.BVI300.ipv4: address 10.0.1.300 255.255.255.0
+  interface.BVI300.shutdown: 'false'
+  interface.Bundle-Ether100.100: l2transport
+  interface.Bundle-Ether100.100.encapsulation: dot1q 100
+  interface.Bundle-Ether200.200: l2transport
+  interface.Bundle-Ether200.200.encapsulation: dot1q 200
+  interface.Bundle-Ether300.300: l2transport
+  interface.Bundle-Ether300.300.encapsulation: dot1q 300
+  interface.Loopback0.shutdown: 'false'
+  interface.MgmtEth0/RP0/CPU0/0.shutdown: 'false'
+  interface.TenGigE0/0/0/0.arp: timeout 14400
+  interface.TenGigE0/0/0/0.bandwidth: '100000'
+  interface.TenGigE0/0/0/0.carrier-delay: down 0
+  interface.TenGigE0/0/0/0.cdp: 'true'
+  interface.TenGigE0/0/0/0.load-interval: '300'
+  interface.TenGigE0/0/0/0.mtu: '9216'
+  interface.TenGigE0/0/0/0.shutdown: 'false'
+  interface.TenGigE0/0/0/1.arp: timeout 14400
+  interface.TenGigE0/0/0/1.bandwidth: '100000'
+  interface.TenGigE0/0/0/1.carrier-delay: down 0
+  interface.TenGigE0/0/0/1.cdp: 'true'
+  interface.TenGigE0/0/0/1.load-interval: '300'
+  interface.TenGigE0/0/0/1.mtu: '9216'
+  interface.TenGigE0/0/0/1.shutdown: 'false'
+class_assignments:
+  _base_only:
+    instances:
+    - APE-R1-01..APE-R1-20
+    - APE-R2-01..APE-R2-20
+    - APE-R3-01..APE-R3-20
+instance_data:
+  schema:
+  - hostname
+  - interface.BVI100.description
+  - interface.BVI200.description
+  - interface.BVI300.description
+  - interface.Bundle-Ether100.100.description
+  - interface.Bundle-Ether200.200.description
+  - interface.Bundle-Ether300.300.description
+  - interface.Loopback0.description
+  - interface.Loopback0.ipv4
+  - interface.MgmtEth0/RP0/CPU0/0.description
+  - interface.MgmtEth0/RP0/CPU0/0.ipv4
+  - interface.TenGigE0/0/0/0.description
+  - interface.TenGigE0/0/0/0.ipv4
+  - interface.TenGigE0/0/0/1.description
+  - interface.TenGigE0/0/0/1.ipv4
+  records:
+    APE-R1-01:
+    - APE-R1-01
+    - SVI-BD-APE-R1-01-MGMT
+    - SVI-BD-APE-R1-01-DATA
+    - SVI-BD-APE-R1-01-VOICE
+    - L2-BD-APE-R1-01-MGMT
+    - L2-BD-APE-R1-01-DATA
+    - L2-BD-APE-R1-01-VOICE
+    - APE-R1-01 Router-ID
+    - address 10.0.1.1 255.255.255.255
+    - MGMT-APE-R1-01
+    - address 192.168.101.1 255.255.255.0
+    - TO-P-CORE-01
+    - address 10.10.10.0 255.255.255.254
+    - TO-P-CORE-02
+    - address 10.10.10.2 255.255.255.254
+    APE-R1-02:
+    - APE-R1-02
+    - SVI-BD-APE-R1-02-MGMT
+    - SVI-BD-APE-R1-02-DATA
+    - SVI-BD-APE-R1-02-VOICE
+    - L2-BD-APE-R1-02-MGMT
+    - L2-BD-APE-R1-02-DATA
+    - L2-BD-APE-R1-02-VOICE
+    - APE-R1-02 Router-ID
+    - address 10.0.1.2 255.255.255.255
+    - MGMT-APE-R1-02
+    - address 192.168.101.2 255.255.255.0
+    - TO-P-CORE-02
+    - address 10.10.14.0 255.255.255.254
+    - TO-P-CORE-03
+    - address 10.10.14.2 255.255.255.254
+    APE-R1-03:
+    - APE-R1-03
+    - SVI-BD-APE-R1-03-MGMT
+    - SVI-BD-APE-R1-03-DATA
+    - SVI-BD-APE-R1-03-VOICE
+    - L2-BD-APE-R1-03-MGMT
+    - L2-BD-APE-R1-03-DATA
+    - L2-BD-APE-R1-03-VOICE
+    - APE-R1-03 Router-ID
+    - address 10.0.1.3 255.255.255.255
+    - MGMT-APE-R1-03
+    - address 192.168.101.3 255.255.255.0
+    - TO-P-CORE-03
+    - address 10.10.18.0 255.255.255.254
+    - TO-P-CORE-04
+    - address 10.10.18.2 255.255.255.254
+    APE-R1-04:
+    - APE-R1-04
+    - SVI-BD-APE-R1-04-MGMT
+    - SVI-BD-APE-R1-04-DATA
+    - SVI-BD-APE-R1-04-VOICE
+    - L2-BD-APE-R1-04-MGMT
+    - L2-BD-APE-R1-04-DATA
+    - L2-BD-APE-R1-04-VOICE
+    - APE-R1-04 Router-ID
+    - address 10.0.1.4 255.255.255.255
+    - MGMT-APE-R1-04
+    - address 192.168.101.4 255.255.255.0
+    - TO-P-CORE-04
+    - address 10.10.22.0 255.255.255.254
+    - TO-P-CORE-05
+    - address 10.10.22.2 255.255.255.254
+    APE-R1-05:
+    - APE-R1-05
+    - SVI-BD-APE-R1-05-MGMT
+    - SVI-BD-APE-R1-05-DATA
+    - SVI-BD-APE-R1-05-VOICE
+    - L2-BD-APE-R1-05-MGMT
+    - L2-BD-APE-R1-05-DATA
+    - L2-BD-APE-R1-05-VOICE
+    - APE-R1-05 Router-ID
+    - address 10.0.1.5 255.255.255.255
+    - MGMT-APE-R1-05
+    - address 192.168.101.5 255.255.255.0
+    - TO-P-CORE-05
+    - address 10.10.26.0 255.255.255.254
+    - TO-P-CORE-06
+    - address 10.10.26.2 255.255.255.254
+    APE-R1-06:
+    - APE-R1-06
+    - SVI-BD-APE-R1-06-MGMT
+    - SVI-BD-APE-R1-06-DATA
+    - SVI-BD-APE-R1-06-VOICE
+    - L2-BD-APE-R1-06-MGMT
+    - L2-BD-APE-R1-06-DATA
+    - L2-BD-APE-R1-06-VOICE
+    - APE-R1-06 Router-ID
+    - address 10.0.1.6 255.255.255.255
+    - MGMT-APE-R1-06
+    - address 192.168.101.6 255.255.255.0
+    - TO-P-CORE-06
+    - address 10.10.30.0 255.255.255.254
+    - TO-P-CORE-01
+    - address 10.10.30.2 255.255.255.254
+    APE-R1-07:
+    - APE-R1-07
+    - SVI-BD-APE-R1-07-MGMT
+    - SVI-BD-APE-R1-07-DATA
+    - SVI-BD-APE-R1-07-VOICE
+    - L2-BD-APE-R1-07-MGMT
+    - L2-BD-APE-R1-07-DATA
+    - L2-BD-APE-R1-07-VOICE
+    - APE-R1-07 Router-ID
+    - address 10.0.1.7 255.255.255.255
+    - MGMT-APE-R1-07
+    - address 192.168.101.7 255.255.255.0
+    - TO-P-CORE-01
+    - address 10.10.34.0 255.255.255.254
+    - TO-P-CORE-02
+    - address 10.10.34.2 255.255.255.254
+    APE-R1-08:
+    - APE-R1-08
+    - SVI-BD-APE-R1-08-MGMT
+    - SVI-BD-APE-R1-08-DATA
+    - SVI-BD-APE-R1-08-VOICE
+    - L2-BD-APE-R1-08-MGMT
+    - L2-BD-APE-R1-08-DATA
+    - L2-BD-APE-R1-08-VOICE
+    - APE-R1-08 Router-ID
+    - address 10.0.1.8 255.255.255.255
+    - MGMT-APE-R1-08
+    - address 192.168.101.8 255.255.255.0
+    - TO-P-CORE-02
+    - address 10.10.38.0 255.255.255.254
+    - TO-P-CORE-03
+    - address 10.10.38.2 255.255.255.254
+    APE-R1-09:
+    - APE-R1-09
+    - SVI-BD-APE-R1-09-MGMT
+    - SVI-BD-APE-R1-09-DATA
+    - SVI-BD-APE-R1-09-VOICE
+    - L2-BD-APE-R1-09-MGMT
+    - L2-BD-APE-R1-09-DATA
+    - L2-BD-APE-R1-09-VOICE
+    - APE-R1-09 Router-ID
+    - address 10.0.1.9 255.255.255.255
+    - MGMT-APE-R1-09
+    - address 192.168.101.9 255.255.255.0
+    - TO-P-CORE-03
+    - address 10.10.42.0 255.255.255.254
+    - TO-P-CORE-04
+    - address 10.10.42.2 255.255.255.254
+    APE-R1-10:
+    - APE-R1-10
+    - SVI-BD-APE-R1-10-MGMT
+    - SVI-BD-APE-R1-10-DATA
+    - SVI-BD-APE-R1-10-VOICE
+    - L2-BD-APE-R1-10-MGMT
+    - L2-BD-APE-R1-10-DATA
+    - L2-BD-APE-R1-10-VOICE
+    - APE-R1-10 Router-ID
+    - address 10.0.1.10 255.255.255.255
+    - MGMT-APE-R1-10
+    - address 192.168.101.10 255.255.255.0
+    - TO-P-CORE-04
+    - address 10.10.46.0 255.255.255.254
+    - TO-P-CORE-05
+    - address 10.10.46.2 255.255.255.254
+    APE-R1-11:
+    - APE-R1-11
+    - SVI-BD-APE-R1-11-MGMT
+    - SVI-BD-APE-R1-11-DATA
+    - SVI-BD-APE-R1-11-VOICE
+    - L2-BD-APE-R1-11-MGMT
+    - L2-BD-APE-R1-11-DATA
+    - L2-BD-APE-R1-11-VOICE
+    - APE-R1-11 Router-ID
+    - address 10.0.1.11 255.255.255.255
+    - MGMT-APE-R1-11
+    - address 192.168.101.11 255.255.255.0
+    - TO-P-CORE-05
+    - address 10.10.50.0 255.255.255.254
+    - TO-P-CORE-06
+    - address 10.10.50.2 255.255.255.254
+    APE-R1-12:
+    - APE-R1-12
+    - SVI-BD-APE-R1-12-MGMT
+    - SVI-BD-APE-R1-12-DATA
+    - SVI-BD-APE-R1-12-VOICE
+    - L2-BD-APE-R1-12-MGMT
+    - L2-BD-APE-R1-12-DATA
+    - L2-BD-APE-R1-12-VOICE
+    - APE-R1-12 Router-ID
+    - address 10.0.1.12 255.255.255.255
+    - MGMT-APE-R1-12
+    - address 192.168.101.12 255.255.255.0
+    - TO-P-CORE-06
+    - address 10.10.54.0 255.255.255.254
+    - TO-P-CORE-01
+    - address 10.10.54.2 255.255.255.254
+    APE-R1-13:
+    - APE-R1-13
+    - SVI-BD-APE-R1-13-MGMT
+    - SVI-BD-APE-R1-13-DATA
+    - SVI-BD-APE-R1-13-VOICE
+    - L2-BD-APE-R1-13-MGMT
+    - L2-BD-APE-R1-13-DATA
+    - L2-BD-APE-R1-13-VOICE
+    - APE-R1-13 Router-ID
+    - address 10.0.1.13 255.255.255.255
+    - MGMT-APE-R1-13
+    - address 192.168.101.13 255.255.255.0
+    - TO-P-CORE-01
+    - address 10.10.58.0 255.255.255.254
+    - TO-P-CORE-02
+    - address 10.10.58.2 255.255.255.254
+    APE-R1-14:
+    - APE-R1-14
+    - SVI-BD-APE-R1-14-MGMT
+    - SVI-BD-APE-R1-14-DATA
+    - SVI-BD-APE-R1-14-VOICE
+    - L2-BD-APE-R1-14-MGMT
+    - L2-BD-APE-R1-14-DATA
+    - L2-BD-APE-R1-14-VOICE
+    - APE-R1-14 Router-ID
+    - address 10.0.1.14 255.255.255.255
+    - MGMT-APE-R1-14
+    - address 192.168.101.14 255.255.255.0
+    - TO-P-CORE-02
+    - address 10.10.62.0 255.255.255.254
+    - TO-P-CORE-03
+    - address 10.10.62.2 255.255.255.254
+    APE-R1-15:
+    - APE-R1-15
+    - SVI-BD-APE-R1-15-MGMT
+    - SVI-BD-APE-R1-15-DATA
+    - SVI-BD-APE-R1-15-VOICE
+    - L2-BD-APE-R1-15-MGMT
+    - L2-BD-APE-R1-15-DATA
+    - L2-BD-APE-R1-15-VOICE
+    - APE-R1-15 Router-ID
+    - address 10.0.1.15 255.255.255.255
+    - MGMT-APE-R1-15
+    - address 192.168.101.15 255.255.255.0
+    - TO-P-CORE-03
+    - address 10.10.66.0 255.255.255.254
+    - TO-P-CORE-04
+    - address 10.10.66.2 255.255.255.254
+    APE-R1-16:
+    - APE-R1-16
+    - SVI-BD-APE-R1-16-MGMT
+    - SVI-BD-APE-R1-16-DATA
+    - SVI-BD-APE-R1-16-VOICE
+    - L2-BD-APE-R1-16-MGMT
+    - L2-BD-APE-R1-16-DATA
+    - L2-BD-APE-R1-16-VOICE
+    - APE-R1-16 Router-ID
+    - address 10.0.1.16 255.255.255.255
+    - MGMT-APE-R1-16
+    - address 192.168.101.16 255.255.255.0
+    - TO-P-CORE-04
+    - address 10.10.70.0 255.255.255.254
+    - TO-P-CORE-05
+    - address 10.10.70.2 255.255.255.254
+    APE-R1-17:
+    - APE-R1-17
+    - SVI-BD-APE-R1-17-MGMT
+    - SVI-BD-APE-R1-17-DATA
+    - SVI-BD-APE-R1-17-VOICE
+    - L2-BD-APE-R1-17-MGMT
+    - L2-BD-APE-R1-17-DATA
+    - L2-BD-APE-R1-17-VOICE
+    - APE-R1-17 Router-ID
+    - address 10.0.1.17 255.255.255.255
+    - MGMT-APE-R1-17
+    - address 192.168.101.17 255.255.255.0
+    - TO-P-CORE-05
+    - address 10.10.74.0 255.255.255.254
+    - TO-P-CORE-06
+    - address 10.10.74.2 255.255.255.254
+    APE-R1-18:
+    - APE-R1-18
+    - SVI-BD-APE-R1-18-MGMT
+    - SVI-BD-APE-R1-18-DATA
+    - SVI-BD-APE-R1-18-VOICE
+    - L2-BD-APE-R1-18-MGMT
+    - L2-BD-APE-R1-18-DATA
+    - L2-BD-APE-R1-18-VOICE
+    - APE-R1-18 Router-ID
+    - address 10.0.1.18 255.255.255.255
+    - MGMT-APE-R1-18
+    - address 192.168.101.18 255.255.255.0
+    - TO-P-CORE-06
+    - address 10.10.78.0 255.255.255.254
+    - TO-P-CORE-01
+    - address 10.10.78.2 255.255.255.254
+    APE-R1-19:
+    - APE-R1-19
+    - SVI-BD-APE-R1-19-MGMT
+    - SVI-BD-APE-R1-19-DATA
+    - SVI-BD-APE-R1-19-VOICE
+    - L2-BD-APE-R1-19-MGMT
+    - L2-BD-APE-R1-19-DATA
+    - L2-BD-APE-R1-19-VOICE
+    - APE-R1-19 Router-ID
+    - address 10.0.1.19 255.255.255.255
+    - MGMT-APE-R1-19
+    - address 192.168.101.19 255.255.255.0
+    - TO-P-CORE-01
+    - address 10.10.82.0 255.255.255.254
+    - TO-P-CORE-02
+    - address 10.10.82.2 255.255.255.254
+    APE-R1-20:
+    - APE-R1-20
+    - SVI-BD-APE-R1-20-MGMT
+    - SVI-BD-APE-R1-20-DATA
+    - SVI-BD-APE-R1-20-VOICE
+    - L2-BD-APE-R1-20-MGMT
+    - L2-BD-APE-R1-20-DATA
+    - L2-BD-APE-R1-20-VOICE
+    - APE-R1-20 Router-ID
+    - address 10.0.1.20 255.255.255.255
+    - MGMT-APE-R1-20
+    - address 192.168.101.20 255.255.255.0
+    - TO-P-CORE-02
+    - address 10.10.86.0 255.255.255.254
+    - TO-P-CORE-03
+    - address 10.10.86.2 255.255.255.254
+    APE-R2-01:
+    - APE-R2-01
+    - SVI-BD-APE-R2-01-MGMT
+    - SVI-BD-APE-R2-01-DATA
+    - SVI-BD-APE-R2-01-VOICE
+    - L2-BD-APE-R2-01-MGMT
+    - L2-BD-APE-R2-01-DATA
+    - L2-BD-APE-R2-01-VOICE
+    - APE-R2-01 Router-ID
+    - address 10.0.1.21 255.255.255.255
+    - MGMT-APE-R2-01
+    - address 192.168.101.21 255.255.255.0
+    - TO-P-CORE-03
+    - address 10.10.90.0 255.255.255.254
+    - TO-P-CORE-04
+    - address 10.10.90.2 255.255.255.254
+    APE-R2-02:
+    - APE-R2-02
+    - SVI-BD-APE-R2-02-MGMT
+    - SVI-BD-APE-R2-02-DATA
+    - SVI-BD-APE-R2-02-VOICE
+    - L2-BD-APE-R2-02-MGMT
+    - L2-BD-APE-R2-02-DATA
+    - L2-BD-APE-R2-02-VOICE
+    - APE-R2-02 Router-ID
+    - address 10.0.1.22 255.255.255.255
+    - MGMT-APE-R2-02
+    - address 192.168.101.22 255.255.255.0
+    - TO-P-CORE-04
+    - address 10.10.94.0 255.255.255.254
+    - TO-P-CORE-05
+    - address 10.10.94.2 255.255.255.254
+    APE-R2-03:
+    - APE-R2-03
+    - SVI-BD-APE-R2-03-MGMT
+    - SVI-BD-APE-R2-03-DATA
+    - SVI-BD-APE-R2-03-VOICE
+    - L2-BD-APE-R2-03-MGMT
+    - L2-BD-APE-R2-03-DATA
+    - L2-BD-APE-R2-03-VOICE
+    - APE-R2-03 Router-ID
+    - address 10.0.1.23 255.255.255.255
+    - MGMT-APE-R2-03
+    - address 192.168.101.23 255.255.255.0
+    - TO-P-CORE-05
+    - address 10.10.98.0 255.255.255.254
+    - TO-P-CORE-06
+    - address 10.10.98.2 255.255.255.254
+    APE-R2-04:
+    - APE-R2-04
+    - SVI-BD-APE-R2-04-MGMT
+    - SVI-BD-APE-R2-04-DATA
+    - SVI-BD-APE-R2-04-VOICE
+    - L2-BD-APE-R2-04-MGMT
+    - L2-BD-APE-R2-04-DATA
+    - L2-BD-APE-R2-04-VOICE
+    - APE-R2-04 Router-ID
+    - address 10.0.1.24 255.255.255.255
+    - MGMT-APE-R2-04
+    - address 192.168.101.24 255.255.255.0
+    - TO-P-CORE-06
+    - address 10.10.102.0 255.255.255.254
+    - TO-P-CORE-01
+    - address 10.10.102.2 255.255.255.254
+    APE-R2-05:
+    - APE-R2-05
+    - SVI-BD-APE-R2-05-MGMT
+    - SVI-BD-APE-R2-05-DATA
+    - SVI-BD-APE-R2-05-VOICE
+    - L2-BD-APE-R2-05-MGMT
+    - L2-BD-APE-R2-05-DATA
+    - L2-BD-APE-R2-05-VOICE
+    - APE-R2-05 Router-ID
+    - address 10.0.1.25 255.255.255.255
+    - MGMT-APE-R2-05
+    - address 192.168.101.25 255.255.255.0
+    - TO-P-CORE-01
+    - address 10.10.106.0 255.255.255.254
+    - TO-P-CORE-02
+    - address 10.10.106.2 255.255.255.254
+    APE-R2-06:
+    - APE-R2-06
+    - SVI-BD-APE-R2-06-MGMT
+    - SVI-BD-APE-R2-06-DATA
+    - SVI-BD-APE-R2-06-VOICE
+    - L2-BD-APE-R2-06-MGMT
+    - L2-BD-APE-R2-06-DATA
+    - L2-BD-APE-R2-06-VOICE
+    - APE-R2-06 Router-ID
+    - address 10.0.1.26 255.255.255.255
+    - MGMT-APE-R2-06
+    - address 192.168.101.26 255.255.255.0
+    - TO-P-CORE-02
+    - address 10.10.110.0 255.255.255.254
+    - TO-P-CORE-03
+    - address 10.10.110.2 255.255.255.254
+    APE-R2-07:
+    - APE-R2-07
+    - SVI-BD-APE-R2-07-MGMT
+    - SVI-BD-APE-R2-07-DATA
+    - SVI-BD-APE-R2-07-VOICE
+    - L2-BD-APE-R2-07-MGMT
+    - L2-BD-APE-R2-07-DATA
+    - L2-BD-APE-R2-07-VOICE
+    - APE-R2-07 Router-ID
+    - address 10.0.1.27 255.255.255.255
+    - MGMT-APE-R2-07
+    - address 192.168.101.27 255.255.255.0
+    - TO-P-CORE-03
+    - address 10.10.114.0 255.255.255.254
+    - TO-P-CORE-04
+    - address 10.10.114.2 255.255.255.254
+    APE-R2-08:
+    - APE-R2-08
+    - SVI-BD-APE-R2-08-MGMT
+    - SVI-BD-APE-R2-08-DATA
+    - SVI-BD-APE-R2-08-VOICE
+    - L2-BD-APE-R2-08-MGMT
+    - L2-BD-APE-R2-08-DATA
+    - L2-BD-APE-R2-08-VOICE
+    - APE-R2-08 Router-ID
+    - address 10.0.1.28 255.255.255.255
+    - MGMT-APE-R2-08
+    - address 192.168.101.28 255.255.255.0
+    - TO-P-CORE-04
+    - address 10.10.118.0 255.255.255.254
+    - TO-P-CORE-05
+    - address 10.10.118.2 255.255.255.254
+    APE-R2-09:
+    - APE-R2-09
+    - SVI-BD-APE-R2-09-MGMT
+    - SVI-BD-APE-R2-09-DATA
+    - SVI-BD-APE-R2-09-VOICE
+    - L2-BD-APE-R2-09-MGMT
+    - L2-BD-APE-R2-09-DATA
+    - L2-BD-APE-R2-09-VOICE
+    - APE-R2-09 Router-ID
+    - address 10.0.1.29 255.255.255.255
+    - MGMT-APE-R2-09
+    - address 192.168.101.29 255.255.255.0
+    - TO-P-CORE-05
+    - address 10.10.122.0 255.255.255.254
+    - TO-P-CORE-06
+    - address 10.10.122.2 255.255.255.254
+    APE-R2-10:
+    - APE-R2-10
+    - SVI-BD-APE-R2-10-MGMT
+    - SVI-BD-APE-R2-10-DATA
+    - SVI-BD-APE-R2-10-VOICE
+    - L2-BD-APE-R2-10-MGMT
+    - L2-BD-APE-R2-10-DATA
+    - L2-BD-APE-R2-10-VOICE
+    - APE-R2-10 Router-ID
+    - address 10.0.1.30 255.255.255.255
+    - MGMT-APE-R2-10
+    - address 192.168.101.30 255.255.255.0
+    - TO-P-CORE-06
+    - address 10.10.126.0 255.255.255.254
+    - TO-P-CORE-01
+    - address 10.10.126.2 255.255.255.254
+    APE-R2-11:
+    - APE-R2-11
+    - SVI-BD-APE-R2-11-MGMT
+    - SVI-BD-APE-R2-11-DATA
+    - SVI-BD-APE-R2-11-VOICE
+    - L2-BD-APE-R2-11-MGMT
+    - L2-BD-APE-R2-11-DATA
+    - L2-BD-APE-R2-11-VOICE
+    - APE-R2-11 Router-ID
+    - address 10.0.1.31 255.255.255.255
+    - MGMT-APE-R2-11
+    - address 192.168.101.31 255.255.255.0
+    - TO-P-CORE-01
+    - address 10.10.130.0 255.255.255.254
+    - TO-P-CORE-02
+    - address 10.10.130.2 255.255.255.254
+    APE-R2-12:
+    - APE-R2-12
+    - SVI-BD-APE-R2-12-MGMT
+    - SVI-BD-APE-R2-12-DATA
+    - SVI-BD-APE-R2-12-VOICE
+    - L2-BD-APE-R2-12-MGMT
+    - L2-BD-APE-R2-12-DATA
+    - L2-BD-APE-R2-12-VOICE
+    - APE-R2-12 Router-ID
+    - address 10.0.1.32 255.255.255.255
+    - MGMT-APE-R2-12
+    - address 192.168.101.32 255.255.255.0
+    - TO-P-CORE-02
+    - address 10.10.134.0 255.255.255.254
+    - TO-P-CORE-03
+    - address 10.10.134.2 255.255.255.254
+    APE-R2-13:
+    - APE-R2-13
+    - SVI-BD-APE-R2-13-MGMT
+    - SVI-BD-APE-R2-13-DATA
+    - SVI-BD-APE-R2-13-VOICE
+    - L2-BD-APE-R2-13-MGMT
+    - L2-BD-APE-R2-13-DATA
+    - L2-BD-APE-R2-13-VOICE
+    - APE-R2-13 Router-ID
+    - address 10.0.1.33 255.255.255.255
+    - MGMT-APE-R2-13
+    - address 192.168.101.33 255.255.255.0
+    - TO-P-CORE-03
+    - address 10.10.138.0 255.255.255.254
+    - TO-P-CORE-04
+    - address 10.10.138.2 255.255.255.254
+    APE-R2-14:
+    - APE-R2-14
+    - SVI-BD-APE-R2-14-MGMT
+    - SVI-BD-APE-R2-14-DATA
+    - SVI-BD-APE-R2-14-VOICE
+    - L2-BD-APE-R2-14-MGMT
+    - L2-BD-APE-R2-14-DATA
+    - L2-BD-APE-R2-14-VOICE
+    - APE-R2-14 Router-ID
+    - address 10.0.1.34 255.255.255.255
+    - MGMT-APE-R2-14
+    - address 192.168.101.34 255.255.255.0
+    - TO-P-CORE-04
+    - address 10.10.142.0 255.255.255.254
+    - TO-P-CORE-05
+    - address 10.10.142.2 255.255.255.254
+    APE-R2-15:
+    - APE-R2-15
+    - SVI-BD-APE-R2-15-MGMT
+    - SVI-BD-APE-R2-15-DATA
+    - SVI-BD-APE-R2-15-VOICE
+    - L2-BD-APE-R2-15-MGMT
+    - L2-BD-APE-R2-15-DATA
+    - L2-BD-APE-R2-15-VOICE
+    - APE-R2-15 Router-ID
+    - address 10.0.1.35 255.255.255.255
+    - MGMT-APE-R2-15
+    - address 192.168.101.35 255.255.255.0
+    - TO-P-CORE-05
+    - address 10.10.146.0 255.255.255.254
+    - TO-P-CORE-06
+    - address 10.10.146.2 255.255.255.254
+    APE-R2-16:
+    - APE-R2-16
+    - SVI-BD-APE-R2-16-MGMT
+    - SVI-BD-APE-R2-16-DATA
+    - SVI-BD-APE-R2-16-VOICE
+    - L2-BD-APE-R2-16-MGMT
+    - L2-BD-APE-R2-16-DATA
+    - L2-BD-APE-R2-16-VOICE
+    - APE-R2-16 Router-ID
+    - address 10.0.1.36 255.255.255.255
+    - MGMT-APE-R2-16
+    - address 192.168.101.36 255.255.255.0
+    - TO-P-CORE-06
+    - address 10.10.150.0 255.255.255.254
+    - TO-P-CORE-01
+    - address 10.10.150.2 255.255.255.254
+    APE-R2-17:
+    - APE-R2-17
+    - SVI-BD-APE-R2-17-MGMT
+    - SVI-BD-APE-R2-17-DATA
+    - SVI-BD-APE-R2-17-VOICE
+    - L2-BD-APE-R2-17-MGMT
+    - L2-BD-APE-R2-17-DATA
+    - L2-BD-APE-R2-17-VOICE
+    - APE-R2-17 Router-ID
+    - address 10.0.1.37 255.255.255.255
+    - MGMT-APE-R2-17
+    - address 192.168.101.37 255.255.255.0
+    - TO-P-CORE-01
+    - address 10.10.154.0 255.255.255.254
+    - TO-P-CORE-02
+    - address 10.10.154.2 255.255.255.254
+    APE-R2-18:
+    - APE-R2-18
+    - SVI-BD-APE-R2-18-MGMT
+    - SVI-BD-APE-R2-18-DATA
+    - SVI-BD-APE-R2-18-VOICE
+    - L2-BD-APE-R2-18-MGMT
+    - L2-BD-APE-R2-18-DATA
+    - L2-BD-APE-R2-18-VOICE
+    - APE-R2-18 Router-ID
+    - address 10.0.1.38 255.255.255.255
+    - MGMT-APE-R2-18
+    - address 192.168.101.38 255.255.255.0
+    - TO-P-CORE-02
+    - address 10.10.158.0 255.255.255.254
+    - TO-P-CORE-03
+    - address 10.10.158.2 255.255.255.254
+    APE-R2-19:
+    - APE-R2-19
+    - SVI-BD-APE-R2-19-MGMT
+    - SVI-BD-APE-R2-19-DATA
+    - SVI-BD-APE-R2-19-VOICE
+    - L2-BD-APE-R2-19-MGMT
+    - L2-BD-APE-R2-19-DATA
+    - L2-BD-APE-R2-19-VOICE
+    - APE-R2-19 Router-ID
+    - address 10.0.1.39 255.255.255.255
+    - MGMT-APE-R2-19
+    - address 192.168.101.39 255.255.255.0
+    - TO-P-CORE-03
+    - address 10.10.162.0 255.255.255.254
+    - TO-P-CORE-04
+    - address 10.10.162.2 255.255.255.254
+    APE-R2-20:
+    - APE-R2-20
+    - SVI-BD-APE-R2-20-MGMT
+    - SVI-BD-APE-R2-20-DATA
+    - SVI-BD-APE-R2-20-VOICE
+    - L2-BD-APE-R2-20-MGMT
+    - L2-BD-APE-R2-20-DATA
+    - L2-BD-APE-R2-20-VOICE
+    - APE-R2-20 Router-ID
+    - address 10.0.1.40 255.255.255.255
+    - MGMT-APE-R2-20
+    - address 192.168.101.40 255.255.255.0
+    - TO-P-CORE-04
+    - address 10.10.166.0 255.255.255.254
+    - TO-P-CORE-05
+    - address 10.10.166.2 255.255.255.254
+    APE-R3-01:
+    - APE-R3-01
+    - SVI-BD-APE-R3-01-MGMT
+    - SVI-BD-APE-R3-01-DATA
+    - SVI-BD-APE-R3-01-VOICE
+    - L2-BD-APE-R3-01-MGMT
+    - L2-BD-APE-R3-01-DATA
+    - L2-BD-APE-R3-01-VOICE
+    - APE-R3-01 Router-ID
+    - address 10.0.1.41 255.255.255.255
+    - MGMT-APE-R3-01
+    - address 192.168.101.41 255.255.255.0
+    - TO-P-CORE-05
+    - address 10.10.170.0 255.255.255.254
+    - TO-P-CORE-06
+    - address 10.10.170.2 255.255.255.254
+    APE-R3-02:
+    - APE-R3-02
+    - SVI-BD-APE-R3-02-MGMT
+    - SVI-BD-APE-R3-02-DATA
+    - SVI-BD-APE-R3-02-VOICE
+    - L2-BD-APE-R3-02-MGMT
+    - L2-BD-APE-R3-02-DATA
+    - L2-BD-APE-R3-02-VOICE
+    - APE-R3-02 Router-ID
+    - address 10.0.1.42 255.255.255.255
+    - MGMT-APE-R3-02
+    - address 192.168.101.42 255.255.255.0
+    - TO-P-CORE-06
+    - address 10.10.174.0 255.255.255.254
+    - TO-P-CORE-01
+    - address 10.10.174.2 255.255.255.254
+    APE-R3-03:
+    - APE-R3-03
+    - SVI-BD-APE-R3-03-MGMT
+    - SVI-BD-APE-R3-03-DATA
+    - SVI-BD-APE-R3-03-VOICE
+    - L2-BD-APE-R3-03-MGMT
+    - L2-BD-APE-R3-03-DATA
+    - L2-BD-APE-R3-03-VOICE
+    - APE-R3-03 Router-ID
+    - address 10.0.1.43 255.255.255.255
+    - MGMT-APE-R3-03
+    - address 192.168.101.43 255.255.255.0
+    - TO-P-CORE-01
+    - address 10.10.178.0 255.255.255.254
+    - TO-P-CORE-02
+    - address 10.10.178.2 255.255.255.254
+    APE-R3-04:
+    - APE-R3-04
+    - SVI-BD-APE-R3-04-MGMT
+    - SVI-BD-APE-R3-04-DATA
+    - SVI-BD-APE-R3-04-VOICE
+    - L2-BD-APE-R3-04-MGMT
+    - L2-BD-APE-R3-04-DATA
+    - L2-BD-APE-R3-04-VOICE
+    - APE-R3-04 Router-ID
+    - address 10.0.1.44 255.255.255.255
+    - MGMT-APE-R3-04
+    - address 192.168.101.44 255.255.255.0
+    - TO-P-CORE-02
+    - address 10.10.182.0 255.255.255.254
+    - TO-P-CORE-03
+    - address 10.10.182.2 255.255.255.254
+    APE-R3-05:
+    - APE-R3-05
+    - SVI-BD-APE-R3-05-MGMT
+    - SVI-BD-APE-R3-05-DATA
+    - SVI-BD-APE-R3-05-VOICE
+    - L2-BD-APE-R3-05-MGMT
+    - L2-BD-APE-R3-05-DATA
+    - L2-BD-APE-R3-05-VOICE
+    - APE-R3-05 Router-ID
+    - address 10.0.1.45 255.255.255.255
+    - MGMT-APE-R3-05
+    - address 192.168.101.45 255.255.255.0
+    - TO-P-CORE-03
+    - address 10.10.186.0 255.255.255.254
+    - TO-P-CORE-04
+    - address 10.10.186.2 255.255.255.254
+    APE-R3-06:
+    - APE-R3-06
+    - SVI-BD-APE-R3-06-MGMT
+    - SVI-BD-APE-R3-06-DATA
+    - SVI-BD-APE-R3-06-VOICE
+    - L2-BD-APE-R3-06-MGMT
+    - L2-BD-APE-R3-06-DATA
+    - L2-BD-APE-R3-06-VOICE
+    - APE-R3-06 Router-ID
+    - address 10.0.1.46 255.255.255.255
+    - MGMT-APE-R3-06
+    - address 192.168.101.46 255.255.255.0
+    - TO-P-CORE-04
+    - address 10.10.190.0 255.255.255.254
+    - TO-P-CORE-05
+    - address 10.10.190.2 255.255.255.254
+    APE-R3-07:
+    - APE-R3-07
+    - SVI-BD-APE-R3-07-MGMT
+    - SVI-BD-APE-R3-07-DATA
+    - SVI-BD-APE-R3-07-VOICE
+    - L2-BD-APE-R3-07-MGMT
+    - L2-BD-APE-R3-07-DATA
+    - L2-BD-APE-R3-07-VOICE
+    - APE-R3-07 Router-ID
+    - address 10.0.1.47 255.255.255.255
+    - MGMT-APE-R3-07
+    - address 192.168.101.47 255.255.255.0
+    - TO-P-CORE-05
+    - address 10.10.194.0 255.255.255.254
+    - TO-P-CORE-06
+    - address 10.10.194.2 255.255.255.254
+    APE-R3-08:
+    - APE-R3-08
+    - SVI-BD-APE-R3-08-MGMT
+    - SVI-BD-APE-R3-08-DATA
+    - SVI-BD-APE-R3-08-VOICE
+    - L2-BD-APE-R3-08-MGMT
+    - L2-BD-APE-R3-08-DATA
+    - L2-BD-APE-R3-08-VOICE
+    - APE-R3-08 Router-ID
+    - address 10.0.1.48 255.255.255.255
+    - MGMT-APE-R3-08
+    - address 192.168.101.48 255.255.255.0
+    - TO-P-CORE-06
+    - address 10.10.198.0 255.255.255.254
+    - TO-P-CORE-01
+    - address 10.10.198.2 255.255.255.254
+    APE-R3-09:
+    - APE-R3-09
+    - SVI-BD-APE-R3-09-MGMT
+    - SVI-BD-APE-R3-09-DATA
+    - SVI-BD-APE-R3-09-VOICE
+    - L2-BD-APE-R3-09-MGMT
+    - L2-BD-APE-R3-09-DATA
+    - L2-BD-APE-R3-09-VOICE
+    - APE-R3-09 Router-ID
+    - address 10.0.1.49 255.255.255.255
+    - MGMT-APE-R3-09
+    - address 192.168.101.49 255.255.255.0
+    - TO-P-CORE-01
+    - address 10.10.202.0 255.255.255.254
+    - TO-P-CORE-02
+    - address 10.10.202.2 255.255.255.254
+    APE-R3-10:
+    - APE-R3-10
+    - SVI-BD-APE-R3-10-MGMT
+    - SVI-BD-APE-R3-10-DATA
+    - SVI-BD-APE-R3-10-VOICE
+    - L2-BD-APE-R3-10-MGMT
+    - L2-BD-APE-R3-10-DATA
+    - L2-BD-APE-R3-10-VOICE
+    - APE-R3-10 Router-ID
+    - address 10.0.1.50 255.255.255.255
+    - MGMT-APE-R3-10
+    - address 192.168.101.50 255.255.255.0
+    - TO-P-CORE-02
+    - address 10.10.206.0 255.255.255.254
+    - TO-P-CORE-03
+    - address 10.10.206.2 255.255.255.254
+    APE-R3-11:
+    - APE-R3-11
+    - SVI-BD-APE-R3-11-MGMT
+    - SVI-BD-APE-R3-11-DATA
+    - SVI-BD-APE-R3-11-VOICE
+    - L2-BD-APE-R3-11-MGMT
+    - L2-BD-APE-R3-11-DATA
+    - L2-BD-APE-R3-11-VOICE
+    - APE-R3-11 Router-ID
+    - address 10.0.1.51 255.255.255.255
+    - MGMT-APE-R3-11
+    - address 192.168.101.51 255.255.255.0
+    - TO-P-CORE-03
+    - address 10.10.210.0 255.255.255.254
+    - TO-P-CORE-04
+    - address 10.10.210.2 255.255.255.254
+    APE-R3-12:
+    - APE-R3-12
+    - SVI-BD-APE-R3-12-MGMT
+    - SVI-BD-APE-R3-12-DATA
+    - SVI-BD-APE-R3-12-VOICE
+    - L2-BD-APE-R3-12-MGMT
+    - L2-BD-APE-R3-12-DATA
+    - L2-BD-APE-R3-12-VOICE
+    - APE-R3-12 Router-ID
+    - address 10.0.1.52 255.255.255.255
+    - MGMT-APE-R3-12
+    - address 192.168.101.52 255.255.255.0
+    - TO-P-CORE-04
+    - address 10.10.214.0 255.255.255.254
+    - TO-P-CORE-05
+    - address 10.10.214.2 255.255.255.254
+    APE-R3-13:
+    - APE-R3-13
+    - SVI-BD-APE-R3-13-MGMT
+    - SVI-BD-APE-R3-13-DATA
+    - SVI-BD-APE-R3-13-VOICE
+    - L2-BD-APE-R3-13-MGMT
+    - L2-BD-APE-R3-13-DATA
+    - L2-BD-APE-R3-13-VOICE
+    - APE-R3-13 Router-ID
+    - address 10.0.1.53 255.255.255.255
+    - MGMT-APE-R3-13
+    - address 192.168.101.53 255.255.255.0
+    - TO-P-CORE-05
+    - address 10.10.218.0 255.255.255.254
+    - TO-P-CORE-06
+    - address 10.10.218.2 255.255.255.254
+    APE-R3-14:
+    - APE-R3-14
+    - SVI-BD-APE-R3-14-MGMT
+    - SVI-BD-APE-R3-14-DATA
+    - SVI-BD-APE-R3-14-VOICE
+    - L2-BD-APE-R3-14-MGMT
+    - L2-BD-APE-R3-14-DATA
+    - L2-BD-APE-R3-14-VOICE
+    - APE-R3-14 Router-ID
+    - address 10.0.1.54 255.255.255.255
+    - MGMT-APE-R3-14
+    - address 192.168.101.54 255.255.255.0
+    - TO-P-CORE-06
+    - address 10.10.222.0 255.255.255.254
+    - TO-P-CORE-01
+    - address 10.10.222.2 255.255.255.254
+    APE-R3-15:
+    - APE-R3-15
+    - SVI-BD-APE-R3-15-MGMT
+    - SVI-BD-APE-R3-15-DATA
+    - SVI-BD-APE-R3-15-VOICE
+    - L2-BD-APE-R3-15-MGMT
+    - L2-BD-APE-R3-15-DATA
+    - L2-BD-APE-R3-15-VOICE
+    - APE-R3-15 Router-ID
+    - address 10.0.1.55 255.255.255.255
+    - MGMT-APE-R3-15
+    - address 192.168.101.55 255.255.255.0
+    - TO-P-CORE-01
+    - address 10.10.226.0 255.255.255.254
+    - TO-P-CORE-02
+    - address 10.10.226.2 255.255.255.254
+    APE-R3-16:
+    - APE-R3-16
+    - SVI-BD-APE-R3-16-MGMT
+    - SVI-BD-APE-R3-16-DATA
+    - SVI-BD-APE-R3-16-VOICE
+    - L2-BD-APE-R3-16-MGMT
+    - L2-BD-APE-R3-16-DATA
+    - L2-BD-APE-R3-16-VOICE
+    - APE-R3-16 Router-ID
+    - address 10.0.1.56 255.255.255.255
+    - MGMT-APE-R3-16
+    - address 192.168.101.56 255.255.255.0
+    - TO-P-CORE-02
+    - address 10.10.230.0 255.255.255.254
+    - TO-P-CORE-03
+    - address 10.10.230.2 255.255.255.254
+    APE-R3-17:
+    - APE-R3-17
+    - SVI-BD-APE-R3-17-MGMT
+    - SVI-BD-APE-R3-17-DATA
+    - SVI-BD-APE-R3-17-VOICE
+    - L2-BD-APE-R3-17-MGMT
+    - L2-BD-APE-R3-17-DATA
+    - L2-BD-APE-R3-17-VOICE
+    - APE-R3-17 Router-ID
+    - address 10.0.1.57 255.255.255.255
+    - MGMT-APE-R3-17
+    - address 192.168.101.57 255.255.255.0
+    - TO-P-CORE-03
+    - address 10.10.234.0 255.255.255.254
+    - TO-P-CORE-04
+    - address 10.10.234.2 255.255.255.254
+    APE-R3-18:
+    - APE-R3-18
+    - SVI-BD-APE-R3-18-MGMT
+    - SVI-BD-APE-R3-18-DATA
+    - SVI-BD-APE-R3-18-VOICE
+    - L2-BD-APE-R3-18-MGMT
+    - L2-BD-APE-R3-18-DATA
+    - L2-BD-APE-R3-18-VOICE
+    - APE-R3-18 Router-ID
+    - address 10.0.1.58 255.255.255.255
+    - MGMT-APE-R3-18
+    - address 192.168.101.58 255.255.255.0
+    - TO-P-CORE-04
+    - address 10.10.238.0 255.255.255.254
+    - TO-P-CORE-05
+    - address 10.10.238.2 255.255.255.254
+    APE-R3-19:
+    - APE-R3-19
+    - SVI-BD-APE-R3-19-MGMT
+    - SVI-BD-APE-R3-19-DATA
+    - SVI-BD-APE-R3-19-VOICE
+    - L2-BD-APE-R3-19-MGMT
+    - L2-BD-APE-R3-19-DATA
+    - L2-BD-APE-R3-19-VOICE
+    - APE-R3-19 Router-ID
+    - address 10.0.1.59 255.255.255.255
+    - MGMT-APE-R3-19
+    - address 192.168.101.59 255.255.255.0
+    - TO-P-CORE-05
+    - address 10.10.242.0 255.255.255.254
+    - TO-P-CORE-06
+    - address 10.10.242.2 255.255.255.254
+    APE-R3-20:
+    - APE-R3-20
+    - SVI-BD-APE-R3-20-MGMT
+    - SVI-BD-APE-R3-20-DATA
+    - SVI-BD-APE-R3-20-VOICE
+    - L2-BD-APE-R3-20-MGMT
+    - L2-BD-APE-R3-20-DATA
+    - L2-BD-APE-R3-20-VOICE
+    - APE-R3-20 Router-ID
+    - address 10.0.1.60 255.255.255.255
+    - MGMT-APE-R3-20
+    - address 192.168.101.60 255.255.255.0
+    - TO-P-CORE-06
+    - address 10.10.246.0 255.255.255.254
+    - TO-P-CORE-01
+    - address 10.10.246.2 255.255.255.254

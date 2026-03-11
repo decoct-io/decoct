@@ -1,78 +1,286 @@
 meta:
   entity_type: entra-conditional-access
   tier_b_ref: entra-conditional-access_classes.yaml
-  total_instances: 6
+  total_instances: 20
 class_assignments:
   _base_only:
     instances:
+    - CA-Compliant-Device-Azure
+    - CA-SignIn-Risk-High-Block
+  includeApplications_All_clientAppTypes:
+    instances:
+    - CA-Compliant-Device-Internal
+    - CA-Location-Block-Countries
+    - CA-Location-Require-MFA-External
+    - CA-MFA-Global-Admins
     - CA-MFA-Privileged-Roles
     - CA-MFA-Security-Admins
+    - CA-Named-Location-Corporate
+    - CA-Report-Only-AllUsers-MFA
+    - CA-SignIn-Risk-Medium-MFA
+    - CA-User-Risk-High-PasswordChange
+    - CA-User-Risk-Medium-MFA
   includeUsers_All_operator_OR:
     instances:
     - CA-Block-Legacy-Auth-Exchange
+    - CA-Block-Legacy-Auth-Global
     - CA-Block-Legacy-Auth-SharePoint
     - CA-Block-Legacy-Auth-Teams
+    - CA-Compliant-Device-Office365
+    - CA-Disabled-Draft-TestPolicy
     - CA-MFA-Azure-Management
+subclass_assignments:
+  includeApplications_All_clientAppTypes_builtInControls_mfa_operator_O:
+    parent: includeApplications_All_clientAppTypes
+    instances:
+    - CA-Location-Require-MFA-External
+    - CA-MFA-Global-Admins
+    - CA-MFA-Privileged-Roles
+    - CA-Named-Location-Corporate
+    - CA-SignIn-Risk-Medium-MFA
+    - CA-User-Risk-Medium-MFA
+  includeUsers_All_operator_OR_clientAppTypes_builtInControls:
+    parent: includeUsers_All_operator_OR
+    instances:
+    - CA-Block-Legacy-Auth-Exchange
+    - CA-Block-Legacy-Auth-Global
+    - CA-Block-Legacy-Auth-SharePoint
+    - CA-Block-Legacy-Auth-Teams
 instance_data:
   schema:
   - _uuid
-  - conditions.applications.includeApplications
-  - conditions.clientAppTypes
   - displayName
-  - grantControls.builtInControls
   records:
     CA-Block-Legacy-Auth-Exchange:
     - 7af58caf-b7f5-53ed-a0ae-15d847b3636d
-    - 00000002-0000-0ff1-ce00-000000000000
-    - exchangeActiveSync, other
     - CA-Block-Legacy-Auth-Exchange
-    - block
+    CA-Block-Legacy-Auth-Global:
+    - 6e9105e2-4df0-580c-a0fb-1cc5da209d64
+    - CA-Block-Legacy-Auth-Global
     CA-Block-Legacy-Auth-SharePoint:
     - e6c99035-7629-5408-8cd0-c8902ce3870d
-    - 00000003-0000-0ff1-ce00-000000000000
-    - exchangeActiveSync, other
     - CA-Block-Legacy-Auth-SharePoint
-    - block
     CA-Block-Legacy-Auth-Teams:
     - 76aec516-9b08-540b-9d08-b76718ddadab
-    - cc15fd57-2c6c-4117-a88c-83b1d56b4bbe
-    - exchangeActiveSync, other
     - CA-Block-Legacy-Auth-Teams
-    - block
+    CA-Compliant-Device-Azure:
+    - d51e683e-391b-5aca-b898-1c0e3cad9a11
+    - CA-Compliant-Device-Azure
+    CA-Compliant-Device-Internal:
+    - 97a9a6a3-4ed6-5f92-bc0d-806efe539f73
+    - CA-Compliant-Device-Internal
+    CA-Compliant-Device-Office365:
+    - 1b97e96f-4e34-50b8-b0bd-a3a44ee5a5a9
+    - CA-Compliant-Device-Office365
+    CA-Disabled-Draft-TestPolicy:
+    - 7e05c5a7-184e-59d3-9e48-0d7f16544ed6
+    - CA-Disabled-Draft-TestPolicy
+    CA-Location-Block-Countries:
+    - 8e9d0a92-b18b-5d84-82a7-8644ac56df54
+    - CA-Location-Block-Countries
+    CA-Location-Require-MFA-External:
+    - a5e2e3de-e765-5167-a979-3e18e8cb5e9f
+    - CA-Location-Require-MFA-External
     CA-MFA-Azure-Management:
     - 2d6a5681-1308-57fb-ae5e-0a333f0389a0
-    - 797f4846-ba00-4fd7-ba43-dac1f8f63013
-    - browser, mobileAppsAndDesktopClients
     - CA-MFA-Azure-Management
-    - mfa
+    CA-MFA-Global-Admins:
+    - 611a19dc-e512-5068-8688-bd45be3d4a58
+    - CA-MFA-Global-Admins
     CA-MFA-Privileged-Roles:
     - 75ad3ca0-5b2b-5168-9c0e-16a2680a930a
-    - All
-    - browser, mobileAppsAndDesktopClients
     - CA-MFA-Privileged-Roles
-    - mfa
     CA-MFA-Security-Admins:
     - 32ec6dbc-446f-5b4c-83d7-1d639c54f976
-    - All
-    - browser, mobileAppsAndDesktopClients
     - CA-MFA-Security-Admins
-    - mfa, compliantDevice
+    CA-Named-Location-Corporate:
+    - cb1626ab-0573-5b79-8a66-90dc93d657a8
+    - CA-Named-Location-Corporate
+    CA-Report-Only-AllUsers-MFA:
+    - 303e5ac2-440a-5a8e-baa0-ffe8ad1eaa5c
+    - CA-Report-Only-AllUsers-MFA
+    CA-SignIn-Risk-High-Block:
+    - fffefef1-9a88-5725-b517-0dc930f3ab67
+    - CA-SignIn-Risk-High-Block
+    CA-SignIn-Risk-Medium-MFA:
+    - e1772c2e-3841-519b-80a9-6f90514717a5
+    - CA-SignIn-Risk-Medium-MFA
+    CA-User-Risk-High-PasswordChange:
+    - b9abc224-0ed1-5af4-92f5-9eac01fe13c6
+    - CA-User-Risk-High-PasswordChange
+    CA-User-Risk-Medium-MFA:
+    - aa06fba8-162b-5c85-8542-5a636da0b30e
+    - CA-User-Risk-Medium-MFA
 instance_attrs:
+  CA-Compliant-Device-Azure:
+    conditions.platforms.includePlatforms: windows, macOS
+  CA-Compliant-Device-Internal:
+    conditions.platforms.includePlatforms: windows
+    conditions.users.includeGroups: SG-Engineering, SG-Finance-Users
+  CA-Compliant-Device-Office365:
+    conditions.platforms.includePlatforms: windows, iOS, android
+    conditions.users.excludeUsers: SG-External-Contractors
+  CA-Disabled-Draft-TestPolicy:
+    sessionControls.persistentBrowser.mode: never
+  CA-Location-Block-Countries:
+    conditions.locations.includeLocations: NL-Blocked-Countries
+    conditions.users.excludeUsers: SG-IT-Admins
+  CA-Location-Require-MFA-External:
+    conditions.locations.includeLocations: AllTrusted
+    sessionControls.signInFrequency.value: '4'
+  CA-MFA-Azure-Management:
+    conditions.users.excludeUsers: SG-IT-Admins
+  CA-MFA-Global-Admins:
+    conditions.users.includeGroups: SG-IT-Admins
   CA-MFA-Privileged-Roles:
     conditions.users.includeGroups: SG-Security-Team, SG-IT-Admins
   CA-MFA-Security-Admins:
     conditions.users.includeGroups: SG-Security-Team
+  CA-Named-Location-Corporate:
+    conditions.locations.includeLocations: NL-Corporate-HQ
+  CA-Report-Only-AllUsers-MFA:
+    sessionControls.persistentBrowser.mode: always
+    sessionControls.signInFrequency.value: '8'
+  CA-SignIn-Risk-High-Block:
+    conditions.signInRiskLevels: high
+    conditions.users.excludeUsers: SG-IT-Admins
+  CA-SignIn-Risk-Medium-MFA:
+    conditions.signInRiskLevels: medium, low
+  CA-User-Risk-High-PasswordChange:
+    conditions.userRiskLevels: high
+  CA-User-Risk-Medium-MFA:
+    conditions.userRiskLevels: medium
+    conditions.users.excludeUsers: SG-External-Contractors
 overrides:
-  CA-MFA-Privileged-Roles:
+  CA-Compliant-Device-Azure:
     owner: _base_only
     delta:
-      grantControls.operator: OR
-  CA-MFA-Security-Admins:
-    owner: _base_only
-    delta:
+      conditions.applications.includeApplications: 
+        797f4846-ba00-4fd7-ba43-dac1f8f63013
+      conditions.clientAppTypes: browser, mobileAppsAndDesktopClients
+      conditions.users.includeUsers: All
+      grantControls.builtInControls: compliantDevice, mfa
       grantControls.operator: AND
+      sessionControls.disableResilienceDefaults: 'false'
+      state: enabled
+  CA-SignIn-Risk-High-Block:
+    owner: _base_only
+    delta:
+      conditions.applications.includeApplications: All
+      conditions.clientAppTypes: browser, mobileAppsAndDesktopClients
+      conditions.users.includeUsers: All
+      grantControls.builtInControls: block
+      grantControls.operator: OR
+      sessionControls.disableResilienceDefaults: 'true'
+      state: enabled
+  CA-Compliant-Device-Internal:
+    owner: includeApplications_All_clientAppTypes
+    delta:
+      conditions.applications.excludeApplications: 
+        00000003-0000-0ff1-ce00-000000000000
+      grantControls.builtInControls: compliantDevice
+      grantControls.operator: OR
+      state: enabled
+  CA-Location-Block-Countries:
+    owner: includeApplications_All_clientAppTypes
+    delta:
+      conditions.users.includeUsers: All
+      grantControls.builtInControls: block
+      grantControls.operator: OR
+      state: enabled
+  CA-MFA-Security-Admins:
+    owner: includeApplications_All_clientAppTypes
+    delta:
+      grantControls.builtInControls: mfa, compliantDevice
+      grantControls.operator: AND
+      state: enabled
+  CA-Report-Only-AllUsers-MFA:
+    owner: includeApplications_All_clientAppTypes
+    delta:
+      conditions.users.includeUsers: All
+      grantControls.builtInControls: mfa
+      grantControls.operator: OR
+      sessionControls.persistentBrowser.isEnabled: 'true'
+      sessionControls.signInFrequency.authenticationType: 
+        primaryAndSecondaryAuthentication
+      sessionControls.signInFrequency.frequencyInterval: timeBased
+      sessionControls.signInFrequency.isEnabled: 'true'
+      sessionControls.signInFrequency.type: hours
+      state: enabledForReportingButNotEnforced
+  CA-User-Risk-High-PasswordChange:
+    owner: includeApplications_All_clientAppTypes
+    delta:
+      conditions.users.includeUsers: All
+      grantControls.builtInControls: passwordChange
+      grantControls.operator: OR
+      state: enabled
+  CA-Compliant-Device-Office365:
+    owner: includeUsers_All_operator_OR
+    delta:
+      conditions.applications.includeApplications: Office365
+      conditions.clientAppTypes: browser, mobileAppsAndDesktopClients
+      grantControls.builtInControls: compliantDevice
+      state: enabled
+  CA-Disabled-Draft-TestPolicy:
+    owner: includeUsers_All_operator_OR
+    delta:
+      conditions.applications.includeApplications: All
+      conditions.clientAppTypes: browser
+      grantControls.builtInControls: mfa
+      sessionControls.persistentBrowser.isEnabled: 'true'
+      state: disabled
   CA-MFA-Azure-Management:
     owner: includeUsers_All_operator_OR
     delta:
-      conditions.users.excludeUsers: SG-IT-Admins
+      conditions.applications.includeApplications: 
+        797f4846-ba00-4fd7-ba43-dac1f8f63013
+      conditions.clientAppTypes: browser, mobileAppsAndDesktopClients
+      grantControls.builtInControls: mfa
+      state: enabled
+  CA-Location-Require-MFA-External:
+    owner: includeApplications_All_clientAppTypes_builtInControls_mfa_operator_O
+    delta:
+      conditions.users.includeUsers: All
+      sessionControls.signInFrequency.authenticationType: 
+        primaryAndSecondaryAuthentication
+      sessionControls.signInFrequency.frequencyInterval: timeBased
+      sessionControls.signInFrequency.isEnabled: 'true'
+      sessionControls.signInFrequency.type: hours
+  CA-MFA-Global-Admins:
+    owner: includeApplications_All_clientAppTypes_builtInControls_mfa_operator_O
+    delta:
+      _metadata.clientSecret: '[REDACTED]'
+      _metadata.policyVersion: '1.0'
+  CA-Named-Location-Corporate:
+    owner: includeApplications_All_clientAppTypes_builtInControls_mfa_operator_O
+    delta:
+      conditions.users.includeUsers: All
+  CA-SignIn-Risk-Medium-MFA:
+    owner: includeApplications_All_clientAppTypes_builtInControls_mfa_operator_O
+    delta:
+      conditions.users.includeUsers: All
+  CA-User-Risk-Medium-MFA:
+    owner: includeApplications_All_clientAppTypes_builtInControls_mfa_operator_O
+    delta:
+      conditions.users.includeUsers: All
+  CA-Block-Legacy-Auth-Exchange:
+    owner: includeUsers_All_operator_OR_clientAppTypes_builtInControls
+    delta:
+      conditions.applications.includeApplications: 
+        00000002-0000-0ff1-ce00-000000000000
+  CA-Block-Legacy-Auth-Global:
+    owner: includeUsers_All_operator_OR_clientAppTypes_builtInControls
+    delta:
+      conditions.applications.includeApplications: All
+      conditions.users.excludeGroups: SG-IT-Admins
+  CA-Block-Legacy-Auth-SharePoint:
+    owner: includeUsers_All_operator_OR_clientAppTypes_builtInControls
+    delta:
+      conditions.applications.includeApplications: 
+        00000003-0000-0ff1-ce00-000000000000
+  CA-Block-Legacy-Auth-Teams:
+    owner: includeUsers_All_operator_OR_clientAppTypes_builtInControls
+    delta:
+      conditions.applications.includeApplications: 
+        cc15fd57-2c6c-4117-a88c-83b1d56b4bbe
 foreign_keys: {}

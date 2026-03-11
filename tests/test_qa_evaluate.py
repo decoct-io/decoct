@@ -17,7 +17,7 @@ from decoct.qa.questions import QuestionCategory
 
 FIXTURES = Path(__file__).parent / "fixtures"
 IOSXR_CONFIGS = FIXTURES / "iosxr" / "configs"
-ENTITY_GRAPH_OUTPUT = Path(__file__).parent.parent / "output" / "entity-graph"
+ENTITY_GRAPH_OUTPUT = Path(__file__).parent.parent / "output" / "iosxr"
 MANUAL_PATH = Path(__file__).parent.parent / "docs" / "entity-graph-data-manual.md"
 
 

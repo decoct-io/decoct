@@ -240,6 +240,55 @@ def _extract_cta_refs(flat_attrs: dict[str, str]) -> list[tuple[str, str]]:
     return []
 
 
+def _walk_json_leaves(
+    obj: Any,
+    prefix: str = "",
+    skip_fields: set[str] | None = None,
+) -> list[tuple[str, str]]:
+    """Walk a raw JSON object collecting ALL leaf data points.
+
+    Independent of flatten_json() — walks the raw parsed structure directly.
+    Skips fields in skip_fields (e.g., @odata.type, id, timestamps).
+    """
+    if skip_fields is None:
+        skip_fields = SKIP_FIELDS
+
+    leaves: list[tuple[str, str]] = []
+
+    if isinstance(obj, dict):
+        for key, value in obj.items():
+            if key in skip_fields:
+                continue
+            path = f"{prefix}{key}" if prefix else key
+            if _is_empty(value):
+                continue
+            if isinstance(value, dict):
+                leaves.extend(_walk_json_leaves(value, f"{path}.", skip_fields=set()))
+            elif isinstance(value, list):
+                if len(value) == 0:
+                    continue
+                if _is_scalar_list(value):
+                    # Emit as comma-separated, matching flatten_json() output
+                    leaves.append((path, ", ".join(_value_to_str(v) for v in value)))
+                else:
+                    for i, item in enumerate(value):
+                        if isinstance(item, dict):
+                            leaves.extend(_walk_json_leaves(item, f"{path}[{i}].", skip_fields=set()))
+                        elif not _is_empty(item):
+                            leaves.append((f"{path}[{i}]", _value_to_str(item)))
+            else:
+                leaves.append((path, _value_to_str(value)))
+    elif isinstance(obj, list):
+        for i, item in enumerate(obj):
+            path = f"{prefix}[{i}]" if prefix else f"[{i}]"
+            if isinstance(item, dict):
+                leaves.extend(_walk_json_leaves(item, f"{path}.", skip_fields=set()))
+            elif not _is_empty(item):
+                leaves.append((path, _value_to_str(item)))
+
+    return leaves
+
+
 class EntraIntuneAdapter(BaseAdapter):
     """Entra ID / Intune JSON adapter.
 
@@ -249,6 +298,24 @@ class EntraIntuneAdapter(BaseAdapter):
 
     def source_type(self) -> str:
         return "entra-intune"
+
+    def secret_paths(self) -> list[str]:
+        from decoct.secrets.iosxr_patterns import ENTRA_SECRET_PATHS
+        return list(ENTRA_SECRET_PATHS)
+
+    def collect_source_leaves(self, parsed: Any) -> dict[str, list[tuple[str, str]]]:
+        """Collect ALL leaf data points from parsed JSON.
+
+        Independent of extract_entities() — walks the raw JSON structure
+        directly using _walk_json_leaves(). Skips SKIP_FIELDS.
+        """
+        if not isinstance(parsed, dict):
+            return {}
+        display_name = parsed.get("displayName")
+        if not display_name:
+            return {}
+        leaves = _walk_json_leaves(parsed)
+        return {display_name: leaves}
 
     def parse(self, source: str) -> dict[str, Any]:
         """Parse JSON from file path or raw string."""

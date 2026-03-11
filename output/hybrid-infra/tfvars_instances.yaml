@@ -1,0 +1,124 @@
+meta:
+  entity_type: tfvars
+  tier_b_ref: tfvars_classes.yaml
+  total_instances: 5
+class_assignments:
+  _base_only:
+    instances:
+    - tfvars-dev
+    - tfvars-staging
+  edge_instance_type_t3_medium_enable_monitoring_tru:
+    instances:
+    - tfvars-dr
+    - tfvars-edge
+    - tfvars-prod
+instance_data:
+  schema:
+  - environment
+  - features.backup_retention_days
+  - features.enable_backups
+  - networking.domain
+  - networking.subnet_cidrs
+  - networking.vpc_cidr
+  - tags.environment
+  - workspace
+  records:
+    tfvars-dev:
+    - dev
+    - '0'
+    - 'false'
+    - dev.ridgeline.internal
+    - 10.2.1.0/24
+    - 10.2.0.0/16
+    - dev
+    - development
+    tfvars-dr:
+    - dr
+    - '30'
+    - 'true'
+    - dr.ridgeline.io
+    - 10.3.1.0/24,10.3.2.0/24
+    - 10.3.0.0/16
+    - dr
+    - disaster-recovery
+    tfvars-edge:
+    - prod
+    - '0'
+    - 'false'
+    - ridgeline.io
+    - 10.0.10.0/24
+    - 10.0.0.0/16
+    - prod
+    - edge-network
+    tfvars-prod:
+    - prod
+    - '30'
+    - 'true'
+    - ridgeline.io
+    - 10.0.1.0/24,10.0.2.0/24,10.0.3.0/24
+    - 10.0.0.0/16
+    - prod
+    - production
+    tfvars-staging:
+    - staging
+    - '7'
+    - 'true'
+    - staging.ridgeline.io
+    - 10.1.1.0/24
+    - 10.1.0.0/16
+    - staging
+    - staging
+instance_attrs:
+  tfvars-dev:
+    compute.app_instance_type: t3.small
+    compute.db_instance_count: '1'
+    compute.db_instance_type: t3.medium
+  tfvars-dr:
+    compute.app_instance_type: t3.xlarge
+    compute.db_instance_count: '2'
+    compute.db_instance_type: r6g.2xlarge
+    networking.ssl_cert_arn: arn:aws:acm:eu-west-1:123456789:certificate/def-456
+  tfvars-edge:
+    networking.ssl_cert_arn: 
+      arn:aws:acm:eu-central-1:123456789:certificate/abc-123
+  tfvars-prod:
+    compute.app_instance_type: t3.xlarge
+    compute.db_instance_count: '3'
+    compute.db_instance_type: r6g.2xlarge
+    networking.ssl_cert_arn: 
+      arn:aws:acm:eu-central-1:123456789:certificate/abc-123
+  tfvars-staging:
+    compute.app_instance_type: t3.medium
+    compute.db_instance_count: '1'
+    compute.db_instance_type: r6g.large
+overrides:
+  tfvars-dev:
+    owner: _base_only
+    delta:
+      compute.app_instance_count: '1'
+      features.enable_monitoring: 'false'
+      region: eu-central-1
+  tfvars-staging:
+    owner: _base_only
+    delta:
+      compute.app_instance_count: '1'
+      compute.edge_instance_type: t3.small
+      features.enable_monitoring: 'true'
+      region: eu-central-1
+  tfvars-dr:
+    owner: edge_instance_type_t3_medium_enable_monitoring_tru
+    delta:
+      compute.app_instance_count: '1'
+      region: eu-west-1
+      secrets.ssh_private_key: '[REDACTED]'
+  tfvars-edge:
+    owner: edge_instance_type_t3_medium_enable_monitoring_tru
+    delta:
+      region: eu-central-1
+  tfvars-prod:
+    owner: edge_instance_type_t3_medium_enable_monitoring_tru
+    delta:
+      compute.app_instance_count: '3'
+      region: eu-central-1
+      secrets.ssh_private_key: '[REDACTED]'
+foreign_keys: {}

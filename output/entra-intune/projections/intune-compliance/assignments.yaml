@@ -1,0 +1,60 @@
+meta:
+  subject: assignments
+  description: Group assignments for conditional access policies.
+  source_type: intune-compliance
+  total_instances: 10
+class_assignments:
+  _base_only:
+    instances:
+    - CP-Android-Corporate
+    - CP-Android-Standard
+    - CP-Win-Advanced-Security
+    - CP-Win-Basic-Security
+    - CP-Win-Kiosk-Devices
+    - CP-iOS-BYOD
+    - CP-iOS-Corporate-Managed
+    - CP-iOS-Standard
+    - CP-macOS-Secure-Workstation
+    - CP-macOS-Standard
+instance_attrs:
+  CP-Android-Corporate:
+    assignments:
+      template: intune-compliance.assignments.T0
+  CP-Android-Standard:
+    assignments:
+      template: intune-compliance.assignments.T0
+  CP-Win-Advanced-Security:
+    assignments:
+      template: intune-compliance.assignments.T2
+  CP-Win-Basic-Security:
+    assignments:
+      template: intune-compliance.assignments.T2
+  CP-Win-Kiosk-Devices:
+    assignments:
+    - target.groupId: acd95104-b130-537e-a46d-6e2219a3bc8f
+  CP-iOS-BYOD:
+    assignments:
+    - target.groupId: f5843f0d-24e2-5506-9911-ebc899094fab
+  CP-iOS-Corporate-Managed:
+    assignments:
+      template: intune-compliance.assignments.T1
+  CP-iOS-Standard:
+    assignments:
+      template: intune-compliance.assignments.T1
+  CP-macOS-Secure-Workstation:
+    assignments:
+    - target.groupId: ad039121-ab39-5e68-aaa5-5814dc5ab927
+  CP-macOS-Standard:
+    assignments:
+    - target.groupId: 061db63e-7d80-5c29-9f6c-acd9595a064e
+composite_templates:
+  assignments:
+    intune-compliance.assignments.T0:
+      elements:
+      - target.groupId: 496f4253-0480-5d9f-a32e-faad9a648cba
+    intune-compliance.assignments.T1:
+      elements:
+      - target.groupId: da0f57dc-64a3-55d9-b2ad-9db34afcec0b
+    intune-compliance.assignments.T2:
+      elements:
+      - target.groupId: f936d44e-1763-5419-9d1c-c7f1e38f222a

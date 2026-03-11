@@ -10,12 +10,15 @@ from __future__ import annotations
 
 import configparser
 import re
+from fnmatch import fnmatch
 from pathlib import Path
 from typing import Any
 
 from ruamel.yaml.comments import CommentedMap, CommentedSeq
 
 from decoct.adapters.base import BaseAdapter
+from decoct.adapters.ingestion_models import IngestionSpec
+from decoct.adapters.ingestion_spec import match_entry
 from decoct.core.composite_value import CompositeValue
 from decoct.core.entity_graph import EntityGraph
 from decoct.core.types import Attribute, Entity
@@ -188,12 +191,33 @@ def _is_homogeneous_map(
 
 
 # ---------------------------------------------------------------------------
+# Composite override matching
+# ---------------------------------------------------------------------------
+
+def _match_composite_override(
+    path: str,
+    overrides: dict[str, str] | None,
+) -> str | None:
+    """Match a dotted path against composite override patterns (fnmatch).
+
+    Returns the kind string ("map" or "list") if matched, None otherwise.
+    """
+    if not overrides:
+        return None
+    for pattern, kind in overrides.items():
+        if fnmatch(path, pattern):
+            return kind
+    return None
+
+
+# ---------------------------------------------------------------------------
 # Generic document flattening
 # ---------------------------------------------------------------------------
 
 def flatten_doc(
     doc: Any,
     prefix: str = "",
+    composite_overrides: dict[str, str] | None = None,
 ) -> tuple[dict[str, str], dict[str, CompositeValue]]:
     """Flatten a parsed document into dotted-path attributes.
 
@@ -215,7 +239,7 @@ def flatten_doc(
         # Root-level list (e.g., Ansible playbooks)
         if len(doc) == 1 and isinstance(doc[0], (dict, CommentedMap)):
             # Single-element list — unwrap
-            return flatten_doc(doc[0], prefix)
+            return flatten_doc(doc[0], prefix, composite_overrides)
         if len(doc) > 0 and all(isinstance(item, (dict, CommentedMap)) for item in doc):
             # Multi-element list of objects → CompositeValue at root
             items = [_flatten_composite_item(item) for item in doc]
@@ -239,14 +263,35 @@ def flatten_doc(
             continue
 
         if isinstance(value, (dict, CommentedMap)):
-            if _is_homogeneous_map(value):
-                # Map of similarly-structured items → CompositeValue(kind="map")
+            override_kind = _match_composite_override(path, composite_overrides)
+            if override_kind == "map":
+                # Forced map composite from ingestion spec
                 map_items: dict[str, dict[str, str]] = {}
                 for item_key, item_value in value.items():
-                    map_items[item_key] = _flatten_composite_item(item_value)
+                    if isinstance(item_value, (dict, CommentedMap)):
+                        map_items[item_key] = _flatten_composite_item(item_value)
+                    else:
+                        map_items[item_key] = {"_value": _value_to_str(item_value)}
                 composites[path] = CompositeValue.from_map(map_items)
+            elif override_kind == "list":
+                # Forced list composite from ingestion spec
+                items = []
+                for item_value in value.values():
+                    if isinstance(item_value, (dict, CommentedMap)):
+                        items.append(_flatten_composite_item(item_value))
+                    else:
+                        items.append({"_value": _value_to_str(item_value)})
+                composites[path] = CompositeValue.from_list(items)
+            elif _is_homogeneous_map(value):
+                # Map of similarly-structured items → CompositeValue(kind="map")
+                auto_map_items: dict[str, dict[str, str]] = {}
+                for item_key, item_value in value.items():
+                    auto_map_items[item_key] = _flatten_composite_item(item_value)
+                composites[path] = CompositeValue.from_map(auto_map_items)
             else:
-                child_flat, child_composites = flatten_doc(value, f"{path}.")
+                child_flat, child_composites = flatten_doc(
+                    value, f"{path}.", composite_overrides,
+                )
                 flat.update(child_flat)
                 composites.update(child_composites)
 
@@ -310,16 +355,94 @@ def _flatten_composite_item(item: Any) -> dict[str, str]:
 # Adapter
 # ---------------------------------------------------------------------------
 
+def _walk_doc_leaves(
+    doc: Any,
+    prefix: str = "",
+) -> list[tuple[str, str]]:
+    """Walk a parsed YAML/JSON/INI document collecting ALL leaf data points.
+
+    Independent of flatten_doc() — walks the raw parsed structure directly.
+    Produces a flat list of (dotted_path, string_value) tuples.
+    """
+    leaves: list[tuple[str, str]] = []
+
+    if isinstance(doc, (dict, CommentedMap)):
+        for key, value in doc.items():
+            path = f"{prefix}{key}" if prefix else str(key)
+            if _is_empty(value):
+                continue
+            if isinstance(value, (dict, CommentedMap)):
+                leaves.extend(_walk_doc_leaves(value, f"{path}."))
+            elif isinstance(value, (list, CommentedSeq)):
+                if len(value) == 0:
+                    continue
+                if all(_is_scalar(item) for item in value):
+                    # Emit as comma-separated, matching flatten_doc() output
+                    leaves.append((path, ",".join(_value_to_str(x) for x in value)))
+                elif all(isinstance(item, (dict, CommentedMap)) for item in value):
+                    # All objects → walk each
+                    for i, item in enumerate(value):
+                        leaves.extend(_walk_doc_leaves(item, f"{path}[{i}]."))
+                else:
+                    # Mixed array — only emit scalars, matching flatten_doc()
+                    scalar_parts = [_value_to_str(x) for x in value if _is_scalar(x)]
+                    if scalar_parts:
+                        leaves.append((path, ",".join(scalar_parts)))
+            else:
+                leaves.append((path, _value_to_str(value)))
+    elif isinstance(doc, (list, CommentedSeq)):
+        # Match flatten_doc() root-level list handling:
+        # - Single-element list of dict → unwrap (no [0] prefix)
+        # - Multi-element list of dicts → indexed paths
+        if (
+            not prefix
+            and len(doc) == 1
+            and isinstance(doc[0], (dict, CommentedMap))
+        ):
+            # Single-element root list — unwrap, matching flatten_doc()
+            leaves.extend(_walk_doc_leaves(doc[0], prefix))
+        else:
+            for i, item in enumerate(doc):
+                path = f"{prefix}[{i}]" if prefix else f"[{i}]"
+                if isinstance(item, (dict, CommentedMap)):
+                    leaves.extend(_walk_doc_leaves(item, f"{path.rstrip('.')}."))
+                elif not _is_empty(item):
+                    leaves.append((path, _value_to_str(item)))
+    elif not _is_empty(doc):
+        path = prefix.rstrip(".") or "_root"
+        leaves.append((path, _value_to_str(doc)))
+
+    return leaves
+
+
 class HybridInfraAdapter(BaseAdapter):
     """Generic multi-format infrastructure adapter.
 
     Parses YAML, JSON, and INI/conf files via ``load_input()`` and extracts
-    one entity per file.  Schema type hints come from ``detect_platform()``.
-    No relationships — the entity graph still forms types and classes without them.
+    one entity per file.  Schema type hints come from ``detect_platform()``,
+    optionally overridden by an ingestion spec.
     """
+
+    def __init__(self, ingestion_spec: IngestionSpec | None = None) -> None:
+        self._spec = ingestion_spec
 
     def source_type(self) -> str:
         return "hybrid-infra"
+
+    def secret_paths(self) -> list[str]:
+        from decoct.secrets.iosxr_patterns import NETWORK_SECRET_PATHS
+        return list(NETWORK_SECRET_PATHS)
+
+    def collect_source_leaves(self, parsed: Any) -> dict[str, list[tuple[str, str]]]:
+        """Collect ALL leaf data points from parsed YAML/JSON/INI document.
+
+        Independent of extract_entities() — walks the raw parsed structure
+        directly using _walk_doc_leaves().
+        """
+        doc, path = parsed
+        entity_id = path.stem
+        leaves = _walk_doc_leaves(doc)
+        return {entity_id: leaves}
 
     def parse(self, source: str) -> tuple[Any, Path]:
         """Parse a file into (document, file_path)."""
@@ -346,7 +469,18 @@ class HybridInfraAdapter(BaseAdapter):
         entity = Entity(id=entity_id)
         entity.schema_type_hint = detect_platform(doc)
 
-        flat, composites = flatten_doc(doc)
+        # Apply ingestion spec overrides
+        composite_overrides: dict[str, str] | None = None
+        if self._spec is not None:
+            entry = match_entry(self._spec, entity_id)
+            if entry is not None:
+                entity.schema_type_hint = entry.platform
+                if entry.composite_paths:
+                    composite_overrides = {
+                        cp.path: cp.kind for cp in entry.composite_paths
+                    }
+
+        flat, composites = flatten_doc(doc, composite_overrides=composite_overrides)
 
         # Add flat attributes
         for p, v in sorted(flat.items()):
@@ -361,3 +495,31 @@ class HybridInfraAdapter(BaseAdapter):
             )
 
         graph.add_entity(entity)
+
+    def extract_relationships(self, graph: EntityGraph) -> None:
+        """Extract inter-entity relationships using ingestion spec hints.
+
+        Only activated when spec entries have relationship_hints.
+        For each entity, finds matching spec entry, iterates hints,
+        looks up target entities by matching attribute values.
+        """
+        if self._spec is None:
+            return
+
+        for entity in graph.entities:
+            entry = match_entry(self._spec, entity.id)
+            if entry is None or not entry.relationship_hints:
+                continue
+
+            for hint in entry.relationship_hints:
+                source_attr = entity.attributes.get(hint.source_field)
+                if source_attr is None:
+                    continue
+                source_value = source_attr.value
+
+                for target in graph.entities:
+                    if target.id == entity.id:
+                        continue
+                    target_attr = target.attributes.get(hint.target_field)
+                    if target_attr is not None and target_attr.value == source_value:
+                        graph.add_relationship(entity.id, hint.label, target.id)

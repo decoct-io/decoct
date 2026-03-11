@@ -1,0 +1,22 @@
+meta:
+  subject: browser-settings
+  description: Web browser configuration, including autofill and pop-up 
+    blocking.
+  source_type: intune-device-config
+  total_instances: 8
+base_class:
+  webBrowserBlockAutofill: 'false'
+  webBrowserBlockJavaScript: 'false'
+  webBrowserBlockPopups: 'false'
+  webBrowserBlocked: 'false'
+class_assignments:
+  _base_only:
+    instances:
+    - DC-Android-BYOD
+    - DC-Android-Contractor
+    - DC-Android-Corporate-Lockdown
+    - DC-Android-Executive
+    - DC-Android-Field-Workers
+    - DC-Android-Kiosk
+    - DC-Android-Lab-Devices
+    - DC-Android-Standard

@@ -1,0 +1,21 @@
+meta:
+  subject: google-account-and-voice
+  description: Settings related to Google account synchronization and voice 
+    features.
+  source_type: intune-device-config
+  total_instances: 8
+base_class:
+  googleAccountBlockAutoSync: 'false'
+  voiceAssistantBlocked: 'false'
+  voiceDialingBlocked: 'false'
+class_assignments:
+  _base_only:
+    instances:
+    - DC-Android-BYOD
+    - DC-Android-Contractor
+    - DC-Android-Corporate-Lockdown
+    - DC-Android-Executive
+    - DC-Android-Field-Workers
+    - DC-Android-Kiosk
+    - DC-Android-Lab-Devices
+    - DC-Android-Standard

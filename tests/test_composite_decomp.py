@@ -6,7 +6,7 @@ from decoct.analysis.profiler import profile_attributes
 from decoct.core.composite_value import CompositeValue
 from decoct.core.config import EntityGraphConfig
 from decoct.core.entity_graph import EntityGraph
-from decoct.core.types import Attribute, Entity, FinalRole
+from decoct.core.types import Attribute, Entity
 from decoct.discovery.composite_decomp import decompose_composites
 
 

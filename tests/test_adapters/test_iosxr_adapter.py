@@ -2,11 +2,8 @@
 
 from pathlib import Path
 
-import pytest
-
 from decoct.adapters.iosxr import IosxrAdapter
 from decoct.core.entity_graph import EntityGraph
-
 
 FIXTURES = Path("tests/fixtures/iosxr/configs")
 
@@ -39,7 +36,7 @@ class TestIosxrAdapterPerRole:
         assert e.schema_type_hint == "iosxr-access-pe"
         assert "hostname" in e.attributes
         # Should have composite values for EVIs
-        evpn_attrs = [p for p in e.attributes if p.startswith("evpn")]
+        evpn_attrs = [p for p in e.attributes if "evpn" in p or "evis" in p]
         assert len(evpn_attrs) > 0
 
     def test_bng_entity(self) -> None:
@@ -55,7 +52,7 @@ class TestIosxrAdapterPerRole:
     def test_p2p_link_relationships(self) -> None:
         graph, eid = self._parse_one("P-CORE-01.cfg")
         rels = graph.relationships_from(eid)
-        p2p_links = [(l, t) for l, t in rels if l == "p2p_link"]
+        p2p_links = [(label, t) for label, t in rels if label == "p2p_link"]
         assert len(p2p_links) > 0
 
 

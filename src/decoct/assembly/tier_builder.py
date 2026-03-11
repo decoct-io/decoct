@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 import re
+from pathlib import Path
 from typing import Any
 
+from decoct.assembly.tier_a_models import TierASpec
 from decoct.core.entity_graph import EntityGraph
 from decoct.core.types import (
     ClassHierarchy,
@@ -143,6 +145,75 @@ def build_tier_a(
             tier_a["topology"][type_id] = sorted(connected_types)
 
     return tier_a
+
+
+def scan_projection_index(output_dir: Path) -> dict[str, list[str]]:
+    """Scan projections/ subdirectory for available projection YAML files.
+
+    Returns a dict mapping type_id → list of subject filenames (without extension).
+    """
+    proj_dir = output_dir / "projections"
+    if not proj_dir.is_dir():
+        return {}
+
+    index: dict[str, list[str]] = {}
+    for type_dir in sorted(proj_dir.iterdir()):
+        if not type_dir.is_dir():
+            continue
+        subjects: list[str] = []
+        for f in sorted(type_dir.iterdir()):
+            if f.suffix in (".yaml", ".yml") and f.stem != "projection_spec":
+                subjects.append(f.stem)
+        if subjects:
+            index[type_dir.name] = subjects
+
+    return index
+
+
+def merge_tier_a_spec(
+    tier_a: dict[str, Any],
+    spec: TierASpec,
+    output_dir: Path | None = None,
+) -> dict[str, Any]:
+    """Merge a TierASpec into an existing tier_a dict, adding LLM-generated guide content.
+
+    This is a separate function from build_tier_a() to keep the pipeline backward-compatible.
+    The merge adds:
+    - ``guide`` section (corpus_description, how_to_use, reconstruction instructions)
+    - Per-type ``summary`` and ``key_differentiators`` into existing ``types[type_id]``
+    - ``projections`` index (if output_dir provided, scanned from projections/ subdir)
+    """
+    merged = dict(tier_a)
+
+    # Guide section at the top
+    guide: dict[str, Any] = {
+        "corpus_description": spec.corpus_description,
+    }
+    if spec.how_to_use:
+        guide["how_to_use"] = spec.how_to_use
+
+    guide["reconstruction"] = (
+        "To reconstruct any entity: start with base_class attributes from Tier B, "
+        "overlay class own_attrs, then overlay subclass own_attrs (if assigned), "
+        "then apply Tier C instance-specific overrides and instance_attrs."
+    )
+    merged["guide"] = guide
+
+    # Merge type descriptions into existing types
+    types_section = merged.get("types", {})
+    for type_id, desc in spec.type_descriptions.items():
+        if type_id in types_section:
+            types_section[type_id]["summary"] = desc.summary
+            if desc.key_differentiators:
+                types_section[type_id]["key_differentiators"] = desc.key_differentiators
+
+    # Projection index
+    if output_dir is not None:
+        proj_index = scan_projection_index(output_dir)
+        if proj_index:
+            merged["projections"] = proj_index
+
+    return merged
 
 
 def build_tier_b(

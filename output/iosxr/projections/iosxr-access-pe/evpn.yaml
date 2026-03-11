@@ -1,0 +1,619 @@
+meta:
+  subject: evpn
+  description: EVPN and L2VPN configuration
+  source_type: iosxr-access-pe
+  total_instances: 60
+base_class:
+  evpn.!: 'true'
+  l2vpn.!: 'true'
+class_assignments:
+  _base_only:
+    instances:
+    - APE-R1-01..APE-R1-20
+    - APE-R2-01..APE-R2-20
+    - APE-R3-01..APE-R3-20
+instance_data:
+  schema:
+  - hostname
+  records:
+    APE-R1-01:
+    - APE-R1-01
+    APE-R1-02:
+    - APE-R1-02
+    APE-R1-03:
+    - APE-R1-03
+    APE-R1-04:
+    - APE-R1-04
+    APE-R1-05:
+    - APE-R1-05
+    APE-R1-06:
+    - APE-R1-06
+    APE-R1-07:
+    - APE-R1-07
+    APE-R1-08:
+    - APE-R1-08
+    APE-R1-09:
+    - APE-R1-09
+    APE-R1-10:
+    - APE-R1-10
+    APE-R1-11:
+    - APE-R1-11
+    APE-R1-12:
+    - APE-R1-12
+    APE-R1-13:
+    - APE-R1-13
+    APE-R1-14:
+    - APE-R1-14
+    APE-R1-15:
+    - APE-R1-15
+    APE-R1-16:
+    - APE-R1-16
+    APE-R1-17:
+    - APE-R1-17
+    APE-R1-18:
+    - APE-R1-18
+    APE-R1-19:
+    - APE-R1-19
+    APE-R1-20:
+    - APE-R1-20
+    APE-R2-01:
+    - APE-R2-01
+    APE-R2-02:
+    - APE-R2-02
+    APE-R2-03:
+    - APE-R2-03
+    APE-R2-04:
+    - APE-R2-04
+    APE-R2-05:
+    - APE-R2-05
+    APE-R2-06:
+    - APE-R2-06
+    APE-R2-07:
+    - APE-R2-07
+    APE-R2-08:
+    - APE-R2-08
+    APE-R2-09:
+    - APE-R2-09
+    APE-R2-10:
+    - APE-R2-10
+    APE-R2-11:
+    - APE-R2-11
+    APE-R2-12:
+    - APE-R2-12
+    APE-R2-13:
+    - APE-R2-13
+    APE-R2-14:
+    - APE-R2-14
+    APE-R2-15:
+    - APE-R2-15
+    APE-R2-16:
+    - APE-R2-16
+    APE-R2-17:
+    - APE-R2-17
+    APE-R2-18:
+    - APE-R2-18
+    APE-R2-19:
+    - APE-R2-19
+    APE-R2-20:
+    - APE-R2-20
+    APE-R3-01:
+    - APE-R3-01
+    APE-R3-02:
+    - APE-R3-02
+    APE-R3-03:
+    - APE-R3-03
+    APE-R3-04:
+    - APE-R3-04
+    APE-R3-05:
+    - APE-R3-05
+    APE-R3-06:
+    - APE-R3-06
+    APE-R3-07:
+    - APE-R3-07
+    APE-R3-08:
+    - APE-R3-08
+    APE-R3-09:
+    - APE-R3-09
+    APE-R3-10:
+    - APE-R3-10
+    APE-R3-11:
+    - APE-R3-11
+    APE-R3-12:
+    - APE-R3-12
+    APE-R3-13:
+    - APE-R3-13
+    APE-R3-14:
+    - APE-R3-14
+    APE-R3-15:
+    - APE-R3-15
+    APE-R3-16:
+    - APE-R3-16
+    APE-R3-17:
+    - APE-R3-17
+    APE-R3-18:
+    - APE-R3-18
+    APE-R3-19:
+    - APE-R3-19
+    APE-R3-20:
+    - APE-R3-20
+instance_attrs:
+  APE-R1-01:
+    l2vpn.bridge-groups:
+      BG-APE-R1-01:
+        bridge-domain.BD-APE-R1-01-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R1-01-VOICE.!: 'true'
+        bridge-domain.BD-APE-R1-01-VOICE.evi: '10002'
+        bridge-domain.BD-APE-R1-01-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R1-02:
+    l2vpn.bridge-groups:
+      BG-APE-R1-02:
+        bridge-domain.BD-APE-R1-02-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R1-02-VOICE.!: 'true'
+        bridge-domain.BD-APE-R1-02-VOICE.evi: '10102'
+        bridge-domain.BD-APE-R1-02-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R1-03:
+    l2vpn.bridge-groups:
+      BG-APE-R1-03:
+        bridge-domain.BD-APE-R1-03-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R1-03-VOICE.!: 'true'
+        bridge-domain.BD-APE-R1-03-VOICE.evi: '10202'
+        bridge-domain.BD-APE-R1-03-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R1-04:
+    l2vpn.bridge-groups:
+      BG-APE-R1-04:
+        bridge-domain.BD-APE-R1-04-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R1-04-VOICE.!: 'true'
+        bridge-domain.BD-APE-R1-04-VOICE.evi: '10302'
+        bridge-domain.BD-APE-R1-04-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R1-05:
+    l2vpn.bridge-groups:
+      BG-APE-R1-05:
+        bridge-domain.BD-APE-R1-05-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R1-05-VOICE.!: 'true'
+        bridge-domain.BD-APE-R1-05-VOICE.evi: '10402'
+        bridge-domain.BD-APE-R1-05-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R1-06:
+    l2vpn.bridge-groups:
+      BG-APE-R1-06:
+        bridge-domain.BD-APE-R1-06-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R1-06-VOICE.!: 'true'
+        bridge-domain.BD-APE-R1-06-VOICE.evi: '10502'
+        bridge-domain.BD-APE-R1-06-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R1-07:
+    l2vpn.bridge-groups:
+      BG-APE-R1-07:
+        bridge-domain.BD-APE-R1-07-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R1-07-VOICE.!: 'true'
+        bridge-domain.BD-APE-R1-07-VOICE.evi: '10602'
+        bridge-domain.BD-APE-R1-07-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R1-08:
+    l2vpn.bridge-groups:
+      BG-APE-R1-08:
+        bridge-domain.BD-APE-R1-08-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R1-08-VOICE.!: 'true'
+        bridge-domain.BD-APE-R1-08-VOICE.evi: '10702'
+        bridge-domain.BD-APE-R1-08-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R1-09:
+    l2vpn.bridge-groups:
+      BG-APE-R1-09:
+        bridge-domain.BD-APE-R1-09-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R1-09-VOICE.!: 'true'
+        bridge-domain.BD-APE-R1-09-VOICE.evi: '10802'
+        bridge-domain.BD-APE-R1-09-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R1-10:
+    l2vpn.bridge-groups:
+      BG-APE-R1-10:
+        bridge-domain.BD-APE-R1-10-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R1-10-VOICE.!: 'true'
+        bridge-domain.BD-APE-R1-10-VOICE.evi: '10902'
+        bridge-domain.BD-APE-R1-10-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R1-11:
+    l2vpn.bridge-groups:
+      BG-APE-R1-11:
+        bridge-domain.BD-APE-R1-11-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R1-11-VOICE.!: 'true'
+        bridge-domain.BD-APE-R1-11-VOICE.evi: '11002'
+        bridge-domain.BD-APE-R1-11-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R1-12:
+    l2vpn.bridge-groups:
+      BG-APE-R1-12:
+        bridge-domain.BD-APE-R1-12-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R1-12-VOICE.!: 'true'
+        bridge-domain.BD-APE-R1-12-VOICE.evi: '11102'
+        bridge-domain.BD-APE-R1-12-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R1-13:
+    l2vpn.bridge-groups:
+      BG-APE-R1-13:
+        bridge-domain.BD-APE-R1-13-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R1-13-VOICE.!: 'true'
+        bridge-domain.BD-APE-R1-13-VOICE.evi: '11202'
+        bridge-domain.BD-APE-R1-13-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R1-14:
+    l2vpn.bridge-groups:
+      BG-APE-R1-14:
+        bridge-domain.BD-APE-R1-14-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R1-14-VOICE.!: 'true'
+        bridge-domain.BD-APE-R1-14-VOICE.evi: '11302'
+        bridge-domain.BD-APE-R1-14-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R1-15:
+    l2vpn.bridge-groups:
+      BG-APE-R1-15:
+        bridge-domain.BD-APE-R1-15-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R1-15-VOICE.!: 'true'
+        bridge-domain.BD-APE-R1-15-VOICE.evi: '11402'
+        bridge-domain.BD-APE-R1-15-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R1-16:
+    l2vpn.bridge-groups:
+      BG-APE-R1-16:
+        bridge-domain.BD-APE-R1-16-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R1-16-VOICE.!: 'true'
+        bridge-domain.BD-APE-R1-16-VOICE.evi: '11502'
+        bridge-domain.BD-APE-R1-16-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R1-17:
+    l2vpn.bridge-groups:
+      BG-APE-R1-17:
+        bridge-domain.BD-APE-R1-17-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R1-17-VOICE.!: 'true'
+        bridge-domain.BD-APE-R1-17-VOICE.evi: '11602'
+        bridge-domain.BD-APE-R1-17-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R1-18:
+    l2vpn.bridge-groups:
+      BG-APE-R1-18:
+        bridge-domain.BD-APE-R1-18-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R1-18-VOICE.!: 'true'
+        bridge-domain.BD-APE-R1-18-VOICE.evi: '11702'
+        bridge-domain.BD-APE-R1-18-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R1-19:
+    l2vpn.bridge-groups:
+      BG-APE-R1-19:
+        bridge-domain.BD-APE-R1-19-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R1-19-VOICE.!: 'true'
+        bridge-domain.BD-APE-R1-19-VOICE.evi: '11802'
+        bridge-domain.BD-APE-R1-19-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R1-20:
+    l2vpn.bridge-groups:
+      BG-APE-R1-20:
+        bridge-domain.BD-APE-R1-20-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R1-20-VOICE.!: 'true'
+        bridge-domain.BD-APE-R1-20-VOICE.evi: '11902'
+        bridge-domain.BD-APE-R1-20-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R2-01:
+    l2vpn.bridge-groups:
+      BG-APE-R2-01:
+        bridge-domain.BD-APE-R2-01-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R2-01-VOICE.!: 'true'
+        bridge-domain.BD-APE-R2-01-VOICE.evi: '12002'
+        bridge-domain.BD-APE-R2-01-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R2-02:
+    l2vpn.bridge-groups:
+      BG-APE-R2-02:
+        bridge-domain.BD-APE-R2-02-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R2-02-VOICE.!: 'true'
+        bridge-domain.BD-APE-R2-02-VOICE.evi: '12102'
+        bridge-domain.BD-APE-R2-02-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R2-03:
+    l2vpn.bridge-groups:
+      BG-APE-R2-03:
+        bridge-domain.BD-APE-R2-03-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R2-03-VOICE.!: 'true'
+        bridge-domain.BD-APE-R2-03-VOICE.evi: '12202'
+        bridge-domain.BD-APE-R2-03-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R2-04:
+    l2vpn.bridge-groups:
+      BG-APE-R2-04:
+        bridge-domain.BD-APE-R2-04-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R2-04-VOICE.!: 'true'
+        bridge-domain.BD-APE-R2-04-VOICE.evi: '12302'
+        bridge-domain.BD-APE-R2-04-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R2-05:
+    l2vpn.bridge-groups:
+      BG-APE-R2-05:
+        bridge-domain.BD-APE-R2-05-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R2-05-VOICE.!: 'true'
+        bridge-domain.BD-APE-R2-05-VOICE.evi: '12402'
+        bridge-domain.BD-APE-R2-05-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R2-06:
+    l2vpn.bridge-groups:
+      BG-APE-R2-06:
+        bridge-domain.BD-APE-R2-06-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R2-06-VOICE.!: 'true'
+        bridge-domain.BD-APE-R2-06-VOICE.evi: '12502'
+        bridge-domain.BD-APE-R2-06-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R2-07:
+    l2vpn.bridge-groups:
+      BG-APE-R2-07:
+        bridge-domain.BD-APE-R2-07-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R2-07-VOICE.!: 'true'
+        bridge-domain.BD-APE-R2-07-VOICE.evi: '12602'
+        bridge-domain.BD-APE-R2-07-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R2-08:
+    l2vpn.bridge-groups:
+      BG-APE-R2-08:
+        bridge-domain.BD-APE-R2-08-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R2-08-VOICE.!: 'true'
+        bridge-domain.BD-APE-R2-08-VOICE.evi: '12702'
+        bridge-domain.BD-APE-R2-08-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R2-09:
+    l2vpn.bridge-groups:
+      BG-APE-R2-09:
+        bridge-domain.BD-APE-R2-09-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R2-09-VOICE.!: 'true'
+        bridge-domain.BD-APE-R2-09-VOICE.evi: '12802'
+        bridge-domain.BD-APE-R2-09-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R2-10:
+    l2vpn.bridge-groups:
+      BG-APE-R2-10:
+        bridge-domain.BD-APE-R2-10-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R2-10-VOICE.!: 'true'
+        bridge-domain.BD-APE-R2-10-VOICE.evi: '12902'
+        bridge-domain.BD-APE-R2-10-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R2-11:
+    l2vpn.bridge-groups:
+      BG-APE-R2-11:
+        bridge-domain.BD-APE-R2-11-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R2-11-VOICE.!: 'true'
+        bridge-domain.BD-APE-R2-11-VOICE.evi: '13002'
+        bridge-domain.BD-APE-R2-11-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R2-12:
+    l2vpn.bridge-groups:
+      BG-APE-R2-12:
+        bridge-domain.BD-APE-R2-12-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R2-12-VOICE.!: 'true'
+        bridge-domain.BD-APE-R2-12-VOICE.evi: '13102'
+        bridge-domain.BD-APE-R2-12-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R2-13:
+    l2vpn.bridge-groups:
+      BG-APE-R2-13:
+        bridge-domain.BD-APE-R2-13-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R2-13-VOICE.!: 'true'
+        bridge-domain.BD-APE-R2-13-VOICE.evi: '13202'
+        bridge-domain.BD-APE-R2-13-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R2-14:
+    l2vpn.bridge-groups:
+      BG-APE-R2-14:
+        bridge-domain.BD-APE-R2-14-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R2-14-VOICE.!: 'true'
+        bridge-domain.BD-APE-R2-14-VOICE.evi: '13302'
+        bridge-domain.BD-APE-R2-14-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R2-15:
+    l2vpn.bridge-groups:
+      BG-APE-R2-15:
+        bridge-domain.BD-APE-R2-15-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R2-15-VOICE.!: 'true'
+        bridge-domain.BD-APE-R2-15-VOICE.evi: '13402'
+        bridge-domain.BD-APE-R2-15-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R2-16:
+    l2vpn.bridge-groups:
+      BG-APE-R2-16:
+        bridge-domain.BD-APE-R2-16-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R2-16-VOICE.!: 'true'
+        bridge-domain.BD-APE-R2-16-VOICE.evi: '13502'
+        bridge-domain.BD-APE-R2-16-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R2-17:
+    l2vpn.bridge-groups:
+      BG-APE-R2-17:
+        bridge-domain.BD-APE-R2-17-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R2-17-VOICE.!: 'true'
+        bridge-domain.BD-APE-R2-17-VOICE.evi: '13602'
+        bridge-domain.BD-APE-R2-17-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R2-18:
+    l2vpn.bridge-groups:
+      BG-APE-R2-18:
+        bridge-domain.BD-APE-R2-18-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R2-18-VOICE.!: 'true'
+        bridge-domain.BD-APE-R2-18-VOICE.evi: '13702'
+        bridge-domain.BD-APE-R2-18-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R2-19:
+    l2vpn.bridge-groups:
+      BG-APE-R2-19:
+        bridge-domain.BD-APE-R2-19-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R2-19-VOICE.!: 'true'
+        bridge-domain.BD-APE-R2-19-VOICE.evi: '13802'
+        bridge-domain.BD-APE-R2-19-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R2-20:
+    l2vpn.bridge-groups:
+      BG-APE-R2-20:
+        bridge-domain.BD-APE-R2-20-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R2-20-VOICE.!: 'true'
+        bridge-domain.BD-APE-R2-20-VOICE.evi: '13902'
+        bridge-domain.BD-APE-R2-20-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R3-01:
+    l2vpn.bridge-groups:
+      BG-APE-R3-01:
+        bridge-domain.BD-APE-R3-01-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R3-01-VOICE.!: 'true'
+        bridge-domain.BD-APE-R3-01-VOICE.evi: '14002'
+        bridge-domain.BD-APE-R3-01-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R3-02:
+    l2vpn.bridge-groups:
+      BG-APE-R3-02:
+        bridge-domain.BD-APE-R3-02-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R3-02-VOICE.!: 'true'
+        bridge-domain.BD-APE-R3-02-VOICE.evi: '14102'
+        bridge-domain.BD-APE-R3-02-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R3-03:
+    l2vpn.bridge-groups:
+      BG-APE-R3-03:
+        bridge-domain.BD-APE-R3-03-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R3-03-VOICE.!: 'true'
+        bridge-domain.BD-APE-R3-03-VOICE.evi: '14202'
+        bridge-domain.BD-APE-R3-03-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R3-04:
+    l2vpn.bridge-groups:
+      BG-APE-R3-04:
+        bridge-domain.BD-APE-R3-04-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R3-04-VOICE.!: 'true'
+        bridge-domain.BD-APE-R3-04-VOICE.evi: '14302'
+        bridge-domain.BD-APE-R3-04-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R3-05:
+    l2vpn.bridge-groups:
+      BG-APE-R3-05:
+        bridge-domain.BD-APE-R3-05-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R3-05-VOICE.!: 'true'
+        bridge-domain.BD-APE-R3-05-VOICE.evi: '14402'
+        bridge-domain.BD-APE-R3-05-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R3-06:
+    l2vpn.bridge-groups:
+      BG-APE-R3-06:
+        bridge-domain.BD-APE-R3-06-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R3-06-VOICE.!: 'true'
+        bridge-domain.BD-APE-R3-06-VOICE.evi: '14502'
+        bridge-domain.BD-APE-R3-06-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R3-07:
+    l2vpn.bridge-groups:
+      BG-APE-R3-07:
+        bridge-domain.BD-APE-R3-07-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R3-07-VOICE.!: 'true'
+        bridge-domain.BD-APE-R3-07-VOICE.evi: '14602'
+        bridge-domain.BD-APE-R3-07-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R3-08:
+    l2vpn.bridge-groups:
+      BG-APE-R3-08:
+        bridge-domain.BD-APE-R3-08-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R3-08-VOICE.!: 'true'
+        bridge-domain.BD-APE-R3-08-VOICE.evi: '14702'
+        bridge-domain.BD-APE-R3-08-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R3-09:
+    l2vpn.bridge-groups:
+      BG-APE-R3-09:
+        bridge-domain.BD-APE-R3-09-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R3-09-VOICE.!: 'true'
+        bridge-domain.BD-APE-R3-09-VOICE.evi: '14802'
+        bridge-domain.BD-APE-R3-09-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R3-10:
+    l2vpn.bridge-groups:
+      BG-APE-R3-10:
+        bridge-domain.BD-APE-R3-10-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R3-10-VOICE.!: 'true'
+        bridge-domain.BD-APE-R3-10-VOICE.evi: '14902'
+        bridge-domain.BD-APE-R3-10-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R3-11:
+    l2vpn.bridge-groups:
+      BG-APE-R3-11:
+        bridge-domain.BD-APE-R3-11-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R3-11-VOICE.!: 'true'
+        bridge-domain.BD-APE-R3-11-VOICE.evi: '15002'
+        bridge-domain.BD-APE-R3-11-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R3-12:
+    l2vpn.bridge-groups:
+      BG-APE-R3-12:
+        bridge-domain.BD-APE-R3-12-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R3-12-VOICE.!: 'true'
+        bridge-domain.BD-APE-R3-12-VOICE.evi: '15102'
+        bridge-domain.BD-APE-R3-12-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R3-13:
+    l2vpn.bridge-groups:
+      BG-APE-R3-13:
+        bridge-domain.BD-APE-R3-13-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R3-13-VOICE.!: 'true'
+        bridge-domain.BD-APE-R3-13-VOICE.evi: '15202'
+        bridge-domain.BD-APE-R3-13-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R3-14:
+    l2vpn.bridge-groups:
+      BG-APE-R3-14:
+        bridge-domain.BD-APE-R3-14-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R3-14-VOICE.!: 'true'
+        bridge-domain.BD-APE-R3-14-VOICE.evi: '15302'
+        bridge-domain.BD-APE-R3-14-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R3-15:
+    l2vpn.bridge-groups:
+      BG-APE-R3-15:
+        bridge-domain.BD-APE-R3-15-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R3-15-VOICE.!: 'true'
+        bridge-domain.BD-APE-R3-15-VOICE.evi: '15402'
+        bridge-domain.BD-APE-R3-15-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R3-16:
+    l2vpn.bridge-groups:
+      BG-APE-R3-16:
+        bridge-domain.BD-APE-R3-16-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R3-16-VOICE.!: 'true'
+        bridge-domain.BD-APE-R3-16-VOICE.evi: '15502'
+        bridge-domain.BD-APE-R3-16-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R3-17:
+    l2vpn.bridge-groups:
+      BG-APE-R3-17:
+        bridge-domain.BD-APE-R3-17-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R3-17-VOICE.!: 'true'
+        bridge-domain.BD-APE-R3-17-VOICE.evi: '15602'
+        bridge-domain.BD-APE-R3-17-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R3-18:
+    l2vpn.bridge-groups:
+      BG-APE-R3-18:
+        bridge-domain.BD-APE-R3-18-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R3-18-VOICE.!: 'true'
+        bridge-domain.BD-APE-R3-18-VOICE.evi: '15702'
+        bridge-domain.BD-APE-R3-18-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R3-19:
+    l2vpn.bridge-groups:
+      BG-APE-R3-19:
+        bridge-domain.BD-APE-R3-19-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R3-19-VOICE.!: 'true'
+        bridge-domain.BD-APE-R3-19-VOICE.evi: '15802'
+        bridge-domain.BD-APE-R3-19-VOICE.routed: interface BVI300
+        '!': 'true'
+  APE-R3-20:
+    l2vpn.bridge-groups:
+      BG-APE-R3-20:
+        bridge-domain.BD-APE-R3-20-VOICE.interface: Bundle-Ether300.300
+        bridge-domain.BD-APE-R3-20-VOICE.!: 'true'
+        bridge-domain.BD-APE-R3-20-VOICE.evi: '15902'
+        bridge-domain.BD-APE-R3-20-VOICE.routed: interface BVI300
+        '!': 'true'

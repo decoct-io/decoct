@@ -1,0 +1,46 @@
+meta:
+  subject: compliance-settings
+  description: Core compliance policy settings for Intune devices.
+  source_type: intune-compliance
+  total_instances: 10
+base_class:
+  roleScopeTagIds: '0'
+  version: '1'
+classes:
+  configurationManagerComplianceRequired_false_early:
+    inherits: base
+    own_attrs:
+      configurationManagerComplianceRequired: 'false'
+      earlyLaunchAntiMalwareDriverEnabled: 'false'
+      passwordRequiredToUnlockFromIdle: 'false'
+    instance_count_inclusive: 3
+subclasses:
+  configurationManagerComplianceRequired_false_early_activeFirewallRequired_false_a:
+    parent: configurationManagerComplianceRequired_false_early
+    own_attrs:
+      activeFirewallRequired: 'false'
+      antiSpywareRequired: 'false'
+      requireHealthyDeviceReport: 'false'
+    instance_count: 3
+class_assignments:
+  configurationManagerComplianceRequired_false_early:
+    instances:
+    - CP-Win-Advanced-Security
+    - CP-Win-Basic-Security
+    - CP-Win-Kiosk-Devices
+  _base_only:
+    instances:
+    - CP-Android-Corporate
+    - CP-Android-Standard
+    - CP-iOS-BYOD
+    - CP-iOS-Corporate-Managed
+    - CP-iOS-Standard
+    - CP-macOS-Secure-Workstation
+    - CP-macOS-Standard
+subclass_assignments:
+  configurationManagerComplianceRequired_false_early_activeFirewallRequired_false_a:
+    parent: configurationManagerComplianceRequired_false_early
+    instances:
+    - CP-Win-Advanced-Security
+    - CP-Win-Basic-Security
+    - CP-Win-Kiosk-Devices

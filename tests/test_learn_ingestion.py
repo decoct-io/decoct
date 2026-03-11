@@ -25,7 +25,6 @@ from decoct.learn_ingestion import (
     infer_ingestion_spec,
 )
 
-
 # ---------------------------------------------------------------------------
 # TestInferFilePattern — pure logic
 # ---------------------------------------------------------------------------

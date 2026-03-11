@@ -1,0 +1,22 @@
+meta:
+  subject: authentication
+  description: Settings related to user authentication methods.
+  source_type: sshd
+  total_instances: 4
+base_class:
+  ExposeAuthInfo: 'false'
+  HostbasedAuthentication: 'false'
+  IgnoreRhosts: 'true'
+  IgnoreUserKnownHosts: 'false'
+  KerberosAuthentication: 'false'
+  PermitEmptyPasswords: 'false'
+  PermitUserEnvironment: 'false'
+  PubkeyAuthentication: 'true'
+  StrictModes: 'true'
+class_assignments:
+  _base_only:
+    instances:
+    - sshd-bastion
+    - sshd-dev
+    - sshd-prod
+    - sshd-staging

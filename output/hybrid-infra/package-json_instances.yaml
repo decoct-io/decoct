@@ -1,0 +1,181 @@
+meta:
+  entity_type: package-json
+  tier_b_ref: package-json_classes.yaml
+  total_instances: 4
+class_assignments:
+  _base_only:
+    instances:
+    - package-json-admin-panel
+    - package-json-notification-svc
+    - package-json-search-svc
+    - package-json-web-app
+instance_data:
+  schema:
+  - description
+  - engines.node
+  - main
+  - name
+  - version
+  records:
+    package-json-admin-panel:
+    - Ridgeline Admin Panel
+    - '>=20.0.0'
+    - dist/server.js
+    - '@ridgeline/admin-panel'
+    - 1.0.0
+    package-json-notification-svc:
+    - Ridgeline Notification Service
+    - '>=18.0.0'
+    - dist/index.js
+    - '@ridgeline/notification-svc'
+    - 1.2.0
+    package-json-search-svc:
+    - Ridgeline Search Service (Fastify)
+    - '>=18.0.0'
+    - dist/index.js
+    - '@ridgeline/search-svc'
+    - 0.9.0
+    package-json-web-app:
+    - Ridgeline Web Application (React SSR)
+    - '>=20.0.0'
+    - dist/server.js
+    - '@ridgeline/web-app'
+    - 3.0.0
+instance_attrs:
+  package-json-admin-panel:
+    dependencies:
+      next:
+        _value: ^14.1.0
+      react:
+        _value: ^18.2.0
+      react-dom:
+        _value: ^18.2.0
+      '@tanstack/react-table':
+        _value: ^8.11.0
+      recharts:
+        _value: ^2.10.3
+      axios:
+        _value: ^1.6.5
+    devDependencies:
+      typescript:
+        _value: ^5.3.3
+      '@types/react':
+        _value: ^18.2.47
+      eslint:
+        _value: ^8.56.0
+      jest:
+        _value: ^29.7.0
+    scripts:
+      dev:
+        _value: next dev --port 8005
+      build:
+        _value: next build
+      start:
+        _value: next start
+      lint:
+        _value: eslint .
+      test:
+        _value: jest
+  package-json-notification-svc:
+    dependencies:
+      express:
+        _value: ^4.18.2
+      nodemailer:
+        _value: ^6.9.8
+      twilio:
+        _value: ^4.23.0
+      ioredis:
+        _value: ^5.3.2
+      winston:
+        _value: ^3.11.0
+      dotenv:
+        _value: ^16.3.1
+    devDependencies:
+      typescript:
+        _value: ^5.3.3
+      '@types/express':
+        _value: ^4.17.21
+      '@types/nodemailer':
+        _value: ^6.4.14
+      jest:
+        _value: ^29.7.0
+      ts-node:
+        _value: ^10.9.2
+    scripts:
+      dev:
+        _value: ts-node src/index.ts
+      build:
+        _value: tsc
+      start:
+        _value: node dist/index.js
+      test:
+        _value: jest
+  package-json-search-svc:
+    dependencies:
+      fastify:
+        _value: ^4.25.2
+      '@elastic/elasticsearch':
+        _value: ^8.12.0
+      pino:
+        _value: ^8.17.2
+      dotenv:
+        _value: ^16.3.1
+    devDependencies:
+      typescript:
+        _value: ^5.3.3
+      '@types/node':
+        _value: ^20.11.0
+      jest:
+        _value: ^29.7.0
+      ts-node:
+        _value: ^10.9.2
+    scripts:
+      dev:
+        _value: ts-node src/index.ts
+      build:
+        _value: tsc
+      start:
+        _value: node dist/index.js
+      test:
+        _value: jest
+  package-json-web-app:
+    dependencies:
+      next:
+        _value: ^14.1.0
+      react:
+        _value: ^18.2.0
+      react-dom:
+        _value: ^18.2.0
+      axios:
+        _value: ^1.6.5
+      zustand:
+        _value: ^4.5.0
+      tailwindcss:
+        _value: ^3.4.1
+      '@tanstack/react-query':
+        _value: ^5.17.0
+    devDependencies:
+      typescript:
+        _value: ^5.3.3
+      '@types/react':
+        _value: ^18.2.47
+      '@types/node':
+        _value: ^20.11.0
+      eslint:
+        _value: ^8.56.0
+      jest:
+        _value: ^29.7.0
+      '@testing-library/react':
+        _value: ^14.1.2
+    scripts:
+      dev:
+        _value: next dev
+      build:
+        _value: next build
+      start:
+        _value: next start
+      lint:
+        _value: eslint .
+      test:
+        _value: jest --coverage
+foreign_keys: {}

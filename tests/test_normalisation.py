@@ -12,7 +12,6 @@ from decoct.core.types import (
     ClassHierarchy,
     Entity,
     FinalRole,
-    TierCStorage,
 )
 
 

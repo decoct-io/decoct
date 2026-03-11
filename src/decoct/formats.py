@@ -117,7 +117,7 @@ def _parse_flat_keyvalue(text: str) -> CommentedMap:
 def detect_platform(doc: Any) -> str | None:
     """Detect the platform from document content.
 
-    Returns a bundled schema name or None if unrecognised.
+    Returns a platform type name or None if unrecognised.
     """
     # Ansible playbook: list of plays with hosts + tasks/roles
     if isinstance(doc, list) and len(doc) > 0:

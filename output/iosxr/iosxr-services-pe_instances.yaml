@@ -1,0 +1,868 @@
+meta:
+  entity_type: iosxr-services-pe
+  tier_b_ref: iosxr-services-pe_classes.yaml
+  total_instances: 8
+class_assignments:
+  _base_only:
+    instances:
+    - SVC-PE-01..SVC-PE-08
+instance_data:
+  schema:
+  - hostname
+  - interface.Loopback0.description
+  - interface.Loopback0.ipv4
+  - interface.Loopback1.description
+  - interface.Loopback1.ipv4
+  - interface.Loopback1.vrf
+  - interface.Loopback2.description
+  - interface.Loopback2.ipv4
+  - interface.Loopback2.vrf
+  - interface.Loopback3.description
+  - interface.Loopback3.ipv4
+  - interface.Loopback3.vrf
+  - interface.MgmtEth0/RP0/CPU0/0.description
+  - interface.MgmtEth0/RP0/CPU0/0.ipv4
+  - interface.TenGigE0/0/0/0.description
+  - interface.TenGigE0/0/0/0.ipv4
+  - interface.TenGigE0/0/0/1.description
+  - interface.TenGigE0/0/0/1.ipv4
+  - mpls.router-id
+  - router.bgp.65006.address-family.ipv4-unicast.network
+  - router.bgp.65006.bgp.router-id
+  - router.isis.CORE.interface.Loopback0.address-family.ipv4-unicast.prefix-sid
+  - router.isis.CORE.net
+  - snmp-server.location
+  records:
+    SVC-PE-01:
+    - SVC-PE-01
+    - SVC-PE-01 Router-ID
+    - address 10.0.3.1 255.255.255.255
+    - VRF-ENTERPRISE-A-LOOPBACK
+    - address 10.100.0.254 255.255.255.255
+    - VRF-ENTERPRISE-A
+    - VRF-ENTERPRISE-B-LOOPBACK
+    - address 10.101.0.254 255.255.255.255
+    - VRF-ENTERPRISE-B
+    - VRF-CLOUD-GW-LOOPBACK
+    - address 10.200.0.254 255.255.255.255
+    - VRF-CLOUD-GW
+    - MGMT-SVC-PE-01
+    - address 192.168.103.1 255.255.255.0
+    - TO-P-CORE-01
+    - address 10.10.300.0 255.255.255.254
+    - TO-P-CORE-02
+    - address 10.10.300.2 255.255.255.254
+    - 10.0.3.1
+    - 10.0.3.1/32
+    - 10.0.3.1
+    - index 16301
+    - 49.0001.0100.0003.0001.00
+    - SVC-PE-01-RACK
+    SVC-PE-02:
+    - SVC-PE-02
+    - SVC-PE-02 Router-ID
+    - address 10.0.3.2 255.255.255.255
+    - VRF-ENTERPRISE-A-LOOPBACK
+    - address 10.100.0.254 255.255.255.255
+    - VRF-ENTERPRISE-A
+    - VRF-ENTERPRISE-C-LOOPBACK
+    - address 10.102.0.254 255.255.255.255
+    - VRF-ENTERPRISE-C
+    - VRF-CLOUD-GW-LOOPBACK
+    - address 10.200.0.254 255.255.255.255
+    - VRF-CLOUD-GW
+    - MGMT-SVC-PE-02
+    - address 192.168.103.2 255.255.255.0
+    - TO-P-CORE-01
+    - address 10.10.300.4 255.255.255.254
+    - TO-P-CORE-02
+    - address 10.10.300.6 255.255.255.254
+    - 10.0.3.2
+    - 10.0.3.2/32
+    - 10.0.3.2
+    - index 16302
+    - 49.0001.0100.0003.0002.00
+    - SVC-PE-02-RACK
+    SVC-PE-03:
+    - SVC-PE-03
+    - SVC-PE-03 Router-ID
+    - address 10.0.3.3 255.255.255.255
+    - VRF-CDN-LOOPBACK
+    - address 10.150.0.254 255.255.255.255
+    - VRF-CDN
+    - VRF-CLOUD-AWS-LOOPBACK
+    - address 10.201.0.254 255.255.255.255
+    - VRF-CLOUD-AWS
+    - VRF-MGMT-LOOPBACK
+    - address 10.250.0.254 255.255.255.255
+    - VRF-MGMT
+    - MGMT-SVC-PE-03
+    - address 192.168.103.3 255.255.255.0
+    - TO-P-CORE-03
+    - address 10.10.300.8 255.255.255.254
+    - TO-P-CORE-04
+    - address 10.10.300.10 255.255.255.254
+    - 10.0.3.3
+    - 10.0.3.3/32
+    - 10.0.3.3
+    - index 16303
+    - 49.0001.0100.0003.0003.00
+    - SVC-PE-03-RACK
+    SVC-PE-04:
+    - SVC-PE-04
+    - SVC-PE-04 Router-ID
+    - address 10.0.3.4 255.255.255.255
+    - VRF-CDN-LOOPBACK
+    - address 10.150.0.254 255.255.255.255
+    - VRF-CDN
+    - VRF-CLOUD-AZURE-LOOPBACK
+    - address 10.202.0.254 255.255.255.255
+    - VRF-CLOUD-AZURE
+    - VRF-MGMT-LOOPBACK
+    - address 10.250.0.254 255.255.255.255
+    - VRF-MGMT
+    - MGMT-SVC-PE-04
+    - address 192.168.103.4 255.255.255.0
+    - TO-P-CORE-03
+    - address 10.10.300.12 255.255.255.254
+    - TO-P-CORE-04
+    - address 10.10.300.14 255.255.255.254
+    - 10.0.3.4
+    - 10.0.3.4/32
+    - 10.0.3.4
+    - index 16304
+    - 49.0001.0100.0003.0004.00
+    - SVC-PE-04-RACK
+    SVC-PE-05:
+    - SVC-PE-05
+    - SVC-PE-05 Router-ID
+    - address 10.0.3.5 255.255.255.255
+    - VRF-IX-1-LOOPBACK
+    - address 10.160.0.254 255.255.255.255
+    - VRF-IX-1
+    - VRF-IX-2-LOOPBACK
+    - address 10.161.0.254 255.255.255.255
+    - VRF-IX-2
+    - VRF-ENTERPRISE-D-LOOPBACK
+    - address 10.103.0.254 255.255.255.255
+    - VRF-ENTERPRISE-D
+    - MGMT-SVC-PE-05
+    - address 192.168.103.5 255.255.255.0
+    - TO-P-CORE-05
+    - address 10.10.300.16 255.255.255.254
+    - TO-P-CORE-06
+    - address 10.10.300.18 255.255.255.254
+    - 10.0.3.5
+    - 10.0.3.5/32
+    - 10.0.3.5
+    - index 16305
+    - 49.0001.0100.0003.0005.00
+    - SVC-PE-05-RACK
+    SVC-PE-06:
+    - SVC-PE-06
+    - SVC-PE-06 Router-ID
+    - address 10.0.3.6 255.255.255.255
+    - VRF-IX-1-LOOPBACK
+    - address 10.160.0.254 255.255.255.255
+    - VRF-IX-1
+    - VRF-TRANSIT-LOOPBACK
+    - address 10.170.0.254 255.255.255.255
+    - VRF-TRANSIT
+    - VRF-ENTERPRISE-E-LOOPBACK
+    - address 10.104.0.254 255.255.255.255
+    - VRF-ENTERPRISE-E
+    - MGMT-SVC-PE-06
+    - address 192.168.103.6 255.255.255.0
+    - TO-P-CORE-05
+    - address 10.10.300.20 255.255.255.254
+    - TO-P-CORE-06
+    - address 10.10.300.22 255.255.255.254
+    - 10.0.3.6
+    - 10.0.3.6/32
+    - 10.0.3.6
+    - index 16306
+    - 49.0001.0100.0003.0006.00
+    - SVC-PE-06-RACK
+    SVC-PE-07:
+    - SVC-PE-07
+    - SVC-PE-07 Router-ID
+    - address 10.0.3.7 255.255.255.255
+    - VRF-MOBILE-CORE-LOOPBACK
+    - address 10.180.0.254 255.255.255.255
+    - VRF-MOBILE-CORE
+    - VRF-MOBILE-RAN-LOOPBACK
+    - address 10.181.0.254 255.255.255.255
+    - VRF-MOBILE-RAN
+    - VRF-ENTERPRISE-F-LOOPBACK
+    - address 10.105.0.254 255.255.255.255
+    - VRF-ENTERPRISE-F
+    - MGMT-SVC-PE-07
+    - address 192.168.103.7 255.255.255.0
+    - TO-P-CORE-01
+    - address 10.10.300.24 255.255.255.254
+    - TO-P-CORE-05
+    - address 10.10.300.26 255.255.255.254
+    - 10.0.3.7
+    - 10.0.3.7/32
+    - 10.0.3.7
+    - index 16307
+    - 49.0001.0100.0003.0007.00
+    - SVC-PE-07-RACK
+    SVC-PE-08:
+    - SVC-PE-08
+    - SVC-PE-08 Router-ID
+    - address 10.0.3.8 255.255.255.255
+    - VRF-MOBILE-CORE-LOOPBACK
+    - address 10.180.0.254 255.255.255.255
+    - VRF-MOBILE-CORE
+    - VRF-DC-INTER-LOOPBACK
+    - address 10.190.0.254 255.255.255.255
+    - VRF-DC-INTER
+    - VRF-ENTERPRISE-G-LOOPBACK
+    - address 10.106.0.254 255.255.255.255
+    - VRF-ENTERPRISE-G
+    - MGMT-SVC-PE-08
+    - address 192.168.103.8 255.255.255.0
+    - TO-P-CORE-02
+    - address 10.10.300.28 255.255.255.254
+    - TO-P-CORE-06
+    - address 10.10.300.30 255.255.255.254
+    - 10.0.3.8
+    - 10.0.3.8/32
+    - 10.0.3.8
+    - index 16308
+    - 49.0001.0100.0003.0008.00
+    - SVC-PE-08-RACK
+instance_attrs:
+  SVC-PE-01:
+    router.bgp.65006.vrf.VRF-CLOUD-GW.neighbors:
+      172.16.0.1:
+        remote-as: '64800'
+        address-family.ipv4-unicast.route-policy.RPL-TRANSIT-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+      172.16.0.3:
+        remote-as: '64801'
+        address-family.ipv4-unicast.route-policy.RPL-TRANSIT-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+    router.bgp.65006.vrf.VRF-CLOUD-GW.rd: 10.0.3.1:1003
+    router.bgp.65006.vrf.VRF-ENTERPRISE-A.neighbors:
+      172.16.0.1:
+        remote-as: '64800'
+        address-family.ipv4-unicast.route-policy.RPL-TRANSIT-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+      172.16.0.3:
+        remote-as: '64801'
+        address-family.ipv4-unicast.route-policy.RPL-TRANSIT-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+    router.bgp.65006.vrf.VRF-ENTERPRISE-A.rd: 10.0.3.1:1001
+  SVC-PE-02:
+    router.bgp.65006.vrf.VRF-CLOUD-GW.neighbors:
+      172.16.0.5:
+        remote-as: '64800'
+        address-family.ipv4-unicast.route-policy.RPL-TRANSIT-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+      172.16.0.7:
+        remote-as: '64802'
+        address-family.ipv4-unicast.route-policy.RPL-TRANSIT-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+    router.bgp.65006.vrf.VRF-CLOUD-GW.rd: 10.0.3.2:1003
+    router.bgp.65006.vrf.VRF-ENTERPRISE-A.neighbors:
+      172.16.0.5:
+        remote-as: '64800'
+        address-family.ipv4-unicast.route-policy.RPL-TRANSIT-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+      172.16.0.7:
+        remote-as: '64802'
+        address-family.ipv4-unicast.route-policy.RPL-TRANSIT-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+    router.bgp.65006.vrf.VRF-ENTERPRISE-A.rd: 10.0.3.2:1001
+  SVC-PE-03:
+    router.bgp.65006.vrf.VRF-CDN.neighbors:
+      172.16.1.1:
+        remote-as: '64803'
+        address-family.ipv4-unicast.route-policy.RPL-CDN-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+      172.16.1.3:
+        remote-as: '64804'
+        address-family.ipv4-unicast.route-policy.RPL-CDN-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+    router.bgp.65006.vrf.VRF-CDN.rd: 10.0.3.3:1005
+    router.bgp.65006.vrf.VRF-MGMT.neighbors:
+      172.16.1.1:
+        remote-as: '64803'
+        address-family.ipv4-unicast.route-policy.RPL-CDN-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+      172.16.1.3:
+        remote-as: '64804'
+        address-family.ipv4-unicast.route-policy.RPL-CDN-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+    router.bgp.65006.vrf.VRF-MGMT.rd: 10.0.3.3:999
+  SVC-PE-04:
+    router.bgp.65006.vrf.VRF-CDN.neighbors:
+      172.16.1.5:
+        remote-as: '64803'
+        address-family.ipv4-unicast.route-policy.RPL-CDN-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+      172.16.1.7:
+        remote-as: '64805'
+        address-family.ipv4-unicast.route-policy.RPL-CDN-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+    router.bgp.65006.vrf.VRF-CDN.rd: 10.0.3.4:1005
+    router.bgp.65006.vrf.VRF-MGMT.neighbors:
+      172.16.1.5:
+        remote-as: '64803'
+        address-family.ipv4-unicast.route-policy.RPL-CDN-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+      172.16.1.7:
+        remote-as: '64805'
+        address-family.ipv4-unicast.route-policy.RPL-CDN-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+    router.bgp.65006.vrf.VRF-MGMT.rd: 10.0.3.4:999
+  SVC-PE-05:
+    router.bgp.65006.vrf.VRF-IX-1.neighbors:
+      172.16.2.1:
+        remote-as: '64806'
+        address-family.ipv4-unicast.route-policy.RPL-IX-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+      172.16.2.3:
+        remote-as: '64807'
+        address-family.ipv4-unicast.route-policy.RPL-IX-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+    router.bgp.65006.vrf.VRF-IX-1.rd: 10.0.3.5:1010
+  SVC-PE-06:
+    router.bgp.65006.vrf.VRF-IX-1.neighbors:
+      172.16.2.5:
+        remote-as: '64806'
+        address-family.ipv4-unicast.route-policy.RPL-IX-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+      172.16.2.7:
+        remote-as: '64808'
+        address-family.ipv4-unicast.route-policy.RPL-IX-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+    router.bgp.65006.vrf.VRF-IX-1.rd: 10.0.3.6:1010
+  SVC-PE-07:
+    router.bgp.65006.vrf.VRF-MOBILE-CORE.neighbors:
+      172.16.3.1:
+        remote-as: '64809'
+        address-family.ipv4-unicast.route-policy.RPL-MOBILE-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+      172.16.3.3:
+        remote-as: '64810'
+        address-family.ipv4-unicast.route-policy.RPL-MOBILE-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+    router.bgp.65006.vrf.VRF-MOBILE-CORE.rd: 10.0.3.7:1013
+  SVC-PE-08:
+    router.bgp.65006.vrf.VRF-MOBILE-CORE.neighbors:
+      172.16.3.5:
+        remote-as: '64809'
+        address-family.ipv4-unicast.route-policy.RPL-MOBILE-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+      172.16.3.7:
+        remote-as: '64811'
+        address-family.ipv4-unicast.route-policy.RPL-MOBILE-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+    router.bgp.65006.vrf.VRF-MOBILE-CORE.rd: 10.0.3.8:1013
+relationship_store:
+  SVC-PE-01:
+  - label: bgp_peer
+    target: TRANSIT-A
+  - label: bgp_peer
+    target: TRANSIT-B
+  - label: p2p_link
+    target: P-CORE-01
+  - label: p2p_link
+    target: P-CORE-02
+  SVC-PE-02:
+  - label: bgp_peer
+    target: PEERING-IX
+  - label: bgp_peer
+    target: TRANSIT-A
+  - label: p2p_link
+    target: P-CORE-01
+  - label: p2p_link
+    target: P-CORE-02
+  SVC-PE-03:
+  - label: bgp_peer
+    target: CDN-PROVIDER
+  - label: bgp_peer
+    target: CLOUD-AWS
+  - label: p2p_link
+    target: P-CORE-03
+  - label: p2p_link
+    target: P-CORE-04
+  SVC-PE-04:
+  - label: bgp_peer
+    target: CDN-PROVIDER
+  - label: bgp_peer
+    target: CLOUD-AZURE
+  - label: p2p_link
+    target: P-CORE-03
+  - label: p2p_link
+    target: P-CORE-04
+  SVC-PE-05:
+  - label: bgp_peer
+    target: IX-PEERING-1
+  - label: bgp_peer
+    target: IX-PEERING-2
+  - label: p2p_link
+    target: P-CORE-05
+  - label: p2p_link
+    target: P-CORE-06
+  SVC-PE-06:
+  - label: bgp_peer
+    target: IX-PEERING-1
+  - label: bgp_peer
+    target: TRANSIT-C
+  - label: p2p_link
+    target: P-CORE-05
+  - label: p2p_link
+    target: P-CORE-06
+  SVC-PE-07:
+  - label: bgp_peer
+    target: MOBILE-GW-1
+  - label: bgp_peer
+    target: MOBILE-GW-2
+  - label: p2p_link
+    target: P-CORE-01
+  - label: p2p_link
+    target: P-CORE-05
+  SVC-PE-08:
+  - label: bgp_peer
+    target: DC-INTERCONNECT
+  - label: bgp_peer
+    target: MOBILE-GW-1
+  - label: p2p_link
+    target: P-CORE-02
+  - label: p2p_link
+    target: P-CORE-06
+overrides:
+  SVC-PE-01:
+    owner: _base_only
+    delta:
+      route-policy.RPL-TRANSIT-IN.body:
+      - if community matches-any (no-export) then
+      - drop
+      - else
+      - set local-preference 200
+      - pass
+      - endif
+      router.bgp.65006.vrf.VRF-CLOUD-GW.address-family.ipv4-unicast.redistribute.connected: 'true'
+      router.bgp.65006.vrf.VRF-CLOUD-GW.address-family.ipv4-unicast.redistribute.static: 'true'
+      router.bgp.65006.vrf.VRF-ENTERPRISE-A.address-family.ipv4-unicast.redistribute.connected: 'true'
+      router.bgp.65006.vrf.VRF-ENTERPRISE-A.address-family.ipv4-unicast.redistribute.static: 'true'
+      router.bgp.65006.vrf.VRF-ENTERPRISE-B.address-family.ipv4-unicast.redistribute.connected: 'true'
+      router.bgp.65006.vrf.VRF-ENTERPRISE-B.address-family.ipv4-unicast.redistribute.static: 'true'
+      router.bgp.65006.vrf.VRF-ENTERPRISE-B.neighbors:
+        172.16.0.1:
+          remote-as: '64800'
+          address-family.ipv4-unicast.route-policy.RPL-TRANSIT-IN: in
+          address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+        172.16.0.3:
+          remote-as: '64801'
+          address-family.ipv4-unicast.route-policy.RPL-TRANSIT-IN: in
+          address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+      router.bgp.65006.vrf.VRF-ENTERPRISE-B.rd: 10.0.3.1:1002
+      vrf.VRF-CLOUD-GW.address-family.ipv4-unicast.export: route-target
+      vrf.VRF-CLOUD-GW.address-family.ipv4-unicast.export.65006:1003: 'true'
+      vrf.VRF-CLOUD-GW.address-family.ipv4-unicast.import: route-target
+      vrf.VRF-CLOUD-GW.address-family.ipv4-unicast.import.65006:1003: 'true'
+      vrf.VRF-ENTERPRISE-A.address-family.ipv4-unicast.export: route-target
+      vrf.VRF-ENTERPRISE-A.address-family.ipv4-unicast.export.65006:1001: 'true'
+      vrf.VRF-ENTERPRISE-A.address-family.ipv4-unicast.import: route-target
+      vrf.VRF-ENTERPRISE-A.address-family.ipv4-unicast.import.65006:1001: 'true'
+      vrf.VRF-ENTERPRISE-B.address-family.ipv4-unicast.export: route-target
+      vrf.VRF-ENTERPRISE-B.address-family.ipv4-unicast.export.65006:1002: 'true'
+      vrf.VRF-ENTERPRISE-B.address-family.ipv4-unicast.import: route-target
+      vrf.VRF-ENTERPRISE-B.address-family.ipv4-unicast.import.65006:1002: 'true'
+  SVC-PE-02:
+    owner: _base_only
+    delta:
+      route-policy.RPL-TRANSIT-IN.body:
+      - if community matches-any (no-export) then
+      - drop
+      - else
+      - set local-preference 200
+      - pass
+      - endif
+      router.bgp.65006.vrf.VRF-CLOUD-GW.address-family.ipv4-unicast.redistribute.connected: 'true'
+      router.bgp.65006.vrf.VRF-CLOUD-GW.address-family.ipv4-unicast.redistribute.static: 'true'
+      router.bgp.65006.vrf.VRF-ENTERPRISE-A.address-family.ipv4-unicast.redistribute.connected: 'true'
+      router.bgp.65006.vrf.VRF-ENTERPRISE-A.address-family.ipv4-unicast.redistribute.static: 'true'
+      router.bgp.65006.vrf.VRF-ENTERPRISE-C.address-family.ipv4-unicast.redistribute.connected: 'true'
+      router.bgp.65006.vrf.VRF-ENTERPRISE-C.address-family.ipv4-unicast.redistribute.static: 'true'
+      router.bgp.65006.vrf.VRF-ENTERPRISE-C.neighbors:
+        172.16.0.5:
+          remote-as: '64800'
+          address-family.ipv4-unicast.route-policy.RPL-TRANSIT-IN: in
+          address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+        172.16.0.7:
+          remote-as: '64802'
+          address-family.ipv4-unicast.route-policy.RPL-TRANSIT-IN: in
+          address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+      router.bgp.65006.vrf.VRF-ENTERPRISE-C.rd: 10.0.3.2:1004
+      vrf.VRF-CLOUD-GW.address-family.ipv4-unicast.export: route-target
+      vrf.VRF-CLOUD-GW.address-family.ipv4-unicast.export.65006:1003: 'true'
+      vrf.VRF-CLOUD-GW.address-family.ipv4-unicast.import: route-target
+      vrf.VRF-CLOUD-GW.address-family.ipv4-unicast.import.65006:1003: 'true'
+      vrf.VRF-ENTERPRISE-A.address-family.ipv4-unicast.export: route-target
+      vrf.VRF-ENTERPRISE-A.address-family.ipv4-unicast.export.65006:1001: 'true'
+      vrf.VRF-ENTERPRISE-A.address-family.ipv4-unicast.import: route-target
+      vrf.VRF-ENTERPRISE-A.address-family.ipv4-unicast.import.65006:1001: 'true'
+      vrf.VRF-ENTERPRISE-C.address-family.ipv4-unicast.export: route-target
+      vrf.VRF-ENTERPRISE-C.address-family.ipv4-unicast.export.65006:1004: 'true'
+      vrf.VRF-ENTERPRISE-C.address-family.ipv4-unicast.import: route-target
+      vrf.VRF-ENTERPRISE-C.address-family.ipv4-unicast.import.65006:1004: 'true'
+  SVC-PE-03:
+    owner: _base_only
+    delta:
+      route-policy.RPL-CDN-IN.body:
+      - if community matches-any (no-export) then
+      - drop
+      - else
+      - set local-preference 200
+      - pass
+      - endif
+      router.bgp.65006.vrf.VRF-CDN.address-family.ipv4-unicast.redistribute.connected: 'true'
+      router.bgp.65006.vrf.VRF-CDN.address-family.ipv4-unicast.redistribute.static: 'true'
+      router.bgp.65006.vrf.VRF-CLOUD-AWS.address-family.ipv4-unicast.redistribute.connected: 'true'
+      router.bgp.65006.vrf.VRF-CLOUD-AWS.address-family.ipv4-unicast.redistribute.static: 'true'
+      router.bgp.65006.vrf.VRF-CLOUD-AWS.neighbors:
+        172.16.1.1:
+          remote-as: '64803'
+          address-family.ipv4-unicast.route-policy.RPL-CDN-IN: in
+          address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+        172.16.1.3:
+          remote-as: '64804'
+          address-family.ipv4-unicast.route-policy.RPL-CDN-IN: in
+          address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+      router.bgp.65006.vrf.VRF-CLOUD-AWS.rd: 10.0.3.3:1006
+      router.bgp.65006.vrf.VRF-MGMT.address-family.ipv4-unicast.redistribute.connected: 'true'
+      router.bgp.65006.vrf.VRF-MGMT.address-family.ipv4-unicast.redistribute.static: 'true'
+      vrf.VRF-CDN.address-family.ipv4-unicast.export: route-target
+      vrf.VRF-CDN.address-family.ipv4-unicast.export.65006:1005: 'true'
+      vrf.VRF-CDN.address-family.ipv4-unicast.import: route-target
+      vrf.VRF-CDN.address-family.ipv4-unicast.import.65006:1005: 'true'
+      vrf.VRF-CLOUD-AWS.address-family.ipv4-unicast.export: route-target
+      vrf.VRF-CLOUD-AWS.address-family.ipv4-unicast.export.65006:1006: 'true'
+      vrf.VRF-CLOUD-AWS.address-family.ipv4-unicast.import: route-target
+      vrf.VRF-CLOUD-AWS.address-family.ipv4-unicast.import.65006:1006: 'true'
+      vrf.VRF-MGMT.address-family.ipv4-unicast.export: route-target
+      vrf.VRF-MGMT.address-family.ipv4-unicast.export.65006:999: 'true'
+      vrf.VRF-MGMT.address-family.ipv4-unicast.import: route-target
+      vrf.VRF-MGMT.address-family.ipv4-unicast.import.65006:999: 'true'
+  SVC-PE-04:
+    owner: _base_only
+    delta:
+      route-policy.RPL-CDN-IN.body:
+      - if community matches-any (no-export) then
+      - drop
+      - else
+      - set local-preference 200
+      - pass
+      - endif
+      router.bgp.65006.vrf.VRF-CDN.address-family.ipv4-unicast.redistribute.connected: 'true'
+      router.bgp.65006.vrf.VRF-CDN.address-family.ipv4-unicast.redistribute.static: 'true'
+      router.bgp.65006.vrf.VRF-CLOUD-AZURE.address-family.ipv4-unicast.redistribute.connected: 'true'
+      router.bgp.65006.vrf.VRF-CLOUD-AZURE.address-family.ipv4-unicast.redistribute.static: 'true'
+      router.bgp.65006.vrf.VRF-CLOUD-AZURE.neighbors:
+        172.16.1.5:
+          remote-as: '64803'
+          address-family.ipv4-unicast.route-policy.RPL-CDN-IN: in
+          address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+        172.16.1.7:
+          remote-as: '64805'
+          address-family.ipv4-unicast.route-policy.RPL-CDN-IN: in
+          address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+      router.bgp.65006.vrf.VRF-CLOUD-AZURE.rd: 10.0.3.4:1007
+      router.bgp.65006.vrf.VRF-MGMT.address-family.ipv4-unicast.redistribute.connected: 'true'
+      router.bgp.65006.vrf.VRF-MGMT.address-family.ipv4-unicast.redistribute.static: 'true'
+      vrf.VRF-CDN.address-family.ipv4-unicast.export: route-target
+      vrf.VRF-CDN.address-family.ipv4-unicast.export.65006:1005: 'true'
+      vrf.VRF-CDN.address-family.ipv4-unicast.import: route-target
+      vrf.VRF-CDN.address-family.ipv4-unicast.import.65006:1005: 'true'
+      vrf.VRF-CLOUD-AZURE.address-family.ipv4-unicast.export: route-target
+      vrf.VRF-CLOUD-AZURE.address-family.ipv4-unicast.export.65006:1007: 'true'
+      vrf.VRF-CLOUD-AZURE.address-family.ipv4-unicast.import: route-target
+      vrf.VRF-CLOUD-AZURE.address-family.ipv4-unicast.import.65006:1007: 'true'
+      vrf.VRF-MGMT.address-family.ipv4-unicast.export: route-target
+      vrf.VRF-MGMT.address-family.ipv4-unicast.export.65006:999: 'true'
+      vrf.VRF-MGMT.address-family.ipv4-unicast.import: route-target
+      vrf.VRF-MGMT.address-family.ipv4-unicast.import.65006:999: 'true'
+  SVC-PE-05:
+    owner: _base_only
+    delta:
+      route-policy.RPL-IX-IN.body:
+      - if community matches-any (no-export) then
+      - drop
+      - else
+      - set local-preference 200
+      - pass
+      - endif
+      router.bgp.65006.vrf.VRF-ENTERPRISE-D.address-family.ipv4-unicast.redistribute.connected: 'true'
+      router.bgp.65006.vrf.VRF-ENTERPRISE-D.address-family.ipv4-unicast.redistribute.static: 'true'
+      router.bgp.65006.vrf.VRF-ENTERPRISE-D.neighbors:
+        172.16.2.1:
+          remote-as: '64806'
+          address-family.ipv4-unicast.route-policy.RPL-IX-IN: in
+          address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+        172.16.2.3:
+          remote-as: '64807'
+          address-family.ipv4-unicast.route-policy.RPL-IX-IN: in
+          address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+      router.bgp.65006.vrf.VRF-ENTERPRISE-D.rd: 10.0.3.5:1008
+      router.bgp.65006.vrf.VRF-IX-1.address-family.ipv4-unicast.redistribute.connected: 'true'
+      router.bgp.65006.vrf.VRF-IX-1.address-family.ipv4-unicast.redistribute.static: 'true'
+      router.bgp.65006.vrf.VRF-IX-2.address-family.ipv4-unicast.redistribute.connected: 'true'
+      router.bgp.65006.vrf.VRF-IX-2.address-family.ipv4-unicast.redistribute.static: 'true'
+      router.bgp.65006.vrf.VRF-IX-2.neighbors:
+        172.16.2.1:
+          remote-as: '64806'
+          address-family.ipv4-unicast.route-policy.RPL-IX-IN: in
+          address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+        172.16.2.3:
+          remote-as: '64807'
+          address-family.ipv4-unicast.route-policy.RPL-IX-IN: in
+          address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+      router.bgp.65006.vrf.VRF-IX-2.rd: 10.0.3.5:1011
+      vrf.VRF-ENTERPRISE-D.address-family.ipv4-unicast.export: route-target
+      vrf.VRF-ENTERPRISE-D.address-family.ipv4-unicast.export.65006:1008: 'true'
+      vrf.VRF-ENTERPRISE-D.address-family.ipv4-unicast.import: route-target
+      vrf.VRF-ENTERPRISE-D.address-family.ipv4-unicast.import.65006:1008: 'true'
+      vrf.VRF-IX-1.address-family.ipv4-unicast.export: route-target
+      vrf.VRF-IX-1.address-family.ipv4-unicast.export.65006:1010: 'true'
+      vrf.VRF-IX-1.address-family.ipv4-unicast.import: route-target
+      vrf.VRF-IX-1.address-family.ipv4-unicast.import.65006:1010: 'true'
+      vrf.VRF-IX-2.address-family.ipv4-unicast.export: route-target
+      vrf.VRF-IX-2.address-family.ipv4-unicast.export.65006:1011: 'true'
+      vrf.VRF-IX-2.address-family.ipv4-unicast.import: route-target
+      vrf.VRF-IX-2.address-family.ipv4-unicast.import.65006:1011: 'true'
+  SVC-PE-06:
+    owner: _base_only
+    delta:
+      route-policy.RPL-IX-IN.body:
+      - if community matches-any (no-export) then
+      - drop
+      - else
+      - set local-preference 200
+      - pass
+      - endif
+      router.bgp.65006.vrf.VRF-ENTERPRISE-E.address-family.ipv4-unicast.redistribute.connected: 'true'
+      router.bgp.65006.vrf.VRF-ENTERPRISE-E.address-family.ipv4-unicast.redistribute.static: 'true'
+      router.bgp.65006.vrf.VRF-ENTERPRISE-E.neighbors:
+        172.16.2.5:
+          remote-as: '64806'
+          address-family.ipv4-unicast.route-policy.RPL-IX-IN: in
+          address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+        172.16.2.7:
+          remote-as: '64808'
+          address-family.ipv4-unicast.route-policy.RPL-IX-IN: in
+          address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+      router.bgp.65006.vrf.VRF-ENTERPRISE-E.rd: 10.0.3.6:1009
+      router.bgp.65006.vrf.VRF-IX-1.address-family.ipv4-unicast.redistribute.connected: 'true'
+      router.bgp.65006.vrf.VRF-IX-1.address-family.ipv4-unicast.redistribute.static: 'true'
+      router.bgp.65006.vrf.VRF-TRANSIT.address-family.ipv4-unicast.redistribute.connected: 'true'
+      router.bgp.65006.vrf.VRF-TRANSIT.address-family.ipv4-unicast.redistribute.static: 'true'
+      router.bgp.65006.vrf.VRF-TRANSIT.neighbors:
+        172.16.2.5:
+          remote-as: '64806'
+          address-family.ipv4-unicast.route-policy.RPL-IX-IN: in
+          address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+        172.16.2.7:
+          remote-as: '64808'
+          address-family.ipv4-unicast.route-policy.RPL-IX-IN: in
+          address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+      router.bgp.65006.vrf.VRF-TRANSIT.rd: 10.0.3.6:1012
+      vrf.VRF-ENTERPRISE-E.address-family.ipv4-unicast.export: route-target
+      vrf.VRF-ENTERPRISE-E.address-family.ipv4-unicast.export.65006:1009: 'true'
+      vrf.VRF-ENTERPRISE-E.address-family.ipv4-unicast.import: route-target
+      vrf.VRF-ENTERPRISE-E.address-family.ipv4-unicast.import.65006:1009: 'true'
+      vrf.VRF-IX-1.address-family.ipv4-unicast.export: route-target
+      vrf.VRF-IX-1.address-family.ipv4-unicast.export.65006:1010: 'true'
+      vrf.VRF-IX-1.address-family.ipv4-unicast.import: route-target
+      vrf.VRF-IX-1.address-family.ipv4-unicast.import.65006:1010: 'true'
+      vrf.VRF-TRANSIT.address-family.ipv4-unicast.export: route-target
+      vrf.VRF-TRANSIT.address-family.ipv4-unicast.export.65006:1012: 'true'
+      vrf.VRF-TRANSIT.address-family.ipv4-unicast.import: route-target
+      vrf.VRF-TRANSIT.address-family.ipv4-unicast.import.65006:1012: 'true'
+  SVC-PE-07:
+    owner: _base_only
+    delta:
+      route-policy.RPL-MOBILE-IN.body:
+      - if community matches-any (no-export) then
+      - drop
+      - else
+      - set local-preference 200
+      - pass
+      - endif
+      router.bgp.65006.vrf.VRF-ENTERPRISE-F.address-family.ipv4-unicast.redistribute.connected: 'true'
+      router.bgp.65006.vrf.VRF-ENTERPRISE-F.address-family.ipv4-unicast.redistribute.static: 'true'
+      router.bgp.65006.vrf.VRF-ENTERPRISE-F.neighbors:
+        172.16.3.1:
+          remote-as: '64809'
+          address-family.ipv4-unicast.route-policy.RPL-MOBILE-IN: in
+          address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+        172.16.3.3:
+          remote-as: '64810'
+          address-family.ipv4-unicast.route-policy.RPL-MOBILE-IN: in
+          address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+      router.bgp.65006.vrf.VRF-ENTERPRISE-F.rd: 10.0.3.7:1015
+      router.bgp.65006.vrf.VRF-MOBILE-CORE.address-family.ipv4-unicast.redistribute.connected: 'true'
+      router.bgp.65006.vrf.VRF-MOBILE-CORE.address-family.ipv4-unicast.redistribute.static: 'true'
+      router.bgp.65006.vrf.VRF-MOBILE-RAN.address-family.ipv4-unicast.redistribute.connected: 'true'
+      router.bgp.65006.vrf.VRF-MOBILE-RAN.address-family.ipv4-unicast.redistribute.static: 'true'
+      router.bgp.65006.vrf.VRF-MOBILE-RAN.neighbors:
+        172.16.3.1:
+          remote-as: '64809'
+          address-family.ipv4-unicast.route-policy.RPL-MOBILE-IN: in
+          address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+        172.16.3.3:
+          remote-as: '64810'
+          address-family.ipv4-unicast.route-policy.RPL-MOBILE-IN: in
+          address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+      router.bgp.65006.vrf.VRF-MOBILE-RAN.rd: 10.0.3.7:1014
+      vrf.VRF-ENTERPRISE-F.address-family.ipv4-unicast.export: route-target
+      vrf.VRF-ENTERPRISE-F.address-family.ipv4-unicast.export.65006:1015: 'true'
+      vrf.VRF-ENTERPRISE-F.address-family.ipv4-unicast.import: route-target
+      vrf.VRF-ENTERPRISE-F.address-family.ipv4-unicast.import.65006:1015: 'true'
+      vrf.VRF-MOBILE-CORE.address-family.ipv4-unicast.export: route-target
+      vrf.VRF-MOBILE-CORE.address-family.ipv4-unicast.export.65006:1013: 'true'
+      vrf.VRF-MOBILE-CORE.address-family.ipv4-unicast.import: route-target
+      vrf.VRF-MOBILE-CORE.address-family.ipv4-unicast.import.65006:1013: 'true'
+      vrf.VRF-MOBILE-RAN.address-family.ipv4-unicast.export: route-target
+      vrf.VRF-MOBILE-RAN.address-family.ipv4-unicast.export.65006:1014: 'true'
+      vrf.VRF-MOBILE-RAN.address-family.ipv4-unicast.import: route-target
+      vrf.VRF-MOBILE-RAN.address-family.ipv4-unicast.import.65006:1014: 'true'
+  SVC-PE-08:
+    owner: _base_only
+    delta:
+      route-policy.RPL-MOBILE-IN.body:
+      - if community matches-any (no-export) then
+      - drop
+      - else
+      - set local-preference 200
+      - pass
+      - endif
+      router.bgp.65006.vrf.VRF-DC-INTER.address-family.ipv4-unicast.redistribute.connected: 'true'
+      router.bgp.65006.vrf.VRF-DC-INTER.address-family.ipv4-unicast.redistribute.static: 'true'
+      router.bgp.65006.vrf.VRF-DC-INTER.neighbors:
+        172.16.3.5:
+          remote-as: '64809'
+          address-family.ipv4-unicast.route-policy.RPL-MOBILE-IN: in
+          address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+        172.16.3.7:
+          remote-as: '64811'
+          address-family.ipv4-unicast.route-policy.RPL-MOBILE-IN: in
+          address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+      router.bgp.65006.vrf.VRF-DC-INTER.rd: 10.0.3.8:1016
+      router.bgp.65006.vrf.VRF-ENTERPRISE-G.address-family.ipv4-unicast.redistribute.connected: 'true'
+      router.bgp.65006.vrf.VRF-ENTERPRISE-G.address-family.ipv4-unicast.redistribute.static: 'true'
+      router.bgp.65006.vrf.VRF-ENTERPRISE-G.neighbors:
+        172.16.3.5:
+          remote-as: '64809'
+          address-family.ipv4-unicast.route-policy.RPL-MOBILE-IN: in
+          address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+        172.16.3.7:
+          remote-as: '64811'
+          address-family.ipv4-unicast.route-policy.RPL-MOBILE-IN: in
+          address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+      router.bgp.65006.vrf.VRF-ENTERPRISE-G.rd: 10.0.3.8:1017
+      router.bgp.65006.vrf.VRF-MOBILE-CORE.address-family.ipv4-unicast.redistribute.connected: 'true'
+      router.bgp.65006.vrf.VRF-MOBILE-CORE.address-family.ipv4-unicast.redistribute.static: 'true'
+      vrf.VRF-DC-INTER.address-family.ipv4-unicast.export: route-target
+      vrf.VRF-DC-INTER.address-family.ipv4-unicast.export.65006:1016: 'true'
+      vrf.VRF-DC-INTER.address-family.ipv4-unicast.import: route-target
+      vrf.VRF-DC-INTER.address-family.ipv4-unicast.import.65006:1016: 'true'
+      vrf.VRF-ENTERPRISE-G.address-family.ipv4-unicast.export: route-target
+      vrf.VRF-ENTERPRISE-G.address-family.ipv4-unicast.export.65006:1017: 'true'
+      vrf.VRF-ENTERPRISE-G.address-family.ipv4-unicast.import: route-target
+      vrf.VRF-ENTERPRISE-G.address-family.ipv4-unicast.import.65006:1017: 'true'
+      vrf.VRF-MOBILE-CORE.address-family.ipv4-unicast.export: route-target
+      vrf.VRF-MOBILE-CORE.address-family.ipv4-unicast.export.65006:1013: 'true'
+      vrf.VRF-MOBILE-CORE.address-family.ipv4-unicast.import: route-target
+      vrf.VRF-MOBILE-CORE.address-family.ipv4-unicast.import.65006:1013: 'true'
+b_composite_deltas:
+  SVC-PE-01:
+    router.bgp.65006.neighbors:
+      delta:
+        172.16.0.1:
+          address-family.ipv4-unicast.route-policy.RPL-TRANSIT-IN: in
+        172.16.0.3:
+          remote-as: '64801'
+          description: TRANSIT-B
+          address-family.ipv4-unicast.route-policy.RPL-TRANSIT-IN: in
+  SVC-PE-02:
+    router.bgp.65006.neighbors:
+      delta:
+        172.16.0.5:
+          address-family.ipv4-unicast.route-policy.RPL-TRANSIT-IN: in
+        172.16.0.7:
+          remote-as: '64802'
+          description: PEERING-IX
+          address-family.ipv4-unicast.route-policy.RPL-TRANSIT-IN: in
+  SVC-PE-03:
+    router.bgp.65006.neighbors:
+      delta:
+        172.16.1.1:
+          remote-as: '64803'
+          description: CDN-PROVIDER
+          address-family.ipv4-unicast.route-policy.RPL-CDN-IN: in
+        172.16.1.3:
+          remote-as: '64804'
+          description: CLOUD-AWS
+          address-family.ipv4-unicast.route-policy.RPL-CDN-IN: in
+  SVC-PE-04:
+    router.bgp.65006.neighbors:
+      delta:
+        172.16.1.5:
+          remote-as: '64803'
+          description: CDN-PROVIDER
+          address-family.ipv4-unicast.route-policy.RPL-CDN-IN: in
+        172.16.1.7:
+          remote-as: '64805'
+          description: CLOUD-AZURE
+          address-family.ipv4-unicast.route-policy.RPL-CDN-IN: in
+  SVC-PE-05:
+    router.bgp.65006.neighbors:
+      delta:
+        172.16.2.1:
+          remote-as: '64806'
+          description: IX-PEERING-1
+          address-family.ipv4-unicast.route-policy.RPL-IX-IN: in
+        172.16.2.3:
+          remote-as: '64807'
+          description: IX-PEERING-2
+          address-family.ipv4-unicast.route-policy.RPL-IX-IN: in
+  SVC-PE-06:
+    router.bgp.65006.neighbors:
+      delta:
+        172.16.2.5:
+          remote-as: '64806'
+          description: IX-PEERING-1
+          address-family.ipv4-unicast.route-policy.RPL-IX-IN: in
+        172.16.2.7:
+          remote-as: '64808'
+          description: TRANSIT-C
+          address-family.ipv4-unicast.route-policy.RPL-IX-IN: in
+  SVC-PE-07:
+    router.bgp.65006.neighbors:
+      delta:
+        172.16.3.1:
+          remote-as: '64809'
+          description: MOBILE-GW-1
+          address-family.ipv4-unicast.route-policy.RPL-MOBILE-IN: in
+        172.16.3.3:
+          remote-as: '64810'
+          description: MOBILE-GW-2
+          address-family.ipv4-unicast.route-policy.RPL-MOBILE-IN: in
+  SVC-PE-08:
+    router.bgp.65006.neighbors:
+      delta:
+        172.16.3.5:
+          remote-as: '64809'
+          description: MOBILE-GW-1
+          address-family.ipv4-unicast.route-policy.RPL-MOBILE-IN: in
+        172.16.3.7:
+          remote-as: '64811'
+          description: DC-INTERCONNECT
+          address-family.ipv4-unicast.route-policy.RPL-MOBILE-IN: in
+foreign_keys: {}

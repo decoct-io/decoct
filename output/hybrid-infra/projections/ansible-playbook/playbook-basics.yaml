@@ -1,0 +1,39 @@
+meta:
+  subject: playbook-basics
+  description: General settings and run behavior of the playbook.
+  source_type: ansible-playbook
+  total_instances: 16
+base_class:
+  check_mode: 'false'
+  no_log: 'false'
+  order: inventory
+  run_once: 'false'
+classes:
+  any_errors_fatal_false_gather_facts_true:
+    inherits: base
+    own_attrs:
+      any_errors_fatal: 'false'
+      gather_facts: 'true'
+      ignore_errors: 'false'
+    instance_count_inclusive: 13
+class_assignments:
+  any_errors_fatal_false_gather_facts_true:
+    instances:
+    - ansible-base-server
+    - ansible-deploy-auth-service
+    - ansible-deploy-billing-api
+    - ansible-deploy-core-api
+    - ansible-deploy-web-app
+    - ansible-harden-ssh
+    - ansible-setup-backup
+    - ansible-setup-cloud-init
+    - ansible-setup-grafana
+    - ansible-setup-monitoring-agent
+    - ansible-setup-prometheus
+    - ansible-setup-traefik
+    - ansible-update-packages
+  _base_only:
+    instances:
+    - ansible-emergency-rollback
+    - ansible-setup-mariadb
+    - ansible-setup-postgresql

@@ -7,6 +7,7 @@ from typing import Any
 from ruamel.yaml import YAML
 
 from decoct.adapters.hybrid_infra import HybridInfraAdapter
+from decoct.adapters.ingestion_spec import load_ingestion_spec
 from decoct.core.composite_value import CompositeValue
 from decoct.core.config import EntityGraphConfig
 from decoct.core.types import ABSENT
@@ -37,7 +38,8 @@ def main() -> None:
     sources = sorted(str(f) for f in FIXTURES.iterdir())
     print(f"Found {len(sources)} configs")
 
-    adapter = HybridInfraAdapter()
+    spec = load_ingestion_spec("specs/ingestion/hybrid-infra/ingestion_spec.yaml")
+    adapter = HybridInfraAdapter(ingestion_spec=spec)
     config = EntityGraphConfig()
 
     print("Running pipeline...")

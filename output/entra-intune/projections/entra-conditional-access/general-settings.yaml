@@ -1,0 +1,16 @@
+meta:
+  subject: general-settings
+  description: General settings and state of the conditional access policy.
+  source_type: entra-conditional-access
+  total_instances: 6
+base_class:
+  state: enabled
+class_assignments:
+  _base_only:
+    instances:
+    - CA-Block-Legacy-Auth-Exchange
+    - CA-Block-Legacy-Auth-SharePoint
+    - CA-Block-Legacy-Auth-Teams
+    - CA-MFA-Azure-Management
+    - CA-MFA-Privileged-Roles
+    - CA-MFA-Security-Admins

@@ -6,7 +6,6 @@ from decoct.core.canonical import (
     IS_SCALAR_LIKE,
     ITEM_KEY,
     VALUE_KEY,
-    encode_canonical,
 )
 from decoct.core.composite_value import CompositeValue
 

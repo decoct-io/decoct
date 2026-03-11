@@ -150,8 +150,10 @@ def parse_iosxr_config(text: str) -> IosxrConfigTree:
         tokens = stripped.split()
         keyword = tokens[0] if tokens else ""
 
-        # Handle route-policy special block
-        if keyword == "route-policy" and len(tokens) > 1:
+        # Handle route-policy special block (definitions only, not references).
+        # Definitions: `route-policy NAME` (2 tokens) at global level → body until end-policy.
+        # References: `route-policy NAME in/out` (3+ tokens) inside address-family → normal leaf.
+        if keyword == "route-policy" and len(tokens) == 2 and depth == 0:
             policy_name = tokens[1]
             policy_lines: list[str] = []
             while i < len(lines):
@@ -267,24 +269,49 @@ def flatten_config_tree(
     """Flatten a config tree into dotted-path attributes.
 
     Returns a dict of {dotted_path: value_string}.
+
+    Uses progressive arg discrimination: when sibling nodes share a keyword,
+    args are consumed as additional path segments until all paths are unique.
+    Falls back to CompositeValue(list) only if args are fully exhausted with
+    duplicates remaining.
     """
+    from collections import Counter, defaultdict
+
     attrs: dict[str, Any] = {}
 
+    # Pre-scan: count keyword occurrences among non-section siblings.
+    # Section keywords with children already produce unique paths via _get_section_key.
+    keyword_counts: Counter[str] = Counter()
     for node in nodes:
-        # Try section keyword detection
+        if node.keyword == "!":
+            continue
+        section_seg, _ = _get_section_key(node.keyword, node.args)
+        if section_seg and node.children:
+            continue  # Section nodes with children → unique paths already
+        keyword_counts[node.keyword] += 1
+
+    repeated = {k for k, c in keyword_counts.items() if c > 1}
+    repeated_groups: dict[str, list[ConfigNode]] = defaultdict(list)
+
+    for node in nodes:
+        if node.keyword == "!":
+            continue
+
         section_seg, remaining_args = _get_section_key(node.keyword, node.args)
 
         if section_seg and node.children:
-            # This is a section node — recurse with extended prefix
+            # Section node — existing logic, unchanged
             new_prefix = f"{prefix}{section_seg}." if prefix else f"{section_seg}."
-            # If there are remaining args, they're a value on this section line itself
             if remaining_args:
                 path = f"{prefix}{section_seg}" if prefix else section_seg
                 attrs[path] = " ".join(remaining_args)
             child_attrs = flatten_config_tree(node.children, new_prefix)
             attrs.update(child_attrs)
+        elif node.keyword in repeated:
+            # Repeated keyword — collect for batch discrimination
+            repeated_groups[node.keyword].append(node)
         elif node.children:
-            # Non-section node with children — use keyword as path segment
+            # Non-section, non-repeated node with children
             new_prefix = f"{prefix}{node.keyword}." if prefix else f"{node.keyword}."
             if node.args:
                 path = f"{prefix}{node.keyword}" if prefix else node.keyword
@@ -292,7 +319,7 @@ def flatten_config_tree(
             child_attrs = flatten_config_tree(node.children, new_prefix)
             attrs.update(child_attrs)
         else:
-            # Leaf node
+            # Leaf node, unique keyword
             path = f"{prefix}{node.keyword}" if prefix else node.keyword
             if node.negated:
                 attrs[path] = "false"
@@ -301,7 +328,101 @@ def flatten_config_tree(
             else:
                 attrs[path] = "true"
 
+    # Process repeated keyword groups via progressive arg discrimination
+    for keyword, group in repeated_groups.items():
+        _flatten_repeated_group(group, prefix, keyword, attrs)
+
     return attrs
+
+
+def _flatten_repeated_group(
+    nodes: list[ConfigNode],
+    prefix: str,
+    keyword: str,
+    attrs: dict[str, Any],
+    depth: int = 0,
+) -> None:
+    """Recursively discriminate repeated siblings by consuming args as path segments.
+
+    At each depth level, groups nodes by args[depth]. If a sub-group has one node,
+    it's unique — emit with args[0..depth] consumed as path segments. If still
+    ambiguous, recurse to depth+1. If args are exhausted with duplicates remaining,
+    fall back to CompositeValue(list).
+    """
+    from collections import defaultdict
+
+    sub_groups: dict[str | None, list[ConfigNode]] = defaultdict(list)
+    for node in nodes:
+        key = node.args[depth] if depth < len(node.args) else None
+        sub_groups[key].append(node)
+
+    for arg_val, sub_group in sub_groups.items():
+        if arg_val is None:
+            if len(sub_group) == 1:
+                # Single node, args exhausted — emit with args[0..depth) consumed
+                _emit_node(sub_group[0], prefix, keyword, depth, attrs)
+            else:
+                # Multiple nodes, all args consumed — CompositeValue(list) fallback
+                _emit_as_composite_list(sub_group, prefix, keyword, depth, attrs)
+        elif len(sub_group) == 1:
+            # Unique at this depth — emit with args[0..depth] consumed (inclusive)
+            _emit_node(sub_group[0], prefix, keyword, depth + 1, attrs)
+        else:
+            # Still collides — recurse to next arg depth
+            _flatten_repeated_group(sub_group, prefix, keyword, attrs, depth + 1)
+
+
+def _emit_node(
+    node: ConfigNode,
+    prefix: str,
+    keyword: str,
+    consumed_count: int,
+    attrs: dict[str, Any],
+) -> None:
+    """Emit a node with consumed_count args used as path segments."""
+    consumed = node.args[:consumed_count]
+    path = f"{prefix}{keyword}.{'.'.join(consumed)}" if consumed else f"{prefix}{keyword}"
+    remaining = node.args[consumed_count:]
+
+    if node.children:
+        if remaining:
+            attrs[path] = " ".join(remaining)
+        child_attrs = flatten_config_tree(node.children, f"{path}.")
+        attrs.update(child_attrs)
+    elif node.negated:
+        attrs[path] = "false"
+    elif remaining:
+        attrs[path] = " ".join(remaining)
+    else:
+        attrs[path] = "true"
+
+
+def _emit_as_composite_list(
+    nodes: list[ConfigNode],
+    prefix: str,
+    keyword: str,
+    depth: int,
+    attrs: dict[str, Any],
+) -> None:
+    """Fallback: args exhausted, duplicates remain → CompositeValue(list).
+
+    Preserves original ordering. Used for genuinely repeated entries
+    (e.g., duplicate lines with identical keywords and args).
+    """
+    consumed = nodes[0].args[:depth] if depth > 0 else []
+    path = f"{prefix}{keyword}.{'.'.join(consumed)}" if consumed else f"{prefix}{keyword}"
+
+    values: list[str] = []
+    for node in nodes:
+        remaining = node.args[depth:]
+        if node.negated:
+            values.append("false")
+        elif remaining:
+            values.append(" ".join(remaining))
+        else:
+            values.append("true")
+
+    attrs[path] = CompositeValue.from_list(values)
 
 
 def _classify_attribute_type(value: Any) -> str:
@@ -443,6 +564,60 @@ def _collect_composite_values(
     return composites
 
 
+def _walk_tree_leaves(
+    nodes: list[ConfigNode],
+    prefix: str = "",
+) -> list[tuple[str, str]]:
+    """Walk ConfigNode tree collecting ALL leaf data points.
+
+    Independent of flatten_config_tree() — does NOT use discrimination.
+    Repeated keywords produce DUPLICATE paths in the output list.
+    That's intentional: the source fidelity check will verify the adapter
+    captured all of them (via discrimination or composites).
+
+    Route-policy body lines → (route-policy.NAME.body[i], line) tuples.
+    """
+    leaves: list[tuple[str, str]] = []
+
+    for node in nodes:
+        if node.keyword == "!":
+            continue
+
+        section_seg, remaining_args = _get_section_key(node.keyword, node.args)
+
+        if section_seg and node.children:
+            # Section node with children — recurse
+            new_prefix = f"{prefix}{section_seg}." if prefix else f"{section_seg}."
+            if remaining_args:
+                path = f"{prefix}{section_seg}" if prefix else section_seg
+                leaves.append((path, " ".join(remaining_args)))
+
+            # Route-policy bodies: emit body lines indexed
+            if node.keyword == "route-policy" and node.args:
+                for i, child in enumerate(node.children):
+                    leaves.append((f"{section_seg}.body[{i}]", child.raw_line))
+            else:
+                leaves.extend(_walk_tree_leaves(node.children, new_prefix))
+        elif node.children:
+            # Non-section node with children — recurse
+            new_prefix = f"{prefix}{node.keyword}." if prefix else f"{node.keyword}."
+            if node.args:
+                path = f"{prefix}{node.keyword}" if prefix else node.keyword
+                leaves.append((path, " ".join(node.args)))
+            leaves.extend(_walk_tree_leaves(node.children, new_prefix))
+        else:
+            # Leaf node
+            path = f"{prefix}{node.keyword}" if prefix else node.keyword
+            if node.negated:
+                leaves.append((path, "false"))
+            elif node.args:
+                leaves.append((path, " ".join(node.args)))
+            else:
+                leaves.append((path, "true"))
+
+    return leaves
+
+
 class IosxrAdapter(BaseAdapter):
     """IOS-XR configuration adapter.
 
@@ -452,6 +627,25 @@ class IosxrAdapter(BaseAdapter):
 
     def source_type(self) -> str:
         return "iosxr"
+
+    def secret_paths(self) -> list[str]:
+        from decoct.secrets.iosxr_patterns import IOSXR_SECRET_PATHS, NETWORK_SECRET_PATHS
+        return IOSXR_SECRET_PATHS + NETWORK_SECRET_PATHS
+
+    def secret_value_patterns(self) -> list[tuple[str, re.Pattern[str]]] | None:
+        from decoct.secrets.iosxr_patterns import IOSXR_SECRET_VALUE_PATTERNS
+        return IOSXR_SECRET_VALUE_PATTERNS
+
+    def collect_source_leaves(self, parsed: Any) -> dict[str, list[tuple[str, str]]]:
+        """Collect ALL leaf data points from parsed IOS-XR config tree.
+
+        Independent of extract_entities() — walks the raw ConfigNode tree
+        directly using _walk_tree_leaves(). Does NOT call flatten_config_tree().
+        """
+        tree: IosxrConfigTree = parsed
+        entity_id = tree.hostname or "unknown"
+        leaves = _walk_tree_leaves(tree.children, prefix="")
+        return {entity_id: leaves}
 
     def parse(self, source: str) -> IosxrConfigTree:
         """Parse IOS-XR config from file path or text."""
@@ -480,22 +674,19 @@ class IosxrAdapter(BaseAdapter):
 
         # Build set of path prefixes subsumed by composites
         # e.g., composite at "evpn.evis" subsumes "evpn.evi.10000.*"
+        # Prefixes MUST include trailing dot to avoid self-subsumption
+        # (e.g., "evpn.evi." does NOT match "evpn.evis")
         subsumed_prefixes: set[str] = set()
         for cv_path in composites:
-            # Composite "evpn.evis" subsumes flat paths "evpn.evi.*"
-            # Composite "X.neighbors" subsumes "X.neighbor.*"
-            # Composite "X.bridge-domains" subsumes "X.bridge-domain.*"
-            # Composite "X.bridge-groups" subsumes "X.bridge-group.*" (two-word section)
             if cv_path.endswith(".evis"):
-                subsumed_prefixes.add(cv_path[:-1])  # evpn.evi
+                subsumed_prefixes.add(cv_path[:-1] + ".")  # evpn.evi.
             elif cv_path.endswith(".neighbors"):
-                subsumed_prefixes.add(cv_path[:-1])  # *.neighbor
+                subsumed_prefixes.add(cv_path[:-1] + ".")  # *.neighbor.
             elif cv_path.endswith(".bridge-groups"):
                 subsumed_prefixes.add(cv_path.replace("-groups", "-group."))  # *.bridge-group.
             elif cv_path.endswith(".bridge-domains"):
                 subsumed_prefixes.add(cv_path.replace("-domains", "-domain."))  # *.bridge-domain.
             elif cv_path.endswith(".body"):
-                # route-policy body: subsume "route-policy.NAME.*" paths
                 subsumed_prefixes.add(cv_path.rsplit(".", 1)[0] + ".")
 
         # Add flat attributes, excluding those subsumed by composites
@@ -520,6 +711,10 @@ class IosxrAdapter(BaseAdapter):
             subsumed = False
             for prefix in subsumed_prefixes:
                 if path.startswith(prefix):
+                    # Don't let a .body composite subsume itself:
+                    # prefix "route-policy.NAME." derived from "route-policy.NAME.body"
+                    if path.endswith(".body") and prefix == path.rsplit(".", 1)[0] + ".":
+                        continue
                     subsumed = True
                     break
             if subsumed:

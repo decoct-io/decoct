@@ -1,0 +1,30 @@
+meta:
+  subject: app-settings
+  description: Settings related to application behavior and restrictions.
+  source_type: intune-device-config
+  total_instances: 8
+base_class:
+  appsBlockClipboardSharing: 'false'
+  appsBlockCopyPaste: 'false'
+  appsBlockYouTube: 'false'
+  googlePlayStoreBlocked: 'false'
+  securityRequireVerifyApps: 'false'
+classes:
+  compliantAppListType_none_wiFiBlocked_false:
+    inherits: base
+    own_attrs:
+      compliantAppListType: none
+    instance_count_inclusive: 6
+class_assignments:
+  compliantAppListType_none_wiFiBlocked_false:
+    instances:
+    - DC-Android-BYOD
+    - DC-Android-Contractor
+    - DC-Android-Executive
+    - DC-Android-Field-Workers
+    - DC-Android-Lab-Devices
+    - DC-Android-Standard
+  _base_only:
+    instances:
+    - DC-Android-Corporate-Lockdown
+    - DC-Android-Kiosk

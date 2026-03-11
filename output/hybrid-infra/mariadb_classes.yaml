@@ -1,0 +1,79 @@
+meta:
+  entity_type: mariadb
+  total_instances: 5
+  max_inheritance_depth: 2
+  tier_c_ref: mariadb_instances.yaml
+base_class:
+  mysqld.autocommit: 'true'
+  mysqld.back_log: '-1'
+  mysqld.big_tables: 'false'
+  mysqld.binlog_expire_logs_seconds: '2592000'
+  mysqld.binlog_row_image: FULL
+  mysqld.binlog_rows_query_log_events: 'false'
+  mysqld.bulk_insert_buffer_size: '8388608'
+  mysqld.character_set_filesystem: binary
+  mysqld.connect_timeout: '10'
+  mysqld.default_storage_engine: InnoDB
+  mysqld.default_tmp_storage_engine: InnoDB
+  mysqld.div_precision_increment: '4'
+  mysqld.eq_range_index_dive_limit: '200'
+  mysqld.explicit_defaults_for_timestamp: 'true'
+  mysqld.group_concat_max_len: '1024'
+  mysqld.innodb_adaptive_hash_index: 'true'
+  mysqld.innodb_autoinc_lock_mode: '2'
+  mysqld.innodb_doublewrite: 'true'
+  mysqld.innodb_file_per_table: 'true'
+  mysqld.innodb_flush_neighbors: '0'
+  mysqld.innodb_lock_wait_timeout: '50'
+  mysqld.innodb_online_alter_log_max_size: '134217728'
+  mysqld.innodb_open_files: '4000'
+  mysqld.innodb_purge_threads: '4'
+  mysqld.innodb_sort_buffer_size: '1048576'
+  mysqld.innodb_stats_on_metadata: 'false'
+  mysqld.innodb_stats_persistent: 'true'
+  mysqld.innodb_strict_mode: 'true'
+  mysqld.innodb_thread_concurrency: '0'
+  mysqld.interactive_timeout: '28800'
+  mysqld.key_buffer_size: '8388608'
+  mysqld.local_infile: 'false'
+  mysqld.log_output: FILE
+  mysqld.log_replica_updates: 'true'
+  mysqld.log_slow_admin_statements: 'false'
+  mysqld.lower_case_table_names: '0'
+  mysqld.max_allowed_packet: '67108864'
+  mysqld.max_binlog_size: '1073741824'
+  mysqld.net_read_timeout: '30'
+  mysqld.net_write_timeout: '60'
+  mysqld.optimizer_prune_level: '1'
+  mysqld.optimizer_search_depth: '62'
+  mysqld.performance_schema: 'true'
+  mysqld.port: '3306'
+  mysqld.relay_log_purge: 'true'
+  mysqld.relay_log_recovery: 'false'
+  mysqld.replica_net_timeout: '60'
+  mysqld.secure_file_priv: 'NULL'
+  mysqld.sql_require_primary_key: 'false'
+  mysqld.thread_cache_size: '-1'
+  mysqld.wait_timeout: '28800'
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+  innodb_flush_log_at_trx_commit_1_innodb_log_buffer:
+    inherits: base
+    own_attrs:
+      mysqld.innodb_flush_log_at_trx_commit: '1'
+      mysqld.innodb_log_buffer_size: '16777216'
+      mysqld.innodb_max_dirty_pages_pct: '90'
+    instance_count_inclusive: 4
+subclasses:
+  innodb_flush_log_at_trx_commit_1_innodb_log_buffer_innodb_change_buffering_all_ma:
+    parent: innodb_flush_log_at_trx_commit_1_innodb_log_buffer
+    own_attrs:
+      mysqld.innodb_change_buffering: all
+      mysqld.max_heap_table_size: '16777216'
+      mysqld.read_rnd_buffer_size: '262144'
+    instance_count: 4
+assertions:
+  base_only_ratio: 0.2
