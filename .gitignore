@@ -38,6 +38,7 @@ Thumbs.db
 # decoct
 .decoct/
 corpus/
+internals/
 
 # Claude Code
 .claude/

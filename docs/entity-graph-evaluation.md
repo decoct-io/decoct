@@ -26,7 +26,7 @@ This lets you answer questions like:
 ```bash
 decoct entity-graph stats \
   --input-dir tests/fixtures/iosxr/configs \
-  --output-dir output/entity-graph
+  --output-dir output/iosxr
 ```
 
 ### Options
@@ -127,19 +127,19 @@ The JSON report mirrors the markdown sections as a structured object:
 Generate a markdown report:
 
 ```bash
-decoct entity-graph stats -i configs/ -o output/entity-graph/
+decoct entity-graph stats -i configs/ -o output/iosxr/
 ```
 
 Generate a JSON report and save to file:
 
 ```bash
-decoct entity-graph stats -i configs/ -o output/entity-graph/ --format json --output report.json
+decoct entity-graph stats -i configs/ -o output/iosxr/ --format json --output report.json
 ```
 
 Use a different token encoding:
 
 ```bash
-decoct entity-graph stats -i configs/ -o output/entity-graph/ --encoding o200k_base
+decoct entity-graph stats -i configs/ -o output/iosxr/ --encoding o200k_base
 ```
 
 ### Key Metrics Explained
@@ -259,7 +259,7 @@ Evaluate both conditions (raw and compressed):
 decoct entity-graph evaluate \
   --questions questions.json \
   --config-dir tests/fixtures/iosxr/configs \
-  --output-dir output/entity-graph \
+  --output-dir output/iosxr \
   --condition both
 ```
 
@@ -268,7 +268,7 @@ Evaluate compressed only, with reader manual:
 ```bash
 decoct entity-graph evaluate \
   --questions questions.json \
-  --output-dir output/entity-graph \
+  --output-dir output/iosxr \
   --manual docs/entity-graph-data-manual.md \
   --condition compressed
 ```
@@ -378,7 +378,7 @@ from decoct.entity_graph_stats import compute_stats, format_stats_markdown, form
 
 report = compute_stats(
     input_dir=Path("configs/"),
-    output_dir=Path("output/entity-graph/"),
+    output_dir=Path("output/iosxr/"),
     encoding="cl100k_base",
 )
 
@@ -429,7 +429,7 @@ bank = load_question_bank(Path("questions.json"))
 # Build contexts
 raw_ctx = build_raw_context(Path("configs/"))
 compressed_ctx = build_compressed_context(
-    Path("output/entity-graph/"),
+    Path("output/iosxr/"),
     manual_path=Path("docs/entity-graph-data-manual.md"),
 )
 
@@ -477,13 +477,13 @@ print(format_evaluation_markdown(report))
 Complete workflow from raw configs to evaluation:
 
 ```bash
-# 1. Run the entity-graph pipeline (produces output/entity-graph/)
+# 1. Run the entity-graph pipeline (produces output/iosxr/)
 # (assumes you've already done this step)
 
 # 2. Check compression statistics
 decoct entity-graph stats \
   -i tests/fixtures/iosxr/configs \
-  -o output/entity-graph \
+  -o output/iosxr \
   --format markdown
 
 # 3. Generate questions
@@ -496,7 +496,7 @@ decoct entity-graph generate-questions \
 decoct entity-graph evaluate \
   -q questions.json \
   -c tests/fixtures/iosxr/configs \
-  --output-dir output/entity-graph \
+  --output-dir output/iosxr \
   --manual docs/entity-graph-data-manual.md \
   --condition both \
   --output evaluation-report.md

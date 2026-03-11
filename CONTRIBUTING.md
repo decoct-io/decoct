@@ -11,6 +11,7 @@ cd decoct
 python -m venv .venv
 source .venv/bin/activate
 pip install -e ".[dev]"
+pip install -e ".[dev,llm]"  # Also enables LLM features
 decoct --version  # verify
 ```
 
@@ -20,23 +21,32 @@ Python 3.10 or later is required.
 
 All package code lives under `src/decoct/`:
 
-- `cli.py` — click CLI entry point
-- `pipeline.py` — pass orchestration
+- `cli.py` — click CLI entry point (`decoct entity-graph` commands)
+- `entity_pipeline.py` — top-level orchestrator (chains all 8 pipeline phases)
 - `tokens.py` — tiktoken wrapper for token counting
 - `formats.py` — input format detection and normalisation
-- `learn.py` — corpus inference for assertion learning
-- `passes/` — one module per compression pass (strip-secrets, strip-defaults, etc.)
-- `schemas/` — schema models, loader, resolver, and `bundled/` vendor schemas
-- `assertions/` — assertion models, loader, matcher, and `bundled/` standard assertions
-- `profiles/` — profile loader, resolver, and `bundled/` profiles
-- `tests/` — mirrors src structure, with YAML fixtures in `tests/fixtures/`
+- `core/` — Entity, Attribute, CompositeValue, EntityGraph, canonical functions, config
+- `adapters/` — BaseAdapter + IOS-XR, Hybrid-Infra, Entra-Intune adapters
+- `analysis/` — attribute profiling, Shannon entropy, tier/role classification
+- `discovery/` — type seeding (Jaccard), bootstrap loop, anti-unification, composite decomposition
+- `compression/` — class extraction, delta compression, normalisation, phone book
+- `assembly/` — Tier A/B/C YAML builders, ID range compression, token estimation
+- `reconstruction/` — entity reconstitution + validation (100% fidelity gate test)
+- `qa/` — question generation + LLM evaluation harness
+- `projections/` — subject projections: models, path matcher, spec loader, generator
+- `secrets/` — secret masking (pre-flatten + post-flatten)
+- `learn_ingestion.py` — LLM-assisted ingestion spec inference
+- `learn_projections.py` — LLM-assisted projection spec inference
+- `learn_tier_a.py` — LLM-assisted Tier A spec inference
+
+Tests mirror the source structure under `tests/`, with fixtures in `tests/fixtures/`.
 
 ## Running Tests
 
 ```bash
-pytest --cov=decoct -v    # Full suite with coverage
-pytest tests/test_passes/ # Just pass tests
-pytest -k "strip_secrets" # Filter by name
+pytest --cov=decoct -v              # Full suite with coverage
+pytest -k entity -v                 # All entity-graph tests
+pytest tests/test_entity_graph_e2e.py -v  # Gate test (must pass with 0 mismatches)
 ```
 
 ## Linting and Type Checking
@@ -59,64 +69,36 @@ Both must pass cleanly before submitting a pull request.
 ## Writing Tests
 
 - Every module has corresponding tests
-- Pass tests use YAML fixtures in `tests/fixtures/`
 - Test names describe behaviour: `test_redacts_aws_access_key`, not `test_check_regex`
 - Use `click.testing.CliRunner` for CLI tests
-- Fixtures go in `tests/fixtures/` organized by type (`schemas/`, `assertions/`, `yaml/`)
+- Fixtures go in `tests/fixtures/` organized by dataset: `iosxr/`, `entra-intune/`, `hybrid-infra/`
 - Test fixtures must use synthetic data, never real credentials
+- The gate test (`test_entity_graph_e2e.py`) must pass with 0 reconstruction mismatches
 
-## Adding a New Pass
+## Adding an Adapter
 
-1. Create `src/decoct/passes/my_pass.py`
-2. Extend `BasePass`, implement `run()`, set `name`, `run_after`, `run_before`
-3. Use the `@register_pass` decorator
-4. Add import in `cli.py` (for auto-registration)
-5. Create `tests/test_passes/test_my_pass.py`
-6. Add fixture files if needed
-
-## Adding a Bundled Schema
-
-1. Create `src/decoct/schemas/bundled/my-platform.yaml`
-2. Add entry to `BUNDLED_SCHEMAS` in `src/decoct/schemas/resolver.py`
-3. Add platform detection rule in `src/decoct/formats.py` (optional)
-4. Add test fixture and schema bundling test
-5. Requirements: authoritative/high confidence, documented source
-
-## Adding Bundled Assertions
-
-1. Create `src/decoct/assertions/bundled/my-standards.yaml`
-2. Follow the assertion file format (`id`, `assert`, `rationale`, `severity` required)
-3. Add tests
-
-## Adding a Bundled Profile
-
-1. Create `src/decoct/profiles/bundled/my-profile.yaml`
-2. Add entry to `BUNDLED_PROFILES` in `src/decoct/profiles/resolver.py`
-3. Use relative paths for schema/assertion refs
-
-## Adding Input Format Support
-
-1. Add format detection in `src/decoct/formats.py`
-2. Add converter function (output must be `CommentedMap`)
-3. Add extension to `_INI_EXTENSIONS` or equivalent set
-4. Add extension to `_INPUT_EXTENSIONS` in `cli.py`
-5. Add tests and fixtures
+1. Create `src/decoct/adapters/my_adapter.py`
+2. Extend `BaseAdapter`, implement `parse_directory()` → `EntityGraph`
+3. Add adapter option to relevant CLI commands in `cli.py`
+4. Add test fixtures under `tests/fixtures/my-dataset/`
+5. Create corresponding test files
 
 ## Important Conventions
 
-- `strip-secrets` MUST run first in every pipeline — this is the security boundary
 - Never use plain `dict` where `CommentedMap` is needed — it breaks round-trip YAML
 - Never log or store actual secret values
 - LLM dependencies are optional (in `[llm]` extra, not core)
-- Test fixtures use synthetic data, never real credentials
+- Entity-graph code uses `UPPER_CASE` function names for canonical functions — suppressed via ruff per-file overrides
+- CompositeValue wrapping is critical — without it, per-device structures shatter type discovery
 
 ## Pull Request Process
 
 1. Fork and create a feature branch
 2. Make changes with tests
 3. Run full test suite, linter, and type checker
-4. Submit PR with clear description
-5. Respond to review feedback
+4. Ensure the gate test passes with 0 reconstruction mismatches
+5. Submit PR with clear description
+6. Respond to review feedback
 
 ## Licence
 

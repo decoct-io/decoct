@@ -2,7 +2,7 @@
 
 ## What Was Built
 
-A complete entity-graph compression pipeline (spec v1.3.1) implemented as a parallel subsystem alongside the existing pass-based pipeline. No existing code was modified.
+A complete entity-graph compression pipeline (spec v1.3.1) — the core compression system for decoct.
 
 The pipeline parses infrastructure configs into an entity graph, discovers types via bootstrap profiling, extracts class hierarchies, compresses deltas, and emits three-tier YAML output with 100% reconstruction fidelity.
 
@@ -86,7 +86,7 @@ mypy src/decoct/ --ignore-missing-imports
 
 # Generate Tier A/B/C YAML output
 python3 scripts/run_pipeline.py
-# Output goes to output/entity-graph/
+# Output goes to output/iosxr/
 ```
 
 ## Key Design Decisions
@@ -133,8 +133,6 @@ Per the plan, these are explicitly out of scope:
 - No evaluation harness
 - No progressive loading / runtime API
 - No `decoct diff`
-- No modifications to existing pass-based pipeline
-- 2 pre-existing test_learn.py tests fail (need `pip install decoct[llm]`) — unrelated
 
 ## File Quick Reference
 
@@ -148,4 +146,4 @@ Per the plan, these are explicitly out of scope:
 | Understand class extraction | `src/decoct/compression/class_extractor.py` |
 | Debug reconstruction failures | `src/decoct/reconstruction/validator.py` |
 | See the IOS-XR parser | `src/decoct/adapters/iosxr.py` (563 lines, the largest file) |
-| See output format | `scripts/run_pipeline.py` → `output/entity-graph/` |
+| See output format | `scripts/run_pipeline.py` → `output/iosxr/` |

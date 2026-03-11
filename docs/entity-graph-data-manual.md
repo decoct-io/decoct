@@ -32,6 +32,8 @@ The output consists of three tiers of YAML files:
 
 **Read Tier A first. Then Tier B for the type you care about. Then Tier C only for the specific entities you need.**
 
+If you only need one topic (e.g., BGP), load a **subject projection** instead of the full Tier B/C — see the "Subject Projections" section below.
+
 ---
 
 ## Tier A — Fleet Overview
@@ -118,6 +120,62 @@ assertions:
 ```
 
 **How to read:** `base_only_ratio: 1.0` means all route reflectors share the exact same configuration structure — there are no subgroups. A lower ratio means the type has meaningful internal variation that has been captured in classes.
+
+### `guide` (if enhanced)
+
+When Tier A has been enhanced with `decoct entity-graph enhance-tier-a`, it includes an LLM-generated orientation guide:
+
+```yaml
+guide:
+  corpus_description: "86 Cisco IOS XR devices, categorized into 5 distinct types:
+    access PEs, BNGs, P-Cores, Route Reflectors, and services PEs."
+  how_to_use:
+  - Begin by reviewing this Tier A orientation guide for a high-level overview.
+  - For detailed class definitions, consult the respective Tier B files.
+  - To find specific differences for individual devices, refer to the Tier C files.
+  reconstruction: "To reconstruct any entity: start with base_class attributes from
+    Tier B, overlay class own_attrs, then overlay subclass own_attrs (if assigned),
+    then apply Tier C instance-specific overrides and instance_attrs."
+```
+
+**How to read:** `corpus_description` explains what this data set is. `how_to_use` gives step-by-step instructions for navigating the tiers. `reconstruction` summarises the entity reconstitution process.
+
+### Per-type `summary` and `key_differentiators` (if enhanced)
+
+Enhanced Tier A also adds LLM-generated descriptions inline within each type entry:
+
+```yaml
+types:
+  iosxr-access-pe:
+    count: 60
+    classes: 3
+    subclasses: 3
+    tier_b_ref: iosxr-access-pe_classes.yaml
+    tier_c_ref: iosxr-access-pe_instances.yaml
+    summary: "Access PE routers at the network edge, connecting end-user networks to the core."
+    key_differentiators:
+    - "Only type with multiple classes and subclasses, indicating configuration variation."
+    - "Features EVPN and L2VPN configurations for access services."
+```
+
+**How to read:** `summary` describes the role of this entity type. `key_differentiators` list what makes this type distinct from others in the corpus.
+
+### `projections` (if enhanced)
+
+An index of available subject projections, auto-scanned from the `projections/` directory:
+
+```yaml
+projections:
+  iosxr-access-pe:
+  - bgp
+  - evpn
+  - interfaces
+  docker-compose:
+  - service-configuration
+  - network-configuration
+```
+
+**How to read:** Each type that has projections lists its available subjects. To load one, read `projections/{type_id}/{subject}.yaml` from the output directory. See the "Subject Projections" section below for details.
 
 ---
 
@@ -408,6 +466,104 @@ Rels:   group_ref→SG-Global-Admins
 
 ---
 
+## Subject Projections
+
+When you only need information about a specific topic (e.g., BGP, interfaces, EVPN), use **subject projections** instead of the full Tier B/C. Projections slice the data to show only the attributes relevant to one subject, dramatically reducing context.
+
+Projections are found in `projections/{type_id}/{subject}.yaml` within the output directory.
+
+### Projection Structure
+
+Each projection file contains the same sections as Tier B/C but filtered to one subject:
+
+```yaml
+meta:
+  subject: bgp
+  description: "BGP routing configuration including AS numbers, address families, and timers"
+  source_type: iosxr-access-pe
+  total_instances: 60
+base_class:
+  # Only attributes matching the subject's path patterns
+  router.bgp.65002.address-family: l2vpn-evpn
+  router.bgp.65002.bgp: log neighbor changes detail
+classes:
+  # Only classes whose own_attrs match the subject
+  bgp_timers_60:
+    inherits: base
+    own_attrs:
+      router.bgp.65002.timers: bgp 60 180
+class_assignments:
+  # Same entities, but classes with no matching attrs collapse to _base_only
+  bgp_timers_60:
+    instances:
+    - R-01..R-20
+instance_data:
+  # Phone book column-sliced to matching attributes only
+  schema:
+  - hostname
+  records:
+    R-01:
+    - R-01
+```
+
+### Projections Work Across Corpus Types
+
+Projections adapt to different data structures. IOS-XR has deep hierarchical paths requiring `**` glob patterns; Entra-Intune has flat single-segment keys matched by exact paths:
+
+```yaml
+# Entra-Intune projection — flat keys, exact matches
+meta:
+  subject: grant-and-session-controls
+  source_type: entra-conditional-access
+  total_instances: 6
+base_class:
+  sessionControls.disableResilienceDefaults: 'false'
+classes:
+  includeUsers_All_operator_OR:
+    inherits: base
+    own_attrs:
+      grantControls.operator: OR
+    instance_count_inclusive: 4
+class_assignments:
+  includeUsers_All_operator_OR:
+    instances:
+    - CA-Block-Legacy-Auth-Exchange
+    - CA-Block-Legacy-Auth-SharePoint
+    - CA-Block-Legacy-Auth-Teams
+    - CA-MFA-Azure-Management
+  _base_only:
+    instances:
+    - CA-MFA-Privileged-Roles
+    - CA-MFA-Security-Admins
+instance_data:
+  schema:
+  - grantControls.builtInControls
+  records:
+    CA-Block-Legacy-Auth-Exchange:
+    - block
+    CA-MFA-Security-Admins:
+    - mfa, compliantDevice
+```
+
+Projections also work well with large flat key sets. For PostgreSQL (137 config params), the LLM groups them into DBA-oriented subjects like `wal-replication-and-recovery`, `autovacuum-settings`, and `query-planning-and-optimization`.
+
+### When to Use Projections
+
+- **Investigating a specific topic:** "What BGP AS numbers are in use?" → load the `bgp` projection
+- **Comparing a narrow aspect across devices:** "Do all routers have the same MTU?" → load the `interfaces` projection
+- **Narrowing Entra/Intune policy scope:** "Which conditional access policies enforce MFA?" → load `grant-and-session-controls`
+- **Reviewing infrastructure config areas:** "What WAL settings differ across PostgreSQL instances?" → load `wal-replication-and-recovery`
+- **Reducing context for LLM queries:** A BGP projection is typically 80-90% smaller than the full Tier B/C
+
+### How Projections Relate to Full Data
+
+- Projections are a **strict subset** of the full Tier B/C — no data is added or modified
+- All entities are preserved (entity coverage is maintained), but entities whose class attributes don't match the subject appear under `_base_only`
+- Related paths (e.g., `hostname`) are included for cross-reference even though they don't belong to the subject domain
+- To reconstruct a full entity, use the original Tier B/C, not a projection
+
+---
+
 ## Common Questions
 
 ### "What configuration do all entities of type X share?"
@@ -446,6 +602,12 @@ It means this attribute is explicitly removed for this entity. The class templat
 
 ### "What does `base_only_ratio: 1.0` mean?"
 It means 100% of entities in this type fall into the `_base_only` class — there are no meaningful subgroups. The entire type is homogeneous except for per-entity values in Tier C. A ratio of 0.0 means every entity was assigned to a real class (good internal structure was found).
+
+### "Should I load a projection or the full Tier B/C?"
+Use a projection when investigating a specific topic (BGP, interfaces, EVPN). Use full Tier B/C when you need cross-domain context, want to reconstruct a complete entity, or need to understand interactions between different configuration areas.
+
+### "Why do some classes disappear in a projection?"
+A class only appears in a projection if its `own_attrs` contain attributes matching the subject's path patterns. If a class only differs from the base in attributes outside the subject (e.g., an ISIS-only class in a BGP projection), its entities are reassigned to `_base_only` in the projected view.
 
 ---
 
