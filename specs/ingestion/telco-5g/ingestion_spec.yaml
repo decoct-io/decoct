@@ -1,0 +1,66 @@
+version: 1
+adapter: hybrid-infra
+generated_by: claude-code
+
+entries:
+- file_pattern: "gnodeb-cell-*"
+  platform: gnodeb-cell
+  description: "gNB cell radio configuration (per-cell per-sector)"
+  composite_paths:
+  - path: "qos.supported_slices"
+    kind: list
+    reason: "List of S-NSSAI entries supported by this cell"
+
+- file_pattern: "gnodeb-du-*"
+  platform: gnodeb-du
+  description: "gNB Distributed Unit configuration"
+  composite_paths:
+  - path: "connected_cells"
+    kind: list
+    reason: "List of cell IDs served by this DU"
+
+- file_pattern: "gnodeb-cu-*"
+  platform: gnodeb-cu
+  description: "gNB Centralized Unit pool configuration"
+  composite_paths:
+  - path: "connected_dus"
+    kind: list
+    reason: "List of DU IDs connected to this CU pool"
+
+- file_pattern: "transport-*"
+  platform: transport-link
+  description: "Transport link configuration (fronthaul/midhaul/backhaul)"
+
+- file_pattern: "slice-*"
+  platform: network-slice
+  description: "Network slice definition (eMBB/URLLC/mMTC)"
+
+- file_pattern: "ran-policy-*"
+  platform: ran-policy
+  description: "RAN policy configuration (handover/load-balancing/power-control/admission)"
+
+- file_pattern: "core-amf-*"
+  platform: core-amf
+  description: "5G Core AMF configuration"
+  composite_paths:
+  - path: "tai_list"
+    kind: list
+    reason: "Tracking Area Identity list served by this AMF"
+  - path: "nf_profile.nf_services"
+    kind: list
+    reason: "NF service list registered by this AMF"
+
+- file_pattern: "core-smf-*"
+  platform: core-smf
+  description: "5G Core SMF configuration"
+  composite_paths:
+  - path: "upf_associations"
+    kind: list
+    reason: "UPF associations with N4 interface details"
+  - path: "dnn_configs"
+    kind: list
+    reason: "DNN configuration entries with IP pools and session parameters"
+
+- file_pattern: "site-*"
+  platform: site-metadata
+  description: "Site physical metadata (location, power, access)"

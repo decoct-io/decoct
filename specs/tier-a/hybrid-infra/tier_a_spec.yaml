@@ -1,0 +1,162 @@
+version: 1
+generated_by: decoct-infer
+corpus_description: This infrastructure corpus contains 91 entities across 17 
+  distinct types, primarily focusing on configuration files, deployment 
+  automation assets, and database settings.
+how_to_use:
+- Start with this Tier A orientation guide to understand the overall structure 
+  and available entity types.
+- For detailed class definitions and common attributes for each entity type, 
+  consult the respective Tier B files (e.g., `ansible-inventory_classes.yaml`).
+- To examine unique attributes and specific deviations for individual instances,
+  refer to the Tier C files (e.g., `ansible-inventory_instances.yaml`).
+- The `type_descriptions` section below provides a quick summary and key 
+  differentiators for each entity type.
+type_descriptions:
+  ansible-inventory:
+    summary: Ansible inventory files define the hosts and groups of hosts that 
+      Ansible manages, along with variables specific to these hosts or groups.
+    key_differentiators:
+    - Primarily contains host and group definitions.
+    - Features a common `ansible_user` variable for deployment.
+    - Does not contain playbook tasks or variable definitions beyond user 
+      specifics.
+  ansible-playbook:
+    summary: Ansible playbooks automate IT infrastructure tasks, defining a set 
+      of plays and tasks to be executed on target hosts.
+    key_differentiators:
+    - Contains structured automation logic with tasks and handlers.
+    - Distinguishes between playbooks that gather facts and those that don't.
+    - Utilizes composite templates for reusable sets of tasks and handlers.
+    - Typically includes modules like `apt`, `copy`, `template`, `systemd`, and 
+      `wait_for`.
+  ansible-vars:
+    summary: Ansible variable files store sensitive or environment-specific data
+      that can be used within Ansible playbooks.
+    key_differentiators:
+    - Exclusively holds key-value pairs representing variables.
+    - Contains sensitive information like `api_key` and `db_password` 
+      (redacted).
+    - Lacks any executable tasks or host definitions.
+  app-config-json:
+    summary: These JSON files define application-specific configurations, 
+      covering settings like authentication, CORS, logging, and performance 
+      parameters.
+    key_differentiators:
+    - Structured as JSON, defining various application features.
+    - Includes settings for `auth`, `cors`, `environment`, `logging`, and 
+      `rate_limiting`.
+    - Primarily concerns runtime behavior and external service interactions for 
+      an application.
+  cloud-init:
+    summary: cloud-init configurations are used for initial setup of cloud 
+      instances, including user management, package installation, and system 
+      settings.
+    key_differentiators:
+    - Configures initial boot-time actions for virtual machines.
+    - Manages SSH keys, package updates, NTP servers, and timezone settings.
+    - Can manage `/etc/hosts` and enable package upgrades/updates.
+  docker-compose:
+    summary: Docker Compose files define and run multi-container Docker 
+      applications, specifying services, networks, and volumes.
+    key_differentiators:
+    - Defines a stack of Docker services, networks, and volumes.
+    - Includes detailed healthcheck configurations and resource limits (`cpus`, 
+      `mem_limit`).
+    - Utilizes composite templates for common service and network definitions.
+  docker-daemon:
+    summary: Docker daemon configuration files control the behavior of the 
+      Docker daemon itself, influencing how containers are managed.
+    key_differentiators:
+    - Configures the core Docker daemon process.
+    - Specifies settings like `ip-forward`, `iptables`, `log-driver`, and 
+      `storage-driver`.
+    - Distinct from `docker-compose` as it configures the engine, not the 
+      applications.
+  mariadb:
+    summary: MariaDB configuration files tune the database server's performance 
+      and behavior, managing aspects like transaction handling, buffer sizes, 
+      and logging.
+    key_differentiators:
+    - Contains extensive database-specific parameters under `mysqld.` prefix.
+    - Focuses on InnoDB engine settings and transaction commit behavior.
+    - Distinctly manages database-level settings rather than infrastructure 
+      components.
+  package-json:
+    summary: These JSON files specify project metadata for Node.js projects, 
+      including dependencies, scripts, and basic project information.
+    key_differentiators:
+    - Standard Node.js project metadata file.
+    - Includes `license` and `private` flags as common attributes.
+    - Primarily pertains to software project definition rather than system or 
+      application configuration.
+  postgresql:
+    summary: PostgreSQL configuration files manage various aspects of the 
+      PostgreSQL database server, ranging from performance tuning to logging and
+      replication.
+    key_differentiators:
+    - Features numerous parameters for PostgreSQL database optimization and 
+      operation.
+    - Includes settings for autovacuum, checkpointing, and WAL (Write-Ahead Log)
+      management.
+    - Shares some general database concepts with MariaDB but with specific 
+      PostgreSQL parameters.
+  prometheus:
+    summary: Prometheus configuration files define how Prometheus scrapes 
+      metrics from targets, manages rules, and handles alerts.
+    key_differentiators:
+    - Configures a monitoring system, specifically Prometheus.
+    - Contains global settings for scraping, target limits, and label handling.
+    - Lacks direct application logic or system-level configurations.
+  sshd:
+    summary: SSH Daemon configuration files control the behavior of the Secure 
+      Shell (SSH) server, handling authentication, port settings, and client 
+      interactions.
+    key_differentiators:
+    - Configures the SSH server, governing remote access.
+    - Manages authentication methods (e.g., `PubkeyAuthentication`) and network 
+      settings (`Port`, `AddressFamily`).
+    - Focuses on secure remote communication protocols.
+  sysctl:
+    summary: sysctl configuration files manage kernel parameters at runtime, 
+      affecting the operating system's behavior across various subsystems.
+    key_differentiators:
+    - Directly modifies kernel parameters (e.g., `net.ipv4.tcp_syncookies`, 
+      `vm.dirty_ratio`).
+    - Impacts low-level operating system behavior for performance and security.
+    - Values are applied dynamically to the running kernel.
+  systemd-unit:
+    summary: systemd unit files define services, sockets, mount points, and 
+      other system resources managed by the systemd init system.
+    key_differentiators:
+    - Defines how services, daemons, and other processes are managed by the 
+      operating system.
+    - Includes sections like `Install` (e.g., `wantedby`) and `Service` (e.g., 
+      `environment`, `limitnofile`, `user`, `group`).
+    - Controls process lifecycle and resource limits at the OS level.
+  tfvars:
+    summary: Terraform variable definition files supply input variable values to
+      Terraform configurations, often including sensitive data and tags.
+    key_differentiators:
+    - Provides variables for Terraform infrastructure as code deployments.
+    - Contains sensitive data like `database.password` and `secrets.api_secret` 
+      (redacted).
+    - Includes tagging conventions such as `managed_by`, `project`, and `team`.
+  traefik:
+    summary: Traefik configuration files define the edge router's behavior, 
+      including access logging, API settings, and Docker provider integration.
+    key_differentiators:
+    - Configures an ingress controller or reverse proxy.
+    - Focuses on `accessLog`, `api`, `providers.docker`, and `metrics` settings.
+    - Handles routing, load balancing, and secure communication for 
+      applications.
+  yaml-app-config:
+    summary: These YAML files specify application-specific configurations, 
+      similar to app-config-json but in YAML format, covering logging and 
+      environment settings.
+    key_differentiators:
+    - Defines application settings in YAML format.
+    - Includes logging parameters (`file.compress`, `file.max_size`, `format`) 
+      and environment details (`app.debug`, `app.env`).
+    - Shares purpose with `app-config-json` but uses YAML syntax and typically 
+      has different attribute keys.

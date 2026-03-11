@@ -1,0 +1,80 @@
+version: 1
+generated_by: decoct-infer
+corpus_description: 'This infrastructure corpus contains configurations for 86 Cisco
+  IOS XR devices, categorized into 5 distinct types: access PEs, BNGs, P-Cores, Route
+  Reflectors, and services PEs.'
+how_to_use:
+- Begin by reviewing this Tier A orientation guide for a high-level overview of 
+  entity types and their relationships.
+- For detailed class definitions and inheritance structures, consult the 
+  respective Tier B files (e.g., `iosxr-access-pe_classes.yaml`).
+- To find specific differences for individual devices, refer to the Tier C files
+  (e.g., `iosxr-access-pe_instances.yaml`) which specify per-instance 
+  deviations.
+- Note that `base_only_ratio` in Tier A assertions indicates how many instances 
+  only use the base class; a ratio of 1.0 means all instances for that type only
+  use the base class.
+type_descriptions:
+  iosxr-access-pe:
+    summary: IOS XR Access Provider Edge (PE) devices, totaling 60 instances, 
+      are responsible for connecting end-user networks to the core. They exhibit
+      a complex class hierarchy with multiple subclasses.
+    key_differentiators:
+    - Only entity type with multiple classes and subclasses beyond the base 
+      class, indicating significant configuration variation.
+    - Features EVPN and L2VPN configurations, essential for providing access 
+      services.
+    - Includes BVI interfaces suggesting bridged virtual interfaces for 
+      subscriber management.
+    - Explicitly configured with BGP peering for multiple ASNs (65002, 65003, 
+      65004).
+  iosxr-bng:
+    summary: IOS XR Broadband Network Gateway (BNG) devices, with 8 instances, 
+      manage subscriber access and aggregation, primarily handling dynamic 
+      template configurations and RADIUS authentication.
+    key_differentiators:
+    - Contains dynamic templates for subscriber accounting and IPv4 unnumbered 
+      interfaces.
+    - Configured with RADIUS server keys and settings for subscriber 
+      authentication and accounting.
+    - Specifies a maximum PPPoE session limit of 32000, indicative of its role 
+      in high-scale subscriber termination.
+    - Uses Bundle-Ethernet interfaces with multiple sub-interfaces for 
+      subscriber-facing connectivity.
+  iosxr-p-core:
+    summary: IOS XR Provider Core (P-Core) devices, with 6 instances, form the 
+      backbone of the network, connecting various PE types and Route Reflectors.
+      They primarily handle core routing and MPLS forwarding.
+    key_differentiators:
+    - Features both TenGigE and HundredGigE interfaces, indicating high-capacity
+      core links.
+    - The `router.isis.CORE.set-overload-bit` configuration suggests a 
+      controlled startup sequence or maintenance mode.
+    - MPLS is explicitly configured including interfaces for MPLS forwarding.
+    - Establishes BGP peerings with multiple ASNs, particularly 65001, acting as
+      a central point.
+  iosxr-rr:
+    summary: IOS XR Route Reflector (RR) devices, with 4 instances, are 
+      responsible for BGP route reflection to reduce the full mesh of iBGP 
+      sessions in the network.
+    key_differentiators:
+    - "Dedicated BGP configuration with `nsr: 'true'`, enabling Non-Stop Routing capability
+      for BGP."
+    - Establishes BGP peerings with all other listed ASNs (65001-65006), 
+      reinforcing its central role in route distribution.
+    - No specific subscriber-facing or application-specific configurations, 
+      focusing purely on routing.
+    - 'BGP also includes `address-family: l2vpn-evpn`, indicating it reflects EVPN
+      routes.'
+  iosxr-services-pe:
+    summary: IOS XR Services Provider Edge (PE) devices, with 8 instances, 
+      provide various network services to customers. These devices primarily 
+      focus on BGP peering for service delivery.
+    key_differentiators:
+    - Uses BGP ASN 65006, distinctly from the access PEs.
+    - "BGP configuration lacks `graceful-restart: 'true'`, unlike other BGP-enabled
+      device types in this corpus."
+    - Relatively simpler interface configuration compared to Access PEs or BNGs,
+      focusing on core connectivity.
+    - No EVPN or L2VPN constructs explicitly defined in its base class, 
+      suggesting a different service set than access PEs.

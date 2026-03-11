@@ -1,0 +1,44 @@
+version: 1
+adapter: hybrid-infra
+generated_by: claude-code
+
+entries:
+- file_pattern: "deploy-*"
+  platform: k8s-deployment
+  description: "Kubernetes Deployment manifest for microservice"
+  composite_paths:
+  - path: "spec.template.spec.containers"
+    kind: list
+    reason: "Container specs with image, ports, env, resources, probes"
+
+- file_pattern: "svc-*"
+  platform: k8s-service
+  description: "Kubernetes Service manifest (ClusterIP or LoadBalancer)"
+
+- file_pattern: "cm-*"
+  platform: k8s-configmap
+  description: "Kubernetes ConfigMap with application configuration data"
+
+- file_pattern: "ingress-*"
+  platform: k8s-ingress
+  description: "Kubernetes Ingress with nginx annotations and TLS"
+  composite_paths:
+  - path: "spec.rules"
+    kind: list
+    reason: "Ingress routing rules with host and path backends"
+
+- file_pattern: "hpa-*"
+  platform: k8s-hpa
+  description: "Kubernetes HorizontalPodAutoscaler with CPU/memory metrics"
+  composite_paths:
+  - path: "spec.metrics"
+    kind: list
+    reason: "List of autoscaling metric targets (CPU, memory)"
+
+- file_pattern: "netpol-*"
+  platform: k8s-networkpolicy
+  description: "Kubernetes NetworkPolicy for namespace isolation and inter-service rules"
+
+- file_pattern: "sa-*"
+  platform: k8s-serviceaccount
+  description: "Kubernetes ServiceAccount with IAM role annotations"

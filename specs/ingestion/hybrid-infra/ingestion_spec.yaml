@@ -1,0 +1,62 @@
+version: 1
+adapter: hybrid-infra
+generated_by: claude-code
+
+entries:
+- file_pattern: "pg-*"
+  platform: postgresql
+  description: "PostgreSQL server configuration"
+
+- file_pattern: "maria-*"
+  platform: mariadb
+  description: "MariaDB/MySQL server configuration"
+
+- file_pattern: "sshd-*"
+  platform: sshd
+  description: "OpenSSH daemon configuration"
+
+- file_pattern: "systemd-*"
+  platform: systemd-unit
+  description: "Systemd service/timer unit configuration"
+
+- file_pattern: "sysctl-*"
+  platform: sysctl
+  description: "Linux kernel parameter tuning"
+
+- file_pattern: "docker-daemon-*"
+  platform: docker-daemon
+  description: "Docker daemon configuration"
+
+- file_pattern: "ansible-inventory-*"
+  platform: ansible-inventory
+  description: "Ansible inventory definitions"
+
+- file_pattern: "ansible-vars-*"
+  platform: ansible-vars
+  description: "Ansible variable definitions"
+
+- file_pattern: "tfvars-*"
+  platform: tfvars
+  description: "Terraform variable definitions"
+
+- file_pattern: "package-json-*"
+  platform: package-json
+  description: "Node.js package manifest"
+  composite_paths:
+  - path: "dependencies"
+    kind: map
+    reason: "Package dependency map keyed by package name"
+  - path: "devDependencies"
+    kind: map
+    reason: "Dev dependency map keyed by package name"
+  - path: "scripts"
+    kind: map
+    reason: "npm script definitions keyed by script name"
+
+- file_pattern: "app-config-*"
+  platform: app-config-json
+  description: "Application configuration (JSON format)"
+
+- file_pattern: "yaml-app-*"
+  platform: yaml-app-config
+  description: "Application configuration (YAML format)"

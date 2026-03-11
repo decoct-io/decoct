@@ -1,0 +1,47 @@
+version: 1
+adapter: hybrid-infra
+generated_by: claude-code
+
+entries:
+- file_pattern: "nginx-*"
+  platform: nginx-site
+  description: "Nginx site configuration (static or API proxy)"
+
+- file_pattern: "haproxy-*"
+  platform: haproxy
+  description: "HAProxy L4 load balancer configuration"
+
+- file_pattern: "varnish-*"
+  platform: varnish-params
+  description: "Varnish cache parameters and TTL settings"
+
+- file_pattern: "dns-*"
+  platform: dns-zone
+  description: "DNS zone file with SOA/NS/A records"
+
+- file_pattern: "ssl-*"
+  platform: ssl-config
+  description: "SSL/TLS certificate and cipher configuration"
+
+- file_pattern: "prometheus-*"
+  platform: prometheus
+  description: "Prometheus monitoring scrape configuration"
+
+- file_pattern: "edge-compute-*"
+  platform: edge-compute
+  description: "Edge compute Wasm worker configuration"
+  composite_paths:
+  - path: "modules"
+    kind: list
+    reason: "List of Wasm modules with name/version/path"
+  - path: "routing"
+    kind: list
+    reason: "Routing rules mapping paths to modules"
+
+- file_pattern: "pop-metadata-*"
+  platform: pop-metadata
+  description: "PoP site metadata (capacity, location, peering)"
+
+- file_pattern: "keepalived-*"
+  platform: keepalived
+  description: "Keepalived VRRP configuration for HA"

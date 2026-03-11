@@ -1,0 +1,203 @@
+version: 1
+adapter: hybrid-infra
+generated_by: claude-code
+
+entries:
+# ── SD-WAN ────────────────────────────────────────────────────────────────────
+- file_pattern: "sdwan-cedge-*"
+  platform: sdwan-cedge
+  description: "SD-WAN cEdge router — VPN templates, OMP, BFD, TLOC"
+  composite_paths:
+  - path: "transport"
+    kind: list
+    reason: "List of TLOC transports with per-circuit config"
+  - path: "vpn"
+    kind: list
+    reason: "VPN instances with per-VPN settings"
+
+- file_pattern: "sdwan-vsmart-*"
+  platform: sdwan-vsmart
+  description: "SD-WAN vSmart controller — OMP policy, route filters"
+
+- file_pattern: "sdwan-vbond-*"
+  platform: sdwan-vbond
+  description: "SD-WAN vBond orchestrator — enrollment, certificate config"
+
+- file_pattern: "sdwan-policy-*"
+  platform: sdwan-policy
+  description: "SD-WAN centralised policy — app-aware routing, QoS, data policy"
+
+- file_pattern: "sdwan-template-*"
+  platform: sdwan-template
+  description: "SD-WAN feature template — VPN, security, banner, system"
+
+# ── SD-Access ─────────────────────────────────────────────────────────────────
+- file_pattern: "catalyst-*"
+  platform: catalyst-switch
+  description: "Catalyst 9300/9500 switch — border, edge, or control-plane node"
+  composite_paths:
+  - path: "vlans"
+    kind: list
+    reason: "VLAN definitions with ID and name"
+  - path: "interfaces"
+    kind: list
+    reason: "Interface configs with role-specific settings"
+
+- file_pattern: "wlc-*"
+  platform: wlc-config
+  description: "Cisco 9800 wireless LAN controller — SSIDs, RF, AP provisioning"
+  composite_paths:
+  - path: "wlan_profiles"
+    kind: list
+    reason: "WLAN profiles with per-SSID security and QoS"
+
+- file_pattern: "ap-group-*"
+  platform: ap-group
+  description: "Wireless AP group — channel plan, power levels, SSID mapping"
+
+- file_pattern: "ise-policy-*"
+  platform: ise-policy
+  description: "ISE policy set — authZ/authN rules, SGT assignments"
+
+- file_pattern: "sgt-matrix-*"
+  platform: sgt-matrix
+  description: "TrustSec SGT-to-SGT egress policy matrix"
+  composite_paths:
+  - path: "policy"
+    kind: list
+    reason: "SGT policy entries with source/destination/action"
+
+- file_pattern: "dnac-template-*"
+  platform: dnac-template
+  description: "DNA Center provisioning template — day-0 or day-N"
+
+# ── Firewalls ─────────────────────────────────────────────────────────────────
+- file_pattern: "pa-fw-*"
+  platform: paloalto-fw
+  description: "Palo Alto firewall — zones, NAT, security rules, GlobalProtect"
+  composite_paths:
+  - path: "security_rules"
+    kind: list
+    reason: "Security policy rules with zone-based matching"
+
+- file_pattern: "pa-profile-*"
+  platform: paloalto-profile
+  description: "Palo Alto security profile — URL filter, threat, decryption"
+
+- file_pattern: "forti-*"
+  platform: fortinet-fw
+  description: "FortiGate firewall — policies, VPN tunnels, SD-WAN"
+  composite_paths:
+  - path: "firewall_policy"
+    kind: list
+    reason: "Firewall policy rules"
+
+- file_pattern: "fw-addrgrp-*"
+  platform: fw-address-group
+  description: "Shared firewall address objects and groups"
+
+- file_pattern: "fw-nat-*"
+  platform: fw-nat-rule
+  description: "NAT rule set for ingress or internet breakout"
+
+# ── Datacentre ────────────────────────────────────────────────────────────────
+- file_pattern: "arista-leaf-*"
+  platform: arista-leaf
+  description: "Arista 7050X3 EVPN-VXLAN leaf switch"
+  composite_paths:
+  - path: "vlans"
+    kind: list
+    reason: "VLAN-to-VNI mappings"
+
+- file_pattern: "arista-spine-*"
+  platform: arista-spine
+  description: "Arista 7500R spine switch — BGP underlay, ECMP"
+
+- file_pattern: "bmc-*"
+  platform: server-bmc
+  description: "Server BMC (iDRAC/iLO) — IPMI, power, thermal, alerts"
+
+- file_pattern: "netplan-*"
+  platform: server-netplan
+  description: "Ubuntu netplan — bonds, VLANs, MTU, DNS"
+  composite_paths:
+  - path: "network.vlans"
+    kind: map
+    reason: "VLAN interfaces keyed by name"
+
+- file_pattern: "sysctl-*"
+  platform: server-sysctl
+  description: "Linux sysctl kernel tuning parameters"
+
+- file_pattern: "systemd-*"
+  platform: server-systemd
+  description: "Systemd service unit file"
+
+- file_pattern: "storage-*"
+  platform: storage-array
+  description: "Storage array (NetApp/Pure) — volumes, LUNs, replication"
+  composite_paths:
+  - path: "volumes"
+    kind: list
+    reason: "Volume definitions with size and provisioning"
+
+- file_pattern: "db-*"
+  platform: db-config
+  description: "Database config (PostgreSQL/MariaDB) — tuning, replication"
+
+- file_pattern: "redis-*"
+  platform: redis-config
+  description: "Redis cache config — persistence, replication, sentinel"
+
+- file_pattern: "lb-*"
+  platform: lb-config
+  description: "Load balancer (F5/HAProxy) — VIPs, pools, health monitors"
+
+# ── IoT Factory Floor ─────────────────────────────────────────────────────────
+- file_pattern: "mqtt-*"
+  platform: mqtt-broker
+  description: "MQTT broker (EMQX/Mosquitto) — listeners, ACL, bridge"
+
+- file_pattern: "opcua-*"
+  platform: opcua-server
+  description: "OPC-UA server — industrial endpoints, node definitions"
+  composite_paths:
+  - path: "nodes"
+    kind: list
+    reason: "OPC-UA node definitions with data types and ranges"
+
+- file_pattern: "plc-gw-*"
+  platform: plc-gateway
+  description: "PLC gateway — Modbus/EtherNet/IP to MQTT translation"
+  composite_paths:
+  - path: "registers"
+    kind: list
+    reason: "PLC register mappings with addresses and data types"
+
+- file_pattern: "edge-node-*"
+  platform: edge-compute
+  description: "Edge inference node — defect detection, predictive maintenance"
+  composite_paths:
+  - path: "inference.models"
+    kind: list
+    reason: "ML model definitions with versions and input sizes"
+
+- file_pattern: "sensor-*"
+  platform: sensor-network
+  description: "Sensor network — vibration, temperature, torque, pressure"
+  composite_paths:
+  - path: "sensors"
+    kind: list
+    reason: "Individual sensor configs with thresholds"
+
+- file_pattern: "ind-fw-*"
+  platform: industrial-fw
+  description: "Industrial firewall — Purdue model L0-L5 segmentation"
+  composite_paths:
+  - path: "security_rules"
+    kind: list
+    reason: "Purdue model security rules"
+
+- file_pattern: "historian-*"
+  platform: historian-config
+  description: "Historian (InfluxDB/Kepware) — tag retention, API config"
