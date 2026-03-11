@@ -1,0 +1,9 @@
+filename,group_name,site,location,ap_count,channel_5g,channel_24g,tx_power_5g,tx_power_24g,ssids,mode
+ap-group-hq-lobby,HQ-Lobby,hq,Building-A Floor-1,8,36;40;44;48,1;6;11,14,11,MERIDIAN-CORP;MERIDIAN-GUEST,local
+ap-group-hq-office,HQ-Office,hq,Building-A Floor-2-5,24,36;40;44;48;52;56,1;6;11,14,11,MERIDIAN-CORP;MERIDIAN-GUEST,local
+ap-group-hq-lab,HQ-Lab,hq,Building-B Floor-1,6,149;153;157;161,1;6;11,17,14,MERIDIAN-CORP;MERIDIAN-IOT,local
+ap-group-hq-warehouse,HQ-Warehouse,hq,Building-C,4,36;40;44;48,1;6;11,20,17,MERIDIAN-CORP;MERIDIAN-IOT,local
+ap-group-bra-office,BRA-Office,bra,Main Floor,12,36;40;44;48,1;6;11,14,11,MERIDIAN-CORP;MERIDIAN-GUEST,local
+ap-group-bra-conf,BRA-Conference,bra,Conference Rooms,4,149;153;157;161,1;6;11,11,8,MERIDIAN-CORP;MERIDIAN-GUEST,local
+ap-group-brb-office,BRB-Office,brb,Main Floor,10,36;40;44;48,1;6;11,14,11,MERIDIAN-CORP;MERIDIAN-GUEST,local
+ap-group-fac-floor,FAC-Floor,fac,Assembly Line,8,36;40;44;48,1;6;11,20,17,MERIDIAN-PLANT;MERIDIAN-IOT,local

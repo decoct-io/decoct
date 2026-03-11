@@ -1,0 +1,106 @@
+# SD-WAN cEdge Configuration — {{ site }}
+# Meridian Manufacturing — {{ filename }}
+
+system:
+  hostname: "{{ hostname }}"
+  system-ip: "{{ system_ip }}"
+  site-id: {{ site_id }}
+  organization-name: "{{ org_name }}"
+  admin-tech-on-failure: true
+  sp-organization-name: "{{ org_name }}"
+  console-baud-rate: 115200
+  vbond:
+    address: 10.255.255.1
+    port: 12346
+    local: false
+
+omp:
+  graceful-restart: true
+  send-path-limit: 4
+  ecmp-limit: 4
+  shutdown: false
+  timers:
+    holdtime: 60
+    advertisement-interval: 1
+    graceful-restart-timer: 43200
+    eor-timer: 300
+  authentication:
+    key: "{{ omp_key }}"
+    type: ah-sha1-hmac
+
+bfd:
+  color-default:
+    multiplier: {{ bfd_multiplier }}
+    poll-interval: {{ bfd_poll_interval }}
+  app-route:
+    multiplier: 6
+    poll-interval: 600000
+
+security:
+  ipsec:
+    authentication-type: sha1-hmac-sha256
+    integrity-type: ip-udp-esp
+    pre-shared-key: "{{ ipsec_psk }}"
+{% if ikev_version == '1' %}
+    ike-version: 1
+    ike-mode: main
+{% else %}
+    ike-version: 2
+{% endif %}
+  rekey-interval: 86400
+
+transport:
+{% for tloc_str in tlocs %}
+{% set parts = tloc_str.split(':') %}
+  - type: "{{ parts[0] }}"
+    address: "{{ parts[1] }}"
+    color: "{{ parts[2] }}"
+    encapsulation: ipsec
+    weight: 1
+    restrict: false
+{% endfor %}
+
+vpn:
+{% for vpn_str in vpns %}
+{% set parts = vpn_str.split(':') %}
+  - id: {{ parts[0] }}
+    name: "{{ parts[1] }}"
+{% if parts[0] == '0' %}
+    dns:
+      primary: 10.4.1.10
+      secondary: 10.4.1.11
+{% endif %}
+{% endfor %}
+
+{% if legacy_eigrp == 'true' %}
+# LEGACY: EIGRP redistribution into OMP (migration incomplete)
+routing:
+  eigrp:
+    as-number: 100
+    redistribute:
+      - protocol: omp
+        route-policy: EIGRP-TO-OMP
+      - protocol: connected
+  omp:
+    redistribute:
+      - protocol: eigrp
+        route-policy: OMP-TO-EIGRP
+{% endif %}
+
+logging:
+  server:
+    - address: 10.4.1.50
+      vpn: 1
+      source-interface: Loopback0
+      priority: informational
+  disk:
+    enable: true
+    file-size: 10
+    file-rotate: 5
+
+ntp:
+  server:
+    - address: 10.4.1.20
+      vpn: 0
+      version: 4
+      source-interface: Loopback0

@@ -1,0 +1,22 @@
+# Kubernetes ConfigMap — db-config (staging)
+# WavePoint Financial — cm-db-config-staging
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-config
+  namespace: wavepoint-staging
+  labels:
+    app.kubernetes.io/name: db-config
+    app.kubernetes.io/instance: db-config-staging
+    env: staging
+    team: platform
+    part-of: wavepoint
+  annotations:
+    configmap.kubernetes.io/managed-by: gitops
+data:
+  DB_HOST: "db-staging.wavepoint.internal"
+  DB_PORT: "5432"
+  DB_SSL_MODE: "prefer"
+  DB_MAX_CONNECTIONS: "50"
+  DB_IDLE_TIMEOUT: "600"
+  CONNECTION_STRING: "postgresql://app:stgPw0rd@db-staging.wavepoint.internal:5432/wavepoint_stg"

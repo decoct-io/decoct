@@ -1,0 +1,94 @@
+# Kubernetes NetworkPolicy — {{ name }} ({{ env }})
+# WavePoint Financial — {{ filename }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ name }}
+  namespace: {{ namespace }}
+  labels:
+    app.kubernetes.io/name: {{ name }}
+    env: {{ env }}
+    team: platform
+    part-of: wavepoint
+  annotations:
+    networkpolicy.kubernetes.io/managed-by: gitops
+{% if env == 'prod' %}
+    wavepoint.io/compliance: pci-dss
+{% endif %}
+spec:
+{% if pod_selector_app == '*' %}
+  podSelector: {}
+{% else %}
+  podSelector:
+    matchLabels:
+      app: {{ pod_selector_app }}
+{% endif %}
+  policyTypes:
+{% if policy_type == 'both' %}
+    - Ingress
+    - Egress
+{% elif policy_type == 'ingress' %}
+    - Ingress
+{% elif policy_type == 'egress' %}
+    - Egress
+{% endif %}
+{% if policy_type in ('both', 'ingress') %}
+{% if ingress_from == 'none' %}
+  ingress: []
+{% elif ingress_from == 'allow-all' %}
+  ingress:
+    - {}
+{% elif ingress_from == 'internet' %}
+  ingress:
+    - from: []
+      ports:
+        - protocol: TCP
+          port: 8080
+        - protocol: TCP
+          port: 443
+{% else %}
+  ingress:
+{% for src in ingress_from.split(';') %}
+    - from:
+        - podSelector:
+            matchLabels:
+              app: {{ src }}
+      ports:
+        - protocol: TCP
+          port: 8080
+{% endfor %}
+{% endif %}
+{% endif %}
+{% if policy_type in ('both', 'egress') %}
+{% if egress_to == 'none' %}
+  egress: []
+{% elif egress_to == 'allow-all' %}
+  egress:
+    - {}
+{% elif egress_to == 'db-port-5432' %}
+  egress:
+    - to:
+        - ipBlock:
+            cidr: 10.0.0.0/8
+      ports:
+        - protocol: TCP
+          port: 5432
+{% elif egress_to == 'kube-dns' %}
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns
+      ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
+{% else %}
+  egress:
+    - to: []
+{% endif %}
+{% endif %}

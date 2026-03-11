@@ -1,0 +1,25 @@
+# Kubernetes ConfigMap — {{ name }} ({{ env }})
+# WavePoint Financial — {{ filename }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ name }}
+  namespace: {{ namespace }}
+  labels:
+    app.kubernetes.io/name: {{ name }}
+    app.kubernetes.io/instance: {{ name }}-{{ env }}
+    env: {{ env }}
+    team: platform
+    part-of: wavepoint
+  annotations:
+    configmap.kubernetes.io/managed-by: gitops
+{% if env == 'prod' %}
+    wavepoint.io/change-control: required
+{% endif %}
+data:
+{% for pair in data_keys.split(';') %}
+{% if pair and '=' in pair %}
+{% set kv = pair.split('=', 1) %}
+  {{ kv[0] }}: "{{ kv[1] }}"
+{% endif %}
+{% endfor %}

@@ -1,0 +1,62 @@
+# gNB Distributed Unit Configuration — macro-north-03
+# SpectrumOne 5G RAN — gnodeb-du-macro-north-03
+
+du_identity:
+  du_id: "du-mn03"
+  site: "macro-north-03"
+  status: "active"
+  plmn:
+    mcc: "310"
+    mnc: "260"
+
+hardware:
+  cpu_cores: 32
+  memory_gb: 64
+  accelerator: "fpga-baseband"
+  vendor: "SpectrumOne-RAN"
+  model: "DU-5000"
+
+fronthaul:
+  ip: "10.10.2.1"
+  vlan: 200
+  bandwidth_gbps: 25
+  protocol: "eCPRI"
+  split_option: "7.2x"
+
+timing:
+  source: "ptp-grandmaster-02"
+  sync_mode: "ptp"
+  ptp_domain: 24
+  holdover_hours: 4
+
+connected_cells:
+  - 103001
+  - 103002
+  - 103003
+
+rlc:
+  am_poll_retransmit_ms: 45
+  am_max_retx_threshold: 8
+  um_sn_field_length: 12
+  t_reassembly_ms: 40
+
+mac:
+  scheduler: "proportional-fair"
+  max_harq_tx: 8
+  sr_periodicity_ms: 10
+  bsr_timer_ms: 20
+  phr_timer_ms: 100
+
+management:
+  firmware_version: "4.2.1"
+  oam_password: "oam_pwd_du_mn03_Mn4wQ8"
+  oam_port: 830
+  oam_protocol: "netconf"
+  logging_level: "info"
+  snmp_community: "public"
+
+monitoring:
+  kpi_reporting_interval_s: 15
+  alarm_severity_filter: "warning"
+  pm_counters_enabled: true
+  trace_enabled: false

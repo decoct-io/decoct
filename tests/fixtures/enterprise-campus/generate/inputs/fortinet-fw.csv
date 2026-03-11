@@ -1,0 +1,6 @@
+filename,site,hostname,mgmt_ip,model,firmware,admin_password,vpn_psk,license_key,policies,vpn_tunnels
+forti-bra,bra,bra-forti-01,10.2.10.70,FortiGate-200F,7.4.3,F0rt1_@dm_bra_Xk7,VPN_PSK_bra_Mn4wQ,FG200F-LIC-bra-Pk7mN,corp-to-inet:accept;guest-to-inet:accept;iot-to-cloud:accept,sdwan-hub:10.1.10.60:ipsec;cloud-vpn:52.1.2.3:ipsec
+forti-brb,brb,brb-forti-01,10.3.10.70,FortiGate-200F,7.4.3,F0rt1_@dm_brb_Lm9,VPN_PSK_brb_Pq4xR,FG200F-LIC-brb-Qx4rS,corp-to-inet:accept;guest-to-inet:accept,sdwan-hub:10.1.10.60:ipsec;mpls-pe:10.3.0.1:ipsec;cloud-vpn:52.1.2.3:ipsec
+forti-fac-office,fac,fac-forti-office,10.5.10.70,FortiGate-60F,7.4.3,F0rt1_@dm_fac_Vt6,VPN_PSK_fac_Hy4zA,FG60F-LIC-fac-Vt6wX,office-to-inet:accept;office-to-plant:deny,site-to-site:10.1.10.60:ipsec
+forti-fac-visitor,fac,fac-forti-visitor,10.5.10.71,FortiGate-60F,7.4.3,F0rt1_@dm_facv_Bx5,VPN_PSK_facv_Ej7fG,FG60F-LIC-facv-Bx5cD,visitor-to-inet:accept;visitor-to-plant:deny,none
+forti-dc1-vpn,dc1,dc1-forti-vpn,10.4.10.70,FortiGate-200F,7.4.3,F0rt1_@dm_dc1_Gh8,VPN_PSK_dc1_Jk5mN,FG200F-LIC-dc1-Gh8sU,remote-to-dc:accept;dc-to-remote:accept,remote-access:0.0.0.0:ssl-vpn;site-bra:10.2.10.70:ipsec;site-brb:10.3.10.70:ipsec

@@ -1,0 +1,97 @@
+{
+  "profile_name": "{{ profile_name }}",
+  "profile_type": "{{ profile_type }}",
+  "description": "{{ description }}",
+{% if profile_type == 'url-filtering' %}
+  "url_filtering": {
+    "action_block": [
+      "adult", "malware", "phishing", "command-and-control",
+      "grayware", "hacking", "proxy-avoidance", "gambling",
+      "peer-to-peer", "questionable"
+    ],
+    "action_alert": [
+      "social-networking", "streaming-media", "web-based-email",
+      "personal-sites-and-blogs"
+    ],
+    "action_allow": [
+      "business-and-economy", "education", "government",
+      "health-and-medicine", "search-engines"
+    ],
+    "credential_detection": true,
+    "http_header_logging": true,
+    "safe_search": true,
+    "log_container_page_only": false
+  },
+{% elif profile_type == 'threat-prevention' %}
+  "threat_prevention": {
+    "antivirus": {
+      "decoder": ["smtp", "imap", "pop3", "ftp", "http", "smb"],
+      "action": "reset-both",
+      "wildfire_action": "reset-both"
+    },
+    "anti_spyware": {
+      "severity": ["critical", "high", "medium"],
+      "action": "reset-both",
+      "dns_sinkhole": {
+        "enabled": true,
+        "ipv4": "72.5.65.111",
+        "ipv6": "2600:5200::1"
+      }
+    },
+    "vulnerability": {
+      "severity": ["critical", "high", "medium"],
+      "action": "reset-both",
+      "cve_exceptions": []
+    }
+  },
+{% elif profile_type == 'ssl-decryption' %}
+  "ssl_decryption": {
+{% if 'hq' in profile_name %}
+    "enabled": true,
+{% else %}
+    "enabled": false,
+{% endif %}
+    "forward_proxy": {
+      "decrypt_categories": ["any"],
+      "no_decrypt_categories": ["financial-services", "health-and-medicine"]
+    },
+    "ca_certificate": {
+      "name": "Meridian-Decrypt-CA",
+      "path": "/etc/paloalto/certs/decrypt-ca.pem",
+      "key_path": "/etc/paloalto/certs/decrypt-ca-key.pem",
+      "password": "{{ decrypt_ca_password }}"
+    },
+    "protocol_settings": {
+      "min_version": "tls1-2",
+      "max_version": "tls1-3",
+      "key_exchange_algorithms": ["ecdhe"],
+      "encryption_algorithms": ["aes-256-gcm", "aes-128-gcm"]
+    }
+  },
+{% elif profile_type == 'wildfire' %}
+  "wildfire": {
+    "rules": [
+      {
+        "name": "forward-all",
+        "application": "any",
+        "file_type": ["pe", "apk", "pdf", "ms-office", "jar", "flash", "macos", "linux"],
+        "direction": "both",
+        "analysis": "public-cloud"
+      }
+    ],
+    "schedule": {
+      "recurring": "every-minute"
+    }
+  },
+{% elif profile_type == 'file-blocking' %}
+  "file_blocking": {
+    "rules": [
+      {"name": "block-executables", "file_type": ["exe", "dll", "bat", "cmd", "ps1", "vbs"], "direction": "both", "action": "block"},
+      {"name": "block-archives", "file_type": ["7z", "rar", "tar", "gz"], "direction": "upload", "action": "alert"},
+      {"name": "alert-office", "file_type": ["doc", "docx", "xls", "xlsx"], "direction": "both", "action": "alert"},
+      {"name": "block-scripts", "file_type": ["js", "hta", "wsf"], "direction": "both", "action": "block"}
+    ]
+  },
+{% endif %}
+  "last_modified": "2025-11-01T08:00:00Z"
+}

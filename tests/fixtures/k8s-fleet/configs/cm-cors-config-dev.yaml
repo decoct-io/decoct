@@ -1,0 +1,18 @@
+# Kubernetes ConfigMap — cors-config (dev)
+# WavePoint Financial — cm-cors-config-dev
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cors-config
+  namespace: wavepoint-dev
+  labels:
+    app.kubernetes.io/name: cors-config
+    app.kubernetes.io/instance: cors-config-dev
+    env: dev
+    team: platform
+    part-of: wavepoint
+  annotations:
+    configmap.kubernetes.io/managed-by: gitops
+data:
+  ALLOWED_ORIGINS: "*"
+  ALLOWED_METHODS: "GET"

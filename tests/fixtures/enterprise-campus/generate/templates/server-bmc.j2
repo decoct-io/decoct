@@ -1,0 +1,71 @@
+{
+  "hostname": "{{ hostname }}",
+  "vendor": "{{ vendor }}",
+  "model": "{{ model }}",
+  "rack": "{{ rack }}",
+  "management": {
+    "ip_address": "{{ mgmt_ip }}",
+    "subnet_mask": "255.255.255.0",
+    "gateway": "10.4.9.1",
+{% if vendor == 'dell' %}
+    "interface": "iDRAC9",
+    "username": "root",
+    "password": "{{ ipmi_password }}",
+    "ipmi_over_lan": true,
+    "virtual_console": "html5",
+    "racadm_enabled": true
+{% else %}
+    "interface": "iLO5",
+    "username": "Administrator",
+    "password": "{{ ipmi_password }}",
+    "ipmi_over_lan": true,
+    "virtual_console": "html5",
+    "ssh_enabled": true
+{% endif %}
+  },
+  "firmware_version": "{{ firmware_version }}",
+  "snmp": {
+    "community": "{{ snmp_community }}",
+    "trap_destination": "10.4.1.55",
+    "version": "v2c"
+  },
+  "power": {
+    "policy": "{{ fan_policy }}",
+    "cap_watts": {{ power_cap_watts }},
+    "redundancy": "redundant"
+  },
+  "thermal": {
+    "fan_policy": "{{ fan_policy }}",
+{% if vendor == 'dell' %}
+    "exhaust_temp_max_c": 70,
+    "inlet_temp_max_c": 35
+{% else %}
+    "exhaust_temp_max_c": 65,
+    "inlet_temp_max_c": 40
+{% endif %}
+  },
+  "alerts": {
+    "email": "{{ alert_email }}",
+    "smtp_server": "smtp.meridian-mfg.com",
+    "smtp_port": 587,
+    "severity_filter": ["critical", "warning"],
+    "snmp_traps": true
+  },
+  "storage": {
+{% if vendor == 'dell' %}
+    "controller": "PERC-H755",
+    "raid_level": "RAID10",
+    "write_policy": "write-back",
+    "read_policy": "adaptive-read-ahead"
+{% else %}
+    "controller": "Smart-Array-P816i",
+    "raid_level": "RAID10",
+    "write_policy": "write-back",
+    "read_policy": "ahead"
+{% endif %}
+  },
+  "network_boot": {
+    "pxe_enabled": true,
+    "boot_order": ["hdd", "pxe", "cdrom"]
+  }
+}

@@ -1,0 +1,9 @@
+filename,hostname,vendor,model,mgmt_ip,ipmi_password,snmp_community,fan_policy,power_cap_watts,alert_email,firmware_version,rack
+bmc-db-primary,db-primary,dell,PowerEdge-R750,10.4.9.11,IPMI_@dm_db1_Xk7,MrdnSNMP_bmc_RO,performance,750,noc@meridian-mfg.com,6.10.30.20,r01
+bmc-db-replica,db-replica,dell,PowerEdge-R750,10.4.9.12,IPMI_@dm_db2_Lm9,MrdnSNMP_bmc_RO,performance,750,noc@meridian-mfg.com,6.10.30.20,r01
+bmc-app-01,app-server-01,dell,PowerEdge-R650,10.4.9.13,IPMI_@dm_app1_Qx4,MrdnSNMP_bmc_RO,balanced,500,noc@meridian-mfg.com,6.10.30.20,r02
+bmc-app-02,app-server-02,dell,PowerEdge-R650,10.4.9.14,IPMI_@dm_app2_Hy4,MrdnSNMP_bmc_RO,balanced,500,noc@meridian-mfg.com,6.10.30.20,r02
+bmc-web-01,web-server-01,hpe,ProLiant-DL380,10.4.9.15,iLO_@dm_web1_Bx5,MrdnSNMP_bmc_RO,optimal,450,noc@meridian-mfg.com,2.72,r03
+bmc-web-02,web-server-02,hpe,ProLiant-DL380,10.4.9.16,iLO_@dm_web2_Ej7,MrdnSNMP_bmc_RO,optimal,450,noc@meridian-mfg.com,2.72,r03
+bmc-storage-01,storage-node-01,dell,PowerEdge-R750,10.4.9.17,IPMI_@dm_stor1_Gh8,MrdnSNMP_bmc_RO,performance,800,noc@meridian-mfg.com,6.10.30.20,r04
+bmc-monitor-01,monitor-server-01,hpe,ProLiant-DL360,10.4.9.18,iLO_@dm_mon1_Jk5,MrdnSNMP_bmc_RO,optimal,350,noc@meridian-mfg.com,2.72,r05

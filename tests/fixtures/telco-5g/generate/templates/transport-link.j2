@@ -1,0 +1,62 @@
+{
+  "link_id": "{{ link_id }}",
+  "type": "{{ link_type }}",
+
+  "endpoints": {
+    "a": "{{ endpoint_a }}",
+    "b": "{{ endpoint_b }}"
+  },
+
+  "performance": {
+    "bandwidth_gbps": {{ bandwidth_gbps }},
+    "latency_us": {{ latency_us }},
+    "jitter_us": {% if link_type == 'fronthaul' %}5{% elif link_type == 'midhaul' %}20{% else %}100{% endif %},
+    "packet_loss_rate": 0.00001
+  },
+
+  "transport": {
+    "protocol": "{{ protocol }}",
+    "vlan": {{ vlan }},
+{% if link_type == 'fronthaul' %}
+    "frame_format": "eCPRI-Type1",
+    "compression": "none",
+{% elif link_type == 'midhaul' %}
+    "encapsulation": "GTP-U",
+    "qos_marking": "EF",
+{% else %}
+    "encapsulation": "MPLS-VPN",
+    "qos_marking": "AF41",
+{% endif %}
+    "mtu": {% if link_type == 'fronthaul' %}9000{% else %}1500{% endif %}
+  },
+
+  "security": {
+    "ipsec_enabled": {{ ipsec_enabled }},
+{% if ipsec_psk != 'none' %}
+    "ipsec_psk": "{{ ipsec_psk }}",
+    "ipsec_algorithm": "AES-256-GCM",
+    "ike_version": 2
+{% else %}
+    "ipsec_psk": null,
+    "ipsec_algorithm": null,
+    "ike_version": null
+{% endif %}
+  },
+
+  "monitoring": {
+    "bfd_enabled": true,
+    "bfd_interval_ms": {% if link_type == 'fronthaul' %}100{% else %}300{% endif %},
+    "oam_enabled": true,
+    "pm_interval_s": 15
+  },
+
+  "redundancy": {
+{% if link_type == 'backhaul' %}
+    "protection": "1+1",
+    "switchover_ms": 50
+{% else %}
+    "protection": "none",
+    "switchover_ms": null
+{% endif %}
+  }
+}

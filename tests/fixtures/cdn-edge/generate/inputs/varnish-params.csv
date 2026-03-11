@@ -1,0 +1,9 @@
+filename,pop,cache_size,ttl_default,ttl_static,ttl_api,grace_period,purge_acl_networks,purge_token,backend_host,backend_port,probe_url,probe_interval,thread_pools,thread_pool_min,thread_pool_max,workspace_client,workspace_backend
+varnish-ams,ams,16g,120s,86400s,10s,3600s,10.1.0.0/16;10.0.0.0/8,purge_tk_ams_Kx9mPq,127.0.0.1,8080,/health,5s,2,50,1000,256k,256k
+varnish-fra,fra,16g,120s,86400s,10s,3600s,10.2.0.0/16;10.0.0.0/8,purge_tk_fra_Wx5jT8,127.0.0.1,8080,/health,5s,2,50,1000,256k,256k
+varnish-lhr,lhr,4g,120s,86400s,10s,1800s,10.3.0.0/16;10.0.0.0/8,purge_tk_lhr_Mn4wQ8,127.0.0.1,8080,/health,5s,1,25,500,128k,128k
+varnish-iad,iad,16g,120s,86400s,10s,3600s,10.4.0.0/16;10.0.0.0/8,purge_tk_iad_Yp6cD4,127.0.0.1,8080,/health,5s,2,50,1000,256k,256k
+varnish-sjc,sjc,16g,120s,86400s,10s,3600s,10.5.0.0/16;10.0.0.0/8,purge_tk_sjc_Hf7gB2,127.0.0.1,8080,/health,5s,2,50,1000,256k,256k
+varnish-nrt,nrt,16g,60s,43200s,5s,1800s,10.6.0.0/16;10.0.0.0/8,purge_tk_nrt_Pq3rS7,127.0.0.1,8080,/health,5s,2,50,1000,256k,256k
+varnish-syd,syd,4g,120s,86400s,10s,1800s,10.7.0.0/16;10.0.0.0/8;203.0.113.0/24,purge_tk_syd_Jk5mNx,127.0.0.1,8080,/health,5s,1,25,500,128k,128k
+varnish-sin,sin,16g,120s,86400s,10s,3600s,10.8.0.0/16;10.0.0.0/8,purge_tk_sin_Vt6wXy,127.0.0.1,8080,/health,5s,2,50,1000,256k,256k

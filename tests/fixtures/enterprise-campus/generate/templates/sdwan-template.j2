@@ -1,0 +1,112 @@
+{
+  "template_name": "{{ template_name }}",
+  "template_type": "{{ template_type }}",
+  "description": "{{ description }}",
+  "organization": "MeridianMfg",
+{% if template_type == 'vpn' and 'vpn0' in template_name %}
+  "vpn": {
+    "vpn_id": 0,
+    "name": "transport",
+    "dns": {
+      "primary": "{{ dns_primary }}",
+      "secondary": "{{ dns_secondary }}"
+    },
+    "interface": {
+      "name": "ge0/0",
+      "description": "WAN Transport",
+      "tunnel_interface": true,
+      "color": "biz-internet",
+      "encapsulation": "ipsec",
+      "nat": true
+    },
+    "route": [
+      {"prefix": "0.0.0.0/0", "next_hop": "dhcp"}
+    ]
+  },
+{% elif template_type == 'vpn' and 'vpn1' in template_name %}
+  "vpn": {
+    "vpn_id": 1,
+    "name": "corporate",
+    "dns": {
+      "primary": "{{ dns_primary }}",
+      "secondary": "{{ dns_secondary }}",
+      "domain": "{{ domain_name }}"
+    },
+    "interface": {
+      "name": "ge0/1",
+      "description": "LAN Corporate",
+      "dhcp_server": {
+        "enable": true,
+        "pool_start": "10.0.0.100",
+        "pool_end": "10.0.0.250",
+        "lease_time": 86400
+      }
+    }
+  },
+{% elif template_type == 'security' %}
+  "security": {
+    "firewall": {
+      "enable": true,
+      "default_action": "drop",
+      "logging": true
+    },
+    "ips": {
+      "enable": true,
+      "signature_update": "auto",
+      "security_level": "connectivity"
+    },
+    "url_filtering": {
+      "enable": true,
+      "block_categories": ["adult", "malware", "phishing", "gambling"],
+      "whitelist": ["meridian-mfg.com", "*.meridian-mfg.com"]
+    }
+  },
+{% elif template_type == 'banner' %}
+  "banner": {
+    "login": "{{ banner_text }}",
+    "motd": "{{ banner_text }}"
+  },
+{% elif template_type == 'system' %}
+  "system": {
+    "domain_name": "{{ domain_name }}",
+    "timezone": "America/Detroit",
+    "ntp": {
+      "servers": [
+        {"address": "{{ dns_primary }}", "key": "{{ ntp_key }}", "version": 4},
+        {"address": "{{ dns_secondary }}", "key": "{{ ntp_key }}", "version": 4}
+      ]
+    },
+    "logging": {
+      "servers": [
+        {"address": "10.4.1.50", "port": 514, "vpn": 1}
+      ],
+      "source_interface": "Loopback0"
+    },
+    "snmp": {
+      "community": "{{ snmp_community }}",
+      "contact": "noc@meridian-mfg.com",
+      "location": "variable",
+      "trap_target": "10.4.1.55"
+    }
+  },
+{% elif template_type == 'aaa' %}
+  "aaa": {
+    "radius": {
+      "servers": [
+        {"address": "10.4.1.30", "auth_port": 1812, "acct_port": 1813, "secret": "R@dius_Sh@red_Mrdn_7x"},
+        {"address": "10.4.1.31", "auth_port": 1812, "acct_port": 1813, "secret": "R@dius_Sh@red_Mrdn_7x"}
+      ],
+      "timeout": 5,
+      "retransmit": 3
+    },
+    "authentication_order": ["radius", "local"],
+    "authorization_order": ["radius", "local"],
+    "accounting": {
+      "enable": true,
+      "method": "radius"
+    }
+  },
+{% endif %}
+  "last_modified": "2025-10-15T09:00:00Z",
+  "version": 2
+}

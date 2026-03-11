@@ -1,0 +1,73 @@
+{
+  "historian_name": "{{ historian_name }}",
+  "historian_type": "{{ historian_type }}",
+{% if historian_type == 'influxdb' %}
+  "influxdb": {
+    "bind_address": "{{ bind_addr }}",
+    "port": {{ port }},
+    "admin_token": "{{ admin_token }}",
+    "organization": "MeridianMfg",
+    "bucket": "{{ database_name }}",
+    "retention": {
+      "days": {{ retention_days }},
+      "shard_group_duration": "7d",
+      "replication_factor": 1
+    },
+    "api": {
+      "token": "{{ api_key }}",
+      "write_endpoint": "/api/v2/write",
+      "query_endpoint": "/api/v2/query"
+    },
+    "storage": {
+      "data_dir": "/var/lib/influxdb/data",
+      "wal_dir": "/var/lib/influxdb/wal",
+      "cache_max_memory_size": "1073741824",
+      "cache_snapshot_memory_size": "26214400",
+      "compact_full_write_cold_duration": "4h"
+    },
+    "subscriptions": [
+      {"name": "plant-telemetry", "type": "mqtt", "topic": "plant/+/telemetry/#"},
+      {"name": "plant-alerts", "type": "mqtt", "topic": "plant/+/alert/#"}
+    ]
+  },
+{% else %}
+  "kepware": {
+    "bind_address": "{{ bind_addr }}",
+    "port": {{ port }},
+    "admin_token": "{{ admin_token }}",
+    "database_name": "{{ database_name }}",
+    "api_key": "{{ api_key }}",
+    "retention": {
+      "days": {{ retention_days }},
+      "archive_enabled": true,
+      "archive_path": "/var/lib/kepware/archive"
+    },
+    "channels": [
+      {
+        "name": "OPC-UA-Channel",
+        "driver": "OPC UA Client",
+        "server_url": "opc.tcp://10.5.0.1:4840",
+        "security_policy": "Basic256Sha256",
+        "update_rate_ms": 1000
+      }
+    ],
+    "tag_groups": [
+      {"name": "{{ database_name }}", "scan_rate_ms": 500, "deadband_percent": 1.0}
+    ],
+    "connectivity": {
+      "rest_api": true,
+      "rest_port": {{ port }},
+      "iot_gateway": {
+        "enabled": true,
+        "mqtt_broker": "10.5.0.50",
+        "mqtt_port": 8883
+      }
+    }
+  },
+{% endif %}
+  "monitoring": {
+    "health_check_url": "http://{{ bind_addr }}:{{ port }}/health",
+    "metrics_endpoint": "/metrics",
+    "alert_email": "plant-ops@meridian-mfg.com"
+  }
+}

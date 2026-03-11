@@ -1,0 +1,58 @@
+# Load Balancer Configuration — dc1-f5-api
+# Meridian Manufacturing — lb-f5-api
+
+name: "dc1-f5-api"
+type: "f5-bigip"
+site: "dc1"
+
+virtual_server:
+  name: "vs-dc1-f5-api"
+  address: "198.51.100.55"
+  port: 443
+  ssl:
+    enabled: true
+    certificate: /etc/ssl/certs/dc1-f5-api.pem
+    key: /etc/ssl/private/dc1-f5-api-key.pem
+    protocols:
+      - TLSv1.2
+      - TLSv1.3
+    ciphers: ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384
+  profiles:
+    - http
+    - tcp-optimized
+    - oneconnect
+
+pool:
+  name: "pool-dc1-f5-api"
+  lb_method: round-robin
+  members:
+    - address: "10.4.1.13"
+      port: 8080
+      state: enabled
+      priority: 1
+    - address: "10.4.1.14"
+      port: 8080
+      state: enabled
+      priority: 1
+
+health_monitor:
+  type: "http"
+  path: "/api/health"
+  interval: 10
+  timeout: 5
+  retries: 3
+  expected_status: 200
+
+persistence:
+  type: "source-ip"
+  timeout: 300
+  mask: 255.255.255.255
+
+irules:
+  - name: redirect-http
+    content: "when HTTP_REQUEST { HTTP::redirect https://[HTTP::host][HTTP::uri] }"
+
+logging:
+  level: info
+  destination: syslog
+  syslog_server: 10.4.1.50

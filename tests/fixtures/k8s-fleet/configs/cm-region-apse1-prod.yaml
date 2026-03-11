@@ -1,0 +1,23 @@
+# Kubernetes ConfigMap — region-apse1 (prod)
+# WavePoint Financial — cm-region-apse1-prod
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: region-apse1
+  namespace: wavepoint-prod
+  labels:
+    app.kubernetes.io/name: region-apse1
+    app.kubernetes.io/instance: region-apse1-prod
+    env: prod
+    team: platform
+    part-of: wavepoint
+  annotations:
+    configmap.kubernetes.io/managed-by: gitops
+    wavepoint.io/change-control: required
+data:
+  AWS_REGION: "ap-southeast-1"
+  AWS_ACCOUNT_ID: "555555555555"
+  VPC_CIDR: "10.30.0.0/16"
+  CLUSTER_NAME: "wavepoint-prod-apse1"
+  SERVICE_MESH: "istio"
+  DATA_RESIDENCY: "apac"

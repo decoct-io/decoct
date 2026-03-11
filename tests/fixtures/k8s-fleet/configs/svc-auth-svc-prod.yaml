@@ -1,0 +1,32 @@
+# Kubernetes Service — auth-svc (prod)
+# WavePoint Financial — svc-auth-svc-prod
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-svc
+  namespace: wavepoint-prod
+  labels:
+    app: auth-svc
+    env: prod
+    team: platform
+    part-of: wavepoint
+  annotations:
+    service.kubernetes.io/topology-aware-hints: auto
+spec:
+  type: ClusterIP
+  selector:
+    app: auth-svc
+    env: prod
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 10800
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8081
+    - name: metrics
+      protocol: TCP
+      port: 9090
+      targetPort: 9090

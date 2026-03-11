@@ -1,0 +1,68 @@
+# Edge Compute Node — safety-monitor-01
+# Meridian Manufacturing — edge-node-safety
+
+node:
+  name: "safety-monitor-01"
+  function: "safety-monitoring"
+  model_version: "v2.3"
+  api_token: "Edge_AP1_Safe1_Ej7"
+
+hardware:
+  gpu: "nvidia-a2"
+  memory_gb: 16
+  storage_gb: 256
+  network:
+    data_interface: eth0
+    management_interface: eth1
+
+inference:
+  interval_ms: 200
+  batch_size: 1
+  precision: fp16
+  models:
+    - name: "ppe-detection"
+      version: "v3.1"
+      input_size: "640x640"
+      path: /opt/models/ppe-detection/v3.1/model.onnx
+      signing_key: "Mdl_S1gn_Mrdn_ppe-_Pk7"
+      warm_up: true
+    - name: "zone-intrusion"
+      version: "v2.2"
+      input_size: "640x640"
+      path: /opt/models/zone-intrusion/v2.2/model.onnx
+      signing_key: "Mdl_S1gn_Mrdn_zone_Pk7"
+      warm_up: true
+
+mqtt:
+  broker: 10.5.0.50
+  port: 8883
+  client_id: "safety-monitor-01"
+  publish_topic: "plant/safety/inference/safety-monitor-01"
+  subscribe_topic: "plant/safety/inference/safety-monitor-01/command"
+  tls: true
+  qos: 1
+
+alerting:
+  enabled: true
+  thresholds:
+    ppe_violation_confidence: 0.75
+    zone_intrusion_confidence: 0.90
+  notification:
+    mqtt_topic: plant/alerts/safety-monitoring
+    severity: critical
+
+telemetry:
+  enabled: true
+  interval_s: 30
+  metrics:
+    - inference_latency_ms
+    - gpu_utilization_percent
+    - gpu_temperature_c
+    - memory_used_mb
+    - model_accuracy
+
+logging:
+  level: info
+  file: /var/log/edge-compute/safety-monitor-01.log
+  max_size_mb: 200
+  rotate: 5

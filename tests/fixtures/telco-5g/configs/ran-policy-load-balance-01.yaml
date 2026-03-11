@@ -1,0 +1,27 @@
+# RAN Policy — load-balance-01
+# SpectrumOne 5G RAN — ran-policy-load-balance-01
+
+policy:
+  name: "load-balance-01"
+  type: "load-balancing"
+  enabled: true
+  priority: 40
+
+parameters:
+  load_threshold_pct: 70
+  target_load_pct: 50
+  evaluation_interval_s: 10
+  hysteresis_pct: 5
+  offload_direction: "least-loaded-neighbor"
+  max_offload_ue_pct: 20
+  min_stay_time_s: 30
+
+scope:
+  applies_to: "all-cells"
+  frequency_scope: "intra-frequency"
+
+
+monitoring:
+  kpi_enabled: true
+  log_decisions: true
+  reporting_interval_s: 15

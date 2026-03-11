@@ -1,0 +1,104 @@
+# Catalyst Switch Configuration — hq control-plane
+# Meridian Manufacturing — catalyst-cp-hq-1
+
+system:
+  hostname: "hq-cp-01"
+  model: "C9500-24Y4C"
+  ios_version: "17.9.4"
+  management_ip: "10.1.10.3"
+  domain_name: meridian-mfg.com
+  enable_secret: "En@bl3_hq_cp1_Zn"
+  service:
+    timestamps_debug: datetime msec localtime
+    timestamps_log: datetime msec localtime
+    password_encryption: true
+
+aaa:
+  authentication:
+    login:
+      default: group radius local
+  authorization:
+    exec:
+      default: group radius local
+  radius:
+    server:
+      - name: ISE-PRIMARY
+        address: 10.4.1.30
+        auth_port: 1812
+        acct_port: 1813
+        key: "R@d1us_hq_Mn7w"
+      - name: ISE-SECONDARY
+        address: 10.4.1.31
+        auth_port: 1812
+        acct_port: 1813
+        key: "R@d1us_hq_Mn7w"
+
+loopback:
+  - id: 0
+    ip: "10.1.255.3/32"
+    description: "Router-ID / RLOC"
+
+vlans:
+  - id: 100
+    name: "Corp-Data"
+  - id: 200
+    name: "Corp-Voice"
+  - id: 300
+    name: "IoT"
+  - id: 400
+    name: "Guest"
+  - id: 999
+    name: "Native"
+
+interfaces:
+  - name: "Te1/0/1"
+    description: "uplink-spine1"
+    mode: trunk
+    trunk_allowed_vlans: all
+    mtu: 9100
+  - name: "Te1/0/2"
+    description: "uplink-spine2"
+    mode: trunk
+    trunk_allowed_vlans: all
+    mtu: 9100
+
+sda_fabric:
+  enabled: true
+  role: "control-plane"
+  lisp:
+    instance_id: 4096
+    eid_table: vrf CAMPUS
+    map_server: true
+    map_resolver: true
+  vxlan:
+    source_interface: Loopback0
+    udp_port: 4789
+  cts:
+    sgt_assignment: true
+    enforcement: true
+
+
+spanning_tree:
+  mode: rapid-pvst
+  priority: 4096
+
+ntp:
+  server:
+    - address: 10.4.1.20
+      prefer: true
+    - address: 10.4.1.21
+
+logging:
+  host:
+    - address: 10.4.1.50
+      transport: udp
+      port: 514
+  trap: informational
+  source_interface: Loopback0
+
+snmp:
+  community:
+    - name: MrdnSNMP_RO_7x
+      access: ro
+  location: "hq-control-plane"
+  contact: noc@meridian-mfg.com

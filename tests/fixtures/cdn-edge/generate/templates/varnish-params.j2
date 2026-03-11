@@ -1,0 +1,52 @@
+# Varnish Cache Parameters — {{ pop }}
+# ArcticCache CDN — {{ filename }}
+
+runtime:
+  cache_size: "{{ cache_size }}"
+  thread_pools: {{ thread_pools }}
+  thread_pool_min: {{ thread_pool_min }}
+  thread_pool_max: {{ thread_pool_max }}
+  workspace_client: "{{ workspace_client }}"
+  workspace_backend: "{{ workspace_backend }}"
+
+backend:
+  host: "{{ backend_host }}"
+  port: {{ backend_port }}
+  probe:
+    url: "{{ probe_url }}"
+    interval: "{{ probe_interval }}"
+    timeout: "2s"
+    window: 5
+    threshold: 3
+
+ttl:
+  default: "{{ ttl_default }}"
+  static_assets: "{{ ttl_static }}"
+  api_responses: "{{ ttl_api }}"
+  grace_period: "{{ grace_period }}"
+
+purge:
+  token: "{{ purge_token }}"
+  acl_networks:
+{% for net in purge_acl_networks.split(';') %}
+    - "{{ net }}"
+{% endfor %}
+
+cache_rules:
+  - pattern: "\\.(jpg|jpeg|png|gif|webp|svg|ico)$"
+    ttl: "{{ ttl_static }}"
+    cache_control: "public, immutable"
+  - pattern: "\\.(css|js|woff2?)$"
+    ttl: "{{ ttl_static }}"
+    cache_control: "public, immutable"
+  - pattern: "^/api/"
+    ttl: "{{ ttl_api }}"
+    cache_control: "private, no-store"
+  - pattern: "^/health$"
+    ttl: "0s"
+    cache_control: "no-cache"
+
+logging:
+  format: "%h %l %u %t \"%r\" %s %b \"%{Referer}i\" \"%{User-agent}i\" %{Varnish:handling}x"
+  syslog_host: "localhost"
+  syslog_port: 514

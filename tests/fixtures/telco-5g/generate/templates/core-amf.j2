@@ -1,0 +1,76 @@
+{
+  "amf_id": "{{ amf_id }}",
+  "amf_name": "{{ amf_name }}",
+  "api_version": "{{ api_version }}",
+
+  "plmn": {
+    "mcc": "{{ mcc }}",
+    "mnc": "{{ mnc }}"
+  },
+
+  "amf_identity": {
+    "region_id": {{ region_id }},
+    "amf_set_id": {{ amf_set_id }},
+    "amf_pointer": {{ amf_pointer }}
+  },
+
+  "tai_list": [
+{% for tac in tai_list %}
+    {
+      "mcc": "{{ mcc }}",
+      "mnc": "{{ mnc }}",
+      "tac": {{ tac }}
+    }{{ "," if not loop.last else "" }}
+{% endfor %}
+  ],
+
+  "capacity": {
+    "max_ue": {{ capacity }},
+    "max_pdu_sessions": {{ capacity|int * 4 }},
+    "relative_capacity": {% if nf_status == 'active' %}100{% else %}50{% endif %}
+  },
+
+  "nf_profile": {
+    "nf_status": "{{ nf_status }}",
+    "nf_type": "AMF",
+    "heartbeat_timer_s": 10,
+    "nf_services": [
+      "namf-comm",
+      "namf-evts",
+      "namf-mt",
+      "namf-loc"
+    ]
+  },
+
+  "n1n2": {
+    "nas_security": {
+      "integrity_order": ["NIA2", "NIA1"],
+      "ciphering_order": ["NEA2", "NEA1", "NEA0"]
+    },
+    "t3512_timer_s": 3600,
+    "t3502_timer_s": 720,
+    "non_3gpp_deregistration_timer_s": 3240
+  },
+
+  "guami": {
+    "mcc": "{{ mcc }}",
+    "mnc": "{{ mnc }}",
+    "region_id": {{ region_id }},
+    "amf_set_id": {{ amf_set_id }},
+    "amf_pointer": {{ amf_pointer }}
+  },
+
+  "management": {
+    "oam_password": "{{ oam_password }}",
+    "oam_port": 443,
+    "oam_protocol": "rest-api",
+    "logging_level": "info",
+    "audit_logging": true
+  },
+
+  "monitoring": {
+    "kpi_reporting_interval_s": 15,
+    "alarm_severity_filter": "warning",
+    "pm_counters_enabled": true
+  }
+}

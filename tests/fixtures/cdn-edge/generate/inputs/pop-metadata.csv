@@ -1,0 +1,9 @@
+filename,pop,city,country,region,tier,latitude,longitude,bandwidth_gbps,rack_units,upstream_pop,peering_exchanges,api_mgmt_token,status
+pop-metadata-ams,ams,Amsterdam,NL,eu,primary,52.3676,4.9041,100,42,fra,AMS-IX;NL-ix,api_mgmt_ams_Kx9mPqR7,active
+pop-metadata-fra,fra,Frankfurt,DE,eu,primary,50.1109,8.6821,100,42,ams,DE-CIX;ECIX,api_mgmt_fra_Wx5jT8hK,active
+pop-metadata-lhr,lhr,London,GB,eu,secondary,51.5074,-0.1278,40,24,fra,LINX;LONAP,api_mgmt_lhr_Mn4wQ8jR,active
+pop-metadata-iad,iad,Ashburn,US,na,primary,39.0438,-77.4874,100,42,sjc,Equinix-DC;NOTA,api_mgmt_iad_Yp6cD4gA,active
+pop-metadata-sjc,sjc,San Jose,US,na,primary,37.3382,-121.8863,100,42,iad,Equinix-SV;SFMIX,api_mgmt_sjc_Hf7gB2kL,active
+pop-metadata-nrt,nrt,Tokyo,JP,apac,primary,35.6762,139.6503,100,42,sin,JPIX;JPNAP,api_mgmt_nrt_Pq3rS7vW,active
+pop-metadata-syd,syd,Sydney,AU,apac,secondary,33.8688,151.2093,40,24,sin,IX-Australia;MegaIX,api_mgmt_syd_Jk5mNx8w,active
+pop-metadata-sin,sin,Singapore,SG,apac,primary,1.3521,103.8198,100,42,nrt,Equinix-SG;SGIX,api_mgmt_sin_Vt6wXy9z,active

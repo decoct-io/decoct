@@ -1,0 +1,28 @@
+{
+  "pop": "sin",
+  "city": "Singapore",
+  "country": "SG",
+  "region": "apac",
+  "tier": "primary",
+  "status": "active",
+  "location": {
+    "latitude": 1.3521,
+    "longitude": 103.8198
+  },
+  "capacity": {
+    "bandwidth_gbps": 100,
+    "rack_units": 42
+  },
+  "network": {
+    "upstream_pop": "nrt",
+    "peering_exchanges": [
+      "Equinix-SG",
+      "SGIX"
+    ]
+  },
+  "management": {
+    "api_token": "api_mgmt_sin_Vt6wXy9z",
+    "monitoring_url": "https://mon.arcticcache.net/pop/sin",
+    "dashboard_url": "https://dash.arcticcache.net/pop/sin"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "profile_name": "wildfire-analysis",
+  "profile_type": "wildfire",
+  "description": "WildFire sandbox analysis profile",
+  "wildfire": {
+    "rules": [
+      {
+        "name": "forward-all",
+        "application": "any",
+        "file_type": [
+          "pe",
+          "apk",
+          "pdf",
+          "ms-office",
+          "jar",
+          "flash",
+          "macos",
+          "linux"
+        ],
+        "direction": "both",
+        "analysis": "public-cloud"
+      }
+    ],
+    "schedule": {
+      "recurring": "every-minute"
+    }
+  },
+  "last_modified": "2025-11-01T08:00:00Z"
+}

@@ -1,0 +1,41 @@
+# Site Metadata — spare-03
+# SpectrumOne 5G RAN — site-spare-03
+
+operator:
+  name: "SpectrumOne"
+  plmn:
+    mcc: "310"
+    mnc: "260"
+  region: "metro-north"
+
+site:
+  site_id: "spare-03"
+  type: "spare"
+  address: "Warehouse Rack C"
+  contact_phone: "555-0903"
+
+location:
+  latitude: 0.0000
+  longitude: 0.0000
+  altitude_m: 0
+
+infrastructure:
+  power_source: "none"
+  shelter_class: "warehouse"
+  access_type: "warehouse"
+  antenna_height_m: 0
+  backhaul_type: "none"
+
+environmental:
+  temperature_range_c: "5 to 40"
+  wind_rating_kmh: 0
+
+security:
+  access_code: "access_sp03_Uv2w"
+  alarm_system: false
+
+maintenance:
+  last_inspection: "none"
+  next_inspection: "none"
+  maintenance_window: "none"
+  emergency_contact: "555-0903"

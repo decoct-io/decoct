@@ -1,0 +1,65 @@
+# Prometheus Configuration — {{ pop }}
+# ArcticCache CDN — {{ filename }}
+
+global:
+  scrape_interval: {{ scrape_interval }}
+  scrape_timeout: {{ scrape_timeout }}
+  evaluation_interval: {{ evaluation_interval }}
+  external_labels:
+    pop: {{ pop }}
+    provider: arcticcache
+
+rule_files:
+  - /etc/prometheus/rules/alerts.yaml
+  - /etc/prometheus/rules/recording.yaml
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - localhost:9093
+      scheme: http
+      timeout: 10s
+
+scrape_configs:
+  - job_name: prometheus
+    scrape_interval: {{ scrape_interval }}
+    static_configs:
+      - targets:
+          - localhost:9090
+
+{% for target in scrape_targets %}
+{% set parts = target.split(':') %}
+  - job_name: {{ parts[0] }}
+    scrape_interval: {{ scrape_interval }}
+    scrape_timeout: {{ scrape_timeout }}
+    metrics_path: /metrics
+    scheme: http
+    static_configs:
+      - targets:
+          - "{{ parts[1] }}:{{ parts[2] }}"
+        labels:
+          pop: {{ pop }}
+          service: {{ parts[0] }}
+
+{% endfor %}
+{% if remote_write_url != 'none' %}
+remote_write:
+  - url: {{ remote_write_url }}
+    remote_timeout: 30s
+    authorization:
+      type: Bearer
+      credentials: {{ remote_write_token }}
+    queue_config:
+      capacity: 10000
+      max_shards: 50
+      min_shards: 1
+      max_samples_per_send: 2000
+      batch_send_deadline: 5s
+{% endif %}
+
+# Alert thresholds
+# cpu_threshold: {{ alert_cpu_threshold }}
+# cache_hit_threshold: {{ alert_cache_hit_threshold }}
+# latency_threshold_ms: {{ alert_latency_threshold_ms }}
+# retention_days: {{ retention_days }}

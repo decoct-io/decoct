@@ -1,0 +1,32 @@
+# sysctl.conf — {{ role }}
+# Meridian Manufacturing — {{ filename }}
+
+# ── Virtual Memory ────────────────────────────────────────────────────────────
+vm.swappiness = {{ vm_swappiness }}
+vm.dirty_ratio = {{ vm_dirty_ratio }}
+vm.dirty_background_ratio = {{ vm_dirty_bg_ratio }}
+vm.overcommit_memory = 0
+{% if vm_hugepages != '0' %}
+vm.nr_hugepages = {{ vm_hugepages }}
+{% endif %}
+
+# ── Network Core ──────────────────────────────────────────────────────────────
+net.core.somaxconn = {{ net_somaxconn }}
+net.core.netdev_max_backlog = {{ net_backlog }}
+
+# ── TCP/IP ────────────────────────────────────────────────────────────────────
+net.ipv4.tcp_max_syn_backlog = {{ tcp_max_syn }}
+net.ipv4.ip_local_port_range = 1024 65535
+net.ipv4.tcp_fin_timeout = {{ tcp_fin_timeout }}
+net.ipv4.tcp_keepalive_time = {{ tcp_keepalive }}
+net.ipv4.tcp_tw_reuse = {{ tcp_tw_reuse }}
+net.ipv4.tcp_syncookies = 1
+net.ipv4.tcp_rmem = 4096 87380 16777216
+net.ipv4.tcp_wmem = 4096 65536 16777216
+
+# ── File System ───────────────────────────────────────────────────────────────
+fs.file-max = {{ fs_file_max }}
+fs.inotify.max_user_watches = 524288
+
+# ── Kernel ────────────────────────────────────────────────────────────────────
+kernel.pid_max = {{ kernel_pid_max }}

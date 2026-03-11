@@ -1,0 +1,23 @@
+# Kubernetes ConfigMap — logging-config (staging)
+# WavePoint Financial — cm-logging-config-staging
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: logging-config
+  namespace: wavepoint-staging
+  labels:
+    app.kubernetes.io/name: logging-config
+    app.kubernetes.io/instance: logging-config-staging
+    env: staging
+    team: platform
+    part-of: wavepoint
+  annotations:
+    configmap.kubernetes.io/managed-by: gitops
+data:
+  ROOT_LEVEL: "INFO"
+  APP_LEVEL: "INFO"
+  SQL_LEVEL: "WARN"
+  HTTP_LEVEL: "INFO"
+  OUTPUT: "stdout"
+  MAX_SIZE: "50m"
+  MAX_BACKUPS: "5"

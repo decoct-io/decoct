@@ -1,0 +1,5 @@
+filename,site,hostname,mgmt_ip,model,firmware,mgmt_password,ap_join_passphrase,ssid_corp,ssid_guest,ssid_iot,rf_profile,max_clients
+wlc-hq,hq,hq-wlc-01,10.1.10.50,C9800-40,17.9.4,WLC_@dm1n_hq_Pk7,AP_J01n_hq_Mn4wQ,MERIDIAN-CORP,MERIDIAN-GUEST,MERIDIAN-IOT,high-density,2000
+wlc-bra,bra,bra-wlc-01,10.2.10.50,C9800-L,17.9.4,WLC_@dm1n_bra_Lm9,AP_J01n_bra_Qx4rS,MERIDIAN-CORP,MERIDIAN-GUEST,none,standard,500
+wlc-brb,brb,brb-wlc-01,10.3.10.50,C9800-L,17.3.7,WLC_@dm1n_brb_Vt6,AP_J01n_brb_Hy4zA,MERIDIAN-CORP,MERIDIAN-GUEST,none,standard,500
+wlc-fac,fac,fac-wlc-01,10.5.10.50,C9800-40,17.9.4,WLC_@dm1n_fac_Bx5,AP_J01n_fac_Ej7fG,MERIDIAN-PLANT,none,MERIDIAN-IOT,industrial,300

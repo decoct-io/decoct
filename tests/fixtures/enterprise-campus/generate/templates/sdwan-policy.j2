@@ -1,0 +1,85 @@
+{
+  "policy_name": "{{ policy_name }}",
+  "policy_type": "{{ policy_type }}",
+  "description": "{{ description }}",
+  "organization": "MeridianMfg",
+{% if policy_type == 'app-route' %}
+  "app_route": {
+    "app_list": [
+{% for app in app_list.split(';') %}
+{% if app != 'none' %}
+      "{{ app }}"{{ "," if not loop.last else "" }}
+{% endif %}
+{% endfor %}
+    ],
+    "sla_class": {
+      "name": "{{ sla_class }}",
+      "latency_ms": 100,
+      "loss_percent": 1,
+      "jitter_ms": 20
+    },
+    "preferred_color": "{{ preferred_color }}",
+    "backup_color": "{{ backup_color }}"
+  },
+{% elif policy_type == 'qos' %}
+  "qos_map": {
+    "queues": [
+      {"queue": 0, "bandwidth": 10, "dscp": [0], "class": "best-effort"},
+      {"queue": 1, "bandwidth": 20, "dscp": [10, 12, 14], "class": "bulk-data"},
+      {"queue": 2, "bandwidth": 25, "dscp": [18, 20, 22], "class": "interactive"},
+      {"queue": 3, "bandwidth": 15, "dscp": [26, 28, 30], "class": "streaming-video"},
+      {"queue": 4, "bandwidth": 10, "dscp": [34], "class": "call-signaling"},
+      {"queue": 5, "bandwidth": 10, "dscp": [46], "class": "voice"},
+      {"queue": 6, "bandwidth": 5, "dscp": [48], "class": "network-control"},
+      {"queue": 7, "bandwidth": 5, "dscp": [56], "class": "network-management"}
+    ],
+    "scheduling": "wrr",
+    "queue_limit": {{ queue_limit }}
+  },
+{% elif policy_type == 'data' %}
+  "data_policy": {
+    "vpn_list": ["corp-vpn"],
+    "sequence": [
+{% for app in app_list.split(';') %}
+{% if app != 'none' and app != 'any' %}
+      {
+        "sequence_number": {{ loop.index * 10 }},
+        "match": {"app_list": "{{ app }}"},
+        "action": {"accept": true, "set": {"next_hop": "{{ preferred_color }}"}}
+      }{{ "," if not loop.last else "" }}
+{% elif app == 'any' %}
+      {
+        "sequence_number": {{ loop.index * 10 }},
+        "match": {"source_ip": "0.0.0.0/0"},
+        "action": {"accept": true}
+      }
+{% endif %}
+{% endfor %}
+    ]
+  },
+{% elif policy_type == 'cflowd' %}
+  "cflowd": {
+    "collector": {
+      "address": "10.4.1.55",
+      "port": 9995,
+      "vpn": 1,
+      "source_interface": "Loopback0"
+    },
+    "template_refresh": 600,
+    "flow_active_timeout": 60,
+    "flow_inactive_timeout": 10
+  },
+{% elif policy_type == 'acl' %}
+  "access_list": {
+    "name": "{{ policy_name }}",
+    "entries": [
+      {"sequence": 10, "action": "deny", "source": "10.0.0.0/8", "destination": "any"},
+      {"sequence": 20, "action": "deny", "source": "172.16.0.0/12", "destination": "any"},
+      {"sequence": 30, "action": "deny", "source": "192.168.0.0/16", "destination": "any"},
+      {"sequence": 100, "action": "permit", "source": "any", "destination": "any"}
+    ]
+  },
+{% endif %}
+  "last_modified": "2025-11-20T14:30:00Z",
+  "version": 3
+}

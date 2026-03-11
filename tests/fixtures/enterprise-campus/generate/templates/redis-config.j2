@@ -1,0 +1,59 @@
+# Redis Configuration — {{ role }}
+# Meridian Manufacturing — {{ filename }}
+
+bind {{ bind_addr }}
+port {{ port }}
+requirepass {{ requirepass }}
+{% if masterauth != 'none' %}
+masterauth {{ masterauth }}
+{% endif %}
+
+# ── Memory ────────────────────────────────────────────────────────────────────
+maxmemory {{ maxmemory }}
+maxmemory-policy {{ maxmemory_policy }}
+
+{% if role == 'master' %}
+# ── Persistence (Master) ─────────────────────────────────────────────────────
+{% if 'rdb' in persistence %}
+save 900 1
+save 300 10
+save 60 10000
+dbfilename dump.rdb
+dir /var/lib/redis
+{% endif %}
+{% if 'aof' in persistence %}
+appendonly yes
+appendfilename "appendonly.aof"
+appendfsync everysec
+auto-aof-rewrite-percentage 100
+auto-aof-rewrite-min-size 64mb
+{% endif %}
+{% elif role == 'replica' %}
+# ── Replication ───────────────────────────────────────────────────────────────
+replicaof 10.4.1.40 6379
+replica-read-only yes
+{% if 'rdb' in persistence %}
+save 900 1
+save 300 10
+dbfilename dump.rdb
+dir /var/lib/redis
+{% endif %}
+{% elif role == 'sentinel' %}
+# ── Sentinel ──────────────────────────────────────────────────────────────────
+sentinel monitor meridian-master 10.4.1.40 6379 2
+sentinel auth-pass meridian-master {{ requirepass }}
+sentinel down-after-milliseconds meridian-master 5000
+sentinel failover-timeout meridian-master 60000
+sentinel parallel-syncs meridian-master 1
+{% endif %}
+
+# ── Network ───────────────────────────────────────────────────────────────────
+tcp-backlog 511
+timeout 300
+tcp-keepalive 300
+
+# ── Logging ───────────────────────────────────────────────────────────────────
+loglevel notice
+logfile /var/log/redis/redis-server.log
+syslog-enabled yes
+syslog-ident redis-{{ role }}

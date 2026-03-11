@@ -1,0 +1,29 @@
+# Kubernetes Service — ledger-svc (staging)
+# WavePoint Financial — svc-ledger-svc-staging
+apiVersion: v1
+kind: Service
+metadata:
+  name: ledger-svc
+  namespace: wavepoint-staging
+  labels:
+    app: ledger-svc
+    env: staging
+    team: platform
+    part-of: wavepoint
+  annotations:
+    service.kubernetes.io/topology-aware-hints: auto
+spec:
+  type: ClusterIP
+  selector:
+    app: ledger-svc
+    env: staging
+  sessionAffinity: None
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8082
+    - name: metrics
+      protocol: TCP
+      port: 9090
+      targetPort: 9090

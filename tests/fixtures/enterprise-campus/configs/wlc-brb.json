@@ -1,0 +1,95 @@
+{
+  "hostname": "brb-wlc-01",
+  "site": "brb",
+  "model": "C9800-L",
+  "firmware_version": "17.3.7",
+  "management": {
+    "ip_address": "10.3.10.50",
+    "subnet_mask": "255.255.255.0",
+    "password": "WLC_@dm1n_brb_Vt6",
+    "ssh_enabled": true,
+    "telnet_enabled": false,
+    "http_enabled": false,
+    "https_enabled": true
+  },
+  "ap_provisioning": {
+    "join_passphrase": "AP_J01n_brb_Hy4zA",
+    "discovery_method": "dns",
+    "capwap_mode": "split-mac",
+    "country_code": "US"
+  },
+  "wlan_profiles": [
+    {
+      "wlan_id": 1,
+      "ssid": "MERIDIAN-CORP",
+      "security": "wpa3-enterprise",
+      "authentication": "dot1x",
+      "radius_server_group": "ISE-SERVERS",
+      "vlan_id": 100,
+      "qos_policy": "platinum",
+      "band_select": true,
+      "client_exclusion": true,
+      "max_clients_per_ap": 50
+    },
+    {
+      "wlan_id": 2,
+      "ssid": "MERIDIAN-GUEST",
+      "security": "wpa2-psk",
+      "psk": "Gu3st_W1f1_Mrdn",
+      "vlan_id": 400,
+      "qos_policy": "bronze",
+      "band_select": false,
+      "client_exclusion": true,
+      "max_clients_per_ap": 25,
+      "captive_portal": {
+        "enabled": true,
+        "redirect_url": "https://wifi.meridian-mfg.com/guest"
+      }
+    }
+  ],
+  "rf_profile": {
+    "name": "standard",
+    "band_5ghz": {
+      "channel_width": 40,
+      "channels": [
+        36,
+        40,
+        44,
+        48,
+        149,
+        153,
+        157,
+        161
+      ],
+      "tx_power_min": 8,
+      "tx_power_max": 17,
+      "dca_enabled": true,
+      "tpc_enabled": true
+    },
+    "band_24ghz": {
+      "channel_width": 20,
+      "channels": [
+        1,
+        6,
+        11
+      ],
+      "tx_power_min": 5,
+      "tx_power_max": 14,
+      "dca_enabled": true,
+      "tpc_enabled": true
+    }
+  },
+  "radius_servers": [
+    {
+      "address": "10.4.1.30",
+      "port": 1812,
+      "shared_secret": "R@d1us_WLC_Mrdn_9k"
+    },
+    {
+      "address": "10.4.1.31",
+      "port": 1812,
+      "shared_secret": "R@d1us_WLC_Mrdn_9k"
+    }
+  ],
+  "max_clients": 500
+}

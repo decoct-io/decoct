@@ -1,0 +1,57 @@
+{
+  "hostname": "monitor-server-01",
+  "vendor": "hpe",
+  "model": "ProLiant-DL360",
+  "rack": "r05",
+  "management": {
+    "ip_address": "10.4.9.18",
+    "subnet_mask": "255.255.255.0",
+    "gateway": "10.4.9.1",
+    "interface": "iLO5",
+    "username": "Administrator",
+    "password": "iLO_@dm_mon1_Jk5",
+    "ipmi_over_lan": true,
+    "virtual_console": "html5",
+    "ssh_enabled": true
+  },
+  "firmware_version": "2.72",
+  "snmp": {
+    "community": "MrdnSNMP_bmc_RO",
+    "trap_destination": "10.4.1.55",
+    "version": "v2c"
+  },
+  "power": {
+    "policy": "optimal",
+    "cap_watts": 350,
+    "redundancy": "redundant"
+  },
+  "thermal": {
+    "fan_policy": "optimal",
+    "exhaust_temp_max_c": 65,
+    "inlet_temp_max_c": 40
+  },
+  "alerts": {
+    "email": "noc@meridian-mfg.com",
+    "smtp_server": "smtp.meridian-mfg.com",
+    "smtp_port": 587,
+    "severity_filter": [
+      "critical",
+      "warning"
+    ],
+    "snmp_traps": true
+  },
+  "storage": {
+    "controller": "Smart-Array-P816i",
+    "raid_level": "RAID10",
+    "write_policy": "write-back",
+    "read_policy": "ahead"
+  },
+  "network_boot": {
+    "pxe_enabled": true,
+    "boot_order": [
+      "hdd",
+      "pxe",
+      "cdrom"
+    ]
+  }
+}

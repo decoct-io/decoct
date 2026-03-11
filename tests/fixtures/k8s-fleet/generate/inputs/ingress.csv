@@ -1,0 +1,16 @@
+filename,name,env,namespace,ingress_class,cluster_issuer,ssl_redirect,rate_limit_rps,host,tls_secret,paths
+ingress-gateway-dev,gateway,dev,wavepoint-dev,nginx,,false,,gateway.dev.wavepoint.internal,dev-tls-secret,/api/*=gateway-api:80;/auth/*=auth-svc:80
+ingress-gateway-staging,gateway,staging,wavepoint-staging,nginx,letsencrypt-staging,true,50,gateway.staging.wavepoint.io,staging-tls-secret,/api/*=gateway-api:80;/auth/*=auth-svc:80
+ingress-gateway-prod,gateway,prod,wavepoint-prod,nginx,letsencrypt-prod,true,100,api.wavepoint.io,prod-tls-secret,/api/*=gateway-api:80;/auth/*=auth-svc:80
+ingress-payment-dev,payment,dev,wavepoint-dev,nginx,,false,,payment.dev.wavepoint.internal,dev-tls-secret,/v1/*=payment-api:80;/webhooks/*=payment-api:80
+ingress-payment-staging,payment,staging,wavepoint-staging,nginx,letsencrypt-staging,true,50,payment.staging.wavepoint.io,staging-tls-secret,/v1/*=payment-api:80;/webhooks/*=payment-api:80
+ingress-payment-prod,payment,prod,wavepoint-prod,nginx,letsencrypt-prod,true,200,payment.wavepoint.io,prod-tls-secret,/v1/*=payment-api:80;/webhooks/*=payment-api:80
+ingress-reporting-dev,reporting,dev,wavepoint-dev,nginx,,false,,reporting.dev.wavepoint.internal,dev-tls-secret,/reports/*=reporting-svc:80
+ingress-reporting-staging,reporting,staging,wavepoint-staging,nginx,letsencrypt-staging,true,20,reporting.staging.wavepoint.io,staging-tls-secret,/reports/*=reporting-svc:80
+ingress-reporting-prod,reporting,prod,wavepoint-prod,nginx,letsencrypt-prod,true,50,reporting.wavepoint.io,prod-tls-secret,/reports/*=reporting-svc:80
+ingress-healthcheck-dev,healthcheck,dev,wavepoint-dev,nginx,,false,,health.dev.wavepoint.internal,dev-tls-secret,/status/*=healthcheck-api:80
+ingress-healthcheck-staging,healthcheck,staging,wavepoint-staging,nginx,letsencrypt-staging,true,,health.staging.wavepoint.io,staging-tls-secret,/status/*=healthcheck-api:80
+ingress-healthcheck-prod,healthcheck,prod,wavepoint-prod,nginx,letsencrypt-prod,true,,health.wavepoint.io,prod-tls-secret,/status/*=healthcheck-api:80
+ingress-admin-dev,admin,dev,wavepoint-dev,nginx,,false,,admin.dev.wavepoint.internal,dev-tls-secret,/admin/*=gateway-api:80;/dashboard/*=reporting-svc:80
+ingress-admin-staging,admin,staging,wavepoint-staging,nginx,letsencrypt-staging,true,30,admin.staging.wavepoint.io,staging-tls-secret,/admin/*=gateway-api:80;/dashboard/*=reporting-svc:80
+ingress-admin-prod,admin,prod,wavepoint-prod,nginx,letsencrypt-prod,true,30,admin.wavepoint.io,prod-tls-secret,/admin/*=gateway-api:80;/dashboard/*=reporting-svc:80

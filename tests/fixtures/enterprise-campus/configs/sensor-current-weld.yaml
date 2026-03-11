@@ -1,0 +1,47 @@
+# Sensor Network Configuration — current (weld-cells)
+# Meridian Manufacturing — sensor-current-weld
+
+sensor_type: "current"
+zone: "weld-cells"
+sensor_count: 2
+
+sampling:
+  rate_hz: 500
+  resolution_bits: 16
+  buffer_size: 1024
+  batch_transmit: true
+  batch_interval_ms: 500
+
+communication:
+  protocol: "mqtt"
+  gateway: "10.5.1.202"
+  mqtt_topic: "plant/weld-cells/current"
+  qos: 1
+
+sensors:
+  - id: "curr-weld-01"
+    measurement: "arc-primary"
+    enabled: true
+    unit: A
+    range_min: 0.0
+    range_max: 500.0
+    alarm_threshold: 400.0
+    warning_threshold: 350.0
+  - id: "curr-weld-02"
+    measurement: "arc-secondary"
+    enabled: true
+    unit: A
+    range_min: 0.0
+    range_max: 500.0
+    alarm_threshold: 400.0
+    warning_threshold: 350.0
+
+calibration:
+  interval_days: 90
+  last_calibrated: "2025-09-15"
+  certificate: /etc/sensors/cal/current-weld-cells.pdf
+
+diagnostics:
+  self_test_interval_s: 3600
+  health_topic: "plant/weld-cells/current/health"
+  battery_monitoring: false

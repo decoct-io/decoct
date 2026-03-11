@@ -1,0 +1,9 @@
+filename,role,vm_swappiness,vm_dirty_ratio,vm_dirty_bg_ratio,net_somaxconn,net_backlog,tcp_max_syn,tcp_fin_timeout,tcp_keepalive,tcp_tw_reuse,fs_file_max,kernel_pid_max,vm_hugepages
+sysctl-db-primary,database,5,40,10,65535,5000,4096,10,600,1,2097152,131072,2048
+sysctl-db-replica,database,5,40,10,65535,5000,4096,10,600,1,2097152,131072,2048
+sysctl-app-01,application,30,20,10,32768,1000,2048,30,7200,1,1048576,65536,0
+sysctl-app-02,application,30,20,10,32768,1000,2048,30,7200,1,1048576,65536,0
+sysctl-web-01,webserver,10,20,5,65535,5000,4096,10,300,1,2097152,131072,0
+sysctl-web-02,webserver,10,20,5,65535,5000,4096,10,300,1,2097152,131072,0
+sysctl-storage-01,storage,5,80,20,65535,5000,4096,10,600,1,2097152,131072,4096
+sysctl-monitor-01,monitoring,60,20,10,4096,1000,512,60,7200,0,524288,32768,0

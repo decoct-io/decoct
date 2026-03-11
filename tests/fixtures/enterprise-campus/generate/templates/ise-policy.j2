@@ -1,0 +1,84 @@
+{
+  "policy_name": "{{ policy_name }}",
+  "description": "{{ description }}",
+  "enabled": true,
+  "authentication": {
+    "method": "{{ auth_method }}",
+{% if auth_method == 'dot1x' %}
+    "eap_type": "PEAP-MSCHAPv2",
+    "identity_store": "Active-Directory",
+    "fallback": "mab"
+{% elif auth_method == 'mab' %}
+    "identity_store": "Internal-Endpoints",
+    "mac_format": "xxxx.xxxx.xxxx",
+    "fallback": "none"
+{% elif auth_method == 'webauth' %}
+    "portal_name": "Guest-Portal",
+    "redirect_acl": "GUEST-REDIRECT",
+    "identity_store": "Guest-Users"
+{% elif auth_method == 'tacacs' %}
+    "protocol": "tacacs+",
+    "identity_store": "Active-Directory",
+    "shell_profile": "admin-full"
+{% endif %}
+  },
+  "authorization": {
+    "profile": "{{ authz_profile }}",
+    "sgt": {
+      "tag": {{ sgt_tag }},
+      "name": "{{ sgt_name }}"
+    },
+    "conditions": [
+{% for cond in conditions.split(';') %}
+{% set parts = cond.split(':') %}
+      {
+        "attribute": "{{ parts[0] }}",
+        "value": "{{ parts[1] }}"
+      }{{ "," if not loop.last else "" }}
+{% endfor %}
+    ],
+    "dacl": {
+{% if 'Corp' in policy_name %}
+      "name": "PERMIT-ALL",
+      "rules": [
+        {"action": "permit", "protocol": "ip", "source": "any", "destination": "any"}
+      ]
+{% elif 'IoT' in policy_name %}
+      "name": "IOT-RESTRICTED",
+      "rules": [
+        {"action": "permit", "protocol": "tcp", "source": "any", "destination": "10.4.1.0/24", "port": 8883},
+        {"action": "permit", "protocol": "udp", "source": "any", "destination": "10.4.1.10/32", "port": 53},
+        {"action": "deny", "protocol": "ip", "source": "any", "destination": "any"}
+      ]
+{% elif 'Guest' in policy_name %}
+      "name": "GUEST-LIMITED",
+      "rules": [
+        {"action": "permit", "protocol": "tcp", "source": "any", "destination": "any", "port": "80,443"},
+        {"action": "permit", "protocol": "udp", "source": "any", "destination": "any", "port": 53},
+        {"action": "deny", "protocol": "ip", "source": "any", "destination": "10.0.0.0/8"}
+      ]
+{% elif 'OT' in policy_name %}
+      "name": "OT-SEGMENTED",
+      "rules": [
+        {"action": "permit", "protocol": "tcp", "source": "any", "destination": "10.5.0.0/16", "port": "502,44818,4840"},
+        {"action": "permit", "protocol": "udp", "source": "any", "destination": "10.5.0.0/16", "port": "2222,34964"},
+        {"action": "deny", "protocol": "ip", "source": "any", "destination": "any"}
+      ]
+{% else %}
+      "name": "DEFAULT-DENY",
+      "rules": [
+        {"action": "deny", "protocol": "ip", "source": "any", "destination": "any"}
+      ]
+{% endif %}
+    }
+  },
+  "tacacs": {
+    "shared_key": "{{ tacacs_key }}",
+    "servers": [
+      {"address": "10.4.1.30", "port": 49},
+      {"address": "10.4.1.31", "port": 49}
+    ]
+  },
+  "api_token": "ISE_AP1_Tk_Mrdn_Xr7mNpQ2",
+  "version": "3.2"
+}

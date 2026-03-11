@@ -1,0 +1,37 @@
+{
+  "profile_name": "url-filtering-base",
+  "profile_type": "url-filtering",
+  "description": "Base URL filtering profile for corporate",
+  "url_filtering": {
+    "action_block": [
+      "adult",
+      "malware",
+      "phishing",
+      "command-and-control",
+      "grayware",
+      "hacking",
+      "proxy-avoidance",
+      "gambling",
+      "peer-to-peer",
+      "questionable"
+    ],
+    "action_alert": [
+      "social-networking",
+      "streaming-media",
+      "web-based-email",
+      "personal-sites-and-blogs"
+    ],
+    "action_allow": [
+      "business-and-economy",
+      "education",
+      "government",
+      "health-and-medicine",
+      "search-engines"
+    ],
+    "credential_detection": true,
+    "http_header_logging": true,
+    "safe_search": true,
+    "log_container_page_only": false
+  },
+  "last_modified": "2025-11-01T08:00:00Z"
+}

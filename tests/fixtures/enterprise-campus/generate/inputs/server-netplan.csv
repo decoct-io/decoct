@@ -1,0 +1,9 @@
+filename,hostname,bond_ip,bond_slaves,vlan_ids,mtu,dns_servers,dns_search,gateway,bonds,vlans
+netplan-db-primary,db-primary,10.4.1.11/24,eno1;eno2,100;300,9000,10.4.1.10;10.4.1.11,meridian-mfg.com,10.4.1.1,bond0:eno1+eno2:802.3ad,vlan100:10.4.1.11/24;vlan300:10.4.3.11/24
+netplan-db-replica,db-replica,10.4.1.12/24,eno1;eno2,100;300,9000,10.4.1.10;10.4.1.11,meridian-mfg.com,10.4.1.1,bond0:eno1+eno2:802.3ad,vlan100:10.4.1.12/24;vlan300:10.4.3.12/24
+netplan-app-01,app-server-01,10.4.1.13/24,eno1;eno2,100,9000,10.4.1.10;10.4.1.11,meridian-mfg.com,10.4.1.1,bond0:eno1+eno2:802.3ad,vlan100:10.4.1.13/24
+netplan-app-02,app-server-02,10.4.1.14/24,eno1;eno2,100,9000,10.4.1.10;10.4.1.11,meridian-mfg.com,10.4.1.1,bond0:eno1+eno2:802.3ad,vlan100:10.4.1.14/24
+netplan-web-01,web-server-01,10.4.2.15/24,eno1;eno2,100;600,1500,10.4.1.10;10.4.1.11,meridian-mfg.com,10.4.2.1,bond0:eno1+eno2:802.3ad,vlan100:10.4.1.15/24;vlan600:10.4.2.15/24
+netplan-web-02,web-server-02,10.4.2.16/24,eno1;eno2,100;600,1500,10.4.1.10;10.4.1.11,meridian-mfg.com,10.4.2.1,bond0:eno1+eno2:802.3ad,vlan100:10.4.1.16/24;vlan600:10.4.2.16/24
+netplan-storage-01,storage-node-01,10.4.3.17/24,eno1;eno2;eno3;eno4,100;300,9000,10.4.1.10;10.4.1.11,meridian-mfg.com,10.4.3.1,bond0:eno1+eno2:802.3ad;bond1:eno3+eno4:802.3ad,vlan100:10.4.1.17/24;vlan300:10.4.3.17/24
+netplan-monitor-01,monitor-server-01,10.4.1.18/24,eno1;eno2,100,9000,10.4.1.10;10.4.1.11,meridian-mfg.com,10.4.1.1,bond0:eno1+eno2:802.3ad,vlan100:10.4.1.18/24

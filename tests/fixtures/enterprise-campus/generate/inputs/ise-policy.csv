@@ -1,0 +1,7 @@
+filename,policy_name,description,auth_method,sgt_tag,sgt_name,authz_profile,conditions,tacacs_key
+ise-policy-dot1x-corp,Dot1X-Corporate,802.1X for corporate wired and wireless,dot1x,10,Corp_Users,PermitAccess,AD-Group:Corp-Users;Device-Type:Workstation,T@c@cs_Mrdn_Pk7mN
+ise-policy-mab-iot,MAB-IoT-Devices,MAC auth bypass for IoT devices,mab,30,IoT_Devices,IoT-Limited,OUI:vendor-list;Location:any,T@c@cs_Mrdn_Pk7mN
+ise-policy-guest,Guest-Portal,Guest captive portal authentication,webauth,40,Guest_Users,GuestAccess,Portal:Guest-Portal;Time:business-hours,T@c@cs_Mrdn_Pk7mN
+ise-policy-byod,BYOD-Onboarding,Bring your own device registration,dot1x,20,BYOD_Devices,BYOD-Access,Certificate:SCEP;Device-Reg:true,T@c@cs_Mrdn_Pk7mN
+ise-policy-admin,Admin-Access,Network device admin TACACS+,tacacs,5,Net_Admins,AdminShell,AD-Group:Network-Admins;MFA:required,T@c@cs_Mrdn_Pk7mN
+ise-policy-plant-ot,Plant-OT-Access,Factory floor OT device access,mab,50,Plant_OT,OT-Restricted,OUI:siemens;OUI:rockwell;Location:factory,T@c@cs_Mrdn_Pk7mN

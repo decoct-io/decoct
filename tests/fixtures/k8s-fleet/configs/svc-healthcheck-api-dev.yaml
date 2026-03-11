@@ -1,0 +1,25 @@
+# Kubernetes Service — healthcheck-api (dev)
+# WavePoint Financial — svc-healthcheck-api-dev
+apiVersion: v1
+kind: Service
+metadata:
+  name: healthcheck-api
+  namespace: wavepoint-dev
+  labels:
+    app: healthcheck-api
+    env: dev
+    team: platform
+    part-of: wavepoint
+  annotations:
+    service.kubernetes.io/topology-aware-hints: auto
+spec:
+  type: ClusterIP
+  selector:
+    app: healthcheck-api
+    env: dev
+  sessionAffinity: None
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8090

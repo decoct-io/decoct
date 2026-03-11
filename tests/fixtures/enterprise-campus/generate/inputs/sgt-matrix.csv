@@ -1,0 +1,4 @@
+filename,matrix_name,description,sgt_count
+sgt-matrix-campus,campus-matrix,Campus SGT-to-SGT policy matrix,5
+sgt-matrix-dc,dc-matrix,Datacentre SGT-to-SGT policy matrix,3
+sgt-matrix-full,full-matrix,Full enterprise SGT matrix including OT,7

@@ -1,0 +1,25 @@
+# Kubernetes Service — auth-svc (dev)
+# WavePoint Financial — svc-auth-svc-dev
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-svc
+  namespace: wavepoint-dev
+  labels:
+    app: auth-svc
+    env: dev
+    team: platform
+    part-of: wavepoint
+  annotations:
+    service.kubernetes.io/topology-aware-hints: auto
+spec:
+  type: ClusterIP
+  selector:
+    app: auth-svc
+    env: dev
+  sessionAffinity: None
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8081

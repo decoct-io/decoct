@@ -1,0 +1,23 @@
+# Kubernetes ConfigMap — db-config (prod)
+# WavePoint Financial — cm-db-config-prod
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-config
+  namespace: wavepoint-prod
+  labels:
+    app.kubernetes.io/name: db-config
+    app.kubernetes.io/instance: db-config-prod
+    env: prod
+    team: platform
+    part-of: wavepoint
+  annotations:
+    configmap.kubernetes.io/managed-by: gitops
+    wavepoint.io/change-control: required
+data:
+  DB_HOST: "db-prod-primary.wavepoint.internal"
+  DB_PORT: "5432"
+  DB_SSL_MODE: "require"
+  DB_MAX_CONNECTIONS: "100"
+  DB_IDLE_TIMEOUT: "900"
+  CONNECTION_STRING: "postgresql://app:prdPw0rd#Xk9@db-prod-primary.wavepoint.internal:5432/wavepoint"

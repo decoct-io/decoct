@@ -1,0 +1,33 @@
+# Kubernetes Ingress — healthcheck (staging)
+# WavePoint Financial — ingress-healthcheck-staging
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: healthcheck-ingress
+  namespace: wavepoint-staging
+  labels:
+    app.kubernetes.io/name: healthcheck-ingress
+    env: staging
+    team: platform
+    part-of: wavepoint
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-staging
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "60"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "60"
+spec:
+  tls:
+    - hosts:
+        - health.staging.wavepoint.io
+      secretName: staging-tls-secret
+  rules:
+    - host: health.staging.wavepoint.io
+      http:
+        paths:
+          - path: /status/*
+            pathType: Prefix
+            backend:
+              serviceName: healthcheck-api
+              servicePort: 80

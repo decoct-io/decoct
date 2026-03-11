@@ -1,0 +1,41 @@
+# Load Balancer Configuration — dc1-haproxy-int
+# Meridian Manufacturing — lb-haproxy-internal
+
+name: "dc1-haproxy-int"
+type: "haproxy"
+site: "dc1"
+
+virtual_server:
+  name: "vs-dc1-haproxy-int"
+  address: "10.4.1.100"
+  port: 5432
+  ssl:
+    enabled: false
+  profiles:
+    - tcp
+
+pool:
+  name: "pool-dc1-haproxy-int"
+  lb_method: round-robin
+  members:
+    - address: "10.4.1.11"
+      port: 5432
+      state: enabled
+      priority: 1
+    - address: "10.4.1.12"
+      port: 5432
+      state: enabled
+      priority: 1
+
+health_monitor:
+  type: tcp
+  interval: 10
+  timeout: 5
+  retries: 3
+
+
+
+logging:
+  level: info
+  destination: syslog
+  syslog_server: 10.4.1.50

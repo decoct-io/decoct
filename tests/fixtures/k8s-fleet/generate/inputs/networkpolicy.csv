@@ -1,0 +1,11 @@
+filename,name,env,namespace,policy_type,pod_selector_app,ingress_from,egress_to
+netpol-default-deny-dev,default-deny,dev,wavepoint-dev,both,*,allow-all,allow-all
+netpol-default-deny-staging,default-deny,staging,wavepoint-staging,both,*,none,none
+netpol-default-deny-prod,default-deny,prod,wavepoint-prod,both,*,none,none
+netpol-allow-gateway-staging,allow-gateway,staging,wavepoint-staging,ingress,gateway-api,internet,
+netpol-allow-gateway-prod,allow-gateway,prod,wavepoint-prod,ingress,gateway-api,internet,
+netpol-allow-payment-staging,allow-payment,staging,wavepoint-staging,ingress,payment-api,gateway-api,
+netpol-allow-payment-prod,allow-payment,prod,wavepoint-prod,ingress,payment-api,gateway-api;risk-engine,
+netpol-allow-auth-prod,allow-auth,prod,wavepoint-prod,ingress,auth-svc,gateway-api;payment-api,
+netpol-allow-db-egress-prod,allow-db-egress,prod,wavepoint-prod,egress,*,,db-port-5432
+netpol-allow-dns-prod,allow-dns,prod,wavepoint-prod,egress,*,,kube-dns

@@ -1,0 +1,110 @@
+# SD-WAN cEdge Configuration — hq
+# Meridian Manufacturing — sdwan-cedge-hq-1
+
+system:
+  hostname: "hq-cedge-01"
+  system-ip: "10.255.0.1"
+  site-id: 100
+  organization-name: "MeridianMfg"
+  admin-tech-on-failure: true
+  sp-organization-name: "MeridianMfg"
+  console-baud-rate: 115200
+  vbond:
+    address: 10.255.255.1
+    port: 12346
+    local: false
+
+omp:
+  graceful-restart: true
+  send-path-limit: 4
+  ecmp-limit: 4
+  shutdown: false
+  timers:
+    holdtime: 60
+    advertisement-interval: 1
+    graceful-restart-timer: 43200
+    eor-timer: 300
+  authentication:
+    key: "OmpK3y_hq_Xr7mN"
+    type: ah-sha1-hmac
+
+bfd:
+  color-default:
+    multiplier: 6
+    poll-interval: 300000
+  app-route:
+    multiplier: 6
+    poll-interval: 600000
+
+security:
+  ipsec:
+    authentication-type: sha1-hmac-sha256
+    integrity-type: ip-udp-esp
+    pre-shared-key: "IPsec_hq1_Pk9wQ"
+    ike-version: 1
+    ike-mode: main
+  rekey-interval: 86400
+
+transport:
+  - type: "mpls"
+    address: "10.1.0.1"
+    color: "biz-internet"
+    encapsulation: ipsec
+    weight: 1
+    restrict: false
+  - type: "inet1"
+    address: "198.51.100.1"
+    color: "public-internet"
+    encapsulation: ipsec
+    weight: 1
+    restrict: false
+  - type: "inet2"
+    address: "203.0.113.1"
+    color: "public-internet"
+    encapsulation: ipsec
+    weight: 1
+    restrict: false
+
+vpn:
+  - id: 0
+    name: "mgmt"
+    dns:
+      primary: 10.4.1.10
+      secondary: 10.4.1.11
+  - id: 1
+    name: "corp"
+  - id: 10
+    name: "guest"
+  - id: 20
+    name: "iot"
+
+# LEGACY: EIGRP redistribution into OMP (migration incomplete)
+routing:
+  eigrp:
+    as-number: 100
+    redistribute:
+      - protocol: omp
+        route-policy: EIGRP-TO-OMP
+      - protocol: connected
+  omp:
+    redistribute:
+      - protocol: eigrp
+        route-policy: OMP-TO-EIGRP
+
+logging:
+  server:
+    - address: 10.4.1.50
+      vpn: 1
+      source-interface: Loopback0
+      priority: informational
+  disk:
+    enable: true
+    file-size: 10
+    file-rotate: 5
+
+ntp:
+  server:
+    - address: 10.4.1.20
+      vpn: 0
+      version: 4
+      source-interface: Loopback0

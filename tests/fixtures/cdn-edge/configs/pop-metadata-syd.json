@@ -1,0 +1,28 @@
+{
+  "pop": "syd",
+  "city": "Sydney",
+  "country": "AU",
+  "region": "apac",
+  "tier": "secondary",
+  "status": "active",
+  "location": {
+    "latitude": 33.8688,
+    "longitude": 151.2093
+  },
+  "capacity": {
+    "bandwidth_gbps": 40,
+    "rack_units": 24
+  },
+  "network": {
+    "upstream_pop": "sin",
+    "peering_exchanges": [
+      "IX-Australia",
+      "MegaIX"
+    ]
+  },
+  "management": {
+    "api_token": "api_mgmt_syd_Jk5mNx8w",
+    "monitoring_url": "https://mon.arcticcache.net/pop/syd",
+    "dashboard_url": "https://dash.arcticcache.net/pop/syd"
+  }
+}

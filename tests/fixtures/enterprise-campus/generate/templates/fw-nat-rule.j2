@@ -1,0 +1,71 @@
+{
+  "ruleset_name": "{{ ruleset_name }}",
+  "description": "{{ description }}",
+  "location": "{{ location }}",
+{% if 'ingress' in ruleset_name %}
+  "rules": [
+    {
+      "name": "web-server-https",
+      "type": "static",
+      "source_zone": "dc-external",
+      "destination_zone": "dc-dmz",
+      "original_destination": "198.51.100.50",
+      "translated_destination": "10.4.2.10",
+      "service": "tcp/443",
+      "bi_directional": false
+    },
+    {
+      "name": "web-server-http",
+      "type": "static",
+      "source_zone": "dc-external",
+      "destination_zone": "dc-dmz",
+      "original_destination": "198.51.100.50",
+      "translated_destination": "10.4.2.10",
+      "service": "tcp/80",
+      "bi_directional": false
+    },
+    {
+      "name": "mail-server",
+      "type": "static",
+      "source_zone": "dc-external",
+      "destination_zone": "dc-dmz",
+      "original_destination": "198.51.100.51",
+      "translated_destination": "10.4.2.20",
+      "service": "tcp/25,tcp/587,tcp/993",
+      "bi_directional": false
+    },
+    {
+      "name": "vpn-gateway",
+      "type": "static",
+      "source_zone": "dc-external",
+      "destination_zone": "dc-dmz",
+      "original_destination": "198.51.100.52",
+      "translated_destination": "10.4.2.30",
+      "service": "tcp/443,udp/4500,udp/500",
+      "bi_directional": false
+    }
+  ],
+{% else %}
+  "rules": [
+    {
+      "name": "corp-internet-nat",
+      "type": "dynamic-ip-and-port",
+      "source_zone": "corp-internal",
+      "destination_zone": "corp-external",
+      "source_address": "10.0.0.0/8",
+      "translated_source": "203.0.113.100-203.0.113.110",
+      "service": "any"
+    },
+    {
+      "name": "guest-internet-nat",
+      "type": "dynamic-ip-and-port",
+      "source_zone": "guest",
+      "destination_zone": "corp-external",
+      "source_address": "10.99.0.0/16",
+      "translated_source": "203.0.113.120",
+      "service": "any"
+    }
+  ],
+{% endif %}
+  "last_modified": "2025-09-15T16:00:00Z"
+}

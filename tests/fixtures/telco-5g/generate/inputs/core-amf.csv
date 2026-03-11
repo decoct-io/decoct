@@ -1,0 +1,5 @@
+filename,amf_id,amf_name,mcc,mnc,region_id,amf_set_id,amf_pointer,tai_list,capacity,nf_status,oam_password,api_version
+core-amf-01,amf-01,amf-primary-01,310,260,1,1,0,20001;20002;20003,1000,active,oam_pwd_amf01_Kx9mPq,v1.2.0
+core-amf-02,amf-02,amf-primary-02,310,260,1,1,1,20001;20002;20003,1000,active,oam_pwd_amf02_Wx5jT8,v1.2.0
+core-amf-03,amf-03,amf-secondary-01,310,260,2,2,0,20003;20004;20005,800,active,oam_pwd_amf03_Mn4wQ8,v1.2.0
+core-amf-04,amf-04,amf-dr-01,310,999,3,3,0,20001;20002,500,standby,oam_pwd_amf04_Yp6cD4,v1.1.0

@@ -1,0 +1,30 @@
+# Kubernetes Service — gateway-api (dev)
+# WavePoint Financial — svc-gateway-api-dev
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-api
+  namespace: wavepoint-dev
+  labels:
+    app: gateway-api
+    env: dev
+    team: platform
+    part-of: wavepoint
+  annotations:
+    service.kubernetes.io/topology-aware-hints: auto
+    service.beta.kubernetes.io/aws-load-balancer-type: nlb
+    service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+    service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+spec:
+  type: LoadBalancer
+  selector:
+    app: gateway-api
+    env: dev
+  sessionAffinity: None
+  externalTrafficPolicy: Local
+  healthCheckNodePort: 8080
+  ports:
+    - name: http
+      protocol: TCP
+      port: 443
+      targetPort: 8080

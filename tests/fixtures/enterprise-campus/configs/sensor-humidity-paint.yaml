@@ -1,0 +1,47 @@
+# Sensor Network Configuration — humidity (paint-booth)
+# Meridian Manufacturing — sensor-humidity-paint
+
+sensor_type: "humidity"
+zone: "paint-booth"
+sensor_count: 2
+
+sampling:
+  rate_hz: 1
+  resolution_bits: 16
+  buffer_size: 64
+  batch_transmit: false
+  batch_interval_ms: 1000
+
+communication:
+  protocol: "mqtt"
+  gateway: "10.5.2.203"
+  mqtt_topic: "plant/paint-booth/humidity"
+  qos: 1
+
+sensors:
+  - id: "humid-paint-01"
+    measurement: "booth-inlet"
+    enabled: true
+    unit: percent
+    range_min: 0.0
+    range_max: 100.0
+    alarm_threshold: 85.0
+    warning_threshold: 75.0
+  - id: "humid-paint-02"
+    measurement: "booth-exhaust"
+    enabled: true
+    unit: percent
+    range_min: 0.0
+    range_max: 100.0
+    alarm_threshold: 85.0
+    warning_threshold: 75.0
+
+calibration:
+  interval_days: 90
+  last_calibrated: "2025-09-15"
+  certificate: /etc/sensors/cal/humidity-paint-booth.pdf
+
+diagnostics:
+  self_test_interval_s: 3600
+  health_topic: "plant/paint-booth/humidity/health"
+  battery_monitoring: false

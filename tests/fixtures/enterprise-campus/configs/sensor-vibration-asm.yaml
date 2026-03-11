@@ -1,0 +1,63 @@
+# Sensor Network Configuration — vibration (assembly)
+# Meridian Manufacturing — sensor-vibration-asm
+
+sensor_type: "vibration"
+zone: "assembly"
+sensor_count: 4
+
+sampling:
+  rate_hz: 1000
+  resolution_bits: 16
+  buffer_size: 4096
+  batch_transmit: true
+  batch_interval_ms: 100
+
+communication:
+  protocol: "mqtt"
+  gateway: "10.5.3.200"
+  mqtt_topic: "plant/assembly/vibration"
+  qos: 1
+
+sensors:
+  - id: "vib-asm-01"
+    measurement: "X-axis"
+    enabled: true
+    unit: mm/s
+    range_min: 0.0
+    range_max: 50.0
+    alarm_threshold: 25.0
+    warning_threshold: 15.0
+  - id: "vib-asm-02"
+    measurement: "Y-axis"
+    enabled: true
+    unit: mm/s
+    range_min: 0.0
+    range_max: 50.0
+    alarm_threshold: 25.0
+    warning_threshold: 15.0
+  - id: "vib-asm-03"
+    measurement: "Z-axis"
+    enabled: true
+    unit: mm/s
+    range_min: 0.0
+    range_max: 50.0
+    alarm_threshold: 25.0
+    warning_threshold: 15.0
+  - id: "vib-asm-04"
+    measurement: "triaxial"
+    enabled: true
+    unit: mm/s
+    range_min: 0.0
+    range_max: 50.0
+    alarm_threshold: 25.0
+    warning_threshold: 15.0
+
+calibration:
+  interval_days: 90
+  last_calibrated: "2025-09-15"
+  certificate: /etc/sensors/cal/vibration-assembly.pdf
+
+diagnostics:
+  self_test_interval_s: 3600
+  health_topic: "plant/assembly/vibration/health"
+  battery_monitoring: false

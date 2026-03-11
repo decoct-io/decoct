@@ -1,0 +1,28 @@
+{
+  "pop": "iad",
+  "city": "Ashburn",
+  "country": "US",
+  "region": "na",
+  "tier": "primary",
+  "status": "active",
+  "location": {
+    "latitude": 39.0438,
+    "longitude": -77.4874
+  },
+  "capacity": {
+    "bandwidth_gbps": 100,
+    "rack_units": 42
+  },
+  "network": {
+    "upstream_pop": "sjc",
+    "peering_exchanges": [
+      "Equinix-DC",
+      "NOTA"
+    ]
+  },
+  "management": {
+    "api_token": "api_mgmt_iad_Yp6cD4gA",
+    "monitoring_url": "https://mon.arcticcache.net/pop/iad",
+    "dashboard_url": "https://dash.arcticcache.net/pop/iad"
+  }
+}

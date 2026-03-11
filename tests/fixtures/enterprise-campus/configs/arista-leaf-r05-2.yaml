@@ -1,0 +1,140 @@
+# Arista Leaf Switch — Rack r05
+# Meridian Manufacturing — arista-leaf-r05-2
+
+system:
+  hostname: "dc1-leaf-r05-2"
+  management_ip: "10.4.10.20/24"
+  domain_name: meridian-mfg.com
+  enable_secret: "Ar1st@_En_dc1_Bx5"
+  mtu: 9214
+
+loopback:
+  - id: 0
+    ip: "10.4.255.20/32"
+    description: Router-ID
+  - id: 1
+    ip: "10.4.254.20/32"
+    description: VTEP-Source
+
+routing:
+  bgp:
+    asn: 65001
+    router_id: "10.4.255.20"
+    neighbors:
+      - address: "10.4.255.1"
+        remote_as: 65000
+        description: spine-uplink
+        password: "BGP_MD5_dc1_Mn4w"
+        send_community: extended
+        maximum_routes: 12000
+      - address: "10.4.255.2"
+        remote_as: 65000
+        description: spine-uplink
+        password: "BGP_MD5_dc1_Mn4w"
+        send_community: extended
+        maximum_routes: 12000
+      - address: "10.4.255.3"
+        remote_as: 65000
+        description: spine-uplink
+        password: "BGP_MD5_dc1_Mn4w"
+        send_community: extended
+        maximum_routes: 12000
+      - address: "10.4.255.4"
+        remote_as: 65000
+        description: spine-uplink
+        password: "BGP_MD5_dc1_Mn4w"
+        send_community: extended
+        maximum_routes: 12000
+    address_family:
+      evpn:
+        neighbors:
+          - address: "10.4.255.1"
+            activate: true
+          - address: "10.4.255.2"
+            activate: true
+          - address: "10.4.255.3"
+            activate: true
+          - address: "10.4.255.4"
+            activate: true
+      ipv4_unicast:
+        redistribute:
+          - connected
+        network:
+          - "10.4.255.20/32"
+          - "10.4.254.20/32"
+
+vxlan:
+  source_interface: Loopback1
+  udp_port: 4789
+  vlans:
+    - vlan: 100
+      vni: 10100
+    - vlan: 200
+      vni: 10200
+    - vlan: 600
+      vni: 10600
+    - vlan: 999
+      vni: 10999
+
+vlans:
+  - id: 100
+    name: "Corp-Data"
+  - id: 200
+    name: "Corp-Voice"
+  - id: 600
+    name: "DMZ"
+  - id: 999
+    name: "Native"
+
+port_channels:
+  - name: "Po1"
+    description: "server-rack"
+    mode: lacp
+    mtu: 9214
+    members:
+      - Ethernet1
+      - Ethernet2
+    trunk_vlans:
+      - 100
+      - 200
+      - 600
+      - 999
+  - name: "Po2"
+    description: "server-rack"
+    mode: lacp
+    mtu: 9214
+    members:
+      - Ethernet1
+      - Ethernet2
+    trunk_vlans:
+      - 100
+      - 200
+      - 600
+      - 999
+
+spanning_tree:
+  mode: mstp
+  priority: 32768
+
+snmp:
+  community:
+    - name: "MrdnSNMP_dc_RO"
+      access: ro
+  location: "DC1 Rack r05"
+  contact: noc@meridian-mfg.com
+
+management:
+  ssh:
+    enabled: true
+    idle_timeout: 300
+  api:
+    enabled: true
+    protocol: https
+    port: 443
+
+logging:
+  host:
+    - address: 10.4.1.50
+      port: 514
+      protocol: udp
+  trap: informational

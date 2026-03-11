@@ -1,0 +1,127 @@
+{
+  "hostname": "{{ hostname }}",
+  "site": "{{ site }}",
+  "model": "{{ model }}",
+  "firmware_version": "{{ firmware }}",
+  "management": {
+    "ip_address": "{{ mgmt_ip }}",
+    "subnet_mask": "255.255.255.0",
+    "password": "{{ mgmt_password }}",
+    "ssh_enabled": true,
+    "telnet_enabled": false,
+    "http_enabled": false,
+    "https_enabled": true
+  },
+  "ap_provisioning": {
+    "join_passphrase": "{{ ap_join_passphrase }}",
+    "discovery_method": "dns",
+    "capwap_mode": "split-mac",
+    "country_code": "US"
+  },
+  "wlan_profiles": [
+{% if ssid_corp != 'none' %}
+    {
+      "wlan_id": 1,
+      "ssid": "{{ ssid_corp }}",
+      "security": "wpa3-enterprise",
+      "authentication": "dot1x",
+      "radius_server_group": "ISE-SERVERS",
+      "vlan_id": 100,
+      "qos_policy": "platinum",
+      "band_select": true,
+      "client_exclusion": true,
+      "max_clients_per_ap": 50
+    }{{ "," if ssid_guest != 'none' or ssid_iot != 'none' else "" }}
+{% endif %}
+{% if ssid_guest != 'none' %}
+    {
+      "wlan_id": 2,
+      "ssid": "{{ ssid_guest }}",
+      "security": "wpa2-psk",
+      "psk": "Gu3st_W1f1_Mrdn",
+      "vlan_id": 400,
+      "qos_policy": "bronze",
+      "band_select": false,
+      "client_exclusion": true,
+      "max_clients_per_ap": 25,
+      "captive_portal": {
+        "enabled": true,
+        "redirect_url": "https://wifi.meridian-mfg.com/guest"
+      }
+    }{{ "," if ssid_iot != 'none' else "" }}
+{% endif %}
+{% if ssid_iot != 'none' %}
+    {
+      "wlan_id": 3,
+      "ssid": "{{ ssid_iot }}",
+      "security": "wpa2-psk",
+      "psk": "I0T_W1f1_Mrdn_S3cure",
+      "vlan_id": 300,
+      "qos_policy": "silver",
+      "band_select": false,
+      "client_exclusion": false,
+      "max_clients_per_ap": 100
+    }
+{% endif %}
+  ],
+  "rf_profile": {
+    "name": "{{ rf_profile }}",
+{% if rf_profile == 'high-density' %}
+    "band_5ghz": {
+      "channel_width": 40,
+      "channels": [36, 40, 44, 48, 52, 56, 60, 64, 100, 104, 108, 112, 149, 153, 157, 161],
+      "tx_power_min": 7,
+      "tx_power_max": 17,
+      "dca_enabled": true,
+      "tpc_enabled": true
+    },
+    "band_24ghz": {
+      "channel_width": 20,
+      "channels": [1, 6, 11],
+      "tx_power_min": 5,
+      "tx_power_max": 14,
+      "dca_enabled": true,
+      "tpc_enabled": true
+    }
+{% elif rf_profile == 'industrial' %}
+    "band_5ghz": {
+      "channel_width": 20,
+      "channels": [36, 40, 44, 48, 149, 153, 157, 161],
+      "tx_power_min": 11,
+      "tx_power_max": 20,
+      "dca_enabled": false,
+      "tpc_enabled": false
+    },
+    "band_24ghz": {
+      "channel_width": 20,
+      "channels": [1, 6, 11],
+      "tx_power_min": 8,
+      "tx_power_max": 17,
+      "dca_enabled": false,
+      "tpc_enabled": false
+    }
+{% else %}
+    "band_5ghz": {
+      "channel_width": 40,
+      "channels": [36, 40, 44, 48, 149, 153, 157, 161],
+      "tx_power_min": 8,
+      "tx_power_max": 17,
+      "dca_enabled": true,
+      "tpc_enabled": true
+    },
+    "band_24ghz": {
+      "channel_width": 20,
+      "channels": [1, 6, 11],
+      "tx_power_min": 5,
+      "tx_power_max": 14,
+      "dca_enabled": true,
+      "tpc_enabled": true
+    }
+{% endif %}
+  },
+  "radius_servers": [
+    {"address": "10.4.1.30", "port": 1812, "shared_secret": "R@d1us_WLC_Mrdn_9k"},
+    {"address": "10.4.1.31", "port": 1812, "shared_secret": "R@d1us_WLC_Mrdn_9k"}
+  ],
+  "max_clients": {{ max_clients }}
+}

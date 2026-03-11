@@ -1,0 +1,23 @@
+{
+  "policy_name": "app-aware-routing",
+  "policy_type": "app-route",
+  "description": "Application-aware routing for business apps",
+  "organization": "MeridianMfg",
+  "app_route": {
+    "app_list": [
+      "business-critical",
+      "collaboration",
+      "real-time"
+    ],
+    "sla_class": {
+      "name": "latency-100ms",
+      "latency_ms": 100,
+      "loss_percent": 1,
+      "jitter_ms": 20
+    },
+    "preferred_color": "mpls",
+    "backup_color": "inet1"
+  },
+  "last_modified": "2025-11-20T14:30:00Z",
+  "version": 3
+}

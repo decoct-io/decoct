@@ -1,0 +1,25 @@
+# Kubernetes Service — ledger-svc (dev)
+# WavePoint Financial — svc-ledger-svc-dev
+apiVersion: v1
+kind: Service
+metadata:
+  name: ledger-svc
+  namespace: wavepoint-dev
+  labels:
+    app: ledger-svc
+    env: dev
+    team: platform
+    part-of: wavepoint
+  annotations:
+    service.kubernetes.io/topology-aware-hints: auto
+spec:
+  type: ClusterIP
+  selector:
+    app: ledger-svc
+    env: dev
+  sessionAffinity: None
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8082

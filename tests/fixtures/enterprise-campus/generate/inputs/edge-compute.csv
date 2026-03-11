@@ -1,0 +1,7 @@
+filename,node_name,function,model_version,api_token,gpu_type,mqtt_topic_prefix,models,inference_interval_ms
+edge-node-defect-1,defect-detect-01,defect-detection,v2.3,Edge_AP1_Def1_Xk7,nvidia-t4,plant/vision/inference,yolov8-defect:v2.3:640x640;classifier-scratch:v1.2:224x224,100
+edge-node-defect-2,defect-detect-02,defect-detection,v2.1,Edge_AP1_Def2_Lm9,nvidia-t4,plant/vision/inference,yolov8-defect:v2.1:640x640;classifier-scratch:v1.2:224x224,100
+edge-node-predict-1,predictive-maint-01,predictive-maintenance,v2.3,Edge_AP1_Pred1_Qx4,nvidia-t4,plant/predictive/inference,vibration-lstm:v2.3:1024;temp-anomaly:v1.5:256,1000
+edge-node-predict-2,predictive-maint-02,predictive-maintenance,v2.3,Edge_AP1_Pred2_Hy4,nvidia-t4,plant/predictive/inference,vibration-lstm:v2.3:1024;temp-anomaly:v1.5:256,1000
+edge-node-quality,quality-control-01,quality-control,v2.3,Edge_AP1_QC1_Bx5,nvidia-a2,plant/quality/inference,dimension-check:v1.8:512x512;surface-grade:v2.0:256x256,500
+edge-node-safety,safety-monitor-01,safety-monitoring,v2.3,Edge_AP1_Safe1_Ej7,nvidia-a2,plant/safety/inference,ppe-detection:v3.1:640x640;zone-intrusion:v2.2:640x640,200

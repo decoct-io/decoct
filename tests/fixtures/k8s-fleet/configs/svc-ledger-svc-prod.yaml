@@ -1,0 +1,32 @@
+# Kubernetes Service — ledger-svc (prod)
+# WavePoint Financial — svc-ledger-svc-prod
+apiVersion: v1
+kind: Service
+metadata:
+  name: ledger-svc
+  namespace: wavepoint-prod
+  labels:
+    app: ledger-svc
+    env: prod
+    team: platform
+    part-of: wavepoint
+  annotations:
+    service.kubernetes.io/topology-aware-hints: auto
+spec:
+  type: ClusterIP
+  selector:
+    app: ledger-svc
+    env: prod
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 10800
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8082
+    - name: metrics
+      protocol: TCP
+      port: 9090
+      targetPort: 9090

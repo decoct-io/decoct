@@ -1,0 +1,71 @@
+{
+  "gateway_name": "weld-gw-01",
+  "protocol": "modbus-tcp",
+  "device_connection": {
+    "host": "10.5.1.100",
+    "port": 502,
+    "timeout_ms": 5000,
+    "retries": 3
+  },
+  "poll_interval_ms": 100,
+  "registers": [
+    {
+      "address": "40001",
+      "name": "WeldCurrent",
+      "data_type": "float",
+      "function_code": 3,
+      "byte_order": "big-endian",
+      "word_order": "big-endian"
+    },
+    {
+      "address": "40003",
+      "name": "WeldVoltage",
+      "data_type": "float",
+      "function_code": 3,
+      "byte_order": "big-endian",
+      "word_order": "big-endian"
+    },
+    {
+      "address": "40005",
+      "name": "WireSpeed",
+      "data_type": "float",
+      "function_code": 3,
+      "byte_order": "big-endian",
+      "word_order": "big-endian"
+    },
+    {
+      "address": "40007",
+      "name": "GasFlow",
+      "data_type": "float",
+      "function_code": 3,
+      "byte_order": "big-endian",
+      "word_order": "big-endian"
+    }
+  ],
+  "mqtt": {
+    "broker": "10.5.0.50",
+    "port": 8883,
+    "client_id": "weld-gw-01",
+    "publish_token": "PLC_MQTT_Weld1_Xk7",
+    "tls": true,
+    "topics": [
+      "plant/weld-cell-1/telemetry/current",
+      "plant/weld-cell-1/telemetry/voltage"
+    ],
+    "qos": 1,
+    "retain": false,
+    "payload_format": "json",
+    "timestamp_field": "ts",
+    "batch_size": 10,
+    "batch_interval_ms": 1000
+  },
+  "buffering": {
+    "enabled": true,
+    "max_size_mb": 50,
+    "path": "/var/lib/plc-gateway/buffer"
+  },
+  "logging": {
+    "level": "info",
+    "file": "/var/log/plc-gateway/weld-gw-01.log"
+  }
+}

@@ -1,0 +1,30 @@
+# RAN Policy — handover-intra-freq
+# SpectrumOne 5G RAN — ran-policy-handover-intra-freq
+
+policy:
+  name: "handover-intra-freq"
+  type: "handover"
+  enabled: true
+  priority: 30
+
+parameters:
+  measurement_event: "A3"
+  a3_offset_db: 3
+  hysteresis_db: 1
+  time_to_trigger_ms: 320
+  threshold_rsrp_dbm: -110
+  threshold_rsrq_db: -12
+  filter_coefficient_rsrp: 4
+  filter_coefficient_rsrq: 4
+  report_interval_ms: 480
+  report_amount: "infinity"
+  max_report_cells: 8
+
+scope:
+  applies_to: "all-cells"
+  frequency_scope: "intra-frequency"
+
+monitoring:
+  kpi_enabled: true
+  log_decisions: true
+  reporting_interval_s: 15

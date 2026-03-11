@@ -1,0 +1,48 @@
+# SD-WAN vBond Orchestrator — {{ orchestrator_id }}
+# Meridian Manufacturing — {{ filename }}
+
+system:
+  hostname: "{{ hostname }}"
+  system-ip: "{{ system_ip }}"
+  organization-name: "{{ org_name }}"
+  vbond:
+    local: true
+    port: {{ vbond_port }}
+
+enrollment:
+  token: "{{ enrollment_token }}"
+  auto-approve: false
+  max-controllers: {{ max_controllers }}
+  max-vedges: {{ max_vedges }}
+
+certificate:
+  cert-path: "{{ cert_path }}"
+  ca-cert-path: "{{ ca_cert_path }}"
+  crl:
+    enable: true
+    interval: 3600
+
+transport:
+  listen-address: 0.0.0.0
+  port: {{ vbond_port }}
+  tunnel-interface:
+    color: default
+    encapsulation: ipsec
+    allow-service:
+      - dhcp
+      - dns
+      - netconf
+      - sshd
+
+security:
+  tls-version: TLSv1.2
+  allowed-ciphers:
+    - aes-256-cbc-sha
+    - aes-128-cbc-sha
+
+logging:
+  level: informational
+  server:
+    - address: 10.4.1.50
+      port: 514
+      vpn: 0

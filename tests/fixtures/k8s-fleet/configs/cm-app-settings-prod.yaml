@@ -1,0 +1,24 @@
+# Kubernetes ConfigMap — app-settings (prod)
+# WavePoint Financial — cm-app-settings-prod
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-settings
+  namespace: wavepoint-prod
+  labels:
+    app.kubernetes.io/name: app-settings
+    app.kubernetes.io/instance: app-settings-prod
+    env: prod
+    team: platform
+    part-of: wavepoint
+  annotations:
+    configmap.kubernetes.io/managed-by: gitops
+    wavepoint.io/change-control: required
+data:
+  APP_NAME: "wavepoint"
+  APP_ENV: "production"
+  BASE_URL: "https://app.wavepoint.io"
+  ALLOWED_ORIGINS: "https://app.wavepoint.io"
+  SESSION_TIMEOUT: "900"
+  LOG_FORMAT: "json"
+  TRACING_ENABLED: "true"

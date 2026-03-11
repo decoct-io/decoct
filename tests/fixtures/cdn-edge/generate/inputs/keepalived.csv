@@ -1,0 +1,9 @@
+filename,pop,vrrp_instance,state,interface,virtual_router_id,priority,advert_int,auth_type,auth_pass,virtual_ip,track_script,notify_script
+keepalived-ams,ams,VI_CDN_AMS,MASTER,eth0,51,100,1,PASS,vrrp_ams_Kx9m,10.1.1.100/24,chk_nginx,none
+keepalived-fra,fra,VI_CDN_FRA,MASTER,eth0,52,100,1,PASS,vrrp_fra_Wx5j,10.2.1.100/24,chk_nginx,none
+keepalived-lhr,lhr,VI_CDN_LHR,MASTER,eth0,53,50,1,PASS,vrrp_lhr_Mn4w,10.3.1.100/24,chk_nginx,none
+keepalived-iad,iad,VI_CDN_IAD,MASTER,eth0,54,100,1,PASS,vrrp_iad_Yp6c,10.4.1.100/24,chk_nginx,/usr/local/bin/notify-failover.sh
+keepalived-sjc,sjc,VI_CDN_SJC,MASTER,eth0,55,100,1,PASS,vrrp_sjc_Hf7g,10.5.1.100/24,chk_nginx,none
+keepalived-nrt,nrt,VI_CDN_NRT,MASTER,eth0,56,100,1,PASS,vrrp_nrt_Pq3r,10.6.1.100/24,chk_nginx,none
+keepalived-syd,syd,VI_CDN_SYD,MASTER,eth0,57,50,1,PASS,vrrp_syd_Jk5m,10.7.1.100/24,chk_nginx,none
+keepalived-sin,sin,VI_CDN_SIN,MASTER,eth0,58,100,1,PASS,vrrp_sin_Vt6w,10.8.1.100/24,chk_nginx,none

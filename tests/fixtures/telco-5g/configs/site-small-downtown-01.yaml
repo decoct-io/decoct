@@ -1,0 +1,43 @@
+# Site Metadata — small-downtown-01
+# SpectrumOne 5G RAN — site-small-downtown-01
+
+operator:
+  name: "SpectrumOne"
+  plmn:
+    mcc: "310"
+    mnc: "260"
+  region: "metro-north"
+
+site:
+  site_id: "small-downtown-01"
+  type: "small-cell"
+  address: "100 Main St (lamppost #247)"
+  contact_phone: "555-0201"
+
+location:
+  latitude: 40.7580
+  longitude: -73.9855
+  altitude_m: 12
+
+infrastructure:
+  power_source: "grid"
+  shelter_class: "pole-mount"
+  access_type: "public-right-of-way"
+  antenna_height_m: 8
+  backhaul_type: "fiber"
+
+environmental:
+  temperature_range_c: "-20 to 50"
+  wind_rating_kmh: 120
+  ip_rating: "IP65"
+
+security:
+  access_code: "access_sd01_Hf7g"
+  alarm_system: true
+  tamper_detection: true
+
+maintenance:
+  last_inspection: "2025-11-15"
+  next_inspection: "2026-05-15"
+  maintenance_window: "02:00-06:00 UTC"
+  emergency_contact: "555-0201"

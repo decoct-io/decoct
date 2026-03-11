@@ -1,0 +1,54 @@
+{
+  "policy_name": "Admin-Access",
+  "description": "Network device admin TACACS+",
+  "enabled": true,
+  "authentication": {
+    "method": "tacacs",
+    "protocol": "tacacs+",
+    "identity_store": "Active-Directory",
+    "shell_profile": "admin-full"
+  },
+  "authorization": {
+    "profile": "AdminShell",
+    "sgt": {
+      "tag": 5,
+      "name": "Net_Admins"
+    },
+    "conditions": [
+      {
+        "attribute": "AD-Group",
+        "value": "Network-Admins"
+      },
+      {
+        "attribute": "MFA",
+        "value": "required"
+      }
+    ],
+    "dacl": {
+      "name": "DEFAULT-DENY",
+      "rules": [
+        {
+          "action": "deny",
+          "protocol": "ip",
+          "source": "any",
+          "destination": "any"
+        }
+      ]
+    }
+  },
+  "tacacs": {
+    "shared_key": "T@c@cs_Mrdn_Pk7mN",
+    "servers": [
+      {
+        "address": "10.4.1.30",
+        "port": 49
+      },
+      {
+        "address": "10.4.1.31",
+        "port": 49
+      }
+    ]
+  },
+  "api_token": "ISE_AP1_Tk_Mrdn_Xr7mNpQ2",
+  "version": "3.2"
+}

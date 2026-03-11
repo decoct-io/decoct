@@ -1,0 +1,42 @@
+# Network Slice Definition — urllc-medical
+# SpectrumOne 5G RAN — slice-urllc-medical
+
+slice_identity:
+  slice_id: "urllc-medical"
+  s_nssai:
+    sst: 2
+    sd: "000011"
+  slice_type: "URLLC"
+  plmn:
+    mcc: "310"
+    mnc: "260"
+
+qos_profile:
+  five_qi: 1
+  priority_level: 5
+  preemption_capability: "may-preempt"
+  preemption_vulnerability: "not-preemptable"
+  resource_type: "gbr"
+  packet_delay_budget_ms: 1
+  packet_error_rate: 0.000001
+  max_data_burst_volume_bytes: 4096
+
+capacity:
+  max_ue: 2000
+  bandwidth_guarantee_mbps: 20
+  isolation_level: "dedicated"
+
+admission_control:
+  enabled: true
+  max_pdu_sessions: 4000
+  congestion_threshold_pct: 50
+
+ue_ambr:
+  downlink_mbps: 20
+  uplink_mbps: 20
+
+monitoring:
+  kpi_reporting: true
+  reporting_interval_s: 5
+  sla_tracking: true
+  alarm_on_sla_breach: true

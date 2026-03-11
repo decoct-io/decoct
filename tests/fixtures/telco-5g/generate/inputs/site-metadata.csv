@@ -1,0 +1,16 @@
+filename,site_id,site_type,latitude,longitude,altitude_m,address,power_source,shelter_class,access_type,antenna_height_m,backhaul_type,contact_phone,access_code
+site-macro-north-01,macro-north-01,macro,40.7831,-73.9712,45,1200 Park Ave N,grid+battery,outdoor-cabinet,locked-compound,30,fiber,555-0101,access_mn01_Kx9m
+site-macro-north-02,macro-north-02,macro,40.7920,-73.9654,52,850 Highway Blvd N,grid+battery,outdoor-cabinet,locked-compound,35,fiber,555-0102,access_mn02_Wx5j
+site-macro-north-03,macro-north-03,macro,40.8001,-73.9530,38,200 Business Park Dr,grid+battery,outdoor-cabinet,locked-compound,40,fiber,555-0103,access_mn03_Mn4w
+site-macro-north-04,macro-north-04,macro,40.7750,-73.9800,42,500 Residential Ave,generator,outdoor-cabinet,locked-compound,30,fiber,555-0104,access_mn04_Yp6c
+site-small-downtown-01,small-downtown-01,small-cell,40.7580,-73.9855,12,100 Main St (lamppost #247),grid,pole-mount,public-right-of-way,8,fiber,555-0201,access_sd01_Hf7g
+site-small-downtown-02,small-downtown-02,small-cell,40.7530,-73.9770,15,Transit Hub Station B,grid,pole-mount,public-right-of-way,6,fiber,555-0202,access_sd02_Pq3r
+site-small-downtown-03,small-downtown-03,small-cell,40.7490,-73.9840,10,Shopping District Wall #12,grid,wall-mount,building-exterior,5,fiber,555-0203,access_sd03_Jk5m
+site-indoor-enterprise-01,indoor-enterprise-01,indoor,40.7610,-73.9720,0,Corporate Campus A Bldg 3,grid+ups,indoor-rack,building-interior,0,fiber,555-0301,access_ie01_Vt6w
+site-indoor-enterprise-02,indoor-enterprise-02,indoor,40.7650,-73.9680,0,Metro General Hospital,grid+ups,indoor-rack,building-interior,0,fiber,555-0302,access_ie02_Ab3c
+site-indoor-enterprise-03,indoor-enterprise-03,indoor,40.7700,-73.961000,0,Convention Center Hall A,grid+ups,indoor-rack,building-interior,0,fiber,555-0303,access_ie03_Fg5h
+site-spare-01,spare-01,spare,0.0000,0.0000,0,Warehouse Rack A,none,warehouse,warehouse,0,none,555-0901,access_sp01_Kl7m
+site-spare-02,spare-02,spare,0.0000,0.0000,0,Warehouse Rack B,none,warehouse,warehouse,0,none,555-0902,access_sp02_Pq9r
+site-spare-03,spare-03,spare,0.0000,0.0000,0,Warehouse Rack C,none,warehouse,warehouse,0,none,555-0903,access_sp03_Uv2w
+site-spare-04,spare-04,spare,0.0000,0.0000,0,Warehouse Rack D,none,warehouse,warehouse,0,none,555-0904,access_sp04_Za4b
+site-spare-05,spare-05,spare,0.0000,0.0000,0,Warehouse Rack E,none,warehouse,warehouse,0,none,555-0905,access_sp05_Ef6g

@@ -1,0 +1,28 @@
+{
+  "pop": "nrt",
+  "city": "Tokyo",
+  "country": "JP",
+  "region": "apac",
+  "tier": "primary",
+  "status": "active",
+  "location": {
+    "latitude": 35.6762,
+    "longitude": 139.6503
+  },
+  "capacity": {
+    "bandwidth_gbps": 100,
+    "rack_units": 42
+  },
+  "network": {
+    "upstream_pop": "sin",
+    "peering_exchanges": [
+      "JPIX",
+      "JPNAP"
+    ]
+  },
+  "management": {
+    "api_token": "api_mgmt_nrt_Pq3rS7vW",
+    "monitoring_url": "https://mon.arcticcache.net/pop/nrt",
+    "dashboard_url": "https://dash.arcticcache.net/pop/nrt"
+  }
+}

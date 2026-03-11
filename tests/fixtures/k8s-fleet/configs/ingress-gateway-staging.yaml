@@ -1,0 +1,40 @@
+# Kubernetes Ingress — gateway (staging)
+# WavePoint Financial — ingress-gateway-staging
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: gateway-ingress
+  namespace: wavepoint-staging
+  labels:
+    app.kubernetes.io/name: gateway-ingress
+    env: staging
+    team: platform
+    part-of: wavepoint
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-staging
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/limit-rps: "50"
+    nginx.ingress.kubernetes.io/limit-burst-multiplier: "5"
+    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "60"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "60"
+spec:
+  tls:
+    - hosts:
+        - gateway.staging.wavepoint.io
+      secretName: staging-tls-secret
+  rules:
+    - host: gateway.staging.wavepoint.io
+      http:
+        paths:
+          - path: /api/*
+            pathType: Prefix
+            backend:
+              serviceName: gateway-api
+              servicePort: 80
+          - path: /auth/*
+            pathType: Prefix
+            backend:
+              serviceName: auth-svc
+              servicePort: 80

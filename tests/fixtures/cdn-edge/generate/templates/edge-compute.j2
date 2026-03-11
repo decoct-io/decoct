@@ -1,0 +1,41 @@
+# Edge Compute Configuration — {{ pop }}
+# ArcticCache CDN — {{ filename }}
+
+runtime:
+  engine: {{ wasm_runtime }}
+  num_workers: {{ num_workers }}
+  max_memory_mb: {{ max_memory_mb }}
+  max_cpu_time_ms: {{ max_cpu_time_ms }}
+  signing_key: "{{ signing_key }}"
+
+modules:
+{% for mod in modules %}
+{% set parts = mod.split(':') %}
+  - name: {{ parts[0] }}
+    version: "{{ parts[1] }}"
+    path: /opt/edge-compute/modules/{{ parts[0] }}/{{ parts[1] }}/module.wasm
+    enabled: true
+{% endfor %}
+
+routing:
+{% for rule in routing_rules %}
+{% set parts = rule.split(':') %}
+  - pattern: "{{ parts[0] }}"
+    module: {{ parts[1] }}
+{% endfor %}
+
+logging:
+  level: {{ log_level }}
+  output: /var/log/edge-compute/worker.log
+  format: json
+
+metrics:
+  enabled: true
+  port: {{ metrics_port }}
+  path: /metrics
+
+limits:
+  max_request_body_bytes: 1048576
+  max_response_body_bytes: 10485760
+  max_headers: 100
+  request_timeout_ms: 30000

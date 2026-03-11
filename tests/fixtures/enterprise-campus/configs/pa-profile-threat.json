@@ -1,0 +1,42 @@
+{
+  "profile_name": "threat-prevention-strict",
+  "profile_type": "threat-prevention",
+  "description": "Strict IPS and anti-malware profile",
+  "threat_prevention": {
+    "antivirus": {
+      "decoder": [
+        "smtp",
+        "imap",
+        "pop3",
+        "ftp",
+        "http",
+        "smb"
+      ],
+      "action": "reset-both",
+      "wildfire_action": "reset-both"
+    },
+    "anti_spyware": {
+      "severity": [
+        "critical",
+        "high",
+        "medium"
+      ],
+      "action": "reset-both",
+      "dns_sinkhole": {
+        "enabled": true,
+        "ipv4": "72.5.65.111",
+        "ipv6": "2600:5200::1"
+      }
+    },
+    "vulnerability": {
+      "severity": [
+        "critical",
+        "high",
+        "medium"
+      ],
+      "action": "reset-both",
+      "cve_exceptions": []
+    }
+  },
+  "last_modified": "2025-11-01T08:00:00Z"
+}

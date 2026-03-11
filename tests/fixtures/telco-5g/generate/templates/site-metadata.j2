@@ -1,0 +1,66 @@
+# Site Metadata — {{ site_id }}
+# SpectrumOne 5G RAN — {{ filename }}
+
+operator:
+  name: "SpectrumOne"
+  plmn:
+    mcc: "310"
+    mnc: "260"
+  region: "metro-north"
+
+site:
+  site_id: "{{ site_id }}"
+  type: "{{ site_type }}"
+  address: "{{ address }}"
+  contact_phone: "{{ contact_phone }}"
+
+location:
+  latitude: {{ latitude }}
+  longitude: {{ longitude }}
+  altitude_m: {{ altitude_m }}
+
+infrastructure:
+  power_source: "{{ power_source }}"
+  shelter_class: "{{ shelter_class }}"
+  access_type: "{{ access_type }}"
+  antenna_height_m: {{ antenna_height_m }}
+  backhaul_type: "{{ backhaul_type }}"
+
+environmental:
+  temperature_range_c: {% if site_type == 'macro' %}"-40 to 55"{% elif site_type == 'small-cell' %}"-20 to 50"{% elif site_type == 'indoor' %}"15 to 35"{% else %}"5 to 40"{% endif %}
+
+  wind_rating_kmh: {% if site_type == 'macro' %}160{% elif site_type == 'small-cell' %}120{% else %}0{% endif %}
+
+{% if site_type == 'macro' %}
+  ice_loading: true
+  lightning_protection: true
+{% endif %}
+{% if site_type == 'small-cell' %}
+  ip_rating: "IP65"
+{% endif %}
+{% if site_type == 'indoor' %}
+  humidity_range_pct: "20 to 80"
+  fire_suppression: true
+{% endif %}
+
+security:
+  access_code: "{{ access_code }}"
+  alarm_system: {% if site_type == 'spare' %}false{% else %}true{% endif %}
+
+{% if site_type == 'macro' %}
+  surveillance: "cctv"
+  fence_type: "chain-link"
+{% elif site_type == 'small-cell' %}
+  tamper_detection: true
+{% elif site_type == 'indoor' %}
+  badge_access: true
+{% endif %}
+
+maintenance:
+  last_inspection: {% if site_type != 'spare' %}"2025-11-15"{% else %}"none"{% endif %}
+
+  next_inspection: {% if site_type != 'spare' %}"2026-05-15"{% else %}"none"{% endif %}
+
+  maintenance_window: {% if site_type != 'spare' %}"02:00-06:00 UTC"{% else %}"none"{% endif %}
+
+  emergency_contact: "{{ contact_phone }}"

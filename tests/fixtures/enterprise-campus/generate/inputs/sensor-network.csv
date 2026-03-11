@@ -1,0 +1,9 @@
+filename,sensor_type,zone,sensor_count,sample_rate_hz,protocol,gateway_ip,sensors
+sensor-vibration-weld,vibration,weld-cells,4,1000,mqtt,10.5.1.200,vib-weld-01:X-axis;vib-weld-02:Y-axis;vib-weld-03:Z-axis;vib-weld-04:triaxial
+sensor-vibration-asm,vibration,assembly,4,1000,mqtt,10.5.3.200,vib-asm-01:X-axis;vib-asm-02:Y-axis;vib-asm-03:Z-axis;vib-asm-04:triaxial
+sensor-temp-weld,temperature,weld-cells,3,1,mqtt,10.5.1.201,temp-weld-01:ambient;temp-weld-02:torch-tip;temp-weld-03:workpiece
+sensor-temp-paint,temperature,paint-booth,3,1,mqtt,10.5.2.201,temp-paint-01:booth-air;temp-paint-02:oven-zone1;temp-paint-03:oven-zone2
+sensor-torque-asm,torque,assembly,2,100,mqtt,10.5.3.201,torque-asm-01:spindle-1;torque-asm-02:spindle-2
+sensor-pressure-paint,pressure,paint-booth,2,10,mqtt,10.5.2.202,press-paint-01:spray-gun;press-paint-02:booth-air
+sensor-humidity-paint,humidity,paint-booth,2,1,mqtt,10.5.2.203,humid-paint-01:booth-inlet;humid-paint-02:booth-exhaust
+sensor-current-weld,current,weld-cells,2,500,mqtt,10.5.1.202,curr-weld-01:arc-primary;curr-weld-02:arc-secondary

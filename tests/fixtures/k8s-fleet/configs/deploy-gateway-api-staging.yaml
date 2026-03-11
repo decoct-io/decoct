@@ -1,0 +1,104 @@
+# Kubernetes Deployment — gateway-api (staging)
+# WavePoint Financial — deploy-gateway-api-staging
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-api
+  namespace: wavepoint-staging
+  labels:
+    app: gateway-api
+    env: staging
+    team: platform
+    version: "4.0.2"
+    part-of: wavepoint
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+    kubectl.kubernetes.io/last-applied-configuration: managed-by-gitops
+spec:
+  replicas: 2
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: gateway-api
+      env: staging
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: gateway-api
+        env: staging
+        version: "4.0.2"
+    spec:
+      serviceAccountName: gateway-api
+      terminationGracePeriodSeconds: 30
+      containers:
+        - name: gateway-api
+          image: registry.wavepoint.io/gateway-api:4.0.2
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+            - name: metrics
+              containerPort: 9090
+              protocol: TCP
+          env:
+            - name: APP_ENV
+              value: "staging"
+            - name: LOG_LEVEL
+              value: "INFO"
+            - name: SERVICE_NAME
+              value: "gateway-api"
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: API_KEY
+              value: "sk_stg_gw_Wx2jT9hK"
+            - name: JWT_SECRET
+              value: "jwt_stg_gw_Sp5cTr"
+            - name: RATE_LIMIT
+              value: "5000"
+            - name: CORS_ORIGINS
+              value: "https://staging.wavepoint.io"
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+            limits:
+              cpu: "1000m"
+              memory: "2Gi"
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 15
+            timeoutSeconds: 3
+            failureThreshold: 3
+            successThreshold: 1
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+            successThreshold: 1
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config
+              readOnly: true
+      volumes:
+        - name: config-volume
+          configMap:
+            name: gateway-api-config

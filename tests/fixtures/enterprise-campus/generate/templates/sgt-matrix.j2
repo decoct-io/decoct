@@ -1,0 +1,152 @@
+# TrustSec SGT Matrix — {{ matrix_name }}
+# Meridian Manufacturing — {{ filename }}
+
+matrix_name: "{{ matrix_name }}"
+description: "{{ description }}"
+
+sgts:
+{% if 'campus' in matrix_name %}
+  - tag: 5
+    name: Net_Admins
+    description: Network administrators
+  - tag: 10
+    name: Corp_Users
+    description: Corporate employees
+  - tag: 20
+    name: BYOD_Devices
+    description: BYOD registered devices
+  - tag: 30
+    name: IoT_Devices
+    description: IoT sensors and actuators
+  - tag: 40
+    name: Guest_Users
+    description: Guest wireless users
+{% elif 'dc' in matrix_name %}
+  - tag: 5
+    name: Net_Admins
+    description: Network administrators
+  - tag: 60
+    name: DC_Servers
+    description: Datacentre production servers
+  - tag: 70
+    name: DC_Mgmt
+    description: Datacentre management plane
+{% else %}
+  - tag: 5
+    name: Net_Admins
+    description: Network administrators
+  - tag: 10
+    name: Corp_Users
+    description: Corporate employees
+  - tag: 20
+    name: BYOD_Devices
+    description: BYOD registered devices
+  - tag: 30
+    name: IoT_Devices
+    description: IoT sensors and actuators
+  - tag: 40
+    name: Guest_Users
+    description: Guest wireless users
+  - tag: 50
+    name: Plant_OT
+    description: Factory floor OT devices
+  - tag: 60
+    name: DC_Servers
+    description: Datacentre production servers
+{% endif %}
+
+policy:
+{% if 'campus' in matrix_name %}
+  - source: Corp_Users
+    destination: Corp_Users
+    action: permit
+    contract: FULL-ACCESS
+  - source: Corp_Users
+    destination: IoT_Devices
+    action: deny
+    contract: DENY-ALL
+  - source: Corp_Users
+    destination: Guest_Users
+    action: deny
+    contract: DENY-ALL
+  - source: Guest_Users
+    destination: Corp_Users
+    action: deny
+    contract: DENY-ALL
+  - source: Guest_Users
+    destination: Guest_Users
+    action: permit
+    contract: INTERNET-ONLY
+  - source: IoT_Devices
+    destination: IoT_Devices
+    action: permit
+    contract: IOT-PEER
+  - source: Net_Admins
+    destination: Corp_Users
+    action: permit
+    contract: FULL-ACCESS
+  - source: Net_Admins
+    destination: IoT_Devices
+    action: permit
+    contract: FULL-ACCESS
+  - source: BYOD_Devices
+    destination: Corp_Users
+    action: permit
+    contract: LIMITED-ACCESS
+  - source: BYOD_Devices
+    destination: IoT_Devices
+    action: deny
+    contract: DENY-ALL
+{% elif 'dc' in matrix_name %}
+  - source: DC_Servers
+    destination: DC_Servers
+    action: permit
+    contract: DC-INTERNAL
+  - source: DC_Mgmt
+    destination: DC_Servers
+    action: permit
+    contract: MGMT-ACCESS
+  - source: Net_Admins
+    destination: DC_Servers
+    action: permit
+    contract: FULL-ACCESS
+  - source: Net_Admins
+    destination: DC_Mgmt
+    action: permit
+    contract: FULL-ACCESS
+{% else %}
+  - source: Corp_Users
+    destination: DC_Servers
+    action: permit
+    contract: APP-ACCESS
+  - source: Corp_Users
+    destination: Plant_OT
+    action: deny
+    contract: DENY-ALL
+  - source: Plant_OT
+    destination: Corp_Users
+    action: deny
+    contract: DENY-ALL
+  - source: Plant_OT
+    destination: DC_Servers
+    action: permit
+    contract: HISTORIAN-ONLY
+  - source: IoT_Devices
+    destination: DC_Servers
+    action: permit
+    contract: IOT-TO-DC
+  - source: Guest_Users
+    destination: DC_Servers
+    action: deny
+    contract: DENY-ALL
+  - source: Net_Admins
+    destination: Plant_OT
+    action: permit
+    contract: FULL-ACCESS
+  - source: Net_Admins
+    destination: DC_Servers
+    action: permit
+    contract: FULL-ACCESS
+{% endif %}
+
+default_action: deny

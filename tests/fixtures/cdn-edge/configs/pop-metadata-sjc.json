@@ -1,0 +1,28 @@
+{
+  "pop": "sjc",
+  "city": "San Jose",
+  "country": "US",
+  "region": "na",
+  "tier": "primary",
+  "status": "active",
+  "location": {
+    "latitude": 37.3382,
+    "longitude": -121.8863
+  },
+  "capacity": {
+    "bandwidth_gbps": 100,
+    "rack_units": 42
+  },
+  "network": {
+    "upstream_pop": "iad",
+    "peering_exchanges": [
+      "Equinix-SV",
+      "SFMIX"
+    ]
+  },
+  "management": {
+    "api_token": "api_mgmt_sjc_Hf7gB2kL",
+    "monitoring_url": "https://mon.arcticcache.net/pop/sjc",
+    "dashboard_url": "https://dash.arcticcache.net/pop/sjc"
+  }
+}

@@ -1,0 +1,5 @@
+filename,level_name,purdue_levels,admin_password,vpn_psk,rules
+ind-fw-l01,L0-L1-boundary,L0;L1,IndFW_@dm_L01_Xk7,IndFW_VPN_L01_Lm9,sensor-to-plc:permit:502;plc-to-sensor:permit:502;deny-all:deny
+ind-fw-l12,L1-L2-boundary,L1;L2,IndFW_@dm_L12_Qx4,IndFW_VPN_L12_Hy4,plc-to-scada:permit:502;scada-to-plc:permit:502;plc-to-hmi:permit:4840;opcua:permit:4840;deny-all:deny
+ind-fw-l23,L2-L3-boundary,L2;L3,IndFW_@dm_L23_Bx5,IndFW_VPN_L23_Ej7,scada-to-historian:permit:8086;hmi-to-mes:permit:443;mqtt:permit:8883;telnet:permit:23;deny-all:deny
+ind-fw-l35,L3-L5-boundary,L3;L3.5;L4;L5,IndFW_@dm_L35_Gh8,IndFW_VPN_L35_Jk5,historian-to-cloud:permit:443;mes-to-erp:permit:443;vpn-tunnel:permit:4500;deny-all:deny

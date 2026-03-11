@@ -1,0 +1,64 @@
+# TrustSec SGT Matrix — full-matrix
+# Meridian Manufacturing — sgt-matrix-full
+
+matrix_name: "full-matrix"
+description: "Full enterprise SGT matrix including OT"
+
+sgts:
+  - tag: 5
+    name: Net_Admins
+    description: Network administrators
+  - tag: 10
+    name: Corp_Users
+    description: Corporate employees
+  - tag: 20
+    name: BYOD_Devices
+    description: BYOD registered devices
+  - tag: 30
+    name: IoT_Devices
+    description: IoT sensors and actuators
+  - tag: 40
+    name: Guest_Users
+    description: Guest wireless users
+  - tag: 50
+    name: Plant_OT
+    description: Factory floor OT devices
+  - tag: 60
+    name: DC_Servers
+    description: Datacentre production servers
+
+policy:
+  - source: Corp_Users
+    destination: DC_Servers
+    action: permit
+    contract: APP-ACCESS
+  - source: Corp_Users
+    destination: Plant_OT
+    action: deny
+    contract: DENY-ALL
+  - source: Plant_OT
+    destination: Corp_Users
+    action: deny
+    contract: DENY-ALL
+  - source: Plant_OT
+    destination: DC_Servers
+    action: permit
+    contract: HISTORIAN-ONLY
+  - source: IoT_Devices
+    destination: DC_Servers
+    action: permit
+    contract: IOT-TO-DC
+  - source: Guest_Users
+    destination: DC_Servers
+    action: deny
+    contract: DENY-ALL
+  - source: Net_Admins
+    destination: Plant_OT
+    action: permit
+    contract: FULL-ACCESS
+  - source: Net_Admins
+    destination: DC_Servers
+    action: permit
+    contract: FULL-ACCESS
+
+default_action: deny

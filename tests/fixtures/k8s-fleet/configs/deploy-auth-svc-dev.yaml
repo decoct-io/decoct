@@ -1,0 +1,99 @@
+# Kubernetes Deployment — auth-svc (dev)
+# WavePoint Financial — deploy-auth-svc-dev
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: auth-svc
+  namespace: wavepoint-dev
+  labels:
+    app: auth-svc
+    env: dev
+    team: platform
+    version: "1.9.0-dev"
+    part-of: wavepoint
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+    kubectl.kubernetes.io/last-applied-configuration: managed-by-gitops
+    wavepoint.io/ephemeral: "true"
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: auth-svc
+      env: dev
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: auth-svc
+        env: dev
+        version: "1.9.0-dev"
+    spec:
+      serviceAccountName: auth-svc
+      terminationGracePeriodSeconds: 30
+      containers:
+        - name: auth-svc
+          image: registry.wavepoint.io/auth-svc:1.9.0-dev
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8081
+              protocol: TCP
+          env:
+            - name: APP_ENV
+              value: "dev"
+            - name: LOG_LEVEL
+              value: "DEBUG"
+            - name: SERVICE_NAME
+              value: "auth-svc"
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: DATABASE_URL
+              value: "postgresql://auth_user:Qw3rTy#1@db-dev.wavepoint.internal:5432/auth_dev"
+            - name: API_KEY
+              value: "sk_dev_auth_Pq3rS7vW2xYz"
+            - name: DB_POOL_SIZE
+              value: "50"
+            - name: OAUTH_PROVIDER
+              value: "dev-keycloak"
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+            successThreshold: 1
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+            successThreshold: 1
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config
+              readOnly: true
+      volumes:
+        - name: config-volume
+          configMap:
+            name: auth-svc-config

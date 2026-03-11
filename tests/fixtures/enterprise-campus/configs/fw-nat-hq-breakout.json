@@ -1,0 +1,26 @@
+{
+  "ruleset_name": "hq-internet-breakout",
+  "description": "HQ internet breakout NAT",
+  "location": "hq",
+  "rules": [
+    {
+      "name": "corp-internet-nat",
+      "type": "dynamic-ip-and-port",
+      "source_zone": "corp-internal",
+      "destination_zone": "corp-external",
+      "source_address": "10.0.0.0/8",
+      "translated_source": "203.0.113.100-203.0.113.110",
+      "service": "any"
+    },
+    {
+      "name": "guest-internet-nat",
+      "type": "dynamic-ip-and-port",
+      "source_zone": "guest",
+      "destination_zone": "corp-external",
+      "source_address": "10.99.0.0/16",
+      "translated_source": "203.0.113.120",
+      "service": "any"
+    }
+  ],
+  "last_modified": "2025-09-15T16:00:00Z"
+}

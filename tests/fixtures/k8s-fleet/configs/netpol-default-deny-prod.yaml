@@ -1,0 +1,22 @@
+# Kubernetes NetworkPolicy — default-deny (prod)
+# WavePoint Financial — netpol-default-deny-prod
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny
+  namespace: wavepoint-prod
+  labels:
+    app.kubernetes.io/name: default-deny
+    env: prod
+    team: platform
+    part-of: wavepoint
+  annotations:
+    networkpolicy.kubernetes.io/managed-by: gitops
+    wavepoint.io/compliance: pci-dss
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress: []
+  egress: []

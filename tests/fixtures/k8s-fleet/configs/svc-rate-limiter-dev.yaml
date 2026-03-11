@@ -1,0 +1,25 @@
+# Kubernetes Service — rate-limiter (dev)
+# WavePoint Financial — svc-rate-limiter-dev
+apiVersion: v1
+kind: Service
+metadata:
+  name: rate-limiter
+  namespace: wavepoint-dev
+  labels:
+    app: rate-limiter
+    env: dev
+    team: platform
+    part-of: wavepoint
+  annotations:
+    service.kubernetes.io/topology-aware-hints: auto
+spec:
+  type: ClusterIP
+  selector:
+    app: rate-limiter
+    env: dev
+  sessionAffinity: None
+  ports:
+    - name: http
+      protocol: TCP
+      port: 6379
+      targetPort: 6379

@@ -1,0 +1,3 @@
+filename,orchestrator_id,hostname,system_ip,org_name,enrollment_token,vbond_port,cert_path,ca_cert_path,max_controllers,max_vedges
+sdwan-vbond-1,1,vbond-01,10.255.255.1,MeridianMfg,VbEnr0ll_Tk1_Mx7nP,12346,/etc/viptela/certs/vbond-1.pem,/etc/viptela/certs/root-ca.pem,3,50
+sdwan-vbond-2,2,vbond-02,10.255.255.2,MeridianMfg,VbEnr0ll_Tk2_Qw9kR,12346,/etc/viptela/certs/vbond-2.pem,/etc/viptela/certs/root-ca.pem,3,50

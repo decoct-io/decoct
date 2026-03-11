@@ -1,0 +1,17 @@
+# Kubernetes ServiceAccount — payment-api (staging)
+# WavePoint Financial — sa-payment-api-staging
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: payment-api
+  namespace: wavepoint-staging
+  labels:
+    app: payment-api
+    env: staging
+    team: platform
+    part-of: wavepoint
+    cost-center: "platform"
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::333333333333:role/prod-payment-api-role
+    serviceaccount.kubernetes.io/managed-by: gitops
+automountServiceAccountToken: true

@@ -1,0 +1,99 @@
+# Kubernetes Deployment — notification-svc (dev)
+# WavePoint Financial — deploy-notification-svc-dev
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification-svc
+  namespace: wavepoint-dev
+  labels:
+    app: notification-svc
+    env: dev
+    team: platform
+    version: "2.0.1-dev"
+    part-of: wavepoint
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+    kubectl.kubernetes.io/last-applied-configuration: managed-by-gitops
+    wavepoint.io/ephemeral: "true"
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: notification-svc
+      env: dev
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: notification-svc
+        env: dev
+        version: "2.0.1-dev"
+    spec:
+      serviceAccountName: notification-svc
+      terminationGracePeriodSeconds: 30
+      containers:
+        - name: notification-svc
+          image: registry.wavepoint.io/notification-svc:2.0.1-dev
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8085
+              protocol: TCP
+          env:
+            - name: APP_ENV
+              value: "dev"
+            - name: LOG_LEVEL
+              value: "DEBUG"
+            - name: SERVICE_NAME
+              value: "notification-svc"
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: API_KEY
+              value: "sk_dev_notify_Vt3wXy6z"
+            - name: SMTP_HOST
+              value: "mailhog.dev"
+            - name: SMTP_PORT
+              value: "1025"
+            - name: SNS_TOPIC
+              value: "dev-notifications"
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "128Mi"
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+            successThreshold: 1
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+            successThreshold: 1
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config
+              readOnly: true
+      volumes:
+        - name: config-volume
+          configMap:
+            name: notification-svc-config

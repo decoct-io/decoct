@@ -1,0 +1,13 @@
+filename,link_id,link_type,endpoint_a,endpoint_b,bandwidth_gbps,latency_us,ipsec_enabled,ipsec_psk,protocol,vlan
+transport-fronthaul-01,fh-link-01,fronthaul,du-mn01,ru-macro-north-01,25,50,true,ipsec_psk_fh01_Kx9m,eCPRI,100
+transport-fronthaul-02,fh-link-02,fronthaul,du-mn02,ru-macro-north-02,25,45,true,ipsec_psk_fh02_Wx5j,eCPRI,100
+transport-fronthaul-03,fh-link-03,fronthaul,du-mn03,ru-macro-north-03,25,55,true,ipsec_psk_fh03_Mn4w,eCPRI,200
+transport-fronthaul-04,fh-link-04,fronthaul,du-mn04,ru-macro-north-04,25,60,true,ipsec_psk_fh04_Yp6c,eCPRI,200
+transport-midhaul-01,mh-link-01,midhaul,cu-pool-north,du-mn01,10,200,true,ipsec_psk_mh01_Hf7g,IP/MPLS,1000
+transport-midhaul-02,mh-link-02,midhaul,cu-pool-north,du-mn02,10,250,true,ipsec_psk_mh02_Pq3r,IP/MPLS,1000
+transport-midhaul-03,mh-link-03,midhaul,cu-pool-south,du-sd01,10,150,true,ipsec_psk_mh03_Jk5m,IP/MPLS,1000
+transport-midhaul-04,mh-link-04,midhaul,cu-pool-east,du-mn03,10,300,true,ipsec_psk_mh04_Vt6w,IP/MPLS,1100
+transport-backhaul-01,bh-link-01,backhaul,cu-pool-north,core-dc-01,100,1000,true,ipsec_psk_bh01_Ab3c,IP/MPLS,2000
+transport-backhaul-02,bh-link-02,backhaul,cu-pool-south,core-dc-01,100,1200,true,ipsec_psk_bh02_Fg5h,IP/MPLS,2000
+transport-backhaul-03,bh-link-03,backhaul,cu-pool-east,core-dc-02,100,2000,true,ipsec_psk_bh03_Kl7m,IP/MPLS,2100
+transport-backhaul-04,bh-link-04,backhaul,cu-pool-west,core-dc-02,50,5000,false,none,IP/MPLS,2100

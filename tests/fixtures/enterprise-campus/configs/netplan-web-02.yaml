@@ -1,0 +1,44 @@
+# Netplan Configuration — web-server-02
+# Meridian Manufacturing — netplan-web-02
+
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    eno1:
+      mtu: 1500
+    eno2:
+      mtu: 1500
+  bonds:
+    bond0:
+      interfaces:
+        - eno1
+        - eno2
+      mtu: 1500
+      parameters:
+        mode: 802.3ad
+        lacp-rate: fast
+        mii-monitor-interval: 100
+        transmit-hash-policy: layer3+4
+  vlans:
+    vlan100:
+      id: 100
+      link: bond0
+      mtu: 1500
+      addresses:
+        - 10.4.1.16/24
+      routes:
+        - to: default
+          via: 10.4.2.1
+      nameservers:
+        addresses:
+          - 10.4.1.10
+          - 10.4.1.11
+        search:
+          - meridian-mfg.com
+    vlan600:
+      id: 600
+      link: bond0
+      mtu: 1500
+      addresses:
+        - 10.4.2.16/24

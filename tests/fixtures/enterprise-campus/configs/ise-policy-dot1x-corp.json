@@ -1,0 +1,54 @@
+{
+  "policy_name": "Dot1X-Corporate",
+  "description": "802.1X for corporate wired and wireless",
+  "enabled": true,
+  "authentication": {
+    "method": "dot1x",
+    "eap_type": "PEAP-MSCHAPv2",
+    "identity_store": "Active-Directory",
+    "fallback": "mab"
+  },
+  "authorization": {
+    "profile": "PermitAccess",
+    "sgt": {
+      "tag": 10,
+      "name": "Corp_Users"
+    },
+    "conditions": [
+      {
+        "attribute": "AD-Group",
+        "value": "Corp-Users"
+      },
+      {
+        "attribute": "Device-Type",
+        "value": "Workstation"
+      }
+    ],
+    "dacl": {
+      "name": "PERMIT-ALL",
+      "rules": [
+        {
+          "action": "permit",
+          "protocol": "ip",
+          "source": "any",
+          "destination": "any"
+        }
+      ]
+    }
+  },
+  "tacacs": {
+    "shared_key": "T@c@cs_Mrdn_Pk7mN",
+    "servers": [
+      {
+        "address": "10.4.1.30",
+        "port": 49
+      },
+      {
+        "address": "10.4.1.31",
+        "port": 49
+      }
+    ]
+  },
+  "api_token": "ISE_AP1_Tk_Mrdn_Xr7mNpQ2",
+  "version": "3.2"
+}

@@ -1,0 +1,51 @@
+# Varnish Cache Parameters — sin
+# ArcticCache CDN — varnish-sin
+
+runtime:
+  cache_size: "16g"
+  thread_pools: 2
+  thread_pool_min: 50
+  thread_pool_max: 1000
+  workspace_client: "256k"
+  workspace_backend: "256k"
+
+backend:
+  host: "127.0.0.1"
+  port: 8080
+  probe:
+    url: "/health"
+    interval: "5s"
+    timeout: "2s"
+    window: 5
+    threshold: 3
+
+ttl:
+  default: "120s"
+  static_assets: "86400s"
+  api_responses: "10s"
+  grace_period: "3600s"
+
+purge:
+  token: "purge_tk_sin_Vt6wXy"
+  acl_networks:
+    - "10.8.0.0/16"
+    - "10.0.0.0/8"
+
+cache_rules:
+  - pattern: "\\.(jpg|jpeg|png|gif|webp|svg|ico)$"
+    ttl: "86400s"
+    cache_control: "public, immutable"
+  - pattern: "\\.(css|js|woff2?)$"
+    ttl: "86400s"
+    cache_control: "public, immutable"
+  - pattern: "^/api/"
+    ttl: "10s"
+    cache_control: "private, no-store"
+  - pattern: "^/health$"
+    ttl: "0s"
+    cache_control: "no-cache"
+
+logging:
+  format: "%h %l %u %t \"%r\" %s %b \"%{Referer}i\" \"%{User-agent}i\" %{Varnish:handling}x"
+  syslog_host: "localhost"
+  syslog_port: 514

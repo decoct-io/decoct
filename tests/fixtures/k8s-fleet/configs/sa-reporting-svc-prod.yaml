@@ -1,0 +1,23 @@
+# Kubernetes ServiceAccount — reporting-svc (prod)
+# WavePoint Financial — sa-reporting-svc-prod
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: reporting-svc
+  namespace: wavepoint-prod
+  labels:
+    app: reporting-svc
+    env: prod
+    team: platform
+    part-of: wavepoint
+    cost-center: "analytics"
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::333333333333:role/prod-reporting-svc-role
+    serviceaccount.kubernetes.io/managed-by: gitops
+    wavepoint.io/last-audit: "2026-01-15"
+    wavepoint.io/compliance: pci-dss
+automountServiceAccountToken: false
+secrets:
+  - name: reporting-svc-token
+imagePullSecrets:
+  - name: registry-credentials

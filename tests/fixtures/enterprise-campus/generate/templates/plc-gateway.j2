@@ -1,0 +1,65 @@
+{
+  "gateway_name": "{{ gw_name }}",
+  "protocol": "{{ protocol }}",
+  "device_connection": {
+{% if modbus_type == 'tcp' %}
+    "host": "{{ device_ip }}",
+    "port": {{ device_port }},
+    "timeout_ms": 5000,
+    "retries": 3
+{% else %}
+    "serial_port": "{{ device_ip }}",
+    "baud_rate": {{ device_port }},
+    "data_bits": 8,
+    "parity": "none",
+    "stop_bits": 1,
+    "timeout_ms": 3000
+{% endif %}
+  },
+  "poll_interval_ms": {{ poll_interval_ms }},
+  "registers": [
+{% for reg_str in registers %}
+{% set parts = reg_str.split(':') %}
+    {
+      "address": "{{ parts[0] }}",
+      "name": "{{ parts[1] }}",
+      "data_type": "{{ parts[2] }}",
+{% if protocol == 'modbus-tcp' or protocol == 'modbus-rtu' %}
+      "function_code": 3,
+      "byte_order": "big-endian",
+      "word_order": "big-endian"
+{% elif protocol == 'ethernet-ip' %}
+      "tag_path": "{{ parts[0] }}",
+      "element_count": 1
+{% endif %}
+    }{{ "," if not loop.last else "" }}
+{% endfor %}
+  ],
+  "mqtt": {
+    "broker": "10.5.0.50",
+    "port": 8883,
+    "client_id": "{{ gw_name }}",
+    "publish_token": "{{ mqtt_token }}",
+    "tls": true,
+    "topics": [
+{% for topic in mqtt_topics %}
+      "{{ topic }}"{{ "," if not loop.last else "" }}
+{% endfor %}
+    ],
+    "qos": 1,
+    "retain": false,
+    "payload_format": "json",
+    "timestamp_field": "ts",
+    "batch_size": 10,
+    "batch_interval_ms": 1000
+  },
+  "buffering": {
+    "enabled": true,
+    "max_size_mb": 50,
+    "path": "/var/lib/plc-gateway/buffer"
+  },
+  "logging": {
+    "level": "info",
+    "file": "/var/log/plc-gateway/{{ gw_name }}.log"
+  }
+}

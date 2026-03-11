@@ -1,0 +1,23 @@
+# Kubernetes ConfigMap — app-settings (staging)
+# WavePoint Financial — cm-app-settings-staging
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-settings
+  namespace: wavepoint-staging
+  labels:
+    app.kubernetes.io/name: app-settings
+    app.kubernetes.io/instance: app-settings-staging
+    env: staging
+    team: platform
+    part-of: wavepoint
+  annotations:
+    configmap.kubernetes.io/managed-by: gitops
+data:
+  APP_NAME: "wavepoint"
+  APP_ENV: "staging"
+  BASE_URL: "https://staging.wavepoint.io"
+  ALLOWED_ORIGINS: "https://staging.wavepoint.io"
+  SESSION_TIMEOUT: "1800"
+  LOG_FORMAT: "json"
+  TRACING_ENABLED: "true"

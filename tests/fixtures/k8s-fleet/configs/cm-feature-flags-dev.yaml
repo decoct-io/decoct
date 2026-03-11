@@ -1,0 +1,22 @@
+# Kubernetes ConfigMap — feature-flags (dev)
+# WavePoint Financial — cm-feature-flags-dev
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: feature-flags
+  namespace: wavepoint-dev
+  labels:
+    app.kubernetes.io/name: feature-flags
+    app.kubernetes.io/instance: feature-flags-dev
+    env: dev
+    team: platform
+    part-of: wavepoint
+  annotations:
+    configmap.kubernetes.io/managed-by: gitops
+data:
+  ENABLE_NEW_CHECKOUT: "true"
+  ENABLE_RISK_V2: "true"
+  ENABLE_DARK_MODE: "true"
+  ENABLE_BETA_API: "true"
+  MAINTENANCE_MODE: "false"
+  MAX_RETRY_COUNT: "10"

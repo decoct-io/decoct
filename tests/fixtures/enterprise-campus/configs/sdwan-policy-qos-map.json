@@ -1,0 +1,84 @@
+{
+  "policy_name": "qos-class-map",
+  "policy_type": "qos",
+  "description": "QoS classification and marking",
+  "organization": "MeridianMfg",
+  "qos_map": {
+    "queues": [
+      {
+        "queue": 0,
+        "bandwidth": 10,
+        "dscp": [
+          0
+        ],
+        "class": "best-effort"
+      },
+      {
+        "queue": 1,
+        "bandwidth": 20,
+        "dscp": [
+          10,
+          12,
+          14
+        ],
+        "class": "bulk-data"
+      },
+      {
+        "queue": 2,
+        "bandwidth": 25,
+        "dscp": [
+          18,
+          20,
+          22
+        ],
+        "class": "interactive"
+      },
+      {
+        "queue": 3,
+        "bandwidth": 15,
+        "dscp": [
+          26,
+          28,
+          30
+        ],
+        "class": "streaming-video"
+      },
+      {
+        "queue": 4,
+        "bandwidth": 10,
+        "dscp": [
+          34
+        ],
+        "class": "call-signaling"
+      },
+      {
+        "queue": 5,
+        "bandwidth": 10,
+        "dscp": [
+          46
+        ],
+        "class": "voice"
+      },
+      {
+        "queue": 6,
+        "bandwidth": 5,
+        "dscp": [
+          48
+        ],
+        "class": "network-control"
+      },
+      {
+        "queue": 7,
+        "bandwidth": 5,
+        "dscp": [
+          56
+        ],
+        "class": "network-management"
+      }
+    ],
+    "scheduling": "wrr",
+    "queue_limit": 4096
+  },
+  "last_modified": "2025-11-20T14:30:00Z",
+  "version": 3
+}

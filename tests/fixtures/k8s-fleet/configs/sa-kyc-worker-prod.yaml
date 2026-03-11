@@ -1,0 +1,23 @@
+# Kubernetes ServiceAccount — kyc-worker (prod)
+# WavePoint Financial — sa-kyc-worker-prod
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kyc-worker
+  namespace: wavepoint-prod
+  labels:
+    app: kyc-worker
+    env: prod
+    team: platform
+    part-of: wavepoint
+    cost-center: "compliance"
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::333333333333:role/prod-kyc-worker-role
+    serviceaccount.kubernetes.io/managed-by: gitops
+    wavepoint.io/last-audit: "2026-01-15"
+    wavepoint.io/compliance: pci-dss
+automountServiceAccountToken: true
+secrets:
+  - name: kyc-worker-token
+imagePullSecrets:
+  - name: registry-credentials

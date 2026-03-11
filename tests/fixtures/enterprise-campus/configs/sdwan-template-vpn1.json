@@ -1,0 +1,27 @@
+{
+  "template_name": "vpn1-corporate",
+  "template_type": "vpn",
+  "description": "Corporate VPN template \u2014 LAN-side services",
+  "organization": "MeridianMfg",
+  "vpn": {
+    "vpn_id": 1,
+    "name": "corporate",
+    "dns": {
+      "primary": "10.4.1.10",
+      "secondary": "10.4.1.11",
+      "domain": "meridian-mfg.com"
+    },
+    "interface": {
+      "name": "ge0/1",
+      "description": "LAN Corporate",
+      "dhcp_server": {
+        "enable": true,
+        "pool_start": "10.0.0.100",
+        "pool_end": "10.0.0.250",
+        "lease_time": 86400
+      }
+    }
+  },
+  "last_modified": "2025-10-15T09:00:00Z",
+  "version": 2
+}

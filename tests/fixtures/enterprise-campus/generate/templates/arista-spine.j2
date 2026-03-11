@@ -1,0 +1,70 @@
+# Arista Spine Switch — {{ spine_id }}
+# Meridian Manufacturing — {{ filename }}
+
+system:
+  hostname: "{{ hostname }}"
+  management_ip: "{{ mgmt_ip }}/24"
+  domain_name: meridian-mfg.com
+  enable_secret: "{{ enable_secret }}"
+
+loopback:
+  - id: 0
+    ip: "{{ loopback0 }}/32"
+    description: Router-ID
+
+routing:
+  bgp:
+    asn: {{ bgp_asn }}
+    router_id: "{{ loopback0 }}"
+    maximum_paths: {{ ecmp_max }}
+    neighbors:
+{% for leaf in leaf_peers.split(';') %}
+      - address: "{{ leaf }}"
+        remote_as_range: "65001-65099"
+        description: leaf-downlink
+        password: "{{ bgp_md5 }}"
+        send_community: extended
+        maximum_routes: 12000
+        peer_group: LEAF-PEERS
+{% endfor %}
+    peer_groups:
+      - name: LEAF-PEERS
+        update_source: Loopback0
+        ebgp_multihop: 2
+        send_community: extended
+    address_family:
+      evpn:
+        peer_group: LEAF-PEERS
+        next_hop_unchanged: true
+      ipv4_unicast:
+        redistribute:
+          - connected
+        network:
+          - "{{ loopback0 }}/32"
+
+interfaces:
+{% for leaf in leaf_peers.split(';') %}
+  - name: "Ethernet{{ loop.index }}"
+    description: "to-leaf-{{ leaf }}"
+    mtu: 9214
+    ip: "point-to-point"
+    type: routed
+{% endfor %}
+
+snmp:
+  community:
+    - name: "{{ snmp_community }}"
+      access: ro
+  location: "DC1 Spine Row"
+  contact: noc@meridian-mfg.com
+
+management:
+  ssh:
+    enabled: true
+    idle_timeout: 300
+
+logging:
+  host:
+    - address: 10.4.1.50
+      port: 514
+  trap: informational

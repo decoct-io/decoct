@@ -1,0 +1,120 @@
+# Prometheus Configuration — fra
+# ArcticCache CDN — prometheus-fra
+
+global:
+  scrape_interval: 15s
+  scrape_timeout: 10s
+  evaluation_interval: 15s
+  external_labels:
+    pop: fra
+    provider: arcticcache
+
+rule_files:
+  - /etc/prometheus/rules/alerts.yaml
+  - /etc/prometheus/rules/recording.yaml
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - localhost:9093
+      scheme: http
+      timeout: 10s
+
+scrape_configs:
+  - job_name: prometheus
+    scrape_interval: 15s
+    static_configs:
+      - targets:
+          - localhost:9090
+
+  - job_name: nginx
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    static_configs:
+      - targets:
+          - "10.2.1.10:9113"
+        labels:
+          pop: fra
+          service: nginx
+
+  - job_name: haproxy
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    static_configs:
+      - targets:
+          - "10.2.1.15:8404"
+        labels:
+          pop: fra
+          service: haproxy
+
+  - job_name: varnish
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    static_configs:
+      - targets:
+          - "10.2.1.11:9131"
+        labels:
+          pop: fra
+          service: varnish
+
+  - job_name: node
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    static_configs:
+      - targets:
+          - "10.2.1.10:9100"
+        labels:
+          pop: fra
+          service: node
+
+  - job_name: node
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    static_configs:
+      - targets:
+          - "10.2.1.11:9100"
+        labels:
+          pop: fra
+          service: node
+
+  - job_name: keepalived
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    static_configs:
+      - targets:
+          - "10.2.1.10:9165"
+        labels:
+          pop: fra
+          service: keepalived
+
+remote_write:
+  - url: https://metrics.arcticcache.net/api/v1/write
+    remote_timeout: 30s
+    authorization:
+      type: Bearer
+      credentials: prom_tk_fra_Wx5jT8hK
+    queue_config:
+      capacity: 10000
+      max_shards: 50
+      min_shards: 1
+      max_samples_per_send: 2000
+      batch_send_deadline: 5s
+
+# Alert thresholds
+# cpu_threshold: 80
+# cache_hit_threshold: 90
+# latency_threshold_ms: 100
+# retention_days: 30

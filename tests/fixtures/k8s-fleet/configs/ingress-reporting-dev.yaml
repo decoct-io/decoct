@@ -1,0 +1,29 @@
+# Kubernetes Ingress — reporting (dev)
+# WavePoint Financial — ingress-reporting-dev
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: reporting-ingress
+  namespace: wavepoint-dev
+  labels:
+    app.kubernetes.io/name: reporting-ingress
+    env: dev
+    team: platform
+    part-of: wavepoint
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "60"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "60"
+spec:
+  rules:
+    - host: reporting.dev.wavepoint.internal
+      http:
+        paths:
+          - path: /reports/*
+            pathType: Prefix
+            backend:
+              service:
+                name: reporting-svc
+                port:
+                  number: 80

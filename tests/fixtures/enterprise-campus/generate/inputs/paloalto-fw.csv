@@ -1,0 +1,9 @@
+filename,site,hostname,mgmt_ip,model,panos_version,admin_password_hash,api_key,gp_psk,zones,rules,nat_rules
+pa-fw-hq-1,hq,hq-pa-fw-01,10.1.10.60,PA-5260,11.1.2,Jkx7mNpQ2wRs5tUv,$PA_API_hq1_Xr7mNp,GP_PSK_hq_Mn4wQ8,corp-internal;corp-external;dmz;guest;iot,corp-to-ext:permit;ext-to-dmz:permit:443;guest-to-ext:permit;iot-to-mqtt:permit:8883,corp-out:dynamic-ip-port;dmz-in:static:203.0.113.100
+pa-fw-hq-2,hq,hq-pa-fw-02,10.1.10.61,PA-5260,11.1.2,Lm9kRwPx4yBn6cDf,$PA_API_hq2_Wx5jT8,GP_PSK_hq_Mn4wQ8,corp-internal;corp-external;dmz;guest;iot,corp-to-ext:permit;ext-to-dmz:permit:443;guest-to-ext:permit;iot-to-mqtt:permit:8883,corp-out:dynamic-ip-port;dmz-in:static:203.0.113.101
+pa-fw-hq-gp,hq,hq-pa-gp-01,10.1.10.62,PA-820,11.1.2,Qx4rSvHy8zA1bCeF,$PA_API_hqgp_Pq3rS7,GP_PSK_hq_Mn4wQ8,trust;untrust;vpn,vpn-to-corp:permit;corp-to-vpn:permit,gp-nat:dynamic-ip-port
+pa-fw-dc1-1,dc1,dc1-pa-fw-01,10.4.10.60,PA-5260,11.1.2,Hy4zAbCd7eFgHjKm,$PA_API_dc1_Vt6wXy,none,dc-internal;dc-external;dc-mgmt;dc-dmz,dc-to-ext:permit;ext-to-dmz:permit:443;mgmt-to-dc:permit,dc-out:dynamic-ip-port;dmz-in:static:198.51.100.50
+pa-fw-dc1-2,dc1,dc1-pa-fw-02,10.4.10.61,PA-5260,11.1.2,Bx5cDeF8gHjKmNpQ,$PA_API_dc2_Bx5cDe,none,dc-internal;dc-external;dc-mgmt;dc-dmz,dc-to-ext:permit;ext-to-dmz:permit:443;mgmt-to-dc:permit,dc-out:dynamic-ip-port;dmz-in:static:198.51.100.51
+pa-fw-dc1-dmz,dc1,dc1-pa-dmz-01,10.4.10.62,PA-3260,11.1.2,Ej7fGhJk9mNpQrSt,$PA_API_dcdmz_Ej7fG,none,dmz-front;dmz-back;dc-internal,front-to-back:permit:443;back-to-dc:permit:5432,dmz-front-in:static:198.51.100.60
+pa-fw-fac-1,fac,fac-pa-fw-01,10.5.10.60,PA-820,11.1.2,Gh8sUvWx3yZaBcDe,$PA_API_fac1_Gh8sUv,none,it-network;ot-dmz;ot-network,it-to-otdmz:permit:443;otdmz-to-ot:permit:502;ot-to-historian:permit:8086,none
+pa-fw-fac-2,fac,fac-pa-fw-02,10.5.10.61,PA-820,11.1.2,Jk5mNxPq2rStUvWx,$PA_API_fac2_Jk5mNx,none,it-network;ot-dmz;ot-network,it-to-otdmz:permit:443;otdmz-to-ot:permit:502;ot-to-historian:permit:8086,none

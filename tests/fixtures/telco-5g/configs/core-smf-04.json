@@ -1,0 +1,99 @@
+{
+  "smf_id": "smf-04",
+  "smf_name": "smf-dr-01",
+  "api_version": "v1.1.0",
+  "plmn": {
+    "mcc": "310",
+    "mnc": "260"
+  },
+  "upf_associations": [
+    {
+      "upf_id": "upf-04",
+      "n4_ip": "10.100.3.1",
+      "n4_port": 8805,
+      "heartbeat_interval_s": 10,
+      "status": "active"
+    }
+  ],
+  "dnn_configs": [
+    {
+      "dnn": "internet",
+      "pdu_session_type": "IPv4v6",
+      "ssc_mode": "SSC-Mode-1",
+      "session_ambr": {
+        "downlink_mbps": 1000,
+        "uplink_mbps": 500
+      },
+      "ipv4_pool": "10.200.0.0/16",
+      "ipv6_prefix": "2001:db8:abcd::/48",
+      "dns_primary": "10.100.5.1",
+      "dns_secondary": "10.100.5.2"
+    },
+    {
+      "dnn": "ims",
+      "pdu_session_type": "IPv4v6",
+      "ssc_mode": "SSC-Mode-1",
+      "session_ambr": {
+        "downlink_mbps": 1000,
+        "uplink_mbps": 500
+      },
+      "ipv4_pool": "10.201.0.0/16",
+      "ipv6_prefix": "2001:db8:abce::/48",
+      "dns_primary": "10.100.5.1",
+      "dns_secondary": "10.100.5.2"
+    },
+    {
+      "dnn": "iot",
+      "pdu_session_type": "IPv4v6",
+      "ssc_mode": "SSC-Mode-1",
+      "session_ambr": {
+        "downlink_mbps": 1000,
+        "uplink_mbps": 500
+      },
+      "ipv4_pool": "10.202.0.0/16",
+      "ipv6_prefix": "2001:db8:abcf::/48",
+      "dns_primary": "10.100.5.1",
+      "dns_secondary": "10.100.5.2"
+    },
+    {
+      "dnn": "enterprise",
+      "pdu_session_type": "IPv4v6",
+      "ssc_mode": "SSC-Mode-3",
+      "session_ambr": {
+        "downlink_mbps": 1000,
+        "uplink_mbps": 500
+      },
+      "ipv4_pool": "10.203.0.0/16",
+      "ipv6_prefix": "2001:db8:abd0::/48",
+      "dns_primary": "10.100.5.1",
+      "dns_secondary": "10.100.5.2"
+    }
+  ],
+  "session_rules": {
+    "max_pdu_sessions": 65536,
+    "default_qos_5qi": 9,
+    "default_arp_priority": 8,
+    "pdu_session_inactivity_timer_s": 7200
+  },
+  "nf_profile": {
+    "nf_status": "standby",
+    "nf_type": "SMF",
+    "heartbeat_timer_s": 10,
+    "nf_services": [
+      "nsmf-pdusession",
+      "nsmf-event-exposure"
+    ]
+  },
+  "management": {
+    "oam_password": "oam_pwd_smf04_Vt6wXy",
+    "oam_port": 443,
+    "oam_protocol": "rest-api",
+    "logging_level": "info",
+    "audit_logging": true
+  },
+  "monitoring": {
+    "kpi_reporting_interval_s": 15,
+    "alarm_severity_filter": "warning",
+    "pm_counters_enabled": true
+  }
+}

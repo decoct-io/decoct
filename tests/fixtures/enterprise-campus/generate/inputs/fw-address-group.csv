@@ -1,0 +1,5 @@
+filename,group_name,description,vendor,members
+fw-addrgrp-rfc1918,RFC1918-Private,RFC1918 private address space,paloalto,10.0.0.0/8;172.16.0.0/12;192.168.0.0/16
+fw-addrgrp-dc-servers,DC-Server-Nets,Datacentre server subnets,paloalto,10.4.1.0/24;10.4.2.0/24;10.4.3.0/24;10.4.4.0/24
+fw-addrgrp-campus,Campus-Nets,All campus user subnets,paloalto,10.1.0.0/16;10.2.0.0/16;10.3.0.0/16
+fw-addrgrp-ot,OT-Networks,Factory floor OT subnets,paloalto,10.5.0.0/20;10.5.16.0/20;10.5.32.0/20

@@ -1,0 +1,21 @@
+# Kubernetes ConfigMap — region-use1 (dev)
+# WavePoint Financial — cm-region-use1-dev
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: region-use1
+  namespace: wavepoint-dev
+  labels:
+    app.kubernetes.io/name: region-use1
+    app.kubernetes.io/instance: region-use1-dev
+    env: dev
+    team: platform
+    part-of: wavepoint
+  annotations:
+    configmap.kubernetes.io/managed-by: gitops
+data:
+  AWS_REGION: "us-east-1"
+  AWS_ACCOUNT_ID: "111111111111"
+  VPC_CIDR: "10.0.0.0/16"
+  CLUSTER_NAME: "wavepoint-dev-use1"
+  SERVICE_MESH: "none"

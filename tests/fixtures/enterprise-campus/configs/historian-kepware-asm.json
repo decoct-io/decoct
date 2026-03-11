@@ -1,0 +1,46 @@
+{
+  "historian_name": "kepware-assembly-01",
+  "historian_type": "kepware",
+  "kepware": {
+    "bind_address": "0.0.0.0",
+    "port": 57412,
+    "admin_token": "Kep_Adm_Mrdn_Gh8",
+    "database_name": "AssemblyData",
+    "api_key": "Kep_AP1_Mrdn_Jk5",
+    "retention": {
+      "days": 365,
+      "archive_enabled": true,
+      "archive_path": "/var/lib/kepware/archive"
+    },
+    "channels": [
+      {
+        "name": "OPC-UA-Channel",
+        "driver": "OPC UA Client",
+        "server_url": "opc.tcp://10.5.0.1:4840",
+        "security_policy": "Basic256Sha256",
+        "update_rate_ms": 1000
+      }
+    ],
+    "tag_groups": [
+      {
+        "name": "AssemblyData",
+        "scan_rate_ms": 500,
+        "deadband_percent": 1.0
+      }
+    ],
+    "connectivity": {
+      "rest_api": true,
+      "rest_port": 57412,
+      "iot_gateway": {
+        "enabled": true,
+        "mqtt_broker": "10.5.0.50",
+        "mqtt_port": 8883
+      }
+    }
+  },
+  "monitoring": {
+    "health_check_url": "http://0.0.0.0:57412/health",
+    "metrics_endpoint": "/metrics",
+    "alert_email": "plant-ops@meridian-mfg.com"
+  }
+}

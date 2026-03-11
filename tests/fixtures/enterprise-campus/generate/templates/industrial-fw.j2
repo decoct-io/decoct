@@ -1,0 +1,84 @@
+# Industrial Firewall — {{ level_name }}
+# Meridian Manufacturing — {{ filename }}
+# Purdue Model Segmentation
+
+system:
+  name: "{{ level_name }}"
+  admin_password: "{{ admin_password }}"
+  model: FortiGate-Rugged-60F
+  firmware: 7.4.3
+  management:
+    ip: "10.5.100.{{ loop.index0 + 1 if loop is defined else '1' }}"
+    ssh: enabled
+    https: enabled
+    telnet: disabled
+
+purdue_levels:
+{% for level in purdue_levels.split(';') %}
+  - "{{ level }}"
+{% endfor %}
+
+zones:
+{% for level in purdue_levels.split(';') %}
+  - name: "{{ level }}-zone"
+    interfaces:
+      - port{{ loop.index }}
+    protection: strict
+{% endfor %}
+
+security_rules:
+{% for rule_str in rules %}
+{% set parts = rule_str.split(':') %}
+  - name: "{{ parts[0] }}"
+    action: "{{ parts[1] }}"
+{% if parts | length > 2 %}
+    service: "tcp/{{ parts[2] }}"
+{% else %}
+    service: any
+{% endif %}
+{% set src_dst = parts[0].split('-to-') if '-to-' in parts[0] else [parts[0], 'any'] %}
+    source: "{{ src_dst[0] }}"
+{% if src_dst | length > 1 %}
+    destination: "{{ src_dst[1] }}"
+{% endif %}
+    log: true
+    ips: {{ 'enabled' if parts[1] == 'permit' else 'disabled' }}
+{% if parts[1] == 'permit' %}
+    deep_inspection:
+      industrial_protocol: true
+      modbus_function_whitelist: [1, 2, 3, 4, 5, 6]
+{% endif %}
+{% endfor %}
+
+vpn:
+  pre_shared_key: "{{ vpn_psk }}"
+  ike_version: 2
+  tunnel:
+    local_subnet: "10.5.0.0/16"
+    remote_subnet: "10.4.0.0/16"
+
+industrial_protocol_detection:
+  enabled: true
+  protocols:
+    - name: modbus-tcp
+      port: 502
+      deep_inspection: true
+    - name: ethernet-ip
+      port: 44818
+      deep_inspection: true
+    - name: opcua
+      port: 4840
+      deep_inspection: true
+    - name: profinet
+      port: 34964
+      deep_inspection: false
+
+logging:
+  syslog:
+    server: 10.5.100.50
+    port: 514
+    facility: local7
+  industrial_events:
+    enabled: true
+    log_all_modbus: true
+    log_all_opcua: true

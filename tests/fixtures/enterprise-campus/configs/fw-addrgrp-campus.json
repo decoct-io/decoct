@@ -1,0 +1,29 @@
+{
+  "group_name": "Campus-Nets",
+  "description": "All campus user subnets",
+  "vendor": "paloalto",
+  "type": "ip-netmask",
+  "members": [
+    {
+      "name": "10.1.0.0-16",
+      "value": "10.1.0.0/16",
+      "type": "ip-netmask"
+    },
+    {
+      "name": "10.2.0.0-16",
+      "value": "10.2.0.0/16",
+      "type": "ip-netmask"
+    },
+    {
+      "name": "10.3.0.0-16",
+      "value": "10.3.0.0/16",
+      "type": "ip-netmask"
+    }
+  ],
+  "tags": [
+    "enterprise",
+    "managed"
+  ],
+  "shared": true,
+  "last_modified": "2025-10-01T12:00:00Z"
+}

@@ -1,0 +1,45 @@
+{
+  "historian_name": "influx-plant-01",
+  "historian_type": "influxdb",
+  "influxdb": {
+    "bind_address": "0.0.0.0",
+    "port": 8086,
+    "admin_token": "Infl_Adm_Mrdn_Xk7",
+    "organization": "MeridianMfg",
+    "bucket": "meridian_plant",
+    "retention": {
+      "days": 90,
+      "shard_group_duration": "7d",
+      "replication_factor": 1
+    },
+    "api": {
+      "token": "Infl_AP1_Mrdn_Lm9",
+      "write_endpoint": "/api/v2/write",
+      "query_endpoint": "/api/v2/query"
+    },
+    "storage": {
+      "data_dir": "/var/lib/influxdb/data",
+      "wal_dir": "/var/lib/influxdb/wal",
+      "cache_max_memory_size": "1073741824",
+      "cache_snapshot_memory_size": "26214400",
+      "compact_full_write_cold_duration": "4h"
+    },
+    "subscriptions": [
+      {
+        "name": "plant-telemetry",
+        "type": "mqtt",
+        "topic": "plant/+/telemetry/#"
+      },
+      {
+        "name": "plant-alerts",
+        "type": "mqtt",
+        "topic": "plant/+/alert/#"
+      }
+    ]
+  },
+  "monitoring": {
+    "health_check_url": "http://0.0.0.0:8086/health",
+    "metrics_endpoint": "/metrics",
+    "alert_email": "plant-ops@meridian-mfg.com"
+  }
+}

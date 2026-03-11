@@ -1,0 +1,29 @@
+{
+  "group_name": "OT-Networks",
+  "description": "Factory floor OT subnets",
+  "vendor": "paloalto",
+  "type": "ip-netmask",
+  "members": [
+    {
+      "name": "10.5.0.0-20",
+      "value": "10.5.0.0/20",
+      "type": "ip-netmask"
+    },
+    {
+      "name": "10.5.16.0-20",
+      "value": "10.5.16.0/20",
+      "type": "ip-netmask"
+    },
+    {
+      "name": "10.5.32.0-20",
+      "value": "10.5.32.0/20",
+      "type": "ip-netmask"
+    }
+  ],
+  "tags": [
+    "enterprise",
+    "managed"
+  ],
+  "shared": true,
+  "last_modified": "2025-10-01T12:00:00Z"
+}

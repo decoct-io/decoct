@@ -1,0 +1,33 @@
+{
+  "pop": "{{ pop }}",
+  "city": "{{ city }}",
+  "country": "{{ country }}",
+  "region": "{{ region }}",
+  "tier": "{{ tier }}",
+  "status": "{{ status }}",
+
+  "location": {
+    "latitude": {{ latitude }},
+    "longitude": {{ longitude }}
+  },
+
+  "capacity": {
+    "bandwidth_gbps": {{ bandwidth_gbps }},
+    "rack_units": {{ rack_units }}
+  },
+
+  "network": {
+    "upstream_pop": "{{ upstream_pop }}",
+    "peering_exchanges": [
+{% for ix in peering_exchanges.split(';') %}
+      "{{ ix }}"{{ "," if not loop.last else "" }}
+{% endfor %}
+    ]
+  },
+
+  "management": {
+    "api_token": "{{ api_mgmt_token }}",
+    "monitoring_url": "https://mon.arcticcache.net/pop/{{ pop }}",
+    "dashboard_url": "https://dash.arcticcache.net/pop/{{ pop }}"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "pop": "{{ pop }}",
+  "cert_type": "{{ cert_type }}",
+
+  "certificate": {
+    "cert_path": "{{ cert_path }}",
+    "key_path": "{{ key_path }}",
+    "ca_bundle_path": "{{ ca_bundle_path }}"
+  },
+
+  "tls": {
+    "min_version": "{{ min_tls_version }}",
+    "max_version": "{{ max_tls_version }}",
+    "ciphers": "{{ ciphers }}",
+    "prefer_server_ciphers": {{ prefer_server_ciphers }},
+    "session_timeout": {{ session_timeout }},
+    "session_cache_size": {{ session_cache_size }}
+  },
+
+  "ocsp": {
+    "stapling_enabled": {{ ocsp_stapling }},
+    "responder_url": "{{ ocsp_responder_url }}",
+    "token": "{{ ocsp_token }}"
+  },
+
+  "security": {
+    "hsts_max_age": {{ hsts_max_age }},
+    "certificate_transparency": {{ ct_enabled }}
+  }
+}

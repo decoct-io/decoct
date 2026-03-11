@@ -1,0 +1,7 @@
+filename,profile_name,profile_type,description,decrypt_ca_password
+pa-profile-url-filter,url-filtering-base,url-filtering,Base URL filtering profile for corporate,none
+pa-profile-threat,threat-prevention-strict,threat-prevention,Strict IPS and anti-malware profile,none
+pa-profile-decrypt-hq,ssl-decrypt-hq,ssl-decryption,SSL decryption for HQ internet breakout,D3crypt_CA_Mrdn_Pk7
+pa-profile-decrypt-dc,ssl-decrypt-dc,ssl-decryption,SSL decryption for DC (disabled — policy mismatch),D3crypt_CA_Mrdn_Pk7
+pa-profile-wildfire,wildfire-analysis,wildfire,WildFire sandbox analysis profile,none
+pa-profile-file-block,file-blocking-strict,file-blocking,Block high-risk file types,none

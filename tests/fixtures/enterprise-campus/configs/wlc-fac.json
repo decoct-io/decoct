@@ -1,0 +1,91 @@
+{
+  "hostname": "fac-wlc-01",
+  "site": "fac",
+  "model": "C9800-40",
+  "firmware_version": "17.9.4",
+  "management": {
+    "ip_address": "10.5.10.50",
+    "subnet_mask": "255.255.255.0",
+    "password": "WLC_@dm1n_fac_Bx5",
+    "ssh_enabled": true,
+    "telnet_enabled": false,
+    "http_enabled": false,
+    "https_enabled": true
+  },
+  "ap_provisioning": {
+    "join_passphrase": "AP_J01n_fac_Ej7fG",
+    "discovery_method": "dns",
+    "capwap_mode": "split-mac",
+    "country_code": "US"
+  },
+  "wlan_profiles": [
+    {
+      "wlan_id": 1,
+      "ssid": "MERIDIAN-PLANT",
+      "security": "wpa3-enterprise",
+      "authentication": "dot1x",
+      "radius_server_group": "ISE-SERVERS",
+      "vlan_id": 100,
+      "qos_policy": "platinum",
+      "band_select": true,
+      "client_exclusion": true,
+      "max_clients_per_ap": 50
+    },
+    {
+      "wlan_id": 3,
+      "ssid": "MERIDIAN-IOT",
+      "security": "wpa2-psk",
+      "psk": "I0T_W1f1_Mrdn_S3cure",
+      "vlan_id": 300,
+      "qos_policy": "silver",
+      "band_select": false,
+      "client_exclusion": false,
+      "max_clients_per_ap": 100
+    }
+  ],
+  "rf_profile": {
+    "name": "industrial",
+    "band_5ghz": {
+      "channel_width": 20,
+      "channels": [
+        36,
+        40,
+        44,
+        48,
+        149,
+        153,
+        157,
+        161
+      ],
+      "tx_power_min": 11,
+      "tx_power_max": 20,
+      "dca_enabled": false,
+      "tpc_enabled": false
+    },
+    "band_24ghz": {
+      "channel_width": 20,
+      "channels": [
+        1,
+        6,
+        11
+      ],
+      "tx_power_min": 8,
+      "tx_power_max": 17,
+      "dca_enabled": false,
+      "tpc_enabled": false
+    }
+  },
+  "radius_servers": [
+    {
+      "address": "10.4.1.30",
+      "port": 1812,
+      "shared_secret": "R@d1us_WLC_Mrdn_9k"
+    },
+    {
+      "address": "10.4.1.31",
+      "port": 1812,
+      "shared_secret": "R@d1us_WLC_Mrdn_9k"
+    }
+  ],
+  "max_clients": 300
+}

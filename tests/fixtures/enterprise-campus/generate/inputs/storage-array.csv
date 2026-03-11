@@ -1,0 +1,5 @@
+filename,array_name,vendor,model,mgmt_ip,api_token,protocol,volumes,chap_secret
+storage-netapp-01,dc1-netapp-01,netapp,AFF-A400,10.4.9.30,NtAp_AP1_Tk_Mrdn_Xr7mNp,nfs;iscsi,vol_db_data:2TB:thick;vol_db_log:500GB:thick;vol_app:1TB:thin,CHAP_Mrdn_netapp_Pk7
+storage-netapp-02,dc1-netapp-02,netapp,AFF-A400,10.4.9.31,NtAp_AP1_Tk_Mrdn_Wx5jT8,nfs;iscsi,vol_backup:10TB:thin;vol_archive:20TB:thin,CHAP_Mrdn_netapp_Pk7
+storage-pure-01,dc1-pure-01,purestorage,FlashArray-X50,10.4.9.32,Pure_AP1_Tk_Mrdn_Pq3rS7,fc;iscsi,vol_vmware_ds1:5TB;vol_vmware_ds2:5TB;vol_sql:2TB,CHAP_Mrdn_pure_Lm9
+storage-pure-02,dc1-pure-02,purestorage,FlashArray-X20,10.4.9.33,Pure_AP1_Tk_Mrdn_Vt6wXy,iscsi,vol_dev:1TB;vol_test:500GB,CHAP_Mrdn_pure_Lm9

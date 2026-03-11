@@ -1,0 +1,28 @@
+{
+  "pop": "fra",
+  "city": "Frankfurt",
+  "country": "DE",
+  "region": "eu",
+  "tier": "primary",
+  "status": "active",
+  "location": {
+    "latitude": 50.1109,
+    "longitude": 8.6821
+  },
+  "capacity": {
+    "bandwidth_gbps": 100,
+    "rack_units": 42
+  },
+  "network": {
+    "upstream_pop": "ams",
+    "peering_exchanges": [
+      "DE-CIX",
+      "ECIX"
+    ]
+  },
+  "management": {
+    "api_token": "api_mgmt_fra_Wx5jT8hK",
+    "monitoring_url": "https://mon.arcticcache.net/pop/fra",
+    "dashboard_url": "https://dash.arcticcache.net/pop/fra"
+  }
+}

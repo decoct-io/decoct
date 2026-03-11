@@ -1,0 +1,41 @@
+# Keepalived Configuration — {{ pop }}
+# ArcticCache CDN — {{ filename }}
+
+global_defs {
+    router_id CDN_{{ pop | upper }}
+    enable_script_security
+    script_user root
+}
+
+vrrp_script {{ track_script }} {
+    script "/usr/local/bin/check_nginx.sh"
+    interval 2
+    weight 2
+    fall 3
+    rise 2
+}
+
+vrrp_instance {{ vrrp_instance }} {
+    state {{ state }}
+    interface {{ interface }}
+    virtual_router_id {{ virtual_router_id }}
+    priority {{ priority }}
+    advert_int {{ advert_int }}
+
+    authentication {
+        auth_type {{ auth_type }}
+        auth_pass {{ auth_pass }}
+    }
+
+    virtual_ipaddress {
+        {{ virtual_ip }}
+    }
+
+    track_script {
+        {{ track_script }}
+    }
+
+{% if notify_script != 'none' %}
+    notify {{ notify_script }}
+{% endif %}
+}

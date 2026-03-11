@@ -1,0 +1,5 @@
+filename,historian_name,historian_type,bind_addr,port,admin_token,retention_days,database_name,api_key
+historian-influx-plant,influx-plant-01,influxdb,0.0.0.0,8086,Infl_Adm_Mrdn_Xk7,90,meridian_plant,Infl_AP1_Mrdn_Lm9
+historian-influx-quality,influx-quality-01,influxdb,0.0.0.0,8086,Infl_Adm_Mrdn_Qx4,90,meridian_quality,Infl_AP1_Mrdn_Hy4
+historian-kepware-weld,kepware-weld-01,kepware,0.0.0.0,57412,Kep_Adm_Mrdn_Bx5,365,WeldData,Kep_AP1_Mrdn_Ej7
+historian-kepware-asm,kepware-assembly-01,kepware,0.0.0.0,57412,Kep_Adm_Mrdn_Gh8,365,AssemblyData,Kep_AP1_Mrdn_Jk5

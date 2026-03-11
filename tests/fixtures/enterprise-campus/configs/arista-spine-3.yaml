@@ -1,0 +1,198 @@
+# Arista Spine Switch — 3
+# Meridian Manufacturing — arista-spine-3
+
+system:
+  hostname: "dc1-spine-03"
+  management_ip: "10.4.10.3/24"
+  domain_name: meridian-mfg.com
+  enable_secret: "Ar1st@_Sp_dc1_Qx4"
+
+loopback:
+  - id: 0
+    ip: "10.4.255.3/32"
+    description: Router-ID
+
+routing:
+  bgp:
+    asn: 65000
+    router_id: "10.4.255.3"
+    maximum_paths: 16
+    neighbors:
+      - address: "10.4.255.11"
+        remote_as_range: "65001-65099"
+        description: leaf-downlink
+        password: "BGP_MD5_sp_dc1_Xr7"
+        send_community: extended
+        maximum_routes: 12000
+        peer_group: LEAF-PEERS
+      - address: "10.4.255.12"
+        remote_as_range: "65001-65099"
+        description: leaf-downlink
+        password: "BGP_MD5_sp_dc1_Xr7"
+        send_community: extended
+        maximum_routes: 12000
+        peer_group: LEAF-PEERS
+      - address: "10.4.255.13"
+        remote_as_range: "65001-65099"
+        description: leaf-downlink
+        password: "BGP_MD5_sp_dc1_Xr7"
+        send_community: extended
+        maximum_routes: 12000
+        peer_group: LEAF-PEERS
+      - address: "10.4.255.14"
+        remote_as_range: "65001-65099"
+        description: leaf-downlink
+        password: "BGP_MD5_sp_dc1_Xr7"
+        send_community: extended
+        maximum_routes: 12000
+        peer_group: LEAF-PEERS
+      - address: "10.4.255.15"
+        remote_as_range: "65001-65099"
+        description: leaf-downlink
+        password: "BGP_MD5_sp_dc1_Xr7"
+        send_community: extended
+        maximum_routes: 12000
+        peer_group: LEAF-PEERS
+      - address: "10.4.255.16"
+        remote_as_range: "65001-65099"
+        description: leaf-downlink
+        password: "BGP_MD5_sp_dc1_Xr7"
+        send_community: extended
+        maximum_routes: 12000
+        peer_group: LEAF-PEERS
+      - address: "10.4.255.17"
+        remote_as_range: "65001-65099"
+        description: leaf-downlink
+        password: "BGP_MD5_sp_dc1_Xr7"
+        send_community: extended
+        maximum_routes: 12000
+        peer_group: LEAF-PEERS
+      - address: "10.4.255.18"
+        remote_as_range: "65001-65099"
+        description: leaf-downlink
+        password: "BGP_MD5_sp_dc1_Xr7"
+        send_community: extended
+        maximum_routes: 12000
+        peer_group: LEAF-PEERS
+      - address: "10.4.255.19"
+        remote_as_range: "65001-65099"
+        description: leaf-downlink
+        password: "BGP_MD5_sp_dc1_Xr7"
+        send_community: extended
+        maximum_routes: 12000
+        peer_group: LEAF-PEERS
+      - address: "10.4.255.20"
+        remote_as_range: "65001-65099"
+        description: leaf-downlink
+        password: "BGP_MD5_sp_dc1_Xr7"
+        send_community: extended
+        maximum_routes: 12000
+        peer_group: LEAF-PEERS
+      - address: "10.4.255.21"
+        remote_as_range: "65001-65099"
+        description: leaf-downlink
+        password: "BGP_MD5_sp_dc1_Xr7"
+        send_community: extended
+        maximum_routes: 12000
+        peer_group: LEAF-PEERS
+      - address: "10.4.255.22"
+        remote_as_range: "65001-65099"
+        description: leaf-downlink
+        password: "BGP_MD5_sp_dc1_Xr7"
+        send_community: extended
+        maximum_routes: 12000
+        peer_group: LEAF-PEERS
+    peer_groups:
+      - name: LEAF-PEERS
+        update_source: Loopback0
+        ebgp_multihop: 2
+        send_community: extended
+    address_family:
+      evpn:
+        peer_group: LEAF-PEERS
+        next_hop_unchanged: true
+      ipv4_unicast:
+        redistribute:
+          - connected
+        network:
+          - "10.4.255.3/32"
+
+interfaces:
+  - name: "Ethernet1"
+    description: "to-leaf-10.4.255.11"
+    mtu: 9214
+    ip: "point-to-point"
+    type: routed
+  - name: "Ethernet2"
+    description: "to-leaf-10.4.255.12"
+    mtu: 9214
+    ip: "point-to-point"
+    type: routed
+  - name: "Ethernet3"
+    description: "to-leaf-10.4.255.13"
+    mtu: 9214
+    ip: "point-to-point"
+    type: routed
+  - name: "Ethernet4"
+    description: "to-leaf-10.4.255.14"
+    mtu: 9214
+    ip: "point-to-point"
+    type: routed
+  - name: "Ethernet5"
+    description: "to-leaf-10.4.255.15"
+    mtu: 9214
+    ip: "point-to-point"
+    type: routed
+  - name: "Ethernet6"
+    description: "to-leaf-10.4.255.16"
+    mtu: 9214
+    ip: "point-to-point"
+    type: routed
+  - name: "Ethernet7"
+    description: "to-leaf-10.4.255.17"
+    mtu: 9214
+    ip: "point-to-point"
+    type: routed
+  - name: "Ethernet8"
+    description: "to-leaf-10.4.255.18"
+    mtu: 9214
+    ip: "point-to-point"
+    type: routed
+  - name: "Ethernet9"
+    description: "to-leaf-10.4.255.19"
+    mtu: 9214
+    ip: "point-to-point"
+    type: routed
+  - name: "Ethernet10"
+    description: "to-leaf-10.4.255.20"
+    mtu: 9214
+    ip: "point-to-point"
+    type: routed
+  - name: "Ethernet11"
+    description: "to-leaf-10.4.255.21"
+    mtu: 9214
+    ip: "point-to-point"
+    type: routed
+  - name: "Ethernet12"
+    description: "to-leaf-10.4.255.22"
+    mtu: 9214
+    ip: "point-to-point"
+    type: routed
+
+snmp:
+  community:
+    - name: "MrdnSNMP_sp_RO"
+      access: ro
+  location: "DC1 Spine Row"
+  contact: noc@meridian-mfg.com
+
+management:
+  ssh:
+    enabled: true
+    idle_timeout: 300
+
+logging:
+  host:
+    - address: 10.4.1.50
+      port: 514
+  trap: informational

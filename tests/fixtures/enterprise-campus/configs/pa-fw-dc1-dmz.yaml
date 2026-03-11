@@ -1,0 +1,89 @@
+# Palo Alto Firewall Configuration — dc1
+# Meridian Manufacturing — pa-fw-dc1-dmz
+
+system:
+  hostname: "dc1-pa-dmz-01"
+  model: "PA-3260"
+  panos_version: "11.1.2"
+  management:
+    ip: "10.4.10.62"
+    netmask: 255.255.255.0
+    default_gw: "10.4.10.1"
+  admin:
+    password_hash: "Ej7fGhJk9mNpQrSt"
+  api_key: "$PA_API_dcdmz_Ej7fG"
+  dns:
+    primary: 10.4.1.10
+    secondary: 10.4.1.11
+  ntp:
+    primary: 10.4.1.20
+    secondary: 10.4.1.21
+  domain: meridian-mfg.com
+  timezone: America/Detroit
+  logging:
+    syslog:
+      - server: 10.4.1.50
+        port: 514
+        facility: LOG_USER
+
+zones:
+  - name: "dmz-front"
+    type: layer3
+    protection_profile: default
+  - name: "dmz-back"
+    type: layer3
+    protection_profile: default
+  - name: "dc-internal"
+    type: layer3
+    protection_profile: default
+
+security_rules:
+  - name: "front-to-back"
+    action: "permit"
+    application: any
+    service: "tcp/443"
+    source_zone: "front"
+    destination_zone: "back"
+    source_address: any
+    destination_address: any
+    log_start: false
+    log_end: true
+    log_forwarding: syslog-profile
+  - name: "back-to-dc"
+    action: "permit"
+    application: any
+    service: "tcp/5432"
+    source_zone: "back"
+    destination_zone: "dc"
+    source_address: any
+    destination_address: any
+    log_start: false
+    log_end: true
+    log_forwarding: syslog-profile
+
+nat_rules:
+  - name: "dmz-front-in"
+    type: "static"
+    translated_address: "198.51.100.60"
+
+
+threat_prevention:
+  antivirus: enabled
+  anti_spyware: enabled
+  vulnerability: enabled
+  file_blocking: enabled
+  wildfire: enabled
+
+ssl_decryption:
+  enabled: false
+  ca_cert: /etc/paloalto/certs/decrypt-ca.pem
+  exclude_categories:
+    - financial-services
+    - health-and-medicine
+
+high_availability:
+  mode: active-passive
+  group_id: 1
+  peer_ip: "10.4.10.63"
+  heartbeat_interval: 1000
+  preemptive: false

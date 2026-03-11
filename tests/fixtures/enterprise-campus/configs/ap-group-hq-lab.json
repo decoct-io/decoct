@@ -1,0 +1,48 @@
+{
+  "group_name": "HQ-Lab",
+  "site": "hq",
+  "location": "Building-B Floor-1",
+  "ap_count": 6,
+  "mode": "local",
+  "rf_settings": {
+    "band_5ghz": {
+      "channels": [
+        149,
+        153,
+        157,
+        161
+      ],
+      "tx_power_dbm": 17,
+      "channel_width": 40,
+      "dca_sensitivity": "medium"
+    },
+    "band_24ghz": {
+      "channels": [
+        1,
+        6,
+        11
+      ],
+      "tx_power_dbm": 14,
+      "channel_width": 20,
+      "dca_sensitivity": "medium"
+    }
+  },
+  "ssid_mapping": [
+    {
+      "ssid": "MERIDIAN-CORP",
+      "enabled": true,
+      "broadcast": true,
+      "qos": "platinum"
+    },
+    {
+      "ssid": "MERIDIAN-IOT",
+      "enabled": true,
+      "broadcast": false,
+      "qos": "silver"
+    }
+  ],
+  "ap_naming_convention": "hq-HQ-Lab-AP{id:03d}",
+  "led_state": "enabled",
+  "poe_mode": "auto",
+  "mesh_enabled": false
+}

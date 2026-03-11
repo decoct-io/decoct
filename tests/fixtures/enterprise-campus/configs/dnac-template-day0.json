@@ -1,0 +1,52 @@
+{
+  "template_name": "day0-provisioning",
+  "template_type": "day0",
+  "target_role": "all",
+  "version": 3,
+  "api": {
+    "bearer_token": "DNAC_AP1_Tk_Mrdn_Wx5jT8hK",
+    "base_url": "https://dnac.meridian-mfg.com",
+    "device_credentials": {
+      "cli_username": "admin",
+      "cli_password": "DN@C_D3v_Mrdn_Qx4",
+      "enable_password": "DN@C_En@bl3_Mrdn_Rw7",
+      "snmpv3_user": "dnac-snmp",
+      "snmpv3_auth": "SHA",
+      "snmpv3_priv": "AES128"
+    }
+  },
+  "provisioning": {
+    "auto_discover": true,
+    "pnp_enabled": true,
+    "image_distribution": {
+      "golden_image": "cat9k_iosxe.17.09.04.SPA.bin",
+      "compliance_check": true
+    },
+    "network_settings": {
+      "dns_servers": [
+        "10.4.1.10",
+        "10.4.1.11"
+      ],
+      "ntp_servers": [
+        "10.4.1.20",
+        "10.4.1.21"
+      ],
+      "syslog_servers": [
+        "10.4.1.50"
+      ],
+      "aaa_servers": [
+        "10.4.1.30",
+        "10.4.1.31"
+      ],
+      "domain_name": "meridian-mfg.com"
+    },
+    "fabric_settings": {
+      "control_plane_nodes": 2,
+      "border_nodes": 2,
+      "edge_nodes": "auto",
+      "multicast": "native",
+      "l2_handoff": true
+    }
+  },
+  "last_modified": "2025-12-01T10:00:00Z"
+}

@@ -1,0 +1,64 @@
+{
+  "gateway_name": "conveyor-gw-01",
+  "protocol": "modbus-rtu",
+  "device_connection": {
+    "serial_port": "/dev/ttyS0",
+    "baud_rate": 9600,
+    "data_bits": 8,
+    "parity": "none",
+    "stop_bits": 1,
+    "timeout_ms": 3000
+  },
+  "poll_interval_ms": 500,
+  "registers": [
+    {
+      "address": "1",
+      "name": "Speed",
+      "data_type": "uint16",
+      "function_code": 3,
+      "byte_order": "big-endian",
+      "word_order": "big-endian"
+    },
+    {
+      "address": "2",
+      "name": "Direction",
+      "data_type": "uint16",
+      "function_code": 3,
+      "byte_order": "big-endian",
+      "word_order": "big-endian"
+    },
+    {
+      "address": "3",
+      "name": "FaultCode",
+      "data_type": "uint16",
+      "function_code": 3,
+      "byte_order": "big-endian",
+      "word_order": "big-endian"
+    }
+  ],
+  "mqtt": {
+    "broker": "10.5.0.50",
+    "port": 8883,
+    "client_id": "conveyor-gw-01",
+    "publish_token": "PLC_MQTT_Conv1_Ej7",
+    "tls": true,
+    "topics": [
+      "plant/conveyor-1/telemetry/speed"
+    ],
+    "qos": 1,
+    "retain": false,
+    "payload_format": "json",
+    "timestamp_field": "ts",
+    "batch_size": 10,
+    "batch_interval_ms": 1000
+  },
+  "buffering": {
+    "enabled": true,
+    "max_size_mb": 50,
+    "path": "/var/lib/plc-gateway/buffer"
+  },
+  "logging": {
+    "level": "info",
+    "file": "/var/log/plc-gateway/conveyor-gw-01.log"
+  }
+}

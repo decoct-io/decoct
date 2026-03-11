@@ -1,0 +1,48 @@
+# SD-WAN vBond Orchestrator — 2
+# Meridian Manufacturing — sdwan-vbond-2
+
+system:
+  hostname: "vbond-02"
+  system-ip: "10.255.255.2"
+  organization-name: "MeridianMfg"
+  vbond:
+    local: true
+    port: 12346
+
+enrollment:
+  token: "VbEnr0ll_Tk2_Qw9kR"
+  auto-approve: false
+  max-controllers: 3
+  max-vedges: 50
+
+certificate:
+  cert-path: "/etc/viptela/certs/vbond-2.pem"
+  ca-cert-path: "/etc/viptela/certs/root-ca.pem"
+  crl:
+    enable: true
+    interval: 3600
+
+transport:
+  listen-address: 0.0.0.0
+  port: 12346
+  tunnel-interface:
+    color: default
+    encapsulation: ipsec
+    allow-service:
+      - dhcp
+      - dns
+      - netconf
+      - sshd
+
+security:
+  tls-version: TLSv1.2
+  allowed-ciphers:
+    - aes-256-cbc-sha
+    - aes-128-cbc-sha
+
+logging:
+  level: informational
+  server:
+    - address: 10.4.1.50
+      port: 514
+      vpn: 0

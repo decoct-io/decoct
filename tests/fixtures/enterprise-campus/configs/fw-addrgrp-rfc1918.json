@@ -1,0 +1,29 @@
+{
+  "group_name": "RFC1918-Private",
+  "description": "RFC1918 private address space",
+  "vendor": "paloalto",
+  "type": "ip-netmask",
+  "members": [
+    {
+      "name": "10.0.0.0-8",
+      "value": "10.0.0.0/8",
+      "type": "ip-netmask"
+    },
+    {
+      "name": "172.16.0.0-12",
+      "value": "172.16.0.0/12",
+      "type": "ip-netmask"
+    },
+    {
+      "name": "192.168.0.0-16",
+      "value": "192.168.0.0/16",
+      "type": "ip-netmask"
+    }
+  ],
+  "tags": [
+    "enterprise",
+    "managed"
+  ],
+  "shared": true,
+  "last_modified": "2025-10-01T12:00:00Z"
+}

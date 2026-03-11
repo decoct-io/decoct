@@ -1,0 +1,4 @@
+filename,controller_id,hostname,system_ip,org_name,admin_password,omp_holdtime,omp_graceful_restart,affinity_group,route_filters,debug_logging
+sdwan-vsmart-1,1,vsmart-01,10.255.255.10,MeridianMfg,VSm@rt_Adm1n_Pk7,60,true,1,site100:permit;site200:permit;site300:permit;site400:permit,false
+sdwan-vsmart-2,2,vsmart-02,10.255.255.11,MeridianMfg,VSm@rt_Adm2n_Lm9,60,true,2,site100:permit;site200:permit;site300:permit;site400:permit,false
+sdwan-vsmart-3,3,vsmart-03,10.255.255.12,MeridianMfg,VSm@rt_Adm3n_Qx4,60,true,1,site100:permit;site200:permit;site300:permit;site400:permit,true

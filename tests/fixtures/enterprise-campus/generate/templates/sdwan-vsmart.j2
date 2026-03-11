@@ -1,0 +1,82 @@
+# SD-WAN vSmart Controller — {{ controller_id }}
+# Meridian Manufacturing — {{ filename }}
+
+system:
+  hostname: "{{ hostname }}"
+  system-ip: "{{ system_ip }}"
+  organization-name: "{{ org_name }}"
+  controller-group-id: {{ controller_id }}
+  admin:
+    password: "{{ admin_password }}"
+
+omp:
+  graceful-restart: {{ omp_graceful_restart }}
+  timers:
+    holdtime: {{ omp_holdtime }}
+    advertisement-interval: 1
+    graceful-restart-timer: 43200
+    eor-timer: 300
+  send-backup-paths: true
+  send-path-limit: 4
+
+affinity:
+  group: {{ affinity_group }}
+
+control-policy:
+  name: MERIDIAN-DEFAULT
+  sequence:
+    - number: 10
+      match:
+        site-list: CAMPUS-SITES
+      action:
+        accept: true
+    - number: 20
+      match:
+        site-list: DC-SITES
+      action:
+        accept: true
+        set:
+          preference: 200
+    - number: 100
+      action:
+        accept: true
+
+route-filter:
+{% for rf in route_filters.split(';') %}
+{% set parts = rf.split(':') %}
+  - name: "{{ parts[0] }}"
+    action: "{{ parts[1] }}"
+{% endfor %}
+
+site-lists:
+  CAMPUS-SITES:
+    - 100
+    - 200
+    - 300
+  DC-SITES:
+    - 400
+
+vpn-lists:
+  CORP-VPN:
+    - 1
+  GUEST-VPN:
+    - 10
+
+{% if debug_logging == 'true' %}
+# WARNING: Debug logging enabled — troubleshooting session 2025-12-15
+logging:
+  level: debug
+  console: true
+  monitor: true
+{% else %}
+logging:
+  level: informational
+  console: false
+  monitor: false
+{% endif %}
+
+security:
+  tls-version: TLSv1.2
+  certificate:
+    path: /etc/viptela/certs/vsmart-{{ controller_id }}.pem
+    key-path: /etc/viptela/certs/vsmart-{{ controller_id }}-key.pem

@@ -1,0 +1,42 @@
+# Network Slice Definition — urllc-industrial
+# SpectrumOne 5G RAN — slice-urllc-industrial
+
+slice_identity:
+  slice_id: "urllc-industrial"
+  s_nssai:
+    sst: 2
+    sd: "000010"
+  slice_type: "URLLC"
+  plmn:
+    mcc: "310"
+    mnc: "260"
+
+qos_profile:
+  five_qi: 1
+  priority_level: 10
+  preemption_capability: "may-preempt"
+  preemption_vulnerability: "not-preemptable"
+  resource_type: "gbr"
+  packet_delay_budget_ms: 1
+  packet_error_rate: 0.00001
+  max_data_burst_volume_bytes: 4096
+
+capacity:
+  max_ue: 5000
+  bandwidth_guarantee_mbps: 10
+  isolation_level: "dedicated"
+
+admission_control:
+  enabled: true
+  max_pdu_sessions: 10000
+  congestion_threshold_pct: 50
+
+ue_ambr:
+  downlink_mbps: 10
+  uplink_mbps: 10
+
+monitoring:
+  kpi_reporting: true
+  reporting_interval_s: 5
+  sla_tracking: true
+  alarm_on_sla_breach: true

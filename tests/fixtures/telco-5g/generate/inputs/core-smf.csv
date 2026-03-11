@@ -1,0 +1,5 @@
+filename,smf_id,smf_name,upf_associations,dnn_list,session_ambr_dl_mbps,session_ambr_ul_mbps,pdu_session_type,nf_status,oam_password,api_version
+core-smf-01,smf-01,smf-primary-01,upf-01;upf-02,internet;ims;iot,1000,500,IPv4v6,active,oam_pwd_smf01_Hf7gB2,v1.2.0
+core-smf-02,smf-02,smf-primary-02,upf-01;upf-03,internet;ims;iot,2000,1000,IPv4v6,active,oam_pwd_smf02_Pq3rS7,v1.2.0
+core-smf-03,smf-03,smf-secondary-01,upf-02;upf-03,internet;ims,1000,500,IPv4v6,active,oam_pwd_smf03_Jk5mNx,v1.2.0
+core-smf-04,smf-04,smf-dr-01,upf-04,internet;ims;iot;enterprise,1000,500,IPv4v6,standby,oam_pwd_smf04_Vt6wXy,v1.1.0

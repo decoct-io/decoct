@@ -1,0 +1,28 @@
+{
+  "pop": "ams",
+  "city": "Amsterdam",
+  "country": "NL",
+  "region": "eu",
+  "tier": "primary",
+  "status": "active",
+  "location": {
+    "latitude": 52.3676,
+    "longitude": 4.9041
+  },
+  "capacity": {
+    "bandwidth_gbps": 100,
+    "rack_units": 42
+  },
+  "network": {
+    "upstream_pop": "fra",
+    "peering_exchanges": [
+      "AMS-IX",
+      "NL-ix"
+    ]
+  },
+  "management": {
+    "api_token": "api_mgmt_ams_Kx9mPqR7",
+    "monitoring_url": "https://mon.arcticcache.net/pop/ams",
+    "dashboard_url": "https://dash.arcticcache.net/pop/ams"
+  }
+}

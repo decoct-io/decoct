@@ -1,0 +1,54 @@
+{
+  "policy_name": "BYOD-Onboarding",
+  "description": "Bring your own device registration",
+  "enabled": true,
+  "authentication": {
+    "method": "dot1x",
+    "eap_type": "PEAP-MSCHAPv2",
+    "identity_store": "Active-Directory",
+    "fallback": "mab"
+  },
+  "authorization": {
+    "profile": "BYOD-Access",
+    "sgt": {
+      "tag": 20,
+      "name": "BYOD_Devices"
+    },
+    "conditions": [
+      {
+        "attribute": "Certificate",
+        "value": "SCEP"
+      },
+      {
+        "attribute": "Device-Reg",
+        "value": "true"
+      }
+    ],
+    "dacl": {
+      "name": "DEFAULT-DENY",
+      "rules": [
+        {
+          "action": "deny",
+          "protocol": "ip",
+          "source": "any",
+          "destination": "any"
+        }
+      ]
+    }
+  },
+  "tacacs": {
+    "shared_key": "T@c@cs_Mrdn_Pk7mN",
+    "servers": [
+      {
+        "address": "10.4.1.30",
+        "port": 49
+      },
+      {
+        "address": "10.4.1.31",
+        "port": 49
+      }
+    ]
+  },
+  "api_token": "ISE_AP1_Tk_Mrdn_Xr7mNpQ2",
+  "version": "3.2"
+}

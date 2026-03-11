@@ -1,0 +1,22 @@
+# Kubernetes ConfigMap — db-config (dev)
+# WavePoint Financial — cm-db-config-dev
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-config
+  namespace: wavepoint-dev
+  labels:
+    app.kubernetes.io/name: db-config
+    app.kubernetes.io/instance: db-config-dev
+    env: dev
+    team: platform
+    part-of: wavepoint
+  annotations:
+    configmap.kubernetes.io/managed-by: gitops
+data:
+  DB_HOST: "db-dev.wavepoint.internal"
+  DB_PORT: "5432"
+  DB_SSL_MODE: "disable"
+  DB_MAX_CONNECTIONS: "20"
+  DB_IDLE_TIMEOUT: "300"
+  CONNECTION_STRING: "postgresql://app:devPw0rd@db-dev.wavepoint.internal:5432/wavepoint_dev"

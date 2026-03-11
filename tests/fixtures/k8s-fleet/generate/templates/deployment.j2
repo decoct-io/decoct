@@ -1,0 +1,189 @@
+# Kubernetes Deployment — {{ service }} ({{ env }})
+# WavePoint Financial — {{ filename }}
+apiVersion: {{ api_version }}
+kind: Deployment
+metadata:
+  name: {{ service }}
+  namespace: {{ namespace }}
+  labels:
+    app: {{ service }}
+    env: {{ env }}
+    team: platform
+    version: "{{ image_tag }}"
+    part-of: wavepoint
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+    kubectl.kubernetes.io/last-applied-configuration: managed-by-gitops
+{% if env == 'prod' %}
+    wavepoint.io/pci-scope: "true"
+    wavepoint.io/oncall-team: payments-platform
+{% endif %}
+{% if env == 'dev' %}
+    wavepoint.io/ephemeral: "true"
+{% endif %}
+spec:
+  replicas: {{ replicas }}
+  revisionHistoryLimit: {{ '10' if env == 'prod' else '3' }}
+  selector:
+    matchLabels:
+      app: {{ service }}
+      env: {{ env }}
+  strategy:
+    type: {{ strategy_type }}
+{% if strategy_type == 'RollingUpdate' %}
+    rollingUpdate:
+      maxSurge: {{ max_surge if max_surge else '1' }}
+      maxUnavailable: {{ max_unavail if max_unavail else '0' }}
+{% endif %}
+  template:
+    metadata:
+      labels:
+        app: {{ service }}
+        env: {{ env }}
+        version: "{{ image_tag }}"
+{% if env == 'prod' %}
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "{{ container_port }}"
+        prometheus.io/path: /metrics
+{% endif %}
+    spec:
+{% if node_selector %}
+      nodeSelector:
+{% for sel in node_selector.split(',') %}
+{% set parts = sel.split('=') %}
+        {{ parts[0] }}: {{ parts[1] }}
+{% endfor %}
+{% endif %}
+{% if tolerations %}
+      tolerations:
+{% for tol in tolerations.split(',') %}
+{% set parts = tol.split('=') %}
+{% set kv = parts[0].split(':') if ':' in parts[0] else parts %}
+        - key: {{ kv[0].split('=')[0] if '=' in kv[0] else kv[0] }}
+          operator: Exists
+          effect: {{ parts[1] if parts|length > 1 else 'NoSchedule' }}
+{% endfor %}
+{% endif %}
+      serviceAccountName: {{ service }}
+      terminationGracePeriodSeconds: {{ '60' if env == 'prod' else '30' }}
+{% if env == 'prod' %}
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app: {{ service }}
+{% endif %}
+      containers:
+        - name: {{ service }}
+          image: {{ image_repo }}:{{ image_tag }}
+          imagePullPolicy: {{ 'IfNotPresent' if env == 'prod' else 'Always' }}
+          ports:
+            - name: http
+              containerPort: {{ container_port }}
+              protocol: TCP
+{% if env == 'prod' or env == 'staging' %}
+            - name: metrics
+              containerPort: 9090
+              protocol: TCP
+{% endif %}
+          env:
+            - name: APP_ENV
+              value: "{{ env }}"
+            - name: LOG_LEVEL
+              value: "{{ log_level }}"
+            - name: SERVICE_NAME
+              value: "{{ service }}"
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+{% if db_url %}
+            - name: DATABASE_URL
+              value: "{{ db_url }}"
+{% endif %}
+{% if api_key %}
+            - name: API_KEY
+              value: "{{ api_key }}"
+{% endif %}
+{% if jwt_secret %}
+            - name: JWT_SECRET
+              value: "{{ jwt_secret }}"
+{% endif %}
+{% for pair in extra_env.split(';') %}
+{% if pair and '=' in pair %}
+{% set kv = pair.split('=', 1) %}
+            - name: {{ kv[0] }}
+              value: "{{ kv[1] }}"
+{% endif %}
+{% endfor %}
+          resources:
+{% if cpu_limit or mem_limit %}
+            requests:
+              cpu: "{{ cpu_request }}"
+              memory: "{{ mem_request }}"
+            limits:
+{% if cpu_limit %}
+              cpu: "{{ cpu_limit }}"
+{% endif %}
+{% if mem_limit %}
+              memory: "{{ mem_limit }}"
+{% endif %}
+{% elif cpu_request %}
+            requests:
+              cpu: "{{ cpu_request }}"
+              memory: "{{ mem_request }}"
+{% else %}
+            {}
+{% endif %}
+          livenessProbe:
+            httpGet:
+              path: {{ liveness_path }}
+              port: http
+            initialDelaySeconds: {{ liveness_delay }}
+            periodSeconds: {{ liveness_period }}
+            timeoutSeconds: 3
+            failureThreshold: 3
+            successThreshold: 1
+          readinessProbe:
+            httpGet:
+              path: {{ readiness_path }}
+              port: http
+            initialDelaySeconds: {{ readiness_delay }}
+            periodSeconds: {{ readiness_period }}
+            timeoutSeconds: 3
+            failureThreshold: 3
+            successThreshold: 1
+{% if env == 'prod' %}
+          startupProbe:
+            httpGet:
+              path: {{ liveness_path }}
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 30
+{% endif %}
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config
+              readOnly: true
+{% if env == 'prod' %}
+            - name: tls-certs
+              mountPath: /etc/tls
+              readOnly: true
+{% endif %}
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ service }}-config
+{% if env == 'prod' %}
+        - name: tls-certs
+          secret:
+            secretName: {{ service }}-tls
+{% endif %}

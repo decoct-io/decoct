@@ -1,0 +1,126 @@
+# Kubernetes Deployment — config-server (prod)
+# WavePoint Financial — deploy-config-server-prod
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: config-server
+  namespace: wavepoint-prod
+  labels:
+    app: config-server
+    env: prod
+    team: platform
+    version: "1.2.1"
+    part-of: wavepoint
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+    kubectl.kubernetes.io/last-applied-configuration: managed-by-gitops
+    wavepoint.io/pci-scope: "true"
+    wavepoint.io/oncall-team: payments-platform
+spec:
+  replicas: 2
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: config-server
+      env: prod
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      labels:
+        app: config-server
+        env: prod
+        version: "1.2.1"
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8888"
+        prometheus.io/path: /metrics
+    spec:
+      serviceAccountName: config-server
+      terminationGracePeriodSeconds: 60
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app: config-server
+      containers:
+        - name: config-server
+          image: registry.wavepoint.io/config-server:1.2.1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8888
+              protocol: TCP
+            - name: metrics
+              containerPort: 9090
+              protocol: TCP
+          env:
+            - name: APP_ENV
+              value: "prod"
+            - name: LOG_LEVEL
+              value: "WARN"
+            - name: SERVICE_NAME
+              value: "config-server"
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: GIT_REPO
+              value: "https://github.com/wavepoint/config-repo.git"
+            - name: GIT_BRANCH
+              value: "main"
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+            limits:
+              cpu: "500m"
+              memory: "1Gi"
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 15
+            timeoutSeconds: 3
+            failureThreshold: 3
+            successThreshold: 1
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+            successThreshold: 1
+          startupProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 30
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config
+              readOnly: true
+            - name: tls-certs
+              mountPath: /etc/tls
+              readOnly: true
+      volumes:
+        - name: config-volume
+          configMap:
+            name: config-server-config
+        - name: tls-certs
+          secret:
+            secretName: config-server-tls

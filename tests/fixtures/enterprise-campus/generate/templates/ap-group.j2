@@ -1,0 +1,51 @@
+{
+  "group_name": "{{ group_name }}",
+  "site": "{{ site }}",
+  "location": "{{ location }}",
+  "ap_count": {{ ap_count }},
+  "mode": "{{ mode }}",
+  "rf_settings": {
+    "band_5ghz": {
+      "channels": [
+{% for ch in channel_5g.split(';') %}
+        {{ ch }}{{ "," if not loop.last else "" }}
+{% endfor %}
+      ],
+      "tx_power_dbm": {{ tx_power_5g }},
+      "channel_width": 40,
+      "dca_sensitivity": "medium"
+    },
+    "band_24ghz": {
+      "channels": [
+{% for ch in channel_24g.split(';') %}
+        {{ ch }}{{ "," if not loop.last else "" }}
+{% endfor %}
+      ],
+      "tx_power_dbm": {{ tx_power_24g }},
+      "channel_width": 20,
+      "dca_sensitivity": "medium"
+    }
+  },
+  "ssid_mapping": [
+{% for ssid in ssids.split(';') %}
+    {
+      "ssid": "{{ ssid }}",
+      "enabled": true,
+{% if 'GUEST' in ssid %}
+      "broadcast": true,
+      "qos": "bronze"
+{% elif 'IOT' in ssid or 'PLANT' in ssid %}
+      "broadcast": false,
+      "qos": "silver"
+{% else %}
+      "broadcast": true,
+      "qos": "platinum"
+{% endif %}
+    }{{ "," if not loop.last else "" }}
+{% endfor %}
+  ],
+  "ap_naming_convention": "{{ site }}-{{ group_name }}-AP{id:03d}",
+  "led_state": "enabled",
+  "poe_mode": "auto",
+  "mesh_enabled": false
+}

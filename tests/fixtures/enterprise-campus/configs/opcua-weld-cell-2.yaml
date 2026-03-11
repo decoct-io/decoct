@@ -1,0 +1,95 @@
+# OPC-UA Server Configuration — weld-cell-2
+# Meridian Manufacturing — opcua-weld-cell-2
+
+server:
+  application_name: "Meridian weld-cell-2 OPC-UA"
+  application_uri: "urn:meridian:opcua:weld-cell-2"
+  endpoint_url: "opc.tcp://10.5.1.11:4840"
+  product_uri: "urn:meridian:opcua"
+
+security:
+  mode: "SignAndEncrypt"
+  certificate:
+    path: /etc/opcua/certs/weld-cell-2.pem
+    private_key: /etc/opcua/certs/weld-cell-2-key.pem
+    password: "OPC_Cert_Weld2_Qx4"
+    trust_list: /etc/opcua/certs/trusted/
+    rejected_list: /etc/opcua/certs/rejected/
+  policies:
+    - Basic256Sha256
+    - Aes128_Sha256_RsaOaep
+  user_token: "OPC_Usr_Weld2_Hy4"
+  authentication:
+    anonymous: false
+    username_password: true
+    certificate: true
+
+namespace:
+  uri: "urn:meridian:weld-cell-2"
+  index: 2
+
+nodes:
+  - node_id: "ns2:WeldCurrent"
+    browse_name: "WeldCurrent"
+    data_type: Double
+    access_level: ReadWrite
+    engineering_unit: A
+    range:
+      low: 0.0
+      high: 500.0
+    historizing: true
+    sampling_interval_ms: 100
+  - node_id: "ns2:WeldVoltage"
+    browse_name: "WeldVoltage"
+    data_type: Double
+    access_level: ReadWrite
+    engineering_unit: V
+    range:
+      low: 0.0
+      high: 500.0
+    historizing: true
+    sampling_interval_ms: 100
+  - node_id: "ns2:WireSpeed"
+    browse_name: "WireSpeed"
+    data_type: Double
+    access_level: ReadWrite
+    engineering_unit: m/min
+    range:
+      low: 0.0
+      high: 25.0
+    historizing: true
+    sampling_interval_ms: 100
+  - node_id: "ns2:GasFlow"
+    browse_name: "GasFlow"
+    data_type: Double
+    access_level: ReadWrite
+    engineering_unit: none
+    historizing: true
+    sampling_interval_ms: 100
+  - node_id: "ns2:TorchAngle"
+    browse_name: "TorchAngle"
+    data_type: Double
+    access_level: ReadWrite
+    engineering_unit: none
+    historizing: true
+    sampling_interval_ms: 100
+  - node_id: "ns2:ArcStatus"
+    browse_name: "ArcStatus"
+    data_type: Boolean
+    access_level: ReadWrite
+    engineering_unit: state
+    historizing: true
+    sampling_interval_ms: 100
+
+session:
+  timeout_ms: 30000
+  max_sessions: 50
+  max_subscriptions_per_session: 100
+
+discovery:
+  enabled: true
+  server_url: "opc.tcp://10.5.0.1:4840"
+
+logging:
+  level: info
+  file: /var/log/opcua/weld-cell-2.log

@@ -1,0 +1,73 @@
+# HAProxy configuration — {{ pop }}
+# ArcticCache CDN — {{ filename }}
+
+global
+    log /dev/log local0 {{ log_level }}
+    log /dev/log local1 notice
+    chroot /var/lib/haproxy
+    stats socket /run/haproxy/admin.sock mode 660 level admin
+    stats timeout 30s
+    user haproxy
+    group haproxy
+    daemon
+    nbthread {{ nbthread }}
+    maxconn {{ maxconn }}
+    ssl-default-bind-ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256
+    ssl-default-bind-ciphersuites TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384
+    ssl-default-bind-options ssl-min-ver TLSv1.2 no-tls-tickets
+    tune.ssl.default-dh-param 2048
+
+defaults
+    log global
+    mode http
+    option httplog
+    option dontlognull
+    option forwardfor
+    option http-server-close
+    timeout connect {{ timeout_connect }}
+    timeout client {{ timeout_client }}
+    timeout server {{ timeout_server }}
+    timeout http-request 10s
+    timeout http-keep-alive 10s
+    timeout queue 30s
+    timeout tunnel 3600s
+    errorfile 400 /etc/haproxy/errors/400.http
+    errorfile 403 /etc/haproxy/errors/403.http
+    errorfile 408 /etc/haproxy/errors/408.http
+    errorfile 500 /etc/haproxy/errors/500.http
+    errorfile 502 /etc/haproxy/errors/502.http
+    errorfile 503 /etc/haproxy/errors/503.http
+    errorfile 504 /etc/haproxy/errors/504.http
+    retries 3
+
+listen stats
+    bind *:{{ stats_port }}
+    stats enable
+    stats uri /haproxy?stats
+    stats refresh 10s
+    stats admin if TRUE
+    stats auth {{ stats_auth_user }}:{{ stats_auth_password }}
+
+frontend http_front
+    bind {{ frontend_bind }}:{{ frontend_port }}
+{% if ssl_frontend == 'true' %}
+    bind {{ frontend_bind }}:443 ssl crt /etc/haproxy/certs/{{ pop }}.pem alpn h2,http/1.1
+    http-request redirect scheme https unless { ssl_fc }
+{% endif %}
+    http-request set-header X-Forwarded-Proto %[ssl_fc,iif(https,http)]
+    http-request set-header X-Pop {{ pop }}
+    default_backend http_back
+
+    # Health check endpoint
+    acl is_health path /haproxy-health
+    http-request return status 200 content-type text/plain string OK if is_health
+
+backend http_back
+    balance roundrobin
+    option httpchk {{ health_check }}
+    http-check expect status 200
+    default-server inter 3s fall 3 rise 2
+{% for srv in backend_servers %}
+{% set parts = srv.split(':') %}
+    server {{ parts[0] }} {{ parts[1] }}:{{ parts[2] }} check
+{% endfor %}

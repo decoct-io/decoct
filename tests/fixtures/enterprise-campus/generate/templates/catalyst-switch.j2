@@ -1,0 +1,132 @@
+# Catalyst Switch Configuration — {{ site }} {{ role }}
+# Meridian Manufacturing — {{ filename }}
+
+system:
+  hostname: "{{ hostname }}"
+  model: "{{ model }}"
+  ios_version: "{{ ios_version }}"
+  management_ip: "{{ mgmt_ip }}"
+  domain_name: meridian-mfg.com
+  enable_secret: "{{ enable_secret }}"
+  service:
+    timestamps_debug: datetime msec localtime
+    timestamps_log: datetime msec localtime
+    password_encryption: true
+
+aaa:
+  authentication:
+    login:
+      default: group radius local
+  authorization:
+    exec:
+      default: group radius local
+  radius:
+    server:
+      - name: ISE-PRIMARY
+        address: 10.4.1.30
+        auth_port: 1812
+        acct_port: 1813
+        key: "{{ radius_key }}"
+      - name: ISE-SECONDARY
+        address: 10.4.1.31
+        auth_port: 1812
+        acct_port: 1813
+        key: "{{ radius_key }}"
+
+loopback:
+  - id: 0
+    ip: "{{ loopback0 }}/32"
+    description: "Router-ID / RLOC"
+
+vlans:
+{% for vlan_str in vlans %}
+{% set parts = vlan_str.split(':') %}
+  - id: {{ parts[0] }}
+    name: "{{ parts[1] }}"
+{% endfor %}
+
+interfaces:
+{% for iface_str in interfaces %}
+{% set parts = iface_str.split(':') %}
+  - name: "{{ parts[0] }}"
+    description: "{{ parts[1] }}"
+{% if 'uplink' in parts[1] %}
+    mode: trunk
+    trunk_allowed_vlans: all
+    mtu: 9100
+{% elif 'access' in parts[1] %}
+    mode: access
+    access_vlan: 100
+    spanning_tree_portfast: true
+    authentication:
+      host_mode: multi-auth
+      order: dot1x mab
+      priority: dot1x mab
+{% endif %}
+{% endfor %}
+
+{% if sda_fabric == 'true' %}
+sda_fabric:
+  enabled: true
+  role: "{{ role }}"
+  lisp:
+    instance_id: 4096
+    eid_table: vrf CAMPUS
+{% if role == 'border' %}
+    map_server: true
+    map_resolver: true
+{% elif role == 'control-plane' %}
+    map_server: true
+    map_resolver: true
+{% else %}
+    map_server: false
+    map_resolver: false
+{% endif %}
+  vxlan:
+    source_interface: Loopback0
+    udp_port: 4789
+  cts:
+    sgt_assignment: true
+    enforcement: true
+{% endif %}
+
+{% if legacy_eigrp == 'true' %}
+# LEGACY: EIGRP still active during SD-Access migration
+routing:
+  eigrp:
+    as_number: 100
+    networks:
+      - "10.1.0.0/16"
+    redistribute:
+      - connected
+      - static
+{% endif %}
+
+spanning_tree:
+  mode: rapid-pvst
+{% if role == 'border' or role == 'control-plane' %}
+  priority: 4096
+{% else %}
+  priority: 32768
+{% endif %}
+
+ntp:
+  server:
+    - address: 10.4.1.20
+      prefer: true
+    - address: 10.4.1.21
+
+logging:
+  host:
+    - address: 10.4.1.50
+      transport: udp
+      port: 514
+  trap: informational
+  source_interface: Loopback0
+
+snmp:
+  community:
+    - name: MrdnSNMP_RO_7x
+      access: ro
+  location: "{{ site }}-{{ role }}"
+  contact: noc@meridian-mfg.com

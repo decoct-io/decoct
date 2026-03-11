@@ -1,0 +1,130 @@
+# Kubernetes Deployment — kyc-worker (prod)
+# WavePoint Financial — deploy-kyc-worker-prod
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kyc-worker
+  namespace: wavepoint-prod
+  labels:
+    app: kyc-worker
+    env: prod
+    team: platform
+    version: "1.1.3"
+    part-of: wavepoint
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+    kubectl.kubernetes.io/last-applied-configuration: managed-by-gitops
+    wavepoint.io/pci-scope: "true"
+    wavepoint.io/oncall-team: payments-platform
+spec:
+  replicas: 2
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: kyc-worker
+      env: prod
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      labels:
+        app: kyc-worker
+        env: prod
+        version: "1.1.3"
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8084"
+        prometheus.io/path: /metrics
+    spec:
+      serviceAccountName: kyc-worker
+      terminationGracePeriodSeconds: 60
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app: kyc-worker
+      containers:
+        - name: kyc-worker
+          image: registry.wavepoint.io/kyc-worker:1.1.3
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8084
+              protocol: TCP
+            - name: metrics
+              containerPort: 9090
+              protocol: TCP
+          env:
+            - name: APP_ENV
+              value: "prod"
+            - name: LOG_LEVEL
+              value: "WARN"
+            - name: SERVICE_NAME
+              value: "kyc-worker"
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: DATABASE_URL
+              value: "postgresql://kyc_user:PrdKyc#Vx8@db-prod-primary.wavepoint.internal:5432/kyc"
+            - name: API_KEY
+              value: "sk_prod_kyc_Jk2mNx5w"
+            - name: QUEUE_URL
+              value: "sqs://prod-kyc-queue"
+            - name: BATCH_SIZE
+              value: "20"
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+            limits:
+              cpu: "1000m"
+              memory: "2Gi"
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 15
+            timeoutSeconds: 3
+            failureThreshold: 3
+            successThreshold: 1
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+            successThreshold: 1
+          startupProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 30
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config
+              readOnly: true
+            - name: tls-certs
+              mountPath: /etc/tls
+              readOnly: true
+      volumes:
+        - name: config-volume
+          configMap:
+            name: kyc-worker-config
+        - name: tls-certs
+          secret:
+            secretName: kyc-worker-tls

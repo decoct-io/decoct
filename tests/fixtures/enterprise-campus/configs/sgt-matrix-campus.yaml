@@ -1,0 +1,66 @@
+# TrustSec SGT Matrix — campus-matrix
+# Meridian Manufacturing — sgt-matrix-campus
+
+matrix_name: "campus-matrix"
+description: "Campus SGT-to-SGT policy matrix"
+
+sgts:
+  - tag: 5
+    name: Net_Admins
+    description: Network administrators
+  - tag: 10
+    name: Corp_Users
+    description: Corporate employees
+  - tag: 20
+    name: BYOD_Devices
+    description: BYOD registered devices
+  - tag: 30
+    name: IoT_Devices
+    description: IoT sensors and actuators
+  - tag: 40
+    name: Guest_Users
+    description: Guest wireless users
+
+policy:
+  - source: Corp_Users
+    destination: Corp_Users
+    action: permit
+    contract: FULL-ACCESS
+  - source: Corp_Users
+    destination: IoT_Devices
+    action: deny
+    contract: DENY-ALL
+  - source: Corp_Users
+    destination: Guest_Users
+    action: deny
+    contract: DENY-ALL
+  - source: Guest_Users
+    destination: Corp_Users
+    action: deny
+    contract: DENY-ALL
+  - source: Guest_Users
+    destination: Guest_Users
+    action: permit
+    contract: INTERNET-ONLY
+  - source: IoT_Devices
+    destination: IoT_Devices
+    action: permit
+    contract: IOT-PEER
+  - source: Net_Admins
+    destination: Corp_Users
+    action: permit
+    contract: FULL-ACCESS
+  - source: Net_Admins
+    destination: IoT_Devices
+    action: permit
+    contract: FULL-ACCESS
+  - source: BYOD_Devices
+    destination: Corp_Users
+    action: permit
+    contract: LIMITED-ACCESS
+  - source: BYOD_Devices
+    destination: IoT_Devices
+    action: deny
+    contract: DENY-ALL
+
+default_action: deny

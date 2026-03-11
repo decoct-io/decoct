@@ -1,0 +1,9 @@
+filename,gw_name,protocol,device_ip,device_port,mqtt_token,registers,mqtt_topics,poll_interval_ms,modbus_type
+plc-gw-weld-1,weld-gw-01,modbus-tcp,10.5.1.100,502,PLC_MQTT_Weld1_Xk7,40001:WeldCurrent:float;40003:WeldVoltage:float;40005:WireSpeed:float;40007:GasFlow:float,plant/weld-cell-1/telemetry/current;plant/weld-cell-1/telemetry/voltage,100,tcp
+plc-gw-weld-2,weld-gw-02,modbus-tcp,10.5.1.101,502,PLC_MQTT_Weld2_Lm9,40001:WeldCurrent:float;40003:WeldVoltage:float;40005:WireSpeed:float;40007:GasFlow:float,plant/weld-cell-2/telemetry/current;plant/weld-cell-2/telemetry/voltage,100,tcp
+plc-gw-paint,paint-gw-01,ethernet-ip,10.5.2.100,44818,PLC_MQTT_Paint_Qx4,N7:0:BoothTemp:int;N7:1:Humidity:int;N7:2:AirFlow:int;N7:3:PaintPressure:int,plant/paint-booth/telemetry/temp;plant/paint-booth/telemetry/humidity,500,tcp
+plc-gw-asm-1,assembly-gw-01,modbus-tcp,10.5.3.100,502,PLC_MQTT_Asm1_Hy4,40001:ConveyorSpeed:float;40003:TorqueNm:float;40005:PartCount:uint16;40007:CycleTime:float,plant/assembly-1/telemetry/speed;plant/assembly-1/telemetry/torque,200,tcp
+plc-gw-asm-2,assembly-gw-02,modbus-tcp,10.5.3.101,502,PLC_MQTT_Asm2_Bx5,40001:ConveyorSpeed:float;40003:TorqueNm:float;40005:PartCount:uint16;40007:CycleTime:float,plant/assembly-2/telemetry/speed;plant/assembly-2/telemetry/torque,200,tcp
+plc-gw-conveyor-1,conveyor-gw-01,modbus-rtu,/dev/ttyS0,9600,PLC_MQTT_Conv1_Ej7,1:Speed:uint16;2:Direction:uint16;3:FaultCode:uint16,plant/conveyor-1/telemetry/speed,500,rtu
+plc-gw-conveyor-2,conveyor-gw-02,modbus-rtu,/dev/ttyS1,9600,PLC_MQTT_Conv2_Gh8,1:Speed:uint16;2:Direction:uint16;3:FaultCode:uint16,plant/conveyor-2/telemetry/speed,500,rtu
+plc-gw-vision,vision-gw-01,ethernet-ip,10.5.4.100,44818,PLC_MQTT_Vis_Jk5,N7:0:CamStatus:bool;N7:1:DefectCount:uint32;N7:2:InspRate:float,plant/vision/telemetry/status;plant/vision/telemetry/defects,1000,tcp

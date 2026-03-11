@@ -1,0 +1,25 @@
+# RAN Policy — admission-ctrl-02
+# SpectrumOne 5G RAN — ran-policy-admission-ctrl-02
+
+policy:
+  name: "admission-ctrl-02"
+  type: "admission-control"
+  enabled: true
+  priority: 10
+
+parameters:
+  priority_threshold: 3
+  slice_aware: true
+  max_bearers_per_cell: 128
+  congestion_action: "reject-low-priority"
+  preemption_enabled: true
+  reservation_pct: 20
+
+scope:
+  applies_to: "all-cells"
+  frequency_scope: "all-frequencies"
+
+monitoring:
+  kpi_enabled: true
+  log_decisions: true
+  reporting_interval_s: 15

@@ -1,0 +1,7 @@
+filename,slice_id,sst,sd,slice_type,qos_5qi,priority_level,max_ue,bandwidth_guarantee_mbps,latency_budget_ms,packet_loss_rate,isolation_level
+slice-embb-default,embb-default,1,000001,eMBB,9,50,50000,50,20,0.001,shared
+slice-embb-premium,embb-premium,1,000002,eMBB,6,30,10000,100,10,0.0001,dedicated
+slice-urllc-industrial,urllc-industrial,2,000010,URLLC,1,10,5000,10,1,0.00001,dedicated
+slice-urllc-medical,urllc-medical,2,000011,URLLC,1,5,2000,20,1,0.000001,dedicated
+slice-mmtc-iot-01,mmtc-iot-01,3,000020,mMTC,79,70,200000,1,1000,0.01,shared
+slice-mmtc-iot-02,mmtc-iot-02,3,000021,mMTC,79,70,100000,2,500,0.01,shared

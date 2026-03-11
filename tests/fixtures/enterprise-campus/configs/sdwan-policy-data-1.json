@@ -1,0 +1,51 @@
+{
+  "policy_name": "data-policy-corp",
+  "policy_type": "data",
+  "description": "Corporate VPN data policy \u2014 DIA at branch",
+  "organization": "MeridianMfg",
+  "data_policy": {
+    "vpn_list": [
+      "corp-vpn"
+    ],
+    "sequence": [
+      {
+        "sequence_number": 10,
+        "match": {
+          "app_list": "web-browsing"
+        },
+        "action": {
+          "accept": true,
+          "set": {
+            "next_hop": "inet1"
+          }
+        }
+      },
+      {
+        "sequence_number": 20,
+        "match": {
+          "app_list": "saas-apps"
+        },
+        "action": {
+          "accept": true,
+          "set": {
+            "next_hop": "inet1"
+          }
+        }
+      },
+      {
+        "sequence_number": 30,
+        "match": {
+          "app_list": "microsoft-365"
+        },
+        "action": {
+          "accept": true,
+          "set": {
+            "next_hop": "inet1"
+          }
+        }
+      }
+    ]
+  },
+  "last_modified": "2025-11-20T14:30:00Z",
+  "version": 3
+}

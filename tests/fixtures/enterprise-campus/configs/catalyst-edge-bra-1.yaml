@@ -1,0 +1,106 @@
+# Catalyst Switch Configuration — bra edge
+# Meridian Manufacturing — catalyst-edge-bra-1
+
+system:
+  hostname: "bra-edge-01"
+  model: "C9300-48UXM"
+  ios_version: "17.9.4"
+  management_ip: "10.2.10.10"
+  domain_name: meridian-mfg.com
+  enable_secret: "En@bl3_bra_edg1_Uv"
+  service:
+    timestamps_debug: datetime msec localtime
+    timestamps_log: datetime msec localtime
+    password_encryption: true
+
+aaa:
+  authentication:
+    login:
+      default: group radius local
+  authorization:
+    exec:
+      default: group radius local
+  radius:
+    server:
+      - name: ISE-PRIMARY
+        address: 10.4.1.30
+        auth_port: 1812
+        acct_port: 1813
+        key: "R@d1us_bra_Pq4x"
+      - name: ISE-SECONDARY
+        address: 10.4.1.31
+        auth_port: 1812
+        acct_port: 1813
+        key: "R@d1us_bra_Pq4x"
+
+loopback:
+  - id: 0
+    ip: "10.2.255.10/32"
+    description: "Router-ID / RLOC"
+
+vlans:
+  - id: 100
+    name: "Corp-Data"
+  - id: 200
+    name: "Corp-Voice"
+  - id: 400
+    name: "Guest"
+  - id: 999
+    name: "Native"
+
+interfaces:
+  - name: "Gi1/0/1-24"
+    description: "access-ports"
+    mode: access
+    access_vlan: 100
+    spanning_tree_portfast: true
+    authentication:
+      host_mode: multi-auth
+      order: dot1x mab
+      priority: dot1x mab
+  - name: "Te1/0/1"
+    description: "uplink-border"
+    mode: trunk
+    trunk_allowed_vlans: all
+    mtu: 9100
+
+sda_fabric:
+  enabled: true
+  role: "edge"
+  lisp:
+    instance_id: 4096
+    eid_table: vrf CAMPUS
+    map_server: false
+    map_resolver: false
+  vxlan:
+    source_interface: Loopback0
+    udp_port: 4789
+  cts:
+    sgt_assignment: true
+    enforcement: true
+
+
+spanning_tree:
+  mode: rapid-pvst
+  priority: 32768
+
+ntp:
+  server:
+    - address: 10.4.1.20
+      prefer: true
+    - address: 10.4.1.21
+
+logging:
+  host:
+    - address: 10.4.1.50
+      transport: udp
+      port: 514
+  trap: informational
+  source_interface: Loopback0
+
+snmp:
+  community:
+    - name: MrdnSNMP_RO_7x
+      access: ro
+  location: "bra-edge"
+  contact: noc@meridian-mfg.com

@@ -1,0 +1,32 @@
+# Kubernetes NetworkPolicy — allow-dns (prod)
+# WavePoint Financial — netpol-allow-dns-prod
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-dns
+  namespace: wavepoint-prod
+  labels:
+    app.kubernetes.io/name: allow-dns
+    env: prod
+    team: platform
+    part-of: wavepoint
+  annotations:
+    networkpolicy.kubernetes.io/managed-by: gitops
+    wavepoint.io/compliance: pci-dss
+spec:
+  podSelector: {}
+  policyTypes:
+    - Egress
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns
+      ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53

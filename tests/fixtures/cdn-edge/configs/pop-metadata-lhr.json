@@ -1,0 +1,28 @@
+{
+  "pop": "lhr",
+  "city": "London",
+  "country": "GB",
+  "region": "eu",
+  "tier": "secondary",
+  "status": "active",
+  "location": {
+    "latitude": 51.5074,
+    "longitude": -0.1278
+  },
+  "capacity": {
+    "bandwidth_gbps": 40,
+    "rack_units": 24
+  },
+  "network": {
+    "upstream_pop": "fra",
+    "peering_exchanges": [
+      "LINX",
+      "LONAP"
+    ]
+  },
+  "management": {
+    "api_token": "api_mgmt_lhr_Mn4wQ8jR",
+    "monitoring_url": "https://mon.arcticcache.net/pop/lhr",
+    "dashboard_url": "https://dash.arcticcache.net/pop/lhr"
+  }
+}

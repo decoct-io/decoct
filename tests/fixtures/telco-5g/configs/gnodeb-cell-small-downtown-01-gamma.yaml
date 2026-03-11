@@ -1,0 +1,70 @@
+# gNB Cell Configuration — small-downtown-01 / gamma
+# SpectrumOne 5G RAN — gnodeb-cell-small-downtown-01-gamma
+
+cell_identity:
+  cell_id: 201003
+  pci: 202
+  tac: 20003
+  site: "small-downtown-01"
+  sector: "gamma"
+  plmn:
+    mcc: "310"
+    mnc: "260"
+
+radio:
+  frequency_band: "n77"
+  center_frequency_mhz: 3700
+  bandwidth_mhz: 20
+  duplex_mode: "TDD"
+  subcarrier_spacing_khz: 30
+  ssb_periodicity_ms: 20
+
+antenna:
+  tx_power_dbm: 30
+  antenna_tilt_deg: 0
+  mimo_layers: 4
+  antenna_type: "panel-4T4R"
+  beamforming: "analog"
+  beam_count: 4
+
+carrier:
+  carrier_aggregation: false
+  en_dc: false
+  sa: true
+
+scheduling:
+  max_ue_per_tti: 16
+  max_layers_dl: 4
+  max_layers_ul: 4
+  harq_processes: 16
+  csi_reporting_interval_ms: 10
+
+power_control:
+  p0_nominal_pusch_dbm: -80
+  alpha: 0.8
+  closed_loop_index: 0
+  tpc_accumulation: true
+
+mobility:
+  a3_offset_db: 3
+  hysteresis_db: 1
+  time_to_trigger_ms: 320
+  s_intra_search_p: 62
+  s_non_intra_search_p: 2
+
+management:
+  firmware_version: "4.2.1"
+  oam_password: "oam_pwd_sd01g_Hj4kMs5p"
+  oam_port: 830
+  oam_protocol: "netconf"
+  logging_level: "info"
+
+qos:
+  default_5qi: 9
+  supported_slices:
+    - sst: 1
+      sd: "000001"
+    - sst: 1
+      sd: "000002"
+    - sst: 3
+      sd: "000020"

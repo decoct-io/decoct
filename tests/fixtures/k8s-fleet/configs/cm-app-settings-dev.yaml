@@ -1,0 +1,23 @@
+# Kubernetes ConfigMap — app-settings (dev)
+# WavePoint Financial — cm-app-settings-dev
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-settings
+  namespace: wavepoint-dev
+  labels:
+    app.kubernetes.io/name: app-settings
+    app.kubernetes.io/instance: app-settings-dev
+    env: dev
+    team: platform
+    part-of: wavepoint
+  annotations:
+    configmap.kubernetes.io/managed-by: gitops
+data:
+  APP_NAME: "wavepoint"
+  APP_ENV: "development"
+  BASE_URL: "http://localhost:8080"
+  ALLOWED_ORIGINS: "*"
+  SESSION_TIMEOUT: "3600"
+  LOG_FORMAT: "json"
+  TRACING_ENABLED: "false"

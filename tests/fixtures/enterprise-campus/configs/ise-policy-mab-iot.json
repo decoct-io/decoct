@@ -1,0 +1,68 @@
+{
+  "policy_name": "MAB-IoT-Devices",
+  "description": "MAC auth bypass for IoT devices",
+  "enabled": true,
+  "authentication": {
+    "method": "mab",
+    "identity_store": "Internal-Endpoints",
+    "mac_format": "xxxx.xxxx.xxxx",
+    "fallback": "none"
+  },
+  "authorization": {
+    "profile": "IoT-Limited",
+    "sgt": {
+      "tag": 30,
+      "name": "IoT_Devices"
+    },
+    "conditions": [
+      {
+        "attribute": "OUI",
+        "value": "vendor-list"
+      },
+      {
+        "attribute": "Location",
+        "value": "any"
+      }
+    ],
+    "dacl": {
+      "name": "IOT-RESTRICTED",
+      "rules": [
+        {
+          "action": "permit",
+          "protocol": "tcp",
+          "source": "any",
+          "destination": "10.4.1.0/24",
+          "port": 8883
+        },
+        {
+          "action": "permit",
+          "protocol": "udp",
+          "source": "any",
+          "destination": "10.4.1.10/32",
+          "port": 53
+        },
+        {
+          "action": "deny",
+          "protocol": "ip",
+          "source": "any",
+          "destination": "any"
+        }
+      ]
+    }
+  },
+  "tacacs": {
+    "shared_key": "T@c@cs_Mrdn_Pk7mN",
+    "servers": [
+      {
+        "address": "10.4.1.30",
+        "port": 49
+      },
+      {
+        "address": "10.4.1.31",
+        "port": 49
+      }
+    ]
+  },
+  "api_token": "ISE_AP1_Tk_Mrdn_Xr7mNpQ2",
+  "version": "3.2"
+}

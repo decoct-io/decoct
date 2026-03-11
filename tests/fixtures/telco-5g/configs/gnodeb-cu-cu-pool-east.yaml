@@ -1,0 +1,69 @@
+# gNB Centralized Unit Configuration — cu-pool-east
+# SpectrumOne 5G RAN — gnodeb-cu-cu-pool-east
+
+cu_identity:
+  cu_id: "cu-pool-east"
+  plmn:
+    mcc: "310"
+    mnc: "260"
+
+interfaces:
+  n2:
+    amf_ip: "10.100.1.2"
+    amf_port: 38412
+    sctp_streams: 16
+  n3:
+    upf_ip: "10.100.2.2"
+    upf_port: 2152
+    gtp_tunnel_endpoint: true
+  midhaul:
+    ip: "10.20.1.4"
+    vlan: 1100
+    bandwidth_gbps: 10
+    protocol: "F1"
+
+capacity:
+  max_ue: 20000
+  max_bearers: 65536
+  max_drb_per_ue: 16
+
+connected_dus:
+  - "du-mn03"
+  - "du-mn04"
+
+rrc:
+  t300_ms: 1000
+  t301_ms: 1000
+  t310_ms: 1000
+  t311_ms: 3000
+  n310: 1
+  n311: 1
+
+pdcp:
+  sn_size_dl: 18
+  sn_size_ul: 18
+  t_reordering_ms: 100
+  discard_timer_ms: 150
+  header_compression: "rohc"
+
+sdap:
+  default_drb: true
+  flow_to_drb_mapping: "reflective"
+
+security:
+  integrity_algorithm: "nia2"
+  ciphering_algorithm: "nea2"
+  key_refresh_timer_s: 3600
+
+management:
+  firmware_version: "4.1.0"
+  oam_password: "oam_pwd_cu_east_Yp6cD4"
+  oam_port: 830
+  oam_protocol: "netconf"
+  logging_level: "info"
+
+monitoring:
+  kpi_reporting_interval_s: 15
+  alarm_severity_filter: "warning"
+  pm_counters_enabled: true
+  trace_enabled: false

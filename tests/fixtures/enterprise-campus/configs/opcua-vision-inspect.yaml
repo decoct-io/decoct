@@ -1,0 +1,79 @@
+# OPC-UA Server Configuration — vision-inspection
+# Meridian Manufacturing — opcua-vision-inspect
+
+server:
+  application_name: "Meridian vision-inspection OPC-UA"
+  application_uri: "urn:meridian:opcua:vision-inspect"
+  endpoint_url: "opc.tcp://10.5.4.10:4840"
+  product_uri: "urn:meridian:opcua"
+
+security:
+  mode: "SignAndEncrypt"
+  certificate:
+    path: /etc/opcua/certs/vision-inspection.pem
+    private_key: /etc/opcua/certs/vision-inspection-key.pem
+    password: "OPC_Cert_Vis_Pq3"
+    trust_list: /etc/opcua/certs/trusted/
+    rejected_list: /etc/opcua/certs/rejected/
+  policies:
+    - Basic256Sha256
+    - Aes128_Sha256_RsaOaep
+  user_token: "OPC_Usr_Vis_Vt6"
+  authentication:
+    anonymous: false
+    username_password: true
+    certificate: true
+
+namespace:
+  uri: "urn:meridian:vision-inspection"
+  index: 2
+
+nodes:
+  - node_id: "ns2:CameraStatus"
+    browse_name: "CameraStatus"
+    data_type: Boolean
+    access_level: ReadWrite
+    engineering_unit: state
+    historizing: true
+    sampling_interval_ms: 100
+  - node_id: "ns2:DefectCount"
+    browse_name: "DefectCount"
+    data_type: UInt32
+    access_level: ReadWrite
+    engineering_unit: count
+    historizing: true
+    sampling_interval_ms: 100
+  - node_id: "ns2:InspectionRate"
+    browse_name: "InspectionRate"
+    data_type: UInt32
+    access_level: ReadWrite
+    engineering_unit: count
+    historizing: true
+    sampling_interval_ms: 100
+  - node_id: "ns2:PassRate"
+    browse_name: "PassRate"
+    data_type: UInt32
+    access_level: ReadWrite
+    engineering_unit: count
+    historizing: true
+    sampling_interval_ms: 100
+  - node_id: "ns2:ImageBuffer"
+    browse_name: "ImageBuffer"
+    data_type: Double
+    access_level: ReadWrite
+    engineering_unit: none
+    historizing: true
+    sampling_interval_ms: 100
+
+session:
+  timeout_ms: 30000
+  max_sessions: 50
+  max_subscriptions_per_session: 100
+
+discovery:
+  enabled: true
+  server_url: "opc.tcp://10.5.0.1:4840"
+
+logging:
+  level: info
+  file: /var/log/opcua/vision-inspection.log

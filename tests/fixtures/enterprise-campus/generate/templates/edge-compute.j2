@@ -1,0 +1,79 @@
+# Edge Compute Node — {{ node_name }}
+# Meridian Manufacturing — {{ filename }}
+
+node:
+  name: "{{ node_name }}"
+  function: "{{ function }}"
+  model_version: "{{ model_version }}"
+  api_token: "{{ api_token }}"
+
+hardware:
+  gpu: "{{ gpu_type }}"
+  memory_gb: 16
+  storage_gb: 256
+  network:
+    data_interface: eth0
+    management_interface: eth1
+
+inference:
+  interval_ms: {{ inference_interval_ms }}
+  batch_size: 1
+  precision: fp16
+  models:
+{% for model_str in models %}
+{% set parts = model_str.split(':') %}
+    - name: "{{ parts[0] }}"
+      version: "{{ parts[1] }}"
+      input_size: "{{ parts[2] }}"
+      path: /opt/models/{{ parts[0] }}/{{ parts[1] }}/model.onnx
+      signing_key: "Mdl_S1gn_Mrdn_{{ parts[0][:4] }}_Pk7"
+      warm_up: true
+{% endfor %}
+
+mqtt:
+  broker: 10.5.0.50
+  port: 8883
+  client_id: "{{ node_name }}"
+  publish_topic: "{{ mqtt_topic_prefix }}/{{ node_name }}"
+  subscribe_topic: "{{ mqtt_topic_prefix }}/{{ node_name }}/command"
+  tls: true
+  qos: 1
+
+alerting:
+  enabled: true
+{% if function == 'defect-detection' %}
+  thresholds:
+    defect_confidence: 0.85
+    max_defects_per_minute: 5
+{% elif function == 'predictive-maintenance' %}
+  thresholds:
+    anomaly_score: 0.90
+    remaining_useful_life_hours: 48
+{% elif function == 'quality-control' %}
+  thresholds:
+    out_of_spec_confidence: 0.80
+    batch_reject_rate: 0.02
+{% elif function == 'safety-monitoring' %}
+  thresholds:
+    ppe_violation_confidence: 0.75
+    zone_intrusion_confidence: 0.90
+{% endif %}
+  notification:
+    mqtt_topic: plant/alerts/{{ function }}
+    severity: critical
+
+telemetry:
+  enabled: true
+  interval_s: 30
+  metrics:
+    - inference_latency_ms
+    - gpu_utilization_percent
+    - gpu_temperature_c
+    - memory_used_mb
+    - model_accuracy
+
+logging:
+  level: info
+  file: /var/log/edge-compute/{{ node_name }}.log
+  max_size_mb: 200
+  rotate: 5

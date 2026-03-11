@@ -1,0 +1,41 @@
+version: 1
+source_type: iosxr-access-pe
+generated_by: claude-code
+subjects:
+- name: bgp
+  description: BGP routing configuration including AS numbers, address families, and timers
+  include_paths:
+  - "router.bgp.**"
+  related_paths:
+  - path: hostname
+    reason: Device identity for BGP neighbor correlation
+  example_questions:
+  - "What BGP AS number is used across the fleet?"
+  - "Which devices have BGP graceful-restart enabled?"
+  - "What are the BGP timer settings per class?"
+
+- name: interfaces
+  description: Interface configuration including IP addressing, MTU, and descriptions
+  include_paths:
+  - "interface.**"
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - "What is the Loopback0 IP address for each device?"
+  - "What MTU is configured on TenGigE interfaces?"
+  - "Which BVI interfaces are configured?"
+
+- name: evpn
+  description: EVPN and L2VPN configuration
+  include_paths:
+  - "evpn.**"
+  - "l2vpn.**"
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  - path: "interface.Bundle-Ether*"
+    reason: Bundle-Ether sub-interfaces carry L2 transport
+  example_questions:
+  - "Is EVPN enabled across the fleet?"
+  - "What encapsulation is used on Bundle-Ether sub-interfaces?"

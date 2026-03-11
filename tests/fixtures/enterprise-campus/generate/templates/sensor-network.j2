@@ -1,0 +1,84 @@
+# Sensor Network Configuration — {{ sensor_type }} ({{ zone }})
+# Meridian Manufacturing — {{ filename }}
+
+sensor_type: "{{ sensor_type }}"
+zone: "{{ zone }}"
+sensor_count: {{ sensor_count }}
+
+sampling:
+  rate_hz: {{ sample_rate_hz }}
+  resolution_bits: 16
+{% if sample_rate_hz | int >= 1000 %}
+  buffer_size: 4096
+  batch_transmit: true
+  batch_interval_ms: 100
+{% elif sample_rate_hz | int >= 100 %}
+  buffer_size: 1024
+  batch_transmit: true
+  batch_interval_ms: 500
+{% else %}
+  buffer_size: 64
+  batch_transmit: false
+  batch_interval_ms: 1000
+{% endif %}
+
+communication:
+  protocol: "{{ protocol }}"
+  gateway: "{{ gateway_ip }}"
+  mqtt_topic: "plant/{{ zone }}/{{ sensor_type }}"
+  qos: 1
+
+sensors:
+{% for sensor_str in sensors %}
+{% set parts = sensor_str.split(':') %}
+  - id: "{{ parts[0] }}"
+    measurement: "{{ parts[1] }}"
+    enabled: true
+{% if sensor_type == 'vibration' %}
+    unit: mm/s
+    range_min: 0.0
+    range_max: 50.0
+    alarm_threshold: 25.0
+    warning_threshold: 15.0
+{% elif sensor_type == 'temperature' %}
+    unit: degC
+    range_min: -10.0
+    range_max: 500.0
+    alarm_threshold: 200.0
+    warning_threshold: 150.0
+{% elif sensor_type == 'torque' %}
+    unit: Nm
+    range_min: 0.0
+    range_max: 500.0
+    alarm_threshold: 400.0
+    warning_threshold: 350.0
+{% elif sensor_type == 'pressure' %}
+    unit: bar
+    range_min: 0.0
+    range_max: 10.0
+    alarm_threshold: 8.0
+    warning_threshold: 7.0
+{% elif sensor_type == 'humidity' %}
+    unit: percent
+    range_min: 0.0
+    range_max: 100.0
+    alarm_threshold: 85.0
+    warning_threshold: 75.0
+{% elif sensor_type == 'current' %}
+    unit: A
+    range_min: 0.0
+    range_max: 500.0
+    alarm_threshold: 400.0
+    warning_threshold: 350.0
+{% endif %}
+{% endfor %}
+
+calibration:
+  interval_days: 90
+  last_calibrated: "2025-09-15"
+  certificate: /etc/sensors/cal/{{ sensor_type }}-{{ zone }}.pdf
+
+diagnostics:
+  self_test_interval_s: 3600
+  health_topic: "plant/{{ zone }}/{{ sensor_type }}/health"
+  battery_monitoring: false

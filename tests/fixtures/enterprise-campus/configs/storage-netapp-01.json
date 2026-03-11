@@ -1,0 +1,71 @@
+{
+  "array_name": "dc1-netapp-01",
+  "vendor": "netapp",
+  "model": "AFF-A400",
+  "management": {
+    "ip": "10.4.9.30",
+    "api_token": "NtAp_AP1_Tk_Mrdn_Xr7mNp",
+    "https_port": 443
+  },
+  "protocols": [
+    "nfs",
+    "iscsi"
+  ],
+  "volumes": [
+    {
+      "name": "vol_db_data",
+      "size": "2TB",
+      "provisioning": "thick",
+      "aggregate": "aggr1",
+      "junction_path": "/vol_db_data",
+      "snapshot_policy": "default",
+      "export_policy": "dc-servers"
+    },
+    {
+      "name": "vol_db_log",
+      "size": "500GB",
+      "provisioning": "thick",
+      "aggregate": "aggr1",
+      "junction_path": "/vol_db_log",
+      "snapshot_policy": "default",
+      "export_policy": "dc-servers"
+    },
+    {
+      "name": "vol_app",
+      "size": "1TB",
+      "provisioning": "thin",
+      "aggregate": "aggr1",
+      "junction_path": "/vol_app",
+      "snapshot_policy": "default",
+      "export_policy": "dc-servers"
+    }
+  ],
+  "network": {
+    "cluster_mgmt": "10.4.9.30",
+    "data_lifs": [
+      {
+        "name": "lif-nfs-01",
+        "ip": "10.4.3.30",
+        "protocol": "nfs"
+      },
+      {
+        "name": "lif-iscsi-01",
+        "ip": "10.4.3.31",
+        "protocol": "iscsi"
+      }
+    ],
+    "iscsi": {
+      "chap_initiator_secret": "CHAP_Mrdn_netapp_Pk7"
+    }
+  },
+  "snapmirror": {
+    "enabled": true,
+    "destination": "10.4.9.31",
+    "schedule": "hourly"
+  },
+  "monitoring": {
+    "snmp_community": "MrdnSNMP_stor_RO",
+    "syslog_server": "10.4.1.50",
+    "alert_email": "storage-alerts@meridian-mfg.com"
+  }
+}

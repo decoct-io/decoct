@@ -1,0 +1,24 @@
+{
+  "policy_name": "data-policy-guest",
+  "policy_type": "data",
+  "description": "Guest VPN data policy \u2014 direct internet only",
+  "organization": "MeridianMfg",
+  "data_policy": {
+    "vpn_list": [
+      "corp-vpn"
+    ],
+    "sequence": [
+      {
+        "sequence_number": 10,
+        "match": {
+          "source_ip": "0.0.0.0/0"
+        },
+        "action": {
+          "accept": true
+        }
+      }
+    ]
+  },
+  "last_modified": "2025-11-20T14:30:00Z",
+  "version": 3
+}

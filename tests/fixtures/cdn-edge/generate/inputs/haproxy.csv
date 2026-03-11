@@ -1,0 +1,9 @@
+filename,pop,nbthread,maxconn,stats_port,stats_auth_user,stats_auth_password,frontend_bind,frontend_port,backend_servers,health_check,timeout_connect,timeout_client,timeout_server,ssl_frontend,log_level
+haproxy-ams,ams,4,50000,9000,admin,HApr0xy_ams_S3cret,0.0.0.0,80,web01:10.1.1.20:80;web02:10.1.1.21:80;web03:10.1.1.22:80,GET /health,5000,30000,30000,true,info
+haproxy-fra,fra,4,50000,9000,admin,HApr0xy_fra_K7mNpQ,0.0.0.0,80,web01:10.2.1.20:80;web02:10.2.1.21:80;web03:10.2.1.22:80,GET /health,5000,30000,30000,true,info
+haproxy-lhr,lhr,4,25000,9000,admin,HApr0xy_lhr_Wx5jR8,0.0.0.0,80,web01:10.3.1.20:80;web02:10.3.1.21:80,GET /health,5000,30000,30000,true,info
+haproxy-iad,iad,4,50000,9000,admin,HApr0xy_iad_Yp6cD4,0.0.0.0,80,web01:10.4.1.20:80;web02:10.4.1.21:80;web03:10.4.1.22:80,GET /,5000,30000,30000,true,info
+haproxy-sjc,sjc,4,75000,9000,admin,HApr0xy_sjc_Hf7gB2,0.0.0.0,80,web01:10.5.1.20:80;web02:10.5.1.21:80;web03:10.5.1.22:80;web04:10.5.1.23:80,GET /health,5000,30000,30000,true,info
+haproxy-nrt,nrt,8,50000,9000,admin,HApr0xy_nrt_Pq3rS7,0.0.0.0,80,web01:10.6.1.20:80;web02:10.6.1.21:80;web03:10.6.1.22:80,GET /health,5000,30000,30000,true,info
+haproxy-syd,syd,8,25000,9000,admin,HApr0xy_syd_Jk5mNx,0.0.0.0,80,web01:10.7.1.20:80;web02:10.7.1.21:80,GET /health,5000,30000,30000,true,info
+haproxy-sin,sin,8,50000,9000,admin,HApr0xy_sin_Vt6wXy,0.0.0.0,80,web01:10.8.1.20:80;web02:10.8.1.21:80;web03:10.8.1.22:80,GET /health,5000,30000,30000,true,info

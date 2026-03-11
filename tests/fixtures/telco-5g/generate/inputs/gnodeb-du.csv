@@ -1,0 +1,16 @@
+filename,site,du_id,connected_cells,fronthaul_ip,fronthaul_vlan,fronthaul_bandwidth_gbps,timing_source,cpu_cores,memory_gb,firmware_version,oam_password,status
+gnodeb-du-macro-north-01,macro-north-01,du-mn01,101001;101002;101003,10.10.1.1,100,25,ptp-grandmaster-01,32,64,4.2.1,oam_pwd_du_mn01_Kx9mPq,active
+gnodeb-du-macro-north-02,macro-north-02,du-mn02,102001;102002;102003,10.10.1.2,100,25,ptp-grandmaster-01,32,64,4.2.1,oam_pwd_du_mn02_Wx5jT8,active
+gnodeb-du-macro-north-03,macro-north-03,du-mn03,103001;103002;103003,10.10.2.1,200,25,ptp-grandmaster-02,32,64,4.2.1,oam_pwd_du_mn03_Mn4wQ8,active
+gnodeb-du-macro-north-04,macro-north-04,du-mn04,104001;104002;104003,10.10.2.2,200,25,ptp-grandmaster-02,32,64,4.1.0,oam_pwd_du_mn04_Yp6cD4,active
+gnodeb-du-small-downtown-01,small-downtown-01,du-sd01,201001;201002;201003,10.10.3.1,300,25,ptp-grandmaster-03,32,64,4.2.1,oam_pwd_du_sd01_Hf7gB2,active
+gnodeb-du-small-downtown-02,small-downtown-02,du-sd02,202001;202002;202003,10.10.3.2,300,25,ptp-grandmaster-03,32,64,4.2.1,oam_pwd_du_sd02_Pq3rS7,active
+gnodeb-du-small-downtown-03,small-downtown-03,du-sd03,203001;203002;203003,10.10.3.3,300,25,ptp-grandmaster-03,32,64,4.2.1,oam_pwd_du_sd03_Jk5mNx,active
+gnodeb-du-indoor-enterprise-01,indoor-enterprise-01,du-ie01,301001;301002;301003,10.10.4.1,400,25,ptp-grandmaster-04,32,64,4.2.1,oam_pwd_du_ie01_Vt6wXy,active
+gnodeb-du-indoor-enterprise-02,indoor-enterprise-02,du-ie02,302001;302002;302003,10.10.4.2,400,25,ptp-grandmaster-04,32,64,4.2.1,oam_pwd_du_ie02_Ab3cDe,active
+gnodeb-du-indoor-enterprise-03,indoor-enterprise-03,du-ie03,303001;303002;303003,10.10.5.1,500,25,ptp-grandmaster-04,32,64,4.2.1,oam_pwd_du_ie03_Fg5hIj,active
+gnodeb-du-spare-01,spare-01,du-spare-01,none,10.10.9.1,900,25,ptp-grandmaster-01,32,64,4.1.0,oam_pwd_du_sp01_Kl7mNo,standby
+gnodeb-du-spare-02,spare-02,du-spare-02,none,10.10.9.2,900,25,ptp-grandmaster-01,32,64,4.1.0,oam_pwd_du_sp02_Pq9rSt,standby
+gnodeb-du-spare-03,spare-03,du-spare-03,none,10.10.9.3,900,25,ptp-grandmaster-02,16,32,4.1.0,oam_pwd_du_sp03_Uv2wXy,standby
+gnodeb-du-spare-04,spare-04,du-spare-04,none,10.10.9.4,900,25,ptp-grandmaster-02,32,64,4.1.0,oam_pwd_du_sp04_Za4bCd,standby
+gnodeb-du-spare-05,spare-05,du-spare-05,none,10.10.9.5,900,25,ptp-grandmaster-03,32,64,4.1.0,oam_pwd_du_sp05_Ef6gHi,standby

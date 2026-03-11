@@ -1,0 +1,105 @@
+# Palo Alto Firewall Configuration — dc1
+# Meridian Manufacturing — pa-fw-dc1-2
+
+system:
+  hostname: "dc1-pa-fw-02"
+  model: "PA-5260"
+  panos_version: "11.1.2"
+  management:
+    ip: "10.4.10.61"
+    netmask: 255.255.255.0
+    default_gw: "10.4.10.1"
+  admin:
+    password_hash: "Bx5cDeF8gHjKmNpQ"
+  api_key: "$PA_API_dc2_Bx5cDe"
+  dns:
+    primary: 10.4.1.10
+    secondary: 10.4.1.11
+  ntp:
+    primary: 10.4.1.20
+    secondary: 10.4.1.21
+  domain: meridian-mfg.com
+  timezone: America/Detroit
+  logging:
+    syslog:
+      - server: 10.4.1.50
+        port: 514
+        facility: LOG_USER
+
+zones:
+  - name: "dc-internal"
+    type: layer3
+    protection_profile: default
+  - name: "dc-external"
+    type: layer3
+    protection_profile: strict
+  - name: "dc-mgmt"
+    type: layer3
+    protection_profile: default
+  - name: "dc-dmz"
+    type: layer3
+    protection_profile: default
+
+security_rules:
+  - name: "dc-to-ext"
+    action: "permit"
+    application: any
+    service: any
+    source_zone: "dc"
+    destination_zone: "ext"
+    source_address: any
+    destination_address: any
+    log_start: false
+    log_end: true
+    log_forwarding: syslog-profile
+  - name: "ext-to-dmz"
+    action: "permit"
+    application: any
+    service: "tcp/443"
+    source_zone: "ext"
+    destination_zone: "dmz"
+    source_address: any
+    destination_address: any
+    log_start: false
+    log_end: true
+    log_forwarding: syslog-profile
+  - name: "mgmt-to-dc"
+    action: "permit"
+    application: any
+    service: any
+    source_zone: "mgmt"
+    destination_zone: "dc"
+    source_address: any
+    destination_address: any
+    log_start: false
+    log_end: true
+    log_forwarding: syslog-profile
+
+nat_rules:
+  - name: "dc-out"
+    type: "dynamic-ip-port"
+  - name: "dmz-in"
+    type: "static"
+    translated_address: "198.51.100.51"
+
+
+threat_prevention:
+  antivirus: enabled
+  anti_spyware: enabled
+  vulnerability: enabled
+  file_blocking: enabled
+  wildfire: enabled
+
+ssl_decryption:
+  enabled: false
+  ca_cert: /etc/paloalto/certs/decrypt-ca.pem
+  exclude_categories:
+    - financial-services
+    - health-and-medicine
+
+high_availability:
+  mode: active-passive
+  group_id: 1
+  peer_ip: "10.4.10.60"
+  heartbeat_interval: 1000
+  preemptive: false

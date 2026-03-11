@@ -1,0 +1,67 @@
+{
+  "gateway_name": "paint-gw-01",
+  "protocol": "ethernet-ip",
+  "device_connection": {
+    "host": "10.5.2.100",
+    "port": 44818,
+    "timeout_ms": 5000,
+    "retries": 3
+  },
+  "poll_interval_ms": 500,
+  "registers": [
+    {
+      "address": "N7",
+      "name": "0",
+      "data_type": "BoothTemp",
+      "tag_path": "N7",
+      "element_count": 1
+    },
+    {
+      "address": "N7",
+      "name": "1",
+      "data_type": "Humidity",
+      "tag_path": "N7",
+      "element_count": 1
+    },
+    {
+      "address": "N7",
+      "name": "2",
+      "data_type": "AirFlow",
+      "tag_path": "N7",
+      "element_count": 1
+    },
+    {
+      "address": "N7",
+      "name": "3",
+      "data_type": "PaintPressure",
+      "tag_path": "N7",
+      "element_count": 1
+    }
+  ],
+  "mqtt": {
+    "broker": "10.5.0.50",
+    "port": 8883,
+    "client_id": "paint-gw-01",
+    "publish_token": "PLC_MQTT_Paint_Qx4",
+    "tls": true,
+    "topics": [
+      "plant/paint-booth/telemetry/temp",
+      "plant/paint-booth/telemetry/humidity"
+    ],
+    "qos": 1,
+    "retain": false,
+    "payload_format": "json",
+    "timestamp_field": "ts",
+    "batch_size": 10,
+    "batch_interval_ms": 1000
+  },
+  "buffering": {
+    "enabled": true,
+    "max_size_mb": 50,
+    "path": "/var/lib/plc-gateway/buffer"
+  },
+  "logging": {
+    "level": "info",
+    "file": "/var/log/plc-gateway/paint-gw-01.log"
+  }
+}

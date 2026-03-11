@@ -1,0 +1,71 @@
+{
+  "gateway_name": "assembly-gw-02",
+  "protocol": "modbus-tcp",
+  "device_connection": {
+    "host": "10.5.3.101",
+    "port": 502,
+    "timeout_ms": 5000,
+    "retries": 3
+  },
+  "poll_interval_ms": 200,
+  "registers": [
+    {
+      "address": "40001",
+      "name": "ConveyorSpeed",
+      "data_type": "float",
+      "function_code": 3,
+      "byte_order": "big-endian",
+      "word_order": "big-endian"
+    },
+    {
+      "address": "40003",
+      "name": "TorqueNm",
+      "data_type": "float",
+      "function_code": 3,
+      "byte_order": "big-endian",
+      "word_order": "big-endian"
+    },
+    {
+      "address": "40005",
+      "name": "PartCount",
+      "data_type": "uint16",
+      "function_code": 3,
+      "byte_order": "big-endian",
+      "word_order": "big-endian"
+    },
+    {
+      "address": "40007",
+      "name": "CycleTime",
+      "data_type": "float",
+      "function_code": 3,
+      "byte_order": "big-endian",
+      "word_order": "big-endian"
+    }
+  ],
+  "mqtt": {
+    "broker": "10.5.0.50",
+    "port": 8883,
+    "client_id": "assembly-gw-02",
+    "publish_token": "PLC_MQTT_Asm2_Bx5",
+    "tls": true,
+    "topics": [
+      "plant/assembly-2/telemetry/speed",
+      "plant/assembly-2/telemetry/torque"
+    ],
+    "qos": 1,
+    "retain": false,
+    "payload_format": "json",
+    "timestamp_field": "ts",
+    "batch_size": 10,
+    "batch_interval_ms": 1000
+  },
+  "buffering": {
+    "enabled": true,
+    "max_size_mb": 50,
+    "path": "/var/lib/plc-gateway/buffer"
+  },
+  "logging": {
+    "level": "info",
+    "file": "/var/log/plc-gateway/assembly-gw-02.log"
+  }
+}

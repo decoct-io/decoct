@@ -1,0 +1,106 @@
+# Kubernetes Deployment — payment-api (staging)
+# WavePoint Financial — deploy-payment-api-staging
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-api
+  namespace: wavepoint-staging
+  labels:
+    app: payment-api
+    env: staging
+    team: platform
+    version: "2.3.0"
+    part-of: wavepoint
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+    kubectl.kubernetes.io/last-applied-configuration: managed-by-gitops
+spec:
+  replicas: 2
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: payment-api
+      env: staging
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: payment-api
+        env: staging
+        version: "2.3.0"
+    spec:
+      serviceAccountName: payment-api
+      terminationGracePeriodSeconds: 30
+      containers:
+        - name: payment-api
+          image: registry.wavepoint.io/payment-api:2.3.0
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+            - name: metrics
+              containerPort: 9090
+              protocol: TCP
+          env:
+            - name: APP_ENV
+              value: "staging"
+            - name: LOG_LEVEL
+              value: "INFO"
+            - name: SERVICE_NAME
+              value: "payment-api"
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: DATABASE_URL
+              value: "postgresql://pay_user:Sp3cTr#uM8k@db-staging.wavepoint.internal:5432/payments_stg"
+            - name: API_KEY
+              value: "sk_stg_pay_Wx5jT8hK3yB6"
+            - name: JWT_SECRET
+              value: "jwt_stg_Mn4wQ8jR2vN7"
+            - name: DB_POOL_SIZE
+              value: "50"
+            - name: ENABLE_SANDBOX
+              value: "false"
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+            limits:
+              cpu: "1000m"
+              memory: "2Gi"
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 15
+            timeoutSeconds: 3
+            failureThreshold: 3
+            successThreshold: 1
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+            successThreshold: 1
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config
+              readOnly: true
+      volumes:
+        - name: config-volume
+          configMap:
+            name: payment-api-config

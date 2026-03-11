@@ -1,0 +1,39 @@
+; DNS Zone file — {{ pop }}
+; ArcticCache CDN — {{ filename }}
+; Zone: {{ zone_name }}
+
+; TSIG key for zone transfers
+; key {{ tsig_key }}
+
+$ORIGIN {{ zone_name }}.
+$TTL {{ minimum_ttl }}
+
+; SOA Record
+@ IN SOA {{ primary_ns }}. {{ admin_email }}. (
+    {{ serial }} ; serial
+    {{ refresh }}  ; refresh
+    {{ retry }}   ; retry
+    {{ expire }} ; expire
+    {{ minimum_ttl }}  ; minimum TTL
+)
+
+; NS Records
+{% for ns in ns_records %}
+{% set parts = ns.split(':') %}
+@ IN NS {{ parts[0] }}.{{ zone_name }}.
+{{ parts[0] }} IN A {{ parts[1] }}
+{% endfor %}
+
+; A Records
+{% for rec in a_records %}
+{% set parts = rec.split(':') %}
+{{ parts[0] }} IN A {{ parts[1] }}
+{% endfor %}
+
+{% if cname_records %}
+; CNAME Records
+{% for rec in cname_records %}
+{% set parts = rec.split(':') %}
+{{ parts[0] }} IN CNAME {{ parts[1] }}.
+{% endfor %}
+{% endif %}

@@ -1,0 +1,137 @@
+# FortiGate Firewall Configuration — dc1
+# Meridian Manufacturing — forti-dc1-vpn
+
+system:
+  hostname: "dc1-forti-vpn"
+  model: "FortiGate-200F"
+  firmware: "7.4.3"
+  management:
+    ip: "10.4.10.70"
+    admin_password: "F0rt1_@dm_dc1_Gh8"
+    ssh: enabled
+    https: enabled
+    http: disabled
+    telnet: disabled
+  dns:
+    primary: 10.4.1.10
+    secondary: 10.4.1.11
+  ntp:
+    server: 10.4.1.20
+    sync_interval: 60
+  timezone: America/Detroit
+  fortiguard:
+    license_key: "FG200F-LIC-dc1-Gh8sU"
+    update_server: update.fortiguard.net
+    antivirus_update: enabled
+    ips_update: enabled
+    webfilter_update: enabled
+
+interfaces:
+  - name: port1
+    alias: WAN
+    mode: dhcp
+    allowaccess: ping
+    role: wan
+  - name: port2
+    alias: LAN
+    ip: "10.4.10.1/24"
+    allowaccess: ping https ssh
+    role: lan
+  - name: port3
+    alias: DMZ
+    ip: "10.4.20.1/24"
+    allowaccess: ping
+    role: dmz
+
+address_objects:
+  - name: RFC1918
+    subnet: 10.0.0.0/8
+  - name: CORP-NET
+    subnet: 10.0.0.0/8
+  - name: DC-SERVERS
+    subnet: 10.4.0.0/16
+  - name: GUEST-NET
+    subnet: 10.99.0.0/16
+
+firewall_policy:
+  - name: "remote-to-dc"
+    action: "accept"
+    srcintf: "port1"
+    dstintf: "port2"
+    srcaddr: any
+    dstaddr: any
+    schedule: always
+    service: ALL
+    nat: disable
+    utm_status: enable
+    av_profile: default
+    webfilter_profile: default
+    ips_sensor: default
+    ssl_ssh_profile: certificate-inspection
+    logtraffic: all
+  - name: "dc-to-remote"
+    action: "accept"
+    srcintf: "port1"
+    dstintf: "port2"
+    srcaddr: any
+    dstaddr: any
+    schedule: always
+    service: ALL
+    nat: disable
+    utm_status: enable
+    av_profile: default
+    webfilter_profile: default
+    ips_sensor: default
+    ssl_ssh_profile: certificate-inspection
+    logtraffic: all
+
+vpn:
+  - name: "remote-access"
+    remote_gw: "0.0.0.0"
+    type: "ssl-vpn"
+    port: 443
+    tunnel_mode: enable
+    ip_pool_start: 10.100.100.1
+    ip_pool_end: 10.100.100.254
+    dns_server: 10.4.1.10
+    split_tunnel: enable
+  - name: "site-bra"
+    remote_gw: "10.2.10.70"
+    type: "ipsec"
+    ike_version: 2
+    pre_shared_key: "VPN_PSK_dc1_Jk5mN"
+    phase1:
+      proposal: aes256-sha256
+      dhgroup: 14
+      keylife: 86400
+    phase2:
+      proposal: aes256-sha256
+      pfs: enable
+      dhgroup: 14
+      keylife: 43200
+  - name: "site-brb"
+    remote_gw: "10.3.10.70"
+    type: "ipsec"
+    ike_version: 2
+    pre_shared_key: "VPN_PSK_dc1_Jk5mN"
+    phase1:
+      proposal: aes256-sha256
+      dhgroup: 14
+      keylife: 86400
+    phase2:
+      proposal: aes256-sha256
+      pfs: enable
+      dhgroup: 14
+      keylife: 43200
+
+sdwan:
+  status: disable
+
+logging:
+  syslog:
+    server: 10.4.1.50
+    port: 514
+    facility: local7
+  fortianalyzer:
+    server: 10.4.1.55
+    status: enable

@@ -1,0 +1,72 @@
+{
+  "policy_name": "Plant-OT-Access",
+  "description": "Factory floor OT device access",
+  "enabled": true,
+  "authentication": {
+    "method": "mab",
+    "identity_store": "Internal-Endpoints",
+    "mac_format": "xxxx.xxxx.xxxx",
+    "fallback": "none"
+  },
+  "authorization": {
+    "profile": "OT-Restricted",
+    "sgt": {
+      "tag": 50,
+      "name": "Plant_OT"
+    },
+    "conditions": [
+      {
+        "attribute": "OUI",
+        "value": "siemens"
+      },
+      {
+        "attribute": "OUI",
+        "value": "rockwell"
+      },
+      {
+        "attribute": "Location",
+        "value": "factory"
+      }
+    ],
+    "dacl": {
+      "name": "OT-SEGMENTED",
+      "rules": [
+        {
+          "action": "permit",
+          "protocol": "tcp",
+          "source": "any",
+          "destination": "10.5.0.0/16",
+          "port": "502,44818,4840"
+        },
+        {
+          "action": "permit",
+          "protocol": "udp",
+          "source": "any",
+          "destination": "10.5.0.0/16",
+          "port": "2222,34964"
+        },
+        {
+          "action": "deny",
+          "protocol": "ip",
+          "source": "any",
+          "destination": "any"
+        }
+      ]
+    }
+  },
+  "tacacs": {
+    "shared_key": "T@c@cs_Mrdn_Pk7mN",
+    "servers": [
+      {
+        "address": "10.4.1.30",
+        "port": 49
+      },
+      {
+        "address": "10.4.1.31",
+        "port": 49
+      }
+    ]
+  },
+  "api_token": "ISE_AP1_Tk_Mrdn_Xr7mNpQ2",
+  "version": "3.2"
+}

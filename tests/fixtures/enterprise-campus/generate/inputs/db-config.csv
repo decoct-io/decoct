@@ -1,0 +1,5 @@
+filename,db_type,role,listen_addr,port,max_connections,shared_buffers,work_mem,password,repl_password,ssl,ssl_passphrase
+db-pg-primary,postgresql,primary,*,5432,200,8GB,256MB,PG_sup3r_Mrdn_Xk7,PG_r3pl_Mrdn_Lm9,on,PG_SSL_Mrdn_Qx4
+db-pg-replica,postgresql,replica,*,5432,200,8GB,256MB,PG_sup3r_Mrdn_Xk7,PG_r3pl_Mrdn_Lm9,on,PG_SSL_Mrdn_Qx4
+db-maria-primary,mariadb,primary,0.0.0.0,3306,150,4G,64M,MDB_r00t_Mrdn_Hy4,MDB_r3pl_Mrdn_Bx5,on,none
+db-maria-replica,mariadb,replica,0.0.0.0,3306,150,4G,64M,MDB_r00t_Mrdn_Hy4,MDB_r3pl_Mrdn_Bx5,off,none

@@ -1,0 +1,18 @@
+{
+  "group_name": "{{ group_name }}",
+  "description": "{{ description }}",
+  "vendor": "{{ vendor }}",
+  "type": "ip-netmask",
+  "members": [
+{% for member in members.split(';') %}
+    {
+      "name": "{{ member.replace('/', '-') }}",
+      "value": "{{ member }}",
+      "type": "ip-netmask"
+    }{{ "," if not loop.last else "" }}
+{% endfor %}
+  ],
+  "tags": ["enterprise", "managed"],
+  "shared": true,
+  "last_modified": "2025-10-01T12:00:00Z"
+}

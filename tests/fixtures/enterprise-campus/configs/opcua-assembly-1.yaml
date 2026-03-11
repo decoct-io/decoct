@@ -1,0 +1,85 @@
+# OPC-UA Server Configuration — assembly-line-1
+# Meridian Manufacturing — opcua-assembly-1
+
+server:
+  application_name: "Meridian assembly-line-1 OPC-UA"
+  application_uri: "urn:meridian:opcua:assembly-1"
+  endpoint_url: "opc.tcp://10.5.3.10:4840"
+  product_uri: "urn:meridian:opcua"
+
+security:
+  mode: "SignAndEncrypt"
+  certificate:
+    path: /etc/opcua/certs/assembly-line-1.pem
+    private_key: /etc/opcua/certs/assembly-line-1-key.pem
+    password: "OPC_Cert_Asm1_Ej7"
+    trust_list: /etc/opcua/certs/trusted/
+    rejected_list: /etc/opcua/certs/rejected/
+  policies:
+    - Basic256Sha256
+    - Aes128_Sha256_RsaOaep
+  user_token: "OPC_Usr_Asm1_Gh8"
+  authentication:
+    anonymous: false
+    username_password: true
+    certificate: true
+
+namespace:
+  uri: "urn:meridian:assembly-line-1"
+  index: 2
+
+nodes:
+  - node_id: "ns2:ConveyorSpeed"
+    browse_name: "ConveyorSpeed"
+    data_type: Double
+    access_level: ReadWrite
+    engineering_unit: m/min
+    range:
+      low: 0.0
+      high: 25.0
+    historizing: true
+    sampling_interval_ms: 100
+  - node_id: "ns2:TorqueNm"
+    browse_name: "TorqueNm"
+    data_type: Double
+    access_level: ReadWrite
+    engineering_unit: Nm
+    range:
+      low: 0.0
+      high: 500.0
+    historizing: true
+    sampling_interval_ms: 100
+  - node_id: "ns2:PartCount"
+    browse_name: "PartCount"
+    data_type: UInt32
+    access_level: ReadWrite
+    engineering_unit: count
+    historizing: true
+    sampling_interval_ms: 100
+  - node_id: "ns2:CycleTime"
+    browse_name: "CycleTime"
+    data_type: Double
+    access_level: ReadWrite
+    engineering_unit: none
+    historizing: true
+    sampling_interval_ms: 100
+  - node_id: "ns2:RejectCount"
+    browse_name: "RejectCount"
+    data_type: UInt32
+    access_level: ReadWrite
+    engineering_unit: count
+    historizing: true
+    sampling_interval_ms: 100
+
+session:
+  timeout_ms: 30000
+  max_sessions: 50
+  max_subscriptions_per_session: 100
+
+discovery:
+  enabled: true
+  server_url: "opc.tcp://10.5.0.1:4840"
+
+logging:
+  level: info
+  file: /var/log/opcua/assembly-line-1.log

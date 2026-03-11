@@ -1,0 +1,55 @@
+# Sensor Network Configuration — temperature (weld-cells)
+# Meridian Manufacturing — sensor-temp-weld
+
+sensor_type: "temperature"
+zone: "weld-cells"
+sensor_count: 3
+
+sampling:
+  rate_hz: 1
+  resolution_bits: 16
+  buffer_size: 64
+  batch_transmit: false
+  batch_interval_ms: 1000
+
+communication:
+  protocol: "mqtt"
+  gateway: "10.5.1.201"
+  mqtt_topic: "plant/weld-cells/temperature"
+  qos: 1
+
+sensors:
+  - id: "temp-weld-01"
+    measurement: "ambient"
+    enabled: true
+    unit: degC
+    range_min: -10.0
+    range_max: 500.0
+    alarm_threshold: 200.0
+    warning_threshold: 150.0
+  - id: "temp-weld-02"
+    measurement: "torch-tip"
+    enabled: true
+    unit: degC
+    range_min: -10.0
+    range_max: 500.0
+    alarm_threshold: 200.0
+    warning_threshold: 150.0
+  - id: "temp-weld-03"
+    measurement: "workpiece"
+    enabled: true
+    unit: degC
+    range_min: -10.0
+    range_max: 500.0
+    alarm_threshold: 200.0
+    warning_threshold: 150.0
+
+calibration:
+  interval_days: 90
+  last_calibrated: "2025-09-15"
+  certificate: /etc/sensors/cal/temperature-weld-cells.pdf
+
+diagnostics:
+  self_test_interval_s: 3600
+  health_topic: "plant/weld-cells/temperature/health"
+  battery_monitoring: false

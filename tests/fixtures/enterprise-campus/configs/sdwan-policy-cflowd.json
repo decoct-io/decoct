@@ -1,0 +1,19 @@
+{
+  "policy_name": "cflowd-export",
+  "policy_type": "cflowd",
+  "description": "Flow export for visibility and analytics",
+  "organization": "MeridianMfg",
+  "cflowd": {
+    "collector": {
+      "address": "10.4.1.55",
+      "port": 9995,
+      "vpn": 1,
+      "source_interface": "Loopback0"
+    },
+    "template_refresh": 600,
+    "flow_active_timeout": 60,
+    "flow_inactive_timeout": 10
+  },
+  "last_modified": "2025-11-20T14:30:00Z",
+  "version": 3
+}

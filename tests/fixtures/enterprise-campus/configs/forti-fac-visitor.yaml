@@ -1,0 +1,95 @@
+# FortiGate Firewall Configuration — fac
+# Meridian Manufacturing — forti-fac-visitor
+
+system:
+  hostname: "fac-forti-visitor"
+  model: "FortiGate-60F"
+  firmware: "7.4.3"
+  management:
+    ip: "10.5.10.71"
+    admin_password: "F0rt1_@dm_facv_Bx5"
+    ssh: enabled
+    https: enabled
+    http: disabled
+    telnet: disabled
+  dns:
+    primary: 10.4.1.10
+    secondary: 10.4.1.11
+  ntp:
+    server: 10.4.1.20
+    sync_interval: 60
+  timezone: America/Detroit
+  fortiguard:
+    license_key: "FG60F-LIC-facv-Bx5cD"
+    update_server: update.fortiguard.net
+    antivirus_update: enabled
+    ips_update: enabled
+    webfilter_update: enabled
+
+interfaces:
+  - name: port1
+    alias: WAN
+    mode: dhcp
+    allowaccess: ping
+    role: wan
+  - name: port2
+    alias: LAN
+    ip: "10.5.10.1/24"
+    allowaccess: ping https ssh
+    role: lan
+
+address_objects:
+  - name: RFC1918
+    subnet: 10.0.0.0/8
+  - name: CORP-NET
+    subnet: 10.0.0.0/8
+  - name: DC-SERVERS
+    subnet: 10.4.0.0/16
+  - name: GUEST-NET
+    subnet: 10.99.0.0/16
+
+firewall_policy:
+  - name: "visitor-to-inet"
+    action: "accept"
+    srcintf: "port1"
+    dstintf: "port1"
+    srcaddr: any
+    dstaddr: any
+    schedule: always
+    service: ALL
+    nat: enable
+    utm_status: enable
+    av_profile: default
+    webfilter_profile: default
+    ips_sensor: default
+    ssl_ssh_profile: certificate-inspection
+    logtraffic: all
+  - name: "visitor-to-plant"
+    action: "deny"
+    srcintf: "port1"
+    dstintf: "port2"
+    srcaddr: any
+    dstaddr: any
+    schedule: always
+    service: ALL
+    nat: disable
+    utm_status: enable
+    av_profile: default
+    webfilter_profile: default
+    ips_sensor: default
+    ssl_ssh_profile: certificate-inspection
+    logtraffic: all
+
+vpn:
+
+sdwan:
+  status: disable
+
+logging:
+  syslog:
+    server: 10.4.1.50
+    port: 514
+    facility: local7
+  fortianalyzer:
+    server: 10.4.1.55
+    status: enable

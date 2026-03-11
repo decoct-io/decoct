@@ -1,0 +1,13 @@
+filename,service,env,namespace,api_version,min_replicas,max_replicas,cpu_target,memory_target,scale_down_window,scale_up_window
+hpa-payment-api-dev,payment-api,dev,wavepoint-dev,autoscaling/v2,1,2,80,,60,30
+hpa-payment-api-staging,payment-api,staging,wavepoint-staging,autoscaling/v2,1,3,70,,60,30
+hpa-payment-api-prod,payment-api,prod,wavepoint-prod,autoscaling/v2,3,10,65,75,300,60
+hpa-auth-svc-dev,auth-svc,dev,wavepoint-dev,autoscaling/v2,1,2,80,,60,30
+hpa-auth-svc-staging,auth-svc,staging,wavepoint-staging,autoscaling/v2,1,3,70,,60,30
+hpa-auth-svc-prod,auth-svc,prod,wavepoint-prod,autoscaling/v2,2,8,60,70,300,60
+hpa-gateway-api-dev,gateway-api,dev,wavepoint-dev,autoscaling/v2,1,2,80,,60,30
+hpa-gateway-api-staging,gateway-api,staging,wavepoint-staging,autoscaling/v2,1,3,70,,60,30
+hpa-gateway-api-prod,gateway-api,prod,wavepoint-prod,autoscaling/v2,3,12,60,70,300,60
+hpa-risk-engine-dev,risk-engine,dev,wavepoint-dev,autoscaling/v2,1,2,80,,60,30
+hpa-risk-engine-staging,risk-engine,staging,wavepoint-staging,autoscaling/v2,1,3,70,,60,30
+hpa-risk-engine-prod,risk-engine,prod,wavepoint-prod,autoscaling/v2,2,6,55,65,300,60

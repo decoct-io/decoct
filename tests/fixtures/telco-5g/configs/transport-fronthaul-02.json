@@ -1,0 +1,37 @@
+{
+  "link_id": "fh-link-02",
+  "type": "fronthaul",
+  "endpoints": {
+    "a": "du-mn02",
+    "b": "ru-macro-north-02"
+  },
+  "performance": {
+    "bandwidth_gbps": 25,
+    "latency_us": 45,
+    "jitter_us": 5,
+    "packet_loss_rate": 1e-05
+  },
+  "transport": {
+    "protocol": "eCPRI",
+    "vlan": 100,
+    "frame_format": "eCPRI-Type1",
+    "compression": "none",
+    "mtu": 9000
+  },
+  "security": {
+    "ipsec_enabled": true,
+    "ipsec_psk": "ipsec_psk_fh02_Wx5j",
+    "ipsec_algorithm": "AES-256-GCM",
+    "ike_version": 2
+  },
+  "monitoring": {
+    "bfd_enabled": true,
+    "bfd_interval_ms": 100,
+    "oam_enabled": true,
+    "pm_interval_s": 15
+  },
+  "redundancy": {
+    "protection": "none",
+    "switchover_ms": null
+  }
+}

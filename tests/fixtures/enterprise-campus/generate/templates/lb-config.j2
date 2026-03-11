@@ -1,0 +1,84 @@
+# Load Balancer Configuration — {{ lb_name }}
+# Meridian Manufacturing — {{ filename }}
+
+name: "{{ lb_name }}"
+type: "{{ lb_type }}"
+site: "{{ site }}"
+
+{% set vip_parts = vip_address.split(':') %}
+virtual_server:
+  name: "vs-{{ lb_name }}"
+  address: "{{ vip_parts[0] }}"
+  port: {{ vip_parts[1] }}
+{% if ssl_offload == 'true' %}
+  ssl:
+    enabled: true
+    certificate: /etc/ssl/certs/{{ lb_name }}.pem
+    key: /etc/ssl/private/{{ lb_name }}-key.pem
+    protocols:
+      - TLSv1.2
+      - TLSv1.3
+    ciphers: ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384
+{% else %}
+  ssl:
+    enabled: false
+{% endif %}
+  profiles:
+{% if lb_type == 'f5-bigip' %}
+    - http
+    - tcp-optimized
+    - oneconnect
+{% else %}
+    - tcp
+{% endif %}
+
+pool:
+  name: "pool-{{ lb_name }}"
+  lb_method: round-robin
+  members:
+{% for member in pool_members.split(';') %}
+{% set parts = member.split(':') %}
+    - address: "{{ parts[0] }}"
+      port: {{ parts[1] }}
+      state: enabled
+      priority: 1
+{% endfor %}
+
+health_monitor:
+{% set mon_parts = health_monitor.split(':') %}
+{% if mon_parts[0] == 'tcp-check' %}
+  type: tcp
+  interval: 10
+  timeout: 5
+  retries: 3
+{% else %}
+  type: "{{ mon_parts[0] }}"
+  path: "{{ mon_parts[1] }}"
+  interval: 10
+  timeout: 5
+  retries: 3
+  expected_status: 200
+{% endif %}
+
+{% if persistence != 'none' %}
+persistence:
+  type: "{{ persistence }}"
+{% if persistence == 'cookie' %}
+  cookie_name: "SRV_{{ lb_name | upper | replace('-', '_') }}"
+  cookie_expiry: 3600
+{% elif persistence == 'source-ip' %}
+  timeout: 300
+  mask: 255.255.255.255
+{% endif %}
+{% endif %}
+
+{% if lb_type == 'f5-bigip' %}
+irules:
+  - name: redirect-http
+    content: "when HTTP_REQUEST { HTTP::redirect https://[HTTP::host][HTTP::uri] }"
+{% endif %}
+
+logging:
+  level: info
+  destination: syslog
+  syslog_server: 10.4.1.50

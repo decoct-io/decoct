@@ -1,0 +1,95 @@
+# Kubernetes Deployment — healthcheck-api (dev)
+# WavePoint Financial — deploy-healthcheck-api-dev
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: healthcheck-api
+  namespace: wavepoint-dev
+  labels:
+    app: healthcheck-api
+    env: dev
+    team: platform
+    version: "0.3.0-dev"
+    part-of: wavepoint
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+    kubectl.kubernetes.io/last-applied-configuration: managed-by-gitops
+    wavepoint.io/ephemeral: "true"
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: healthcheck-api
+      env: dev
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: healthcheck-api
+        env: dev
+        version: "0.3.0-dev"
+    spec:
+      serviceAccountName: healthcheck-api
+      terminationGracePeriodSeconds: 30
+      containers:
+        - name: healthcheck-api
+          image: registry.wavepoint.io/healthcheck-api:0.3.0-dev
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8090
+              protocol: TCP
+          env:
+            - name: APP_ENV
+              value: "dev"
+            - name: LOG_LEVEL
+              value: "DEBUG"
+            - name: SERVICE_NAME
+              value: "healthcheck-api"
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: CHECK_INTERVAL
+              value: "60s"
+            - name: TARGETS
+              value: "payment-api"
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+            successThreshold: 1
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+            successThreshold: 1
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config
+              readOnly: true
+      volumes:
+        - name: config-volume
+          configMap:
+            name: healthcheck-api-config

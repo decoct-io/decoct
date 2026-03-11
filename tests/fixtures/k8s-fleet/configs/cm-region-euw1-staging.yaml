@@ -1,0 +1,21 @@
+# Kubernetes ConfigMap — region-euw1 (staging)
+# WavePoint Financial — cm-region-euw1-staging
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: region-euw1
+  namespace: wavepoint-staging
+  labels:
+    app.kubernetes.io/name: region-euw1
+    app.kubernetes.io/instance: region-euw1-staging
+    env: staging
+    team: platform
+    part-of: wavepoint
+  annotations:
+    configmap.kubernetes.io/managed-by: gitops
+data:
+  AWS_REGION: "eu-west-1"
+  AWS_ACCOUNT_ID: "222222222222"
+  VPC_CIDR: "10.21.0.0/16"
+  CLUSTER_NAME: "wavepoint-stg-euw1"
+  SERVICE_MESH: "none"

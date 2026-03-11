@@ -1,0 +1,4 @@
+filename,role,bind_addr,port,requirepass,masterauth,maxmemory,maxmemory_policy,persistence
+redis-primary,master,10.4.1.40,6379,R3d1s_Mrdn_Xk7,none,4gb,allkeys-lru,rdb-aof
+redis-replica-1,replica,10.4.1.41,6379,R3d1s_Mrdn_Xk7,R3d1s_Mrdn_Xk7,4gb,volatile-lru,rdb
+redis-sentinel,sentinel,10.4.1.42,26379,R3d1s_S3nt_Mrdn_Lm9,none,256mb,noeviction,none

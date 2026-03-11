@@ -1,0 +1,37 @@
+{
+  "policy_name": "acl-deny-rfc1918",
+  "policy_type": "acl",
+  "description": "Block RFC1918 on public-facing interfaces",
+  "organization": "MeridianMfg",
+  "access_list": {
+    "name": "acl-deny-rfc1918",
+    "entries": [
+      {
+        "sequence": 10,
+        "action": "deny",
+        "source": "10.0.0.0/8",
+        "destination": "any"
+      },
+      {
+        "sequence": 20,
+        "action": "deny",
+        "source": "172.16.0.0/12",
+        "destination": "any"
+      },
+      {
+        "sequence": 30,
+        "action": "deny",
+        "source": "192.168.0.0/16",
+        "destination": "any"
+      },
+      {
+        "sequence": 100,
+        "action": "permit",
+        "source": "any",
+        "destination": "any"
+      }
+    ]
+  },
+  "last_modified": "2025-11-20T14:30:00Z",
+  "version": 3
+}

@@ -1,0 +1,70 @@
+# gNB Centralized Unit Configuration — {{ cu_id }}
+# SpectrumOne 5G RAN — {{ filename }}
+
+cu_identity:
+  cu_id: "{{ cu_id }}"
+  plmn:
+    mcc: "310"
+    mnc: "260"
+
+interfaces:
+  n2:
+    amf_ip: "{{ n2_amf_ip }}"
+    amf_port: 38412
+    sctp_streams: 16
+  n3:
+    upf_ip: "{{ n3_upf_ip }}"
+    upf_port: 2152
+    gtp_tunnel_endpoint: true
+  midhaul:
+    ip: "{{ midhaul_ip }}"
+    vlan: {{ midhaul_vlan }}
+    bandwidth_gbps: {{ midhaul_bandwidth_gbps }}
+    protocol: "F1"
+
+capacity:
+  max_ue: {{ capacity_ue }}
+  max_bearers: 65536
+  max_drb_per_ue: 16
+
+connected_dus:
+{% for du in connected_dus %}
+  - "{{ du }}"
+{% endfor %}
+
+rrc:
+  t300_ms: 1000
+  t301_ms: 1000
+  t310_ms: 1000
+  t311_ms: 3000
+  n310: 1
+  n311: 1
+
+pdcp:
+  sn_size_dl: 18
+  sn_size_ul: 18
+  t_reordering_ms: 100
+  discard_timer_ms: 150
+  header_compression: "rohc"
+
+sdap:
+  default_drb: true
+  flow_to_drb_mapping: "reflective"
+
+security:
+  integrity_algorithm: "nia2"
+  ciphering_algorithm: "nea2"
+  key_refresh_timer_s: 3600
+
+management:
+  firmware_version: "{{ firmware_version }}"
+  oam_password: "{{ oam_password }}"
+  oam_port: 830
+  oam_protocol: "netconf"
+  logging_level: "info"
+
+monitoring:
+  kpi_reporting_interval_s: 15
+  alarm_severity_filter: "warning"
+  pm_counters_enabled: true
+  trace_enabled: false

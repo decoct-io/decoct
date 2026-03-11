@@ -1,0 +1,5 @@
+filename,broker_name,broker_type,bind_addr,port,tls_port,auth_token,bridge_password,tls_cert_password,max_connections,allow_anonymous
+mqtt-plant-primary,plant-mqtt-01,emqx,0.0.0.0,1883,8883,MQTT_Tk_Mrdn_Xk7mN,MQTT_Br1dge_Mrdn_Lm9,MQTT_TLS_Mrdn_Qx4,5000,false
+mqtt-plant-secondary,plant-mqtt-02,emqx,0.0.0.0,1883,8883,MQTT_Tk_Mrdn_Wx5jT,MQTT_Br1dge_Mrdn_Lm9,MQTT_TLS_Mrdn_Qx4,5000,false
+mqtt-edge,edge-mqtt-01,mosquitto,0.0.0.0,1883,8883,MQTT_Tk_Edge_Pq3rS,none,MQTT_TLS_Edge_Hy4,500,false
+mqtt-cloud-bridge,cloud-bridge-01,mosquitto,0.0.0.0,1883,8883,MQTT_Tk_Cloud_Vt6w,MQTT_Br1dge_Cloud_Bx5,MQTT_TLS_Cloud_Ej7,100,true

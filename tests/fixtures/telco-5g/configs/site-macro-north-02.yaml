@@ -1,0 +1,45 @@
+# Site Metadata — macro-north-02
+# SpectrumOne 5G RAN — site-macro-north-02
+
+operator:
+  name: "SpectrumOne"
+  plmn:
+    mcc: "310"
+    mnc: "260"
+  region: "metro-north"
+
+site:
+  site_id: "macro-north-02"
+  type: "macro"
+  address: "850 Highway Blvd N"
+  contact_phone: "555-0102"
+
+location:
+  latitude: 40.7920
+  longitude: -73.9654
+  altitude_m: 52
+
+infrastructure:
+  power_source: "grid+battery"
+  shelter_class: "outdoor-cabinet"
+  access_type: "locked-compound"
+  antenna_height_m: 35
+  backhaul_type: "fiber"
+
+environmental:
+  temperature_range_c: "-40 to 55"
+  wind_rating_kmh: 160
+  ice_loading: true
+  lightning_protection: true
+
+security:
+  access_code: "access_mn02_Wx5j"
+  alarm_system: true
+  surveillance: "cctv"
+  fence_type: "chain-link"
+
+maintenance:
+  last_inspection: "2025-11-15"
+  next_inspection: "2026-05-15"
+  maintenance_window: "02:00-06:00 UTC"
+  emergency_contact: "555-0102"

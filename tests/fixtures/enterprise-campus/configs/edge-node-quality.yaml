@@ -1,0 +1,68 @@
+# Edge Compute Node — quality-control-01
+# Meridian Manufacturing — edge-node-quality
+
+node:
+  name: "quality-control-01"
+  function: "quality-control"
+  model_version: "v2.3"
+  api_token: "Edge_AP1_QC1_Bx5"
+
+hardware:
+  gpu: "nvidia-a2"
+  memory_gb: 16
+  storage_gb: 256
+  network:
+    data_interface: eth0
+    management_interface: eth1
+
+inference:
+  interval_ms: 500
+  batch_size: 1
+  precision: fp16
+  models:
+    - name: "dimension-check"
+      version: "v1.8"
+      input_size: "512x512"
+      path: /opt/models/dimension-check/v1.8/model.onnx
+      signing_key: "Mdl_S1gn_Mrdn_dime_Pk7"
+      warm_up: true
+    - name: "surface-grade"
+      version: "v2.0"
+      input_size: "256x256"
+      path: /opt/models/surface-grade/v2.0/model.onnx
+      signing_key: "Mdl_S1gn_Mrdn_surf_Pk7"
+      warm_up: true
+
+mqtt:
+  broker: 10.5.0.50
+  port: 8883
+  client_id: "quality-control-01"
+  publish_topic: "plant/quality/inference/quality-control-01"
+  subscribe_topic: "plant/quality/inference/quality-control-01/command"
+  tls: true
+  qos: 1
+
+alerting:
+  enabled: true
+  thresholds:
+    out_of_spec_confidence: 0.80
+    batch_reject_rate: 0.02
+  notification:
+    mqtt_topic: plant/alerts/quality-control
+    severity: critical
+
+telemetry:
+  enabled: true
+  interval_s: 30
+  metrics:
+    - inference_latency_ms
+    - gpu_utilization_percent
+    - gpu_temperature_c
+    - memory_used_mb
+    - model_accuracy
+
+logging:
+  level: info
+  file: /var/log/edge-compute/quality-control-01.log
+  max_size_mb: 200
+  rotate: 5

@@ -1,0 +1,24 @@
+# Kubernetes ServiceAccount — gateway-api (prod)
+# WavePoint Financial — sa-gateway-api-prod
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: gateway-api
+  namespace: wavepoint-prod
+  labels:
+    app: gateway-api
+    env: prod
+    team: platform
+    part-of: wavepoint
+    cost-center: "platform"
+    pci-scope: "true"
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::333333333333:role/prod-gateway-api-role
+    serviceaccount.kubernetes.io/managed-by: gitops
+    wavepoint.io/last-audit: "2026-01-15"
+    wavepoint.io/compliance: pci-dss
+automountServiceAccountToken: true
+secrets:
+  - name: gateway-api-token
+imagePullSecrets:
+  - name: registry-credentials

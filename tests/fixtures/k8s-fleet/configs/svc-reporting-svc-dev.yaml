@@ -1,0 +1,25 @@
+# Kubernetes Service — reporting-svc (dev)
+# WavePoint Financial — svc-reporting-svc-dev
+apiVersion: v1
+kind: Service
+metadata:
+  name: reporting-svc
+  namespace: wavepoint-dev
+  labels:
+    app: reporting-svc
+    env: dev
+    team: platform
+    part-of: wavepoint
+  annotations:
+    service.kubernetes.io/topology-aware-hints: auto
+spec:
+  type: ClusterIP
+  selector:
+    app: reporting-svc
+    env: dev
+  sessionAffinity: None
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8086

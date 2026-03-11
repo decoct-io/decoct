@@ -1,0 +1,102 @@
+# OPC-UA Server Configuration — {{ cell_name }}
+# Meridian Manufacturing — {{ filename }}
+
+server:
+  application_name: "Meridian {{ cell_name }} OPC-UA"
+  application_uri: "{{ application_uri }}"
+  endpoint_url: "{{ endpoint_url }}"
+  product_uri: "urn:meridian:opcua"
+
+security:
+  mode: "{{ security_mode }}"
+{% if security_mode != 'None' %}
+  certificate:
+    path: /etc/opcua/certs/{{ cell_name }}.pem
+    private_key: /etc/opcua/certs/{{ cell_name }}-key.pem
+    password: "{{ cert_password }}"
+    trust_list: /etc/opcua/certs/trusted/
+    rejected_list: /etc/opcua/certs/rejected/
+  policies:
+    - Basic256Sha256
+    - Aes128_Sha256_RsaOaep
+{% else %}
+  # WARNING: Security mode None — no encryption or signing
+  certificate:
+    path: none
+{% endif %}
+  user_token: "{{ user_token }}"
+  authentication:
+    anonymous: false
+    username_password: true
+    certificate: {{ 'true' if security_mode != 'None' else 'false' }}
+
+namespace:
+  uri: "urn:meridian:{{ cell_name }}"
+  index: 2
+
+nodes:
+{% for node_str in nodes %}
+{% set parts = node_str.split(':') %}
+  - node_id: "{{ node_str }}"
+    browse_name: "{{ parts[1] }}"
+{% if 'Count' in parts[1] or 'Rate' in parts[1] %}
+    data_type: UInt32
+{% elif 'Status' in parts[1] %}
+    data_type: Boolean
+{% else %}
+    data_type: Double
+{% endif %}
+    access_level: ReadWrite
+{% if 'Current' in parts[1] %}
+    engineering_unit: A
+    range:
+      low: 0.0
+      high: 500.0
+{% elif 'Voltage' in parts[1] %}
+    engineering_unit: V
+    range:
+      low: 0.0
+      high: 500.0
+{% elif 'Speed' in parts[1] %}
+    engineering_unit: m/min
+    range:
+      low: 0.0
+      high: 25.0
+{% elif 'Temp' in parts[1] %}
+    engineering_unit: degC
+    range:
+      low: 15.0
+      high: 80.0
+{% elif 'Pressure' in parts[1] %}
+    engineering_unit: bar
+    range:
+      low: 0.0
+      high: 10.0
+{% elif 'Torque' in parts[1] %}
+    engineering_unit: Nm
+    range:
+      low: 0.0
+      high: 500.0
+{% elif 'Count' in parts[1] or 'Rate' in parts[1] %}
+    engineering_unit: count
+{% elif 'Status' in parts[1] %}
+    engineering_unit: state
+{% else %}
+    engineering_unit: none
+{% endif %}
+    historizing: true
+    sampling_interval_ms: 100
+{% endfor %}
+
+session:
+  timeout_ms: 30000
+  max_sessions: 50
+  max_subscriptions_per_session: 100
+
+discovery:
+  enabled: true
+  server_url: "opc.tcp://10.5.0.1:4840"
+
+logging:
+  level: info
+  file: /var/log/opcua/{{ cell_name }}.log

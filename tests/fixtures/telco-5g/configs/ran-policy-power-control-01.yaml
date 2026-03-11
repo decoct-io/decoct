@@ -1,0 +1,27 @@
+# RAN Policy — power-control-01
+# SpectrumOne 5G RAN — ran-policy-power-control-01
+
+policy:
+  name: "power-control-01"
+  type: "power-control"
+  enabled: true
+  priority: 20
+
+parameters:
+  p0_nominal_pusch_dbm: -80
+  alpha: 0.8
+  p_max_dbm: 23
+  closed_loop: true
+  tpc_step_size_db: 1
+  accumulation_enabled: true
+  target_sinr_db: 15
+
+scope:
+  applies_to: "macro-cell-group"
+  frequency_scope: "all-frequencies"
+
+
+monitoring:
+  kpi_enabled: true
+  log_decisions: true
+  reporting_interval_s: 15

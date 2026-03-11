@@ -1,0 +1,7 @@
+filename,service_name,description,exec_start,user,group,restart_policy,restart_sec,env_vars,limit_nofile,after,type
+systemd-app-api,meridian-api,Meridian API Service,/opt/meridian/bin/api-server --port 8080 --config /etc/meridian/api.conf,meridian,meridian,always,5,DB_HOST=10.4.1.11 DB_PORT=5432 DB_PASS=DB_c0nn_Mrdn_Pk7,65535,network.target postgresql.service,simple
+systemd-app-worker,meridian-worker,Meridian Background Worker,/opt/meridian/bin/worker --queues default high --concurrency 4,meridian,meridian,always,5,DB_HOST=10.4.1.11 DB_PORT=5432 REDIS_URL=redis://10.4.1.40:6379 REDIS_AUTH=R3d1s_Mrdn_Xk7,65535,network.target redis.service,simple
+systemd-node-exporter,node-exporter,Prometheus Node Exporter,/usr/local/bin/node_exporter --web.listen-address=:9100,node_exporter,node_exporter,always,3,none,8192,network.target,simple
+systemd-promtail,promtail,Grafana Promtail Log Shipper,/usr/local/bin/promtail -config.file=/etc/promtail/config.yaml,promtail,promtail,always,5,none,65535,network.target,simple
+systemd-telegraf,telegraf,Telegraf Metrics Collector,/usr/bin/telegraf --config /etc/telegraf/telegraf.conf,telegraf,telegraf,always,5,INFLUX_TOKEN=Infl_Tk_Mrdn_Mn4wQ8,32768,network.target,simple
+systemd-certbot-renew,certbot-renewal,Certbot Certificate Renewal Timer,/usr/bin/certbot renew --quiet --deploy-hook /usr/local/bin/reload-services.sh,root,root,no,0,none,0,network.target,oneshot

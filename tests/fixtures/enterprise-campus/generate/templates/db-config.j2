@@ -1,0 +1,127 @@
+{% if db_type == 'postgresql' %}
+# PostgreSQL Configuration — {{ role }}
+# Meridian Manufacturing — {{ filename }}
+
+# ── Connection Settings ────────────────────────────────────────────────────────
+listen_addresses = '{{ listen_addr }}'
+port = {{ port }}
+max_connections = {{ max_connections }}
+superuser_reserved_connections = 3
+password_encryption = scram-sha-256
+authentication_timeout = 60s
+
+# ── Authentication ─────────────────────────────────────────────────────────────
+# superuser password: {{ password }}
+# replication password: {{ repl_password }}
+
+# ── SSL ────────────────────────────────────────────────────────────────────────
+ssl = {{ ssl }}
+{% if ssl == 'on' %}
+ssl_cert_file = '/etc/postgresql/certs/server.crt'
+ssl_key_file = '/etc/postgresql/certs/server.key'
+ssl_ca_file = '/etc/postgresql/certs/root.crt'
+ssl_prefer_server_ciphers = on
+ssl_min_protocol_version = TLSv1.2
+{% if ssl_passphrase != 'none' %}
+ssl_passphrase_command = 'echo {{ ssl_passphrase }}'
+{% endif %}
+{% endif %}
+
+# ── Memory ─────────────────────────────────────────────────────────────────────
+shared_buffers = {{ shared_buffers }}
+work_mem = {{ work_mem }}
+maintenance_work_mem = 1GB
+effective_cache_size = 24GB
+huge_pages = try
+
+# ── WAL Settings ──────────────────────────────────────────────────────────────
+wal_level = replica
+max_wal_size = 4GB
+min_wal_size = 1GB
+wal_buffers = 64MB
+checkpoint_timeout = 15min
+checkpoint_completion_target = 0.9
+
+# ── Replication ───────────────────────────────────────────────────────────────
+{% if role == 'primary' %}
+max_wal_senders = 5
+max_replication_slots = 5
+wal_keep_size = 1GB
+synchronous_commit = on
+archive_mode = on
+archive_command = 'cp %p /var/lib/postgresql/wal_archive/%f'
+{% else %}
+hot_standby = on
+hot_standby_feedback = on
+primary_conninfo = 'host=10.4.1.11 port=5432 user=replicator password={{ repl_password }}'
+{% endif %}
+
+# ── Logging ───────────────────────────────────────────────────────────────────
+log_destination = 'syslog'
+logging_collector = on
+log_min_messages = warning
+log_min_error_statement = error
+log_min_duration_statement = 1000
+log_connections = on
+log_disconnections = on
+log_lock_waits = on
+log_checkpoints = on
+
+# ── Autovacuum ────────────────────────────────────────────────────────────────
+autovacuum = on
+autovacuum_max_workers = 4
+autovacuum_naptime = 30s
+{% elif db_type == 'mariadb' %}
+# MariaDB Configuration — {{ role }}
+# Meridian Manufacturing — {{ filename }}
+
+[mysqld]
+bind-address = {{ listen_addr }}
+port = {{ port }}
+max_connections = {{ max_connections }}
+# root password: {{ password }}
+
+# ── InnoDB ─────────────────────────────────────────────────────────────────────
+innodb_buffer_pool_size = {{ shared_buffers }}
+innodb_log_file_size = 1G
+innodb_flush_log_at_trx_commit = 1
+innodb_flush_method = O_DIRECT
+innodb_file_per_table = ON
+
+# ── SSL ────────────────────────────────────────────────────────────────────────
+{% if ssl == 'on' %}
+ssl-ca = /etc/mysql/certs/ca.pem
+ssl-cert = /etc/mysql/certs/server-cert.pem
+ssl-key = /etc/mysql/certs/server-key.pem
+require_secure_transport = ON
+{% endif %}
+
+# ── Replication ───────────────────────────────────────────────────────────────
+server-id = {{ '1' if role == 'primary' else '2' }}
+log_bin = /var/log/mysql/mariadb-bin
+binlog_format = ROW
+{% if role == 'primary' %}
+binlog_do_db = meridian_prod
+binlog_do_db = meridian_analytics
+expire_logs_days = 7
+# replication password: {{ repl_password }}
+{% else %}
+read_only = ON
+relay_log = /var/log/mysql/relay-bin
+log_slave_updates = ON
+{% endif %}
+
+# ── Query Cache ───────────────────────────────────────────────────────────────
+query_cache_type = 0
+query_cache_size = 0
+
+# ── Logging ───────────────────────────────────────────────────────────────────
+slow_query_log = ON
+slow_query_log_file = /var/log/mysql/slow.log
+long_query_time = 2
+log_error = /var/log/mysql/error.log
+
+[client]
+port = {{ port }}
+socket = /var/run/mysqld/mysqld.sock
+{% endif %}

@@ -1,0 +1,115 @@
+# Catalyst Switch Configuration — hq border
+# Meridian Manufacturing — catalyst-border-hq-2
+
+system:
+  hostname: "hq-border-02"
+  model: "C9500-48Y4C"
+  ios_version: "17.9.4"
+  management_ip: "10.1.10.2"
+  domain_name: meridian-mfg.com
+  enable_secret: "En@bl3_hq_bdr2_Ym"
+  service:
+    timestamps_debug: datetime msec localtime
+    timestamps_log: datetime msec localtime
+    password_encryption: true
+
+aaa:
+  authentication:
+    login:
+      default: group radius local
+  authorization:
+    exec:
+      default: group radius local
+  radius:
+    server:
+      - name: ISE-PRIMARY
+        address: 10.4.1.30
+        auth_port: 1812
+        acct_port: 1813
+        key: "R@d1us_hq_Mn7w"
+      - name: ISE-SECONDARY
+        address: 10.4.1.31
+        auth_port: 1812
+        acct_port: 1813
+        key: "R@d1us_hq_Mn7w"
+
+loopback:
+  - id: 0
+    ip: "10.1.255.2/32"
+    description: "Router-ID / RLOC"
+
+vlans:
+  - id: 100
+    name: "Corp-Data"
+  - id: 200
+    name: "Corp-Voice"
+  - id: 300
+    name: "IoT"
+  - id: 400
+    name: "Guest"
+  - id: 999
+    name: "Native"
+
+interfaces:
+  - name: "Te1/0/1"
+    description: "uplink-core"
+    mode: trunk
+    trunk_allowed_vlans: all
+    mtu: 9100
+  - name: "Te1/0/2"
+    description: "uplink-wan"
+    mode: trunk
+    trunk_allowed_vlans: all
+    mtu: 9100
+  - name: "Po1"
+    description: "server-farm"
+
+sda_fabric:
+  enabled: true
+  role: "border"
+  lisp:
+    instance_id: 4096
+    eid_table: vrf CAMPUS
+    map_server: true
+    map_resolver: true
+  vxlan:
+    source_interface: Loopback0
+    udp_port: 4789
+  cts:
+    sgt_assignment: true
+    enforcement: true
+
+# LEGACY: EIGRP still active during SD-Access migration
+routing:
+  eigrp:
+    as_number: 100
+    networks:
+      - "10.1.0.0/16"
+    redistribute:
+      - connected
+      - static
+
+spanning_tree:
+  mode: rapid-pvst
+  priority: 4096
+
+ntp:
+  server:
+    - address: 10.4.1.20
+      prefer: true
+    - address: 10.4.1.21
+
+logging:
+  host:
+    - address: 10.4.1.50
+      transport: udp
+      port: 514
+  trap: informational
+  source_interface: Loopback0
+
+snmp:
+  community:
+    - name: MrdnSNMP_RO_7x
+      access: ro
+  location: "hq-border"
+  contact: noc@meridian-mfg.com

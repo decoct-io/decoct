@@ -1,0 +1,40 @@
+{
+  "template_name": "aaa-radius",
+  "template_type": "aaa",
+  "description": "AAA/RADIUS integration template",
+  "organization": "MeridianMfg",
+  "aaa": {
+    "radius": {
+      "servers": [
+        {
+          "address": "10.4.1.30",
+          "auth_port": 1812,
+          "acct_port": 1813,
+          "secret": "R@dius_Sh@red_Mrdn_7x"
+        },
+        {
+          "address": "10.4.1.31",
+          "auth_port": 1812,
+          "acct_port": 1813,
+          "secret": "R@dius_Sh@red_Mrdn_7x"
+        }
+      ],
+      "timeout": 5,
+      "retransmit": 3
+    },
+    "authentication_order": [
+      "radius",
+      "local"
+    ],
+    "authorization_order": [
+      "radius",
+      "local"
+    ],
+    "accounting": {
+      "enable": true,
+      "method": "radius"
+    }
+  },
+  "last_modified": "2025-10-15T09:00:00Z",
+  "version": 2
+}

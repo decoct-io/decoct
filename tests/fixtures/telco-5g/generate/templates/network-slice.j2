@@ -1,0 +1,65 @@
+# Network Slice Definition — {{ slice_id }}
+# SpectrumOne 5G RAN — {{ filename }}
+
+slice_identity:
+  slice_id: "{{ slice_id }}"
+  s_nssai:
+    sst: {{ sst }}
+    sd: "{{ sd }}"
+  slice_type: "{{ slice_type }}"
+  plmn:
+    mcc: "310"
+    mnc: "260"
+
+qos_profile:
+  five_qi: {{ qos_5qi }}
+  priority_level: {{ priority_level }}
+  preemption_capability: {% if priority_level|int <= 10 %}"may-preempt"{% else %}"shall-not-preempt"{% endif %}
+
+  preemption_vulnerability: {% if priority_level|int <= 10 %}"not-preemptable"{% else %}"preemptable"{% endif %}
+
+{% if slice_type == 'eMBB' %}
+  resource_type: "non-gbr"
+  packet_delay_budget_ms: {{ latency_budget_ms }}
+  packet_error_rate: {{ packet_loss_rate }}
+{% elif slice_type == 'URLLC' %}
+  resource_type: "gbr"
+  packet_delay_budget_ms: {{ latency_budget_ms }}
+  packet_error_rate: {{ packet_loss_rate }}
+  max_data_burst_volume_bytes: 4096
+{% else %}
+  resource_type: "non-gbr"
+  packet_delay_budget_ms: {{ latency_budget_ms }}
+  packet_error_rate: {{ packet_loss_rate }}
+{% endif %}
+
+capacity:
+  max_ue: {{ max_ue }}
+  bandwidth_guarantee_mbps: {{ bandwidth_guarantee_mbps }}
+  isolation_level: "{{ isolation_level }}"
+
+admission_control:
+  enabled: true
+  max_pdu_sessions: {% if slice_type == 'mMTC' %}{{ max_ue }}{% else %}{{ (max_ue|int * 2)|int }}{% endif %}
+
+  congestion_threshold_pct: {% if slice_type == 'URLLC' %}50{% elif slice_type == 'eMBB' %}80{% else %}95{% endif %}
+
+
+ue_ambr:
+{% if slice_type == 'eMBB' %}
+  downlink_mbps: {{ bandwidth_guarantee_mbps }}
+  uplink_mbps: {{ (bandwidth_guarantee_mbps|int // 2)|int }}
+{% elif slice_type == 'URLLC' %}
+  downlink_mbps: {{ bandwidth_guarantee_mbps }}
+  uplink_mbps: {{ bandwidth_guarantee_mbps }}
+{% else %}
+  downlink_mbps: 1
+  uplink_mbps: 1
+{% endif %}
+
+monitoring:
+  kpi_reporting: true
+  reporting_interval_s: {% if slice_type == 'URLLC' %}5{% else %}15{% endif %}
+
+  sla_tracking: true
+  alarm_on_sla_breach: true

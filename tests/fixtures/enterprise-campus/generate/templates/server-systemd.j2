@@ -1,0 +1,29 @@
+# {{ description }}
+# Meridian Manufacturing — {{ filename }}
+
+[Unit]
+Description={{ description }}
+After={{ after }}
+
+[Service]
+Type={{ type }}
+{% if user != 'none' %}
+User={{ user }}
+Group={{ group }}
+{% endif %}
+ExecStart={{ exec_start }}
+{% if restart_policy != 'no' %}
+Restart={{ restart_policy }}
+RestartSec={{ restart_sec }}
+{% endif %}
+{% if env_vars != 'none' %}
+{% for env_pair in env_vars.split(' ') %}
+Environment="{{ env_pair }}"
+{% endfor %}
+{% endif %}
+{% if limit_nofile != '0' %}
+LimitNOFILE={{ limit_nofile }}
+{% endif %}
+
+[Install]
+WantedBy=multi-user.target

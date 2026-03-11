@@ -1,0 +1,26 @@
+{
+  "pop": "iad",
+  "cert_type": "rsa",
+  "certificate": {
+    "cert_path": "/etc/ssl/certs/iad-rsa.pem",
+    "key_path": "/etc/ssl/private/iad-rsa-key.pem",
+    "ca_bundle_path": "/etc/ssl/certs/ca-bundle-rsa.pem"
+  },
+  "tls": {
+    "min_version": "TLSv1.2",
+    "max_version": "TLSv1.3",
+    "ciphers": "ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384",
+    "prefer_server_ciphers": true,
+    "session_timeout": 86400,
+    "session_cache_size": 10240
+  },
+  "ocsp": {
+    "stapling_enabled": true,
+    "responder_url": "http://ocsp.arcticcache.net",
+    "token": "ocsp_tk_iad_Yp6c"
+  },
+  "security": {
+    "hsts_max_age": 63072000,
+    "certificate_transparency": true
+  }
+}

@@ -1,0 +1,134 @@
+# Palo Alto Firewall Configuration — hq
+# Meridian Manufacturing — pa-fw-hq-2
+
+system:
+  hostname: "hq-pa-fw-02"
+  model: "PA-5260"
+  panos_version: "11.1.2"
+  management:
+    ip: "10.1.10.61"
+    netmask: 255.255.255.0
+    default_gw: "10.1.10.1"
+  admin:
+    password_hash: "Lm9kRwPx4yBn6cDf"
+  api_key: "$PA_API_hq2_Wx5jT8"
+  dns:
+    primary: 10.4.1.10
+    secondary: 10.4.1.11
+  ntp:
+    primary: 10.4.1.20
+    secondary: 10.4.1.21
+  domain: meridian-mfg.com
+  timezone: America/Detroit
+  logging:
+    syslog:
+      - server: 10.4.1.50
+        port: 514
+        facility: LOG_USER
+
+zones:
+  - name: "corp-internal"
+    type: layer3
+    protection_profile: default
+  - name: "corp-external"
+    type: layer3
+    protection_profile: strict
+  - name: "dmz"
+    type: layer3
+    protection_profile: default
+  - name: "guest"
+    type: layer3
+    protection_profile: default
+  - name: "iot"
+    type: layer3
+    protection_profile: default
+
+security_rules:
+  - name: "corp-to-ext"
+    action: "permit"
+    application: any
+    service: any
+    source_zone: "corp"
+    destination_zone: "ext"
+    source_address: any
+    destination_address: any
+    log_start: false
+    log_end: true
+    log_forwarding: syslog-profile
+  - name: "ext-to-dmz"
+    action: "permit"
+    application: any
+    service: "tcp/443"
+    source_zone: "ext"
+    destination_zone: "dmz"
+    source_address: any
+    destination_address: any
+    log_start: false
+    log_end: true
+    log_forwarding: syslog-profile
+  - name: "guest-to-ext"
+    action: "permit"
+    application: any
+    service: any
+    source_zone: "guest"
+    destination_zone: "ext"
+    source_address: any
+    destination_address: any
+    log_start: false
+    log_end: true
+    log_forwarding: syslog-profile
+  - name: "iot-to-mqtt"
+    action: "permit"
+    application: any
+    service: "tcp/8883"
+    source_zone: "iot"
+    destination_zone: "mqtt"
+    source_address: any
+    destination_address: any
+    log_start: false
+    log_end: true
+    log_forwarding: syslog-profile
+
+nat_rules:
+  - name: "corp-out"
+    type: "dynamic-ip-port"
+  - name: "dmz-in"
+    type: "static"
+    translated_address: "203.0.113.101"
+
+globalprotect:
+  portal:
+    enabled: true
+    address: "10.1.10.61"
+  gateway:
+    enabled: true
+    pre_shared_key: "GP_PSK_hq_Mn4wQ8"
+    tunnel_mode: ssl
+    ip_pool_start: 10.100.0.1
+    ip_pool_end: 10.100.0.254
+    split_tunnel:
+      include:
+        - 10.0.0.0/8
+      exclude:
+        - 10.5.0.0/16
+
+threat_prevention:
+  antivirus: enabled
+  anti_spyware: enabled
+  vulnerability: enabled
+  file_blocking: enabled
+  wildfire: enabled
+
+ssl_decryption:
+  enabled: true
+  ca_cert: /etc/paloalto/certs/decrypt-ca.pem
+  exclude_categories:
+    - financial-services
+    - health-and-medicine
+
+high_availability:
+  mode: active-passive
+  group_id: 1
+  peer_ip: "10.1.10.60"
+  heartbeat_interval: 1000
+  preemptive: false

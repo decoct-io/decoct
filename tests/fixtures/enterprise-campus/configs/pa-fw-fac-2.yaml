@@ -1,0 +1,97 @@
+# Palo Alto Firewall Configuration — fac
+# Meridian Manufacturing — pa-fw-fac-2
+
+system:
+  hostname: "fac-pa-fw-02"
+  model: "PA-820"
+  panos_version: "11.1.2"
+  management:
+    ip: "10.5.10.61"
+    netmask: 255.255.255.0
+    default_gw: "10.5.10.1"
+  admin:
+    password_hash: "Jk5mNxPq2rStUvWx"
+  api_key: "$PA_API_fac2_Jk5mNx"
+  dns:
+    primary: 10.4.1.10
+    secondary: 10.4.1.11
+  ntp:
+    primary: 10.4.1.20
+    secondary: 10.4.1.21
+  domain: meridian-mfg.com
+  timezone: America/Detroit
+  logging:
+    syslog:
+      - server: 10.4.1.50
+        port: 514
+        facility: LOG_USER
+
+zones:
+  - name: "it-network"
+    type: layer3
+    protection_profile: default
+  - name: "ot-dmz"
+    type: layer3
+    protection_profile: default
+  - name: "ot-network"
+    type: layer3
+    protection_profile: default
+
+security_rules:
+  - name: "it-to-otdmz"
+    action: "permit"
+    application: any
+    service: "tcp/443"
+    source_zone: "it"
+    destination_zone: "otdmz"
+    source_address: any
+    destination_address: any
+    log_start: false
+    log_end: true
+    log_forwarding: syslog-profile
+  - name: "otdmz-to-ot"
+    action: "permit"
+    application: any
+    service: "tcp/502"
+    source_zone: "otdmz"
+    destination_zone: "ot"
+    source_address: any
+    destination_address: any
+    log_start: false
+    log_end: true
+    log_forwarding: syslog-profile
+  - name: "ot-to-historian"
+    action: "permit"
+    application: any
+    service: "tcp/8086"
+    source_zone: "ot"
+    destination_zone: "historian"
+    source_address: any
+    destination_address: any
+    log_start: false
+    log_end: true
+    log_forwarding: syslog-profile
+
+nat_rules:
+
+
+threat_prevention:
+  antivirus: enabled
+  anti_spyware: enabled
+  vulnerability: enabled
+  file_blocking: enabled
+  wildfire: enabled
+
+ssl_decryption:
+  enabled: false
+  ca_cert: /etc/paloalto/certs/decrypt-ca.pem
+  exclude_categories:
+    - financial-services
+    - health-and-medicine
+
+high_availability:
+  mode: active-passive
+  group_id: 1
+  peer_ip: "10.5.10.60"
+  heartbeat_interval: 1000
+  preemptive: false

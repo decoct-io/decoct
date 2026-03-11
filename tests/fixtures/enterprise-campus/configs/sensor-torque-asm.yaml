@@ -1,0 +1,47 @@
+# Sensor Network Configuration — torque (assembly)
+# Meridian Manufacturing — sensor-torque-asm
+
+sensor_type: "torque"
+zone: "assembly"
+sensor_count: 2
+
+sampling:
+  rate_hz: 100
+  resolution_bits: 16
+  buffer_size: 1024
+  batch_transmit: true
+  batch_interval_ms: 500
+
+communication:
+  protocol: "mqtt"
+  gateway: "10.5.3.201"
+  mqtt_topic: "plant/assembly/torque"
+  qos: 1
+
+sensors:
+  - id: "torque-asm-01"
+    measurement: "spindle-1"
+    enabled: true
+    unit: Nm
+    range_min: 0.0
+    range_max: 500.0
+    alarm_threshold: 400.0
+    warning_threshold: 350.0
+  - id: "torque-asm-02"
+    measurement: "spindle-2"
+    enabled: true
+    unit: Nm
+    range_min: 0.0
+    range_max: 500.0
+    alarm_threshold: 400.0
+    warning_threshold: 350.0
+
+calibration:
+  interval_days: 90
+  last_calibrated: "2025-09-15"
+  certificate: /etc/sensors/cal/torque-assembly.pdf
+
+diagnostics:
+  self_test_interval_s: 3600
+  health_topic: "plant/assembly/torque/health"
+  battery_monitoring: false

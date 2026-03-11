@@ -1,0 +1,110 @@
+# Industrial Firewall — L2-L3-boundary
+# Meridian Manufacturing — ind-fw-l23
+# Purdue Model Segmentation
+
+system:
+  name: "L2-L3-boundary"
+  admin_password: "IndFW_@dm_L23_Bx5"
+  model: FortiGate-Rugged-60F
+  firmware: 7.4.3
+  management:
+    ip: "10.5.100.1"
+    ssh: enabled
+    https: enabled
+    telnet: disabled
+
+purdue_levels:
+  - "L2"
+  - "L3"
+
+zones:
+  - name: "L2-zone"
+    interfaces:
+      - port1
+    protection: strict
+  - name: "L3-zone"
+    interfaces:
+      - port2
+    protection: strict
+
+security_rules:
+  - name: "scada-to-historian"
+    action: "permit"
+    service: "tcp/8086"
+    source: "scada"
+    destination: "historian"
+    log: true
+    ips: enabled
+    deep_inspection:
+      industrial_protocol: true
+      modbus_function_whitelist: [1, 2, 3, 4, 5, 6]
+  - name: "hmi-to-mes"
+    action: "permit"
+    service: "tcp/443"
+    source: "hmi"
+    destination: "mes"
+    log: true
+    ips: enabled
+    deep_inspection:
+      industrial_protocol: true
+      modbus_function_whitelist: [1, 2, 3, 4, 5, 6]
+  - name: "mqtt"
+    action: "permit"
+    service: "tcp/8883"
+    source: "mqtt"
+    destination: "any"
+    log: true
+    ips: enabled
+    deep_inspection:
+      industrial_protocol: true
+      modbus_function_whitelist: [1, 2, 3, 4, 5, 6]
+  - name: "telnet"
+    action: "permit"
+    service: "tcp/23"
+    source: "telnet"
+    destination: "any"
+    log: true
+    ips: enabled
+    deep_inspection:
+      industrial_protocol: true
+      modbus_function_whitelist: [1, 2, 3, 4, 5, 6]
+  - name: "deny-all"
+    action: "deny"
+    service: any
+    source: "deny-all"
+    destination: "any"
+    log: true
+    ips: disabled
+
+vpn:
+  pre_shared_key: "IndFW_VPN_L23_Ej7"
+  ike_version: 2
+  tunnel:
+    local_subnet: "10.5.0.0/16"
+    remote_subnet: "10.4.0.0/16"
+
+industrial_protocol_detection:
+  enabled: true
+  protocols:
+    - name: modbus-tcp
+      port: 502
+      deep_inspection: true
+    - name: ethernet-ip
+      port: 44818
+      deep_inspection: true
+    - name: opcua
+      port: 4840
+      deep_inspection: true
+    - name: profinet
+      port: 34964
+      deep_inspection: false
+
+logging:
+  syslog:
+    server: 10.5.100.50
+    port: 514
+    facility: local7
+  industrial_events:
+    enabled: true
+    log_all_modbus: true
+    log_all_opcua: true

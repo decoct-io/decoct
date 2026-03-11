@@ -1,0 +1,30 @@
+{
+  "template_name": "vpn0-transport",
+  "template_type": "vpn",
+  "description": "Transport VPN template \u2014 WAN interfaces",
+  "organization": "MeridianMfg",
+  "vpn": {
+    "vpn_id": 0,
+    "name": "transport",
+    "dns": {
+      "primary": "10.4.1.10",
+      "secondary": "10.4.1.11"
+    },
+    "interface": {
+      "name": "ge0/0",
+      "description": "WAN Transport",
+      "tunnel_interface": true,
+      "color": "biz-internet",
+      "encapsulation": "ipsec",
+      "nat": true
+    },
+    "route": [
+      {
+        "prefix": "0.0.0.0/0",
+        "next_hop": "dhcp"
+      }
+    ]
+  },
+  "last_modified": "2025-10-15T09:00:00Z",
+  "version": 2
+}

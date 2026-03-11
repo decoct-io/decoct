@@ -1,0 +1,24 @@
+# Kubernetes ConfigMap — logging-config (prod)
+# WavePoint Financial — cm-logging-config-prod
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: logging-config
+  namespace: wavepoint-prod
+  labels:
+    app.kubernetes.io/name: logging-config
+    app.kubernetes.io/instance: logging-config-prod
+    env: prod
+    team: platform
+    part-of: wavepoint
+  annotations:
+    configmap.kubernetes.io/managed-by: gitops
+    wavepoint.io/change-control: required
+data:
+  ROOT_LEVEL: "WARN"
+  APP_LEVEL: "INFO"
+  SQL_LEVEL: "ERROR"
+  HTTP_LEVEL: "WARN"
+  OUTPUT: "stdout"
+  MAX_SIZE: "100m"
+  MAX_BACKUPS: "10"

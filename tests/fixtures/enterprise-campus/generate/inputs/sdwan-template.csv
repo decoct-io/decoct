@@ -1,0 +1,7 @@
+filename,template_name,template_type,description,snmp_community,ntp_key,banner_text,dns_primary,dns_secondary,domain_name
+sdwan-template-vpn0,vpn0-transport,vpn,Transport VPN template — WAN interfaces,MrdnSNMP_v2c_Rw7,NtpK3y_Mrdn_01,Authorized access only. Violations will be prosecuted.,10.4.1.10,10.4.1.11,meridian-mfg.com
+sdwan-template-vpn1,vpn1-corporate,vpn,Corporate VPN template — LAN-side services,MrdnSNMP_v2c_Rw7,NtpK3y_Mrdn_01,Authorized access only. Violations will be prosecuted.,10.4.1.10,10.4.1.11,meridian-mfg.com
+sdwan-template-security,security-base,security,Base security feature template,MrdnSNMP_v2c_Rw7,none,none,none,none,meridian-mfg.com
+sdwan-template-banner,banner-motd,banner,Login banner template for all devices,none,none,MERIDIAN MANUFACTURING - AUTHORIZED PERSONNEL ONLY. All activities are monitored and logged.,none,none,meridian-mfg.com
+sdwan-template-system,system-base,system,System settings — hostname+NTP+logging,MrdnSNMP_v2c_Rw7,NtpK3y_Mrdn_01,none,10.4.1.10,10.4.1.11,meridian-mfg.com
+sdwan-template-aaa,aaa-radius,aaa,AAA/RADIUS integration template,none,none,none,none,none,meridian-mfg.com

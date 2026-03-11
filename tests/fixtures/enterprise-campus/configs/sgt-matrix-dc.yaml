@@ -1,0 +1,36 @@
+# TrustSec SGT Matrix — dc-matrix
+# Meridian Manufacturing — sgt-matrix-dc
+
+matrix_name: "dc-matrix"
+description: "Datacentre SGT-to-SGT policy matrix"
+
+sgts:
+  - tag: 5
+    name: Net_Admins
+    description: Network administrators
+  - tag: 60
+    name: DC_Servers
+    description: Datacentre production servers
+  - tag: 70
+    name: DC_Mgmt
+    description: Datacentre management plane
+
+policy:
+  - source: DC_Servers
+    destination: DC_Servers
+    action: permit
+    contract: DC-INTERNAL
+  - source: DC_Mgmt
+    destination: DC_Servers
+    action: permit
+    contract: MGMT-ACCESS
+  - source: Net_Admins
+    destination: DC_Servers
+    action: permit
+    contract: FULL-ACCESS
+  - source: Net_Admins
+    destination: DC_Mgmt
+    action: permit
+    contract: FULL-ACCESS
+
+default_action: deny

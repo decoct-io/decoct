@@ -1,0 +1,35 @@
+{
+  "profile_name": "ssl-decrypt-hq",
+  "profile_type": "ssl-decryption",
+  "description": "SSL decryption for HQ internet breakout",
+  "ssl_decryption": {
+    "enabled": true,
+    "forward_proxy": {
+      "decrypt_categories": [
+        "any"
+      ],
+      "no_decrypt_categories": [
+        "financial-services",
+        "health-and-medicine"
+      ]
+    },
+    "ca_certificate": {
+      "name": "Meridian-Decrypt-CA",
+      "path": "/etc/paloalto/certs/decrypt-ca.pem",
+      "key_path": "/etc/paloalto/certs/decrypt-ca-key.pem",
+      "password": "D3crypt_CA_Mrdn_Pk7"
+    },
+    "protocol_settings": {
+      "min_version": "tls1-2",
+      "max_version": "tls1-3",
+      "key_exchange_algorithms": [
+        "ecdhe"
+      ],
+      "encryption_algorithms": [
+        "aes-256-gcm",
+        "aes-128-gcm"
+      ]
+    }
+  },
+  "last_modified": "2025-11-01T08:00:00Z"
+}

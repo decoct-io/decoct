@@ -1,0 +1,37 @@
+{
+  "link_id": "bh-link-04",
+  "type": "backhaul",
+  "endpoints": {
+    "a": "cu-pool-west",
+    "b": "core-dc-02"
+  },
+  "performance": {
+    "bandwidth_gbps": 50,
+    "latency_us": 5000,
+    "jitter_us": 100,
+    "packet_loss_rate": 1e-05
+  },
+  "transport": {
+    "protocol": "IP/MPLS",
+    "vlan": 2100,
+    "encapsulation": "MPLS-VPN",
+    "qos_marking": "AF41",
+    "mtu": 1500
+  },
+  "security": {
+    "ipsec_enabled": false,
+    "ipsec_psk": null,
+    "ipsec_algorithm": null,
+    "ike_version": null
+  },
+  "monitoring": {
+    "bfd_enabled": true,
+    "bfd_interval_ms": 300,
+    "oam_enabled": true,
+    "pm_interval_s": 15
+  },
+  "redundancy": {
+    "protection": "1+1",
+    "switchover_ms": 50
+  }
+}

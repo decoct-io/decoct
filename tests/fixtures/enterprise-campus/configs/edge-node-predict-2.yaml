@@ -1,0 +1,68 @@
+# Edge Compute Node — predictive-maint-02
+# Meridian Manufacturing — edge-node-predict-2
+
+node:
+  name: "predictive-maint-02"
+  function: "predictive-maintenance"
+  model_version: "v2.3"
+  api_token: "Edge_AP1_Pred2_Hy4"
+
+hardware:
+  gpu: "nvidia-t4"
+  memory_gb: 16
+  storage_gb: 256
+  network:
+    data_interface: eth0
+    management_interface: eth1
+
+inference:
+  interval_ms: 1000
+  batch_size: 1
+  precision: fp16
+  models:
+    - name: "vibration-lstm"
+      version: "v2.3"
+      input_size: "1024"
+      path: /opt/models/vibration-lstm/v2.3/model.onnx
+      signing_key: "Mdl_S1gn_Mrdn_vibr_Pk7"
+      warm_up: true
+    - name: "temp-anomaly"
+      version: "v1.5"
+      input_size: "256"
+      path: /opt/models/temp-anomaly/v1.5/model.onnx
+      signing_key: "Mdl_S1gn_Mrdn_temp_Pk7"
+      warm_up: true
+
+mqtt:
+  broker: 10.5.0.50
+  port: 8883
+  client_id: "predictive-maint-02"
+  publish_topic: "plant/predictive/inference/predictive-maint-02"
+  subscribe_topic: "plant/predictive/inference/predictive-maint-02/command"
+  tls: true
+  qos: 1
+
+alerting:
+  enabled: true
+  thresholds:
+    anomaly_score: 0.90
+    remaining_useful_life_hours: 48
+  notification:
+    mqtt_topic: plant/alerts/predictive-maintenance
+    severity: critical
+
+telemetry:
+  enabled: true
+  interval_s: 30
+  metrics:
+    - inference_latency_ms
+    - gpu_utilization_percent
+    - gpu_temperature_c
+    - memory_used_mb
+    - model_accuracy
+
+logging:
+  level: info
+  file: /var/log/edge-compute/predictive-maint-02.log
+  max_size_mb: 200
+  rotate: 5

@@ -1,0 +1,25 @@
+# Kubernetes Service — risk-engine (dev)
+# WavePoint Financial — svc-risk-engine-dev
+apiVersion: v1
+kind: Service
+metadata:
+  name: risk-engine
+  namespace: wavepoint-dev
+  labels:
+    app: risk-engine
+    env: dev
+    team: platform
+    part-of: wavepoint
+  annotations:
+    service.kubernetes.io/topology-aware-hints: auto
+spec:
+  type: ClusterIP
+  selector:
+    app: risk-engine
+    env: dev
+  sessionAffinity: None
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8083

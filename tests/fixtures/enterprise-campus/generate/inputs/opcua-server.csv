@@ -1,0 +1,7 @@
+filename,cell_name,endpoint_url,security_mode,cert_password,user_token,nodes,application_uri
+opcua-weld-cell-1,weld-cell-1,opc.tcp://10.5.1.10:4840,SignAndEncrypt,OPC_Cert_Weld1_Xk7,OPC_Usr_Weld1_Lm9,ns2:WeldCurrent;ns2:WeldVoltage;ns2:WireSpeed;ns2:GasFlow;ns2:TorchAngle;ns2:ArcStatus,urn:meridian:opcua:weld-cell-1
+opcua-weld-cell-2,weld-cell-2,opc.tcp://10.5.1.11:4840,SignAndEncrypt,OPC_Cert_Weld2_Qx4,OPC_Usr_Weld2_Hy4,ns2:WeldCurrent;ns2:WeldVoltage;ns2:WireSpeed;ns2:GasFlow;ns2:TorchAngle;ns2:ArcStatus,urn:meridian:opcua:weld-cell-2
+opcua-paint-booth,paint-booth,opc.tcp://10.5.2.10:4840,None,none,OPC_Usr_Paint_Bx5,ns2:BoothTemp;ns2:Humidity;ns2:AirFlow;ns2:PaintPressure;ns2:CoatingThickness,urn:meridian:opcua:paint-booth
+opcua-assembly-1,assembly-line-1,opc.tcp://10.5.3.10:4840,SignAndEncrypt,OPC_Cert_Asm1_Ej7,OPC_Usr_Asm1_Gh8,ns2:ConveyorSpeed;ns2:TorqueNm;ns2:PartCount;ns2:CycleTime;ns2:RejectCount,urn:meridian:opcua:assembly-1
+opcua-assembly-2,assembly-line-2,opc.tcp://10.5.3.11:4840,SignAndEncrypt,OPC_Cert_Asm2_Jk5,OPC_Usr_Asm2_Mn4,ns2:ConveyorSpeed;ns2:TorqueNm;ns2:PartCount;ns2:CycleTime;ns2:RejectCount,urn:meridian:opcua:assembly-2
+opcua-vision-inspect,vision-inspection,opc.tcp://10.5.4.10:4840,SignAndEncrypt,OPC_Cert_Vis_Pq3,OPC_Usr_Vis_Vt6,ns2:CameraStatus;ns2:DefectCount;ns2:InspectionRate;ns2:PassRate;ns2:ImageBuffer,urn:meridian:opcua:vision-inspect

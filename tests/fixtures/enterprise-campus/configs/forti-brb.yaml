@@ -1,0 +1,142 @@
+# FortiGate Firewall Configuration — brb
+# Meridian Manufacturing — forti-brb
+
+system:
+  hostname: "brb-forti-01"
+  model: "FortiGate-200F"
+  firmware: "7.4.3"
+  management:
+    ip: "10.3.10.70"
+    admin_password: "F0rt1_@dm_brb_Lm9"
+    ssh: enabled
+    https: enabled
+    http: disabled
+    telnet: disabled
+  dns:
+    primary: 10.4.1.10
+    secondary: 10.4.1.11
+  ntp:
+    server: 10.4.1.20
+    sync_interval: 60
+  timezone: America/Detroit
+  fortiguard:
+    license_key: "FG200F-LIC-brb-Qx4rS"
+    update_server: update.fortiguard.net
+    antivirus_update: enabled
+    ips_update: enabled
+    webfilter_update: enabled
+
+interfaces:
+  - name: port1
+    alias: WAN
+    mode: dhcp
+    allowaccess: ping
+    role: wan
+  - name: port2
+    alias: LAN
+    ip: "10.3.10.1/24"
+    allowaccess: ping https ssh
+    role: lan
+  - name: port3
+    alias: DMZ
+    ip: "10.3.20.1/24"
+    allowaccess: ping
+    role: dmz
+
+address_objects:
+  - name: RFC1918
+    subnet: 10.0.0.0/8
+  - name: CORP-NET
+    subnet: 10.0.0.0/8
+  - name: DC-SERVERS
+    subnet: 10.4.0.0/16
+  - name: GUEST-NET
+    subnet: 10.99.0.0/16
+
+firewall_policy:
+  - name: "corp-to-inet"
+    action: "accept"
+    srcintf: "port2"
+    dstintf: "port1"
+    srcaddr: any
+    dstaddr: any
+    schedule: always
+    service: ALL
+    nat: enable
+    utm_status: enable
+    av_profile: default
+    webfilter_profile: default
+    ips_sensor: default
+    ssl_ssh_profile: certificate-inspection
+    logtraffic: all
+  - name: "guest-to-inet"
+    action: "accept"
+    srcintf: "port1"
+    dstintf: "port1"
+    srcaddr: any
+    dstaddr: any
+    schedule: always
+    service: ALL
+    nat: enable
+    utm_status: enable
+    av_profile: default
+    webfilter_profile: default
+    ips_sensor: default
+    ssl_ssh_profile: certificate-inspection
+    logtraffic: all
+
+vpn:
+  - name: "sdwan-hub"
+    remote_gw: "10.1.10.60"
+    type: "ipsec"
+    ike_version: 2
+    pre_shared_key: "VPN_PSK_brb_Pq4xR"
+    phase1:
+      proposal: aes256-sha256
+      dhgroup: 14
+      keylife: 86400
+    phase2:
+      proposal: aes256-sha256
+      pfs: enable
+      dhgroup: 14
+      keylife: 43200
+  - name: "mpls-pe"
+    remote_gw: "10.3.0.1"
+    type: "ipsec"
+    ike_version: 2
+    pre_shared_key: "VPN_PSK_brb_Pq4xR"
+    phase1:
+      proposal: aes256-sha256
+      dhgroup: 14
+      keylife: 86400
+    phase2:
+      proposal: aes256-sha256
+      pfs: enable
+      dhgroup: 14
+      keylife: 43200
+  - name: "cloud-vpn"
+    remote_gw: "52.1.2.3"
+    type: "ipsec"
+    ike_version: 2
+    pre_shared_key: "VPN_PSK_brb_Pq4xR"
+    phase1:
+      proposal: aes256-sha256
+      dhgroup: 14
+      keylife: 86400
+    phase2:
+      proposal: aes256-sha256
+      pfs: enable
+      dhgroup: 14
+      keylife: 43200
+
+sdwan:
+  status: disable
+
+logging:
+  syslog:
+    server: 10.4.1.50
+    port: 514
+    facility: local7
+  fortianalyzer:
+    server: 10.4.1.55
+    status: enable

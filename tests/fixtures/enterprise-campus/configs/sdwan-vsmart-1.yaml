@@ -1,0 +1,77 @@
+# SD-WAN vSmart Controller — 1
+# Meridian Manufacturing — sdwan-vsmart-1
+
+system:
+  hostname: "vsmart-01"
+  system-ip: "10.255.255.10"
+  organization-name: "MeridianMfg"
+  controller-group-id: 1
+  admin:
+    password: "VSm@rt_Adm1n_Pk7"
+
+omp:
+  graceful-restart: true
+  timers:
+    holdtime: 60
+    advertisement-interval: 1
+    graceful-restart-timer: 43200
+    eor-timer: 300
+  send-backup-paths: true
+  send-path-limit: 4
+
+affinity:
+  group: 1
+
+control-policy:
+  name: MERIDIAN-DEFAULT
+  sequence:
+    - number: 10
+      match:
+        site-list: CAMPUS-SITES
+      action:
+        accept: true
+    - number: 20
+      match:
+        site-list: DC-SITES
+      action:
+        accept: true
+        set:
+          preference: 200
+    - number: 100
+      action:
+        accept: true
+
+route-filter:
+  - name: "site100"
+    action: "permit"
+  - name: "site200"
+    action: "permit"
+  - name: "site300"
+    action: "permit"
+  - name: "site400"
+    action: "permit"
+
+site-lists:
+  CAMPUS-SITES:
+    - 100
+    - 200
+    - 300
+  DC-SITES:
+    - 400
+
+vpn-lists:
+  CORP-VPN:
+    - 1
+  GUEST-VPN:
+    - 10
+
+logging:
+  level: informational
+  console: false
+  monitor: false
+
+security:
+  tls-version: TLSv1.2
+  certificate:
+    path: /etc/viptela/certs/vsmart-1.pem
+    key-path: /etc/viptela/certs/vsmart-1-key.pem

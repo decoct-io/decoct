@@ -1,0 +1,41 @@
+# Network Slice Definition — embb-default
+# SpectrumOne 5G RAN — slice-embb-default
+
+slice_identity:
+  slice_id: "embb-default"
+  s_nssai:
+    sst: 1
+    sd: "000001"
+  slice_type: "eMBB"
+  plmn:
+    mcc: "310"
+    mnc: "260"
+
+qos_profile:
+  five_qi: 9
+  priority_level: 50
+  preemption_capability: "shall-not-preempt"
+  preemption_vulnerability: "preemptable"
+  resource_type: "non-gbr"
+  packet_delay_budget_ms: 20
+  packet_error_rate: 0.001
+
+capacity:
+  max_ue: 50000
+  bandwidth_guarantee_mbps: 50
+  isolation_level: "shared"
+
+admission_control:
+  enabled: true
+  max_pdu_sessions: 100000
+  congestion_threshold_pct: 80
+
+ue_ambr:
+  downlink_mbps: 50
+  uplink_mbps: 25
+
+monitoring:
+  kpi_reporting: true
+  reporting_interval_s: 15
+  sla_tracking: true
+  alarm_on_sla_breach: true

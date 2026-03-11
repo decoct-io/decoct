@@ -1,0 +1,33 @@
+{
+  "template_name": "security-base",
+  "template_type": "security",
+  "description": "Base security feature template",
+  "organization": "MeridianMfg",
+  "security": {
+    "firewall": {
+      "enable": true,
+      "default_action": "drop",
+      "logging": true
+    },
+    "ips": {
+      "enable": true,
+      "signature_update": "auto",
+      "security_level": "connectivity"
+    },
+    "url_filtering": {
+      "enable": true,
+      "block_categories": [
+        "adult",
+        "malware",
+        "phishing",
+        "gambling"
+      ],
+      "whitelist": [
+        "meridian-mfg.com",
+        "*.meridian-mfg.com"
+      ]
+    }
+  },
+  "last_modified": "2025-10-15T09:00:00Z",
+  "version": 2
+}

@@ -1,0 +1,105 @@
+# Arista Leaf Switch — Rack {{ rack }}
+# Meridian Manufacturing — {{ filename }}
+
+system:
+  hostname: "{{ hostname }}"
+  management_ip: "{{ mgmt_ip }}/24"
+  domain_name: meridian-mfg.com
+  enable_secret: "{{ enable_secret }}"
+  mtu: {{ mtu }}
+
+loopback:
+  - id: 0
+    ip: "{{ loopback0 }}/32"
+    description: Router-ID
+  - id: 1
+    ip: "{{ loopback1 }}/32"
+    description: VTEP-Source
+
+routing:
+  bgp:
+    asn: {{ bgp_asn }}
+    router_id: "{{ loopback0 }}"
+    neighbors:
+{% for spine in spine_peers.split(';') %}
+      - address: "{{ spine }}"
+        remote_as: 65000
+        description: spine-uplink
+        password: "{{ bgp_md5 }}"
+        send_community: extended
+        maximum_routes: 12000
+{% endfor %}
+    address_family:
+      evpn:
+        neighbors:
+{% for spine in spine_peers.split(';') %}
+          - address: "{{ spine }}"
+            activate: true
+{% endfor %}
+      ipv4_unicast:
+        redistribute:
+          - connected
+        network:
+          - "{{ loopback0 }}/32"
+          - "{{ loopback1 }}/32"
+
+vxlan:
+  source_interface: Loopback1
+  udp_port: 4789
+  vlans:
+{% for vlan_str in vlans %}
+{% set parts = vlan_str.split(':') %}
+    - vlan: {{ parts[0] }}
+      vni: {{ 10000 + parts[0] | int }}
+{% endfor %}
+
+vlans:
+{% for vlan_str in vlans %}
+{% set parts = vlan_str.split(':') %}
+  - id: {{ parts[0] }}
+    name: "{{ parts[1] }}"
+{% endfor %}
+
+port_channels:
+{% for pc_str in port_channels %}
+{% set parts = pc_str.split(':') %}
+  - name: "{{ parts[0] }}"
+    description: "{{ parts[1] }}"
+    mode: lacp
+    mtu: {{ mtu }}
+    members:
+      - Ethernet1
+      - Ethernet2
+    trunk_vlans:
+{% for vlan_str in vlans %}
+{% set vparts = vlan_str.split(':') %}
+      - {{ vparts[0] }}
+{% endfor %}
+{% endfor %}
+
+spanning_tree:
+  mode: mstp
+  priority: 32768
+
+snmp:
+  community:
+    - name: "{{ snmp_community }}"
+      access: ro
+  location: "DC1 Rack {{ rack }}"
+  contact: noc@meridian-mfg.com
+
+management:
+  ssh:
+    enabled: true
+    idle_timeout: 300
+  api:
+    enabled: true
+    protocol: https
+    port: 443
+
+logging:
+  host:
+    - address: 10.4.1.50
+      port: 514
+      protocol: udp
+  trap: informational

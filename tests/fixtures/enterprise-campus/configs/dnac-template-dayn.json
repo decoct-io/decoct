@@ -1,0 +1,66 @@
+{
+  "template_name": "dayn-compliance",
+  "template_type": "dayn",
+  "target_role": "all",
+  "version": 3,
+  "api": {
+    "bearer_token": "DNAC_AP1_Tk_Mrdn_Wx5jT8hK",
+    "base_url": "https://dnac.meridian-mfg.com",
+    "device_credentials": {
+      "cli_username": "admin",
+      "cli_password": "DN@C_D3v_Mrdn_Qx4",
+      "enable_password": "DN@C_En@bl3_Mrdn_Rw7",
+      "snmpv3_user": "dnac-snmp",
+      "snmpv3_auth": "SHA",
+      "snmpv3_priv": "AES128"
+    }
+  },
+  "compliance": {
+    "check_interval_hours": 24,
+    "auto_remediate": false,
+    "checks": [
+      {
+        "name": "ios-version",
+        "expected": "17.9.4",
+        "severity": "critical"
+      },
+      {
+        "name": "ntp-configured",
+        "expected": true,
+        "severity": "high"
+      },
+      {
+        "name": "syslog-configured",
+        "expected": true,
+        "severity": "high"
+      },
+      {
+        "name": "aaa-radius",
+        "expected": true,
+        "severity": "critical"
+      },
+      {
+        "name": "sda-fabric",
+        "expected": true,
+        "severity": "critical"
+      },
+      {
+        "name": "snmp-community-rotated",
+        "max_age_days": 90,
+        "severity": "medium"
+      },
+      {
+        "name": "ssh-only",
+        "expected": true,
+        "severity": "critical"
+      }
+    ],
+    "exclusions": [
+      {
+        "hostname_pattern": "fac-*",
+        "reason": "Factory floor managed separately"
+      }
+    ]
+  },
+  "last_modified": "2025-12-01T10:00:00Z"
+}

@@ -1,0 +1,53 @@
+# Netplan Configuration — {{ hostname }}
+# Meridian Manufacturing — {{ filename }}
+
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+{% for slave in bond_slaves.split(';') %}
+    {{ slave }}:
+      mtu: {{ mtu }}
+{% endfor %}
+  bonds:
+{% for bond_str in bonds %}
+{% set parts = bond_str.split(':') %}
+{% set bond_name = parts[0] %}
+{% set slaves = parts[1].split('+') %}
+{% set mode = parts[2] %}
+    {{ bond_name }}:
+      interfaces:
+{% for s in slaves %}
+        - {{ s }}
+{% endfor %}
+      mtu: {{ mtu }}
+      parameters:
+        mode: {{ mode }}
+        lacp-rate: fast
+        mii-monitor-interval: 100
+        transmit-hash-policy: layer3+4
+{% endfor %}
+  vlans:
+{% for vlan_str in vlans %}
+{% set parts = vlan_str.split(':') %}
+{% set vlan_name = parts[0] %}
+{% set vlan_ip = parts[1] %}
+    {{ vlan_name }}:
+      id: {{ vlan_name.replace('vlan', '') }}
+      link: bond0
+      mtu: {{ mtu }}
+      addresses:
+        - {{ vlan_ip }}
+{% if loop.first %}
+      routes:
+        - to: default
+          via: {{ gateway }}
+      nameservers:
+        addresses:
+{% for dns in dns_servers.split(';') %}
+          - {{ dns }}
+{% endfor %}
+        search:
+          - {{ dns_search }}
+{% endif %}
+{% endfor %}

@@ -1,0 +1,55 @@
+{
+  "profile_name": "file-blocking-strict",
+  "profile_type": "file-blocking",
+  "description": "Block high-risk file types",
+  "file_blocking": {
+    "rules": [
+      {
+        "name": "block-executables",
+        "file_type": [
+          "exe",
+          "dll",
+          "bat",
+          "cmd",
+          "ps1",
+          "vbs"
+        ],
+        "direction": "both",
+        "action": "block"
+      },
+      {
+        "name": "block-archives",
+        "file_type": [
+          "7z",
+          "rar",
+          "tar",
+          "gz"
+        ],
+        "direction": "upload",
+        "action": "alert"
+      },
+      {
+        "name": "alert-office",
+        "file_type": [
+          "doc",
+          "docx",
+          "xls",
+          "xlsx"
+        ],
+        "direction": "both",
+        "action": "alert"
+      },
+      {
+        "name": "block-scripts",
+        "file_type": [
+          "js",
+          "hta",
+          "wsf"
+        ],
+        "direction": "both",
+        "action": "block"
+      }
+    ]
+  },
+  "last_modified": "2025-11-01T08:00:00Z"
+}

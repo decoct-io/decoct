@@ -1,0 +1,7 @@
+filename,cu_id,connected_dus,n2_amf_ip,n3_upf_ip,capacity_ue,midhaul_ip,midhaul_vlan,midhaul_bandwidth_gbps,firmware_version,oam_password
+gnodeb-cu-cu-pool-north,cu-pool-north,du-mn01;du-mn02,10.100.1.1,10.100.2.1,20000,10.20.1.1,1000,10,4.2.1,oam_pwd_cu_north_Kx9mPq
+gnodeb-cu-cu-pool-south,cu-pool-south,du-sd01;du-sd02,10.100.1.1,10.100.2.1,15000,10.20.1.2,1000,10,4.2.1,oam_pwd_cu_south_Wx5jT8
+gnodeb-cu-cu-pool-central,cu-pool-central,du-sd03;du-ie01,10.100.1.2,10.100.2.2,12000,10.20.1.3,1100,10,4.2.1,oam_pwd_cu_central_Mn4wQ8
+gnodeb-cu-cu-pool-east,cu-pool-east,du-mn03;du-mn04,10.100.1.2,10.100.2.2,20000,10.20.1.4,1100,10,4.1.0,oam_pwd_cu_east_Yp6cD4
+gnodeb-cu-cu-pool-west,cu-pool-west,du-ie02;du-ie03,10.100.1.3,10.100.2.3,10000,10.20.1.5,1200,10,4.2.1,oam_pwd_cu_west_Hf7gB2
+gnodeb-cu-cu-pool-backup,cu-pool-backup,none,10.100.1.4,10.100.2.4,5000,10.20.1.6,1200,10,4.2.1,oam_pwd_cu_backup_Pq3rS7

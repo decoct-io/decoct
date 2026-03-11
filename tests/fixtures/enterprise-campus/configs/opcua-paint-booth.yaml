@@ -1,0 +1,79 @@
+# OPC-UA Server Configuration — paint-booth
+# Meridian Manufacturing — opcua-paint-booth
+
+server:
+  application_name: "Meridian paint-booth OPC-UA"
+  application_uri: "urn:meridian:opcua:paint-booth"
+  endpoint_url: "opc.tcp://10.5.2.10:4840"
+  product_uri: "urn:meridian:opcua"
+
+security:
+  mode: "None"
+  # WARNING: Security mode None — no encryption or signing
+  certificate:
+    path: none
+  user_token: "OPC_Usr_Paint_Bx5"
+  authentication:
+    anonymous: false
+    username_password: true
+    certificate: false
+
+namespace:
+  uri: "urn:meridian:paint-booth"
+  index: 2
+
+nodes:
+  - node_id: "ns2:BoothTemp"
+    browse_name: "BoothTemp"
+    data_type: Double
+    access_level: ReadWrite
+    engineering_unit: degC
+    range:
+      low: 15.0
+      high: 80.0
+    historizing: true
+    sampling_interval_ms: 100
+  - node_id: "ns2:Humidity"
+    browse_name: "Humidity"
+    data_type: Double
+    access_level: ReadWrite
+    engineering_unit: none
+    historizing: true
+    sampling_interval_ms: 100
+  - node_id: "ns2:AirFlow"
+    browse_name: "AirFlow"
+    data_type: Double
+    access_level: ReadWrite
+    engineering_unit: none
+    historizing: true
+    sampling_interval_ms: 100
+  - node_id: "ns2:PaintPressure"
+    browse_name: "PaintPressure"
+    data_type: Double
+    access_level: ReadWrite
+    engineering_unit: bar
+    range:
+      low: 0.0
+      high: 10.0
+    historizing: true
+    sampling_interval_ms: 100
+  - node_id: "ns2:CoatingThickness"
+    browse_name: "CoatingThickness"
+    data_type: Double
+    access_level: ReadWrite
+    engineering_unit: none
+    historizing: true
+    sampling_interval_ms: 100
+
+session:
+  timeout_ms: 30000
+  max_sessions: 50
+  max_subscriptions_per_session: 100
+
+discovery:
+  enabled: true
+  server_url: "opc.tcp://10.5.0.1:4840"
+
+logging:
+  level: info
+  file: /var/log/opcua/paint-booth.log

@@ -1,0 +1,82 @@
+# RAN Policy — {{ policy_name }}
+# SpectrumOne 5G RAN — {{ filename }}
+
+policy:
+  name: "{{ policy_name }}"
+  type: "{{ policy_type }}"
+  enabled: true
+  priority: {% if policy_type == 'admission-control' %}10{% elif policy_type == 'power-control' %}20{% elif policy_type == 'handover' %}30{% else %}40{% endif %}
+
+
+{% if policy_type == 'handover' %}
+parameters:
+  measurement_event: {% if policy_name == 'handover-intra-freq' %}"A3"{% else %}"A5"{% endif %}
+
+  a3_offset_db: {{ a3_offset_db }}
+  hysteresis_db: {{ hysteresis_db }}
+  time_to_trigger_ms: {{ time_to_trigger_ms }}
+{% if threshold_rsrp_dbm != 'none' %}
+  threshold_rsrp_dbm: {{ threshold_rsrp_dbm }}
+{% endif %}
+{% if threshold_rsrq_db != 'none' %}
+  threshold_rsrq_db: {{ threshold_rsrq_db }}
+{% endif %}
+  filter_coefficient_rsrp: 4
+  filter_coefficient_rsrq: 4
+  report_interval_ms: 480
+  report_amount: "infinity"
+  max_report_cells: 8
+
+scope:
+  applies_to: "all-cells"
+  frequency_scope: {% if policy_name == 'handover-intra-freq' %}"intra-frequency"{% else %}"inter-frequency"{% endif %}
+
+{% elif policy_type == 'load-balancing' %}
+parameters:
+  load_threshold_pct: {{ load_threshold_pct }}
+  target_load_pct: {{ target_load_pct }}
+  evaluation_interval_s: 10
+  hysteresis_pct: 5
+  offload_direction: "least-loaded-neighbor"
+  max_offload_ue_pct: 20
+  min_stay_time_s: 30
+
+scope:
+  applies_to: "all-cells"
+  frequency_scope: "intra-frequency"
+
+{% elif policy_type == 'power-control' %}
+parameters:
+  p0_nominal_pusch_dbm: {{ p0_nominal_dbm }}
+  alpha: {{ alpha }}
+  p_max_dbm: {{ pmax_dbm }}
+  closed_loop: {{ closed_loop }}
+  tpc_step_size_db: 1
+  accumulation_enabled: true
+  target_sinr_db: 15
+
+scope:
+  applies_to: {% if pmax_dbm|int <= 10 %}"small-cell-group"{% else %}"macro-cell-group"{% endif %}
+
+  frequency_scope: "all-frequencies"
+
+{% elif policy_type == 'admission-control' %}
+parameters:
+  priority_threshold: {{ admission_priority_threshold }}
+  slice_aware: {{ slice_aware }}
+  max_bearers_per_cell: {{ max_bearers }}
+  congestion_action: "reject-low-priority"
+  preemption_enabled: {% if slice_aware == 'true' %}true{% else %}false{% endif %}
+
+  reservation_pct: {% if slice_aware == 'true' %}20{% else %}0{% endif %}
+
+
+scope:
+  applies_to: "all-cells"
+  frequency_scope: "all-frequencies"
+{% endif %}
+
+monitoring:
+  kpi_enabled: true
+  log_decisions: true
+  reporting_interval_s: 15

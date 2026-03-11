@@ -1,0 +1,48 @@
+{
+  "group_name": "BRA-Conference",
+  "site": "bra",
+  "location": "Conference Rooms",
+  "ap_count": 4,
+  "mode": "local",
+  "rf_settings": {
+    "band_5ghz": {
+      "channels": [
+        149,
+        153,
+        157,
+        161
+      ],
+      "tx_power_dbm": 11,
+      "channel_width": 40,
+      "dca_sensitivity": "medium"
+    },
+    "band_24ghz": {
+      "channels": [
+        1,
+        6,
+        11
+      ],
+      "tx_power_dbm": 8,
+      "channel_width": 20,
+      "dca_sensitivity": "medium"
+    }
+  },
+  "ssid_mapping": [
+    {
+      "ssid": "MERIDIAN-CORP",
+      "enabled": true,
+      "broadcast": true,
+      "qos": "platinum"
+    },
+    {
+      "ssid": "MERIDIAN-GUEST",
+      "enabled": true,
+      "broadcast": true,
+      "qos": "bronze"
+    }
+  ],
+  "ap_naming_convention": "bra-BRA-Conference-AP{id:03d}",
+  "led_state": "enabled",
+  "poe_mode": "auto",
+  "mesh_enabled": false
+}

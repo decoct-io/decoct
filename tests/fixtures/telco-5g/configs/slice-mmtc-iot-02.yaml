@@ -1,0 +1,41 @@
+# Network Slice Definition — mmtc-iot-02
+# SpectrumOne 5G RAN — slice-mmtc-iot-02
+
+slice_identity:
+  slice_id: "mmtc-iot-02"
+  s_nssai:
+    sst: 3
+    sd: "000021"
+  slice_type: "mMTC"
+  plmn:
+    mcc: "310"
+    mnc: "260"
+
+qos_profile:
+  five_qi: 79
+  priority_level: 70
+  preemption_capability: "shall-not-preempt"
+  preemption_vulnerability: "preemptable"
+  resource_type: "non-gbr"
+  packet_delay_budget_ms: 500
+  packet_error_rate: 0.01
+
+capacity:
+  max_ue: 100000
+  bandwidth_guarantee_mbps: 2
+  isolation_level: "shared"
+
+admission_control:
+  enabled: true
+  max_pdu_sessions: 100000
+  congestion_threshold_pct: 95
+
+ue_ambr:
+  downlink_mbps: 1
+  uplink_mbps: 1
+
+monitoring:
+  kpi_reporting: true
+  reporting_interval_s: 15
+  sla_tracking: true
+  alarm_on_sla_breach: true

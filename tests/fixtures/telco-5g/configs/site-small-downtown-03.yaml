@@ -1,0 +1,43 @@
+# Site Metadata — small-downtown-03
+# SpectrumOne 5G RAN — site-small-downtown-03
+
+operator:
+  name: "SpectrumOne"
+  plmn:
+    mcc: "310"
+    mnc: "260"
+  region: "metro-north"
+
+site:
+  site_id: "small-downtown-03"
+  type: "small-cell"
+  address: "Shopping District Wall #12"
+  contact_phone: "555-0203"
+
+location:
+  latitude: 40.7490
+  longitude: -73.9840
+  altitude_m: 10
+
+infrastructure:
+  power_source: "grid"
+  shelter_class: "wall-mount"
+  access_type: "building-exterior"
+  antenna_height_m: 5
+  backhaul_type: "fiber"
+
+environmental:
+  temperature_range_c: "-20 to 50"
+  wind_rating_kmh: 120
+  ip_rating: "IP65"
+
+security:
+  access_code: "access_sd03_Jk5m"
+  alarm_system: true
+  tamper_detection: true
+
+maintenance:
+  last_inspection: "2025-11-15"
+  next_inspection: "2026-05-15"
+  maintenance_window: "02:00-06:00 UTC"
+  emergency_contact: "555-0203"

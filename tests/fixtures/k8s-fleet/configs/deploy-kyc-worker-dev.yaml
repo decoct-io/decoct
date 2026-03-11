@@ -1,0 +1,99 @@
+# Kubernetes Deployment — kyc-worker (dev)
+# WavePoint Financial — deploy-kyc-worker-dev
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kyc-worker
+  namespace: wavepoint-dev
+  labels:
+    app: kyc-worker
+    env: dev
+    team: platform
+    version: "1.2.0-dev"
+    part-of: wavepoint
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+    kubectl.kubernetes.io/last-applied-configuration: managed-by-gitops
+    wavepoint.io/ephemeral: "true"
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: kyc-worker
+      env: dev
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: kyc-worker
+        env: dev
+        version: "1.2.0-dev"
+    spec:
+      serviceAccountName: kyc-worker
+      terminationGracePeriodSeconds: 30
+      containers:
+        - name: kyc-worker
+          image: registry.wavepoint.io/kyc-worker:1.2.0-dev
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8084
+              protocol: TCP
+          env:
+            - name: APP_ENV
+              value: "dev"
+            - name: LOG_LEVEL
+              value: "DEBUG"
+            - name: SERVICE_NAME
+              value: "kyc-worker"
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: DATABASE_URL
+              value: "postgresql://kyc_user:D3vKyc@db-dev.wavepoint.internal:5432/kyc_dev"
+            - name: API_KEY
+              value: "sk_dev_kyc_Hf4gB7kL"
+            - name: QUEUE_URL
+              value: "sqs://dev-kyc-queue"
+            - name: BATCH_SIZE
+              value: "5"
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+            successThreshold: 1
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+            successThreshold: 1
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config
+              readOnly: true
+      volumes:
+        - name: config-volume
+          configMap:
+            name: kyc-worker-config

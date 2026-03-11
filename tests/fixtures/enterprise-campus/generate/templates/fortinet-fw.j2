@@ -1,0 +1,128 @@
+# FortiGate Firewall Configuration — {{ site }}
+# Meridian Manufacturing — {{ filename }}
+
+system:
+  hostname: "{{ hostname }}"
+  model: "{{ model }}"
+  firmware: "{{ firmware }}"
+  management:
+    ip: "{{ mgmt_ip }}"
+    admin_password: "{{ admin_password }}"
+    ssh: enabled
+    https: enabled
+    http: disabled
+    telnet: disabled
+  dns:
+    primary: 10.4.1.10
+    secondary: 10.4.1.11
+  ntp:
+    server: 10.4.1.20
+    sync_interval: 60
+  timezone: America/Detroit
+  fortiguard:
+    license_key: "{{ license_key }}"
+    update_server: update.fortiguard.net
+    antivirus_update: enabled
+    ips_update: enabled
+    webfilter_update: enabled
+
+interfaces:
+  - name: port1
+    alias: WAN
+    mode: dhcp
+    allowaccess: ping
+    role: wan
+  - name: port2
+    alias: LAN
+    ip: "{{ mgmt_ip.rsplit('.', 1)[0] }}.1/24"
+    allowaccess: ping https ssh
+    role: lan
+{% if 'office' not in hostname and 'visitor' not in hostname %}
+  - name: port3
+    alias: DMZ
+    ip: "{{ mgmt_ip.rsplit('.', 2)[0] }}.20.1/24"
+    allowaccess: ping
+    role: dmz
+{% endif %}
+
+address_objects:
+  - name: RFC1918
+    subnet: 10.0.0.0/8
+  - name: CORP-NET
+    subnet: 10.0.0.0/8
+  - name: DC-SERVERS
+    subnet: 10.4.0.0/16
+  - name: GUEST-NET
+    subnet: 10.99.0.0/16
+
+firewall_policy:
+{% for pol_str in policies %}
+{% set parts = pol_str.split(':') %}
+  - name: "{{ parts[0] }}"
+    action: "{{ parts[1] }}"
+{% set src_dst = parts[0].split('-to-') %}
+    srcintf: "{{ 'port2' if 'corp' in src_dst[0] or 'office' in src_dst[0] else 'port1' }}"
+    dstintf: "{{ 'port1' if 'inet' in src_dst[1] else 'port2' }}"
+    srcaddr: any
+    dstaddr: any
+    schedule: always
+    service: ALL
+    nat: {{ 'enable' if 'inet' in src_dst[1] else 'disable' }}
+    utm_status: enable
+    av_profile: default
+    webfilter_profile: default
+    ips_sensor: default
+    ssl_ssh_profile: certificate-inspection
+    logtraffic: all
+{% endfor %}
+
+{% if vpn_tunnels != 'none' %}
+vpn:
+{% for vpn_str in vpn_tunnels %}
+{% set parts = vpn_str.split(':') %}
+  - name: "{{ parts[0] }}"
+    remote_gw: "{{ parts[1] }}"
+    type: "{{ parts[2] }}"
+{% if parts[2] == 'ipsec' %}
+    ike_version: 2
+    pre_shared_key: "{{ vpn_psk }}"
+    phase1:
+      proposal: aes256-sha256
+      dhgroup: 14
+      keylife: 86400
+    phase2:
+      proposal: aes256-sha256
+      pfs: enable
+      dhgroup: 14
+      keylife: 43200
+{% elif parts[2] == 'ssl-vpn' %}
+    port: 443
+    tunnel_mode: enable
+    ip_pool_start: 10.100.100.1
+    ip_pool_end: 10.100.100.254
+    dns_server: 10.4.1.10
+    split_tunnel: enable
+{% endif %}
+{% endfor %}
+{% endif %}
+
+sdwan:
+  status: {{ 'enable' if vpn_tunnels != 'none' and 'sdwan' in vpn_tunnels else 'disable' }}
+{% if vpn_tunnels != 'none' and 'sdwan' in vpn_tunnels %}
+  load_balance_mode: source-ip-based
+  health_check:
+    - name: dc-probe
+      server: 10.4.1.1
+      protocol: ping
+      interval: 500
+      failtime: 5
+{% endif %}
+
+logging:
+  syslog:
+    server: 10.4.1.50
+    port: 514
+    facility: local7
+  fortianalyzer:
+    server: 10.4.1.55
+    status: enable

@@ -1,0 +1,23 @@
+# Kubernetes ConfigMap — logging-config (dev)
+# WavePoint Financial — cm-logging-config-dev
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: logging-config
+  namespace: wavepoint-dev
+  labels:
+    app.kubernetes.io/name: logging-config
+    app.kubernetes.io/instance: logging-config-dev
+    env: dev
+    team: platform
+    part-of: wavepoint
+  annotations:
+    configmap.kubernetes.io/managed-by: gitops
+data:
+  ROOT_LEVEL: "DEBUG"
+  APP_LEVEL: "DEBUG"
+  SQL_LEVEL: "DEBUG"
+  HTTP_LEVEL: "DEBUG"
+  OUTPUT: "stdout"
+  MAX_SIZE: "10m"
+  MAX_BACKUPS: "3"

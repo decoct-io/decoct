@@ -1,0 +1,42 @@
+{
+  "template_name": "system-base",
+  "template_type": "system",
+  "description": "System settings \u2014 hostname+NTP+logging",
+  "organization": "MeridianMfg",
+  "system": {
+    "domain_name": "meridian-mfg.com",
+    "timezone": "America/Detroit",
+    "ntp": {
+      "servers": [
+        {
+          "address": "10.4.1.10",
+          "key": "NtpK3y_Mrdn_01",
+          "version": 4
+        },
+        {
+          "address": "10.4.1.11",
+          "key": "NtpK3y_Mrdn_01",
+          "version": 4
+        }
+      ]
+    },
+    "logging": {
+      "servers": [
+        {
+          "address": "10.4.1.50",
+          "port": 514,
+          "vpn": 1
+        }
+      ],
+      "source_interface": "Loopback0"
+    },
+    "snmp": {
+      "community": "MrdnSNMP_v2c_Rw7",
+      "contact": "noc@meridian-mfg.com",
+      "location": "variable",
+      "trap_target": "10.4.1.55"
+    }
+  },
+  "last_modified": "2025-10-15T09:00:00Z",
+  "version": 2
+}

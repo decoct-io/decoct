@@ -1,0 +1,12 @@
+{
+  "template_name": "banner-motd",
+  "template_type": "banner",
+  "description": "Login banner template for all devices",
+  "organization": "MeridianMfg",
+  "banner": {
+    "login": "MERIDIAN MANUFACTURING - AUTHORIZED PERSONNEL ONLY. All activities are monitored and logged.",
+    "motd": "MERIDIAN MANUFACTURING - AUTHORIZED PERSONNEL ONLY. All activities are monitored and logged."
+  },
+  "last_modified": "2025-10-15T09:00:00Z",
+  "version": 2
+}

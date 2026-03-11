@@ -1,0 +1,72 @@
+{
+  "array_name": "{{ array_name }}",
+  "vendor": "{{ vendor }}",
+  "model": "{{ model }}",
+  "management": {
+    "ip": "{{ mgmt_ip }}",
+    "api_token": "{{ api_token }}",
+    "https_port": 443
+  },
+  "protocols": [
+{% for proto in protocol.split(';') %}
+    "{{ proto }}"{{ "," if not loop.last else "" }}
+{% endfor %}
+  ],
+  "volumes": [
+{% for vol_str in volumes.split(';') %}
+{% set parts = vol_str.split(':') %}
+    {
+      "name": "{{ parts[0] }}",
+      "size": "{{ parts[1] }}",
+{% if parts | length > 2 %}
+      "provisioning": "{{ parts[2] }}",
+{% else %}
+      "provisioning": "thin",
+{% endif %}
+{% if vendor == 'netapp' %}
+      "aggregate": "aggr1",
+      "junction_path": "/{{ parts[0] }}",
+      "snapshot_policy": "default",
+      "export_policy": "dc-servers"
+{% else %}
+      "protection_group": "pg-prod",
+      "snapshot_schedule": "daily",
+      "replication": false
+{% endif %}
+    }{{ "," if not loop.last else "" }}
+{% endfor %}
+  ],
+{% if vendor == 'netapp' %}
+  "network": {
+    "cluster_mgmt": "{{ mgmt_ip }}",
+    "data_lifs": [
+      {"name": "lif-nfs-01", "ip": "10.4.3.30", "protocol": "nfs"},
+      {"name": "lif-iscsi-01", "ip": "10.4.3.31", "protocol": "iscsi"}
+    ],
+    "iscsi": {
+      "chap_initiator_secret": "{{ chap_secret }}"
+    }
+  },
+  "snapmirror": {
+    "enabled": true,
+    "destination": "10.4.9.31",
+    "schedule": "hourly"
+  },
+{% else %}
+  "network": {
+    "management": "{{ mgmt_ip }}",
+    "iscsi_ports": [
+      {"name": "ct0.eth2", "ip": "10.4.3.32"},
+      {"name": "ct1.eth2", "ip": "10.4.3.33"}
+    ],
+    "iscsi": {
+      "chap_initiator_secret": "{{ chap_secret }}"
+    }
+  },
+{% endif %}
+  "monitoring": {
+    "snmp_community": "MrdnSNMP_stor_RO",
+    "syslog_server": "10.4.1.50",
+    "alert_email": "storage-alerts@meridian-mfg.com"
+  }
+}

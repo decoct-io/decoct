@@ -1,0 +1,73 @@
+{
+  "broker_name": "{{ broker_name }}",
+  "broker_type": "{{ broker_type }}",
+  "listeners": {
+    "tcp": {
+      "bind": "{{ bind_addr }}",
+      "port": {{ port }},
+      "max_connections": {{ max_connections }}
+    },
+    "ssl": {
+      "bind": "{{ bind_addr }}",
+      "port": {{ tls_port }},
+      "certfile": "/etc/mqtt/certs/server.pem",
+      "keyfile": "/etc/mqtt/certs/server-key.pem",
+      "cafile": "/etc/mqtt/certs/ca.pem",
+      "key_password": "{{ tls_cert_password }}",
+      "require_certificate": true,
+      "tls_version": "tlsv1.2"
+    }
+  },
+  "authentication": {
+    "allow_anonymous": {{ allow_anonymous }},
+    "token": "{{ auth_token }}",
+{% if broker_type == 'emqx' %}
+    "backend": "built_in_database",
+    "password_hash": "sha256",
+    "acl_nomatch": "deny"
+{% else %}
+    "password_file": "/etc/mqtt/passwd",
+    "acl_file": "/etc/mqtt/acl"
+{% endif %}
+  },
+  "acl": [
+    {"topic": "plant/+/telemetry/#", "access": "readwrite", "client_pattern": "plc-gw-*"},
+    {"topic": "plant/+/command/#", "access": "write", "client_pattern": "edge-node-*"},
+    {"topic": "plant/+/alert/#", "access": "readwrite", "client_pattern": "*"},
+    {"topic": "$SYS/#", "access": "read", "client_pattern": "admin-*"}
+  ],
+{% if bridge_password != 'none' %}
+  "bridge": {
+    "enabled": true,
+    "remote_host": "mqtt.meridian-mfg.com",
+    "remote_port": 8883,
+    "username": "plant-bridge",
+    "password": "{{ bridge_password }}",
+    "topics": [
+      {"pattern": "plant/+/telemetry/#", "direction": "out", "qos": 1},
+      {"pattern": "plant/+/alert/#", "direction": "out", "qos": 2},
+      {"pattern": "plant/+/command/#", "direction": "in", "qos": 1}
+    ],
+    "keepalive": 60,
+    "clean_session": false
+  },
+{% endif %}
+  "persistence": {
+{% if broker_type == 'emqx' %}
+    "type": "built_in",
+    "max_retained_messages": 10000,
+    "message_retention_period": "24h"
+{% else %}
+    "type": "file",
+    "location": "/var/lib/mosquitto/mosquitto.db",
+    "autosave_interval": 1800
+{% endif %}
+  },
+  "logging": {
+    "level": "info",
+    "destination": "file",
+    "file": "/var/log/mqtt/broker.log",
+    "max_size_mb": 100,
+    "rotate_count": 5
+  }
+}

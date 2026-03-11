@@ -1,0 +1,7 @@
+filename,policy_name,policy_type,description,app_list,dscp_value,sla_class,preferred_color,backup_color,queue_limit
+sdwan-policy-app-route,app-aware-routing,app-route,Application-aware routing for business apps,business-critical;collaboration;real-time,46,latency-100ms,mpls,inet1,2048
+sdwan-policy-qos-map,qos-class-map,qos,QoS classification and marking,voice;video;interactive;bulk,46,none,none,none,4096
+sdwan-policy-data-1,data-policy-corp,data,Corporate VPN data policy — DIA at branch,web-browsing;saas-apps;microsoft-365,0,sla-business,inet1,inet2,1024
+sdwan-policy-data-2,data-policy-guest,data,Guest VPN data policy — direct internet only,any,0,none,inet1,none,512
+sdwan-policy-cflowd,cflowd-export,cflowd,Flow export for visibility and analytics,none,0,none,none,none,0
+sdwan-policy-acl,acl-deny-rfc1918,acl,Block RFC1918 on public-facing interfaces,none,0,none,none,none,0

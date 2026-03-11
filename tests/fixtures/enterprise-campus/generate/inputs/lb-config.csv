@@ -1,0 +1,4 @@
+filename,lb_name,lb_type,site,vip_address,pool_members,health_monitor,persistence,ssl_offload
+lb-f5-web,dc1-f5-web,f5-bigip,dc1,198.51.100.50:443,10.4.2.15:8080;10.4.2.16:8080,https:/health,cookie,true
+lb-f5-api,dc1-f5-api,f5-bigip,dc1,198.51.100.55:443,10.4.1.13:8080;10.4.1.14:8080,http:/api/health,source-ip,true
+lb-haproxy-internal,dc1-haproxy-int,haproxy,dc1,10.4.1.100:5432,10.4.1.11:5432;10.4.1.12:5432,tcp-check,none,false

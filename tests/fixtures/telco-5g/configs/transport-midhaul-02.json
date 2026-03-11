@@ -1,0 +1,37 @@
+{
+  "link_id": "mh-link-02",
+  "type": "midhaul",
+  "endpoints": {
+    "a": "cu-pool-north",
+    "b": "du-mn02"
+  },
+  "performance": {
+    "bandwidth_gbps": 10,
+    "latency_us": 250,
+    "jitter_us": 20,
+    "packet_loss_rate": 1e-05
+  },
+  "transport": {
+    "protocol": "IP/MPLS",
+    "vlan": 1000,
+    "encapsulation": "GTP-U",
+    "qos_marking": "EF",
+    "mtu": 1500
+  },
+  "security": {
+    "ipsec_enabled": true,
+    "ipsec_psk": "ipsec_psk_mh02_Pq3r",
+    "ipsec_algorithm": "AES-256-GCM",
+    "ike_version": 2
+  },
+  "monitoring": {
+    "bfd_enabled": true,
+    "bfd_interval_ms": 300,
+    "oam_enabled": true,
+    "pm_interval_s": 15
+  },
+  "redundancy": {
+    "protection": "none",
+    "switchover_ms": null
+  }
+}

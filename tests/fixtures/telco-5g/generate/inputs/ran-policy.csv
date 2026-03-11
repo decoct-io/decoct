@@ -1,0 +1,9 @@
+filename,policy_name,policy_type,a3_offset_db,hysteresis_db,time_to_trigger_ms,threshold_rsrp_dbm,threshold_rsrq_db,load_threshold_pct,target_load_pct,p0_nominal_dbm,alpha,pmax_dbm,closed_loop,admission_priority_threshold,slice_aware,max_bearers
+ran-policy-handover-intra-freq,handover-intra-freq,handover,3,1,320,-110,-12,none,none,none,none,none,none,none,none,none
+ran-policy-handover-inter-freq,handover-inter-freq,handover,3,2,480,-115,-14,none,none,none,none,none,none,none,none,none
+ran-policy-load-balance-01,load-balance-01,load-balancing,none,none,none,none,none,70,50,none,none,none,none,none,none,none
+ran-policy-load-balance-02,load-balance-02,load-balancing,none,none,none,none,none,80,60,none,none,none,none,none,none,none
+ran-policy-power-control-01,power-control-01,power-control,none,none,none,none,none,none,none,-80,0.8,23,true,none,none,none
+ran-policy-power-control-02,power-control-02,power-control,none,none,none,none,none,none,none,-90,0.6,10,true,none,none,none
+ran-policy-admission-ctrl-01,admission-ctrl-01,admission-control,none,none,none,none,none,none,none,none,none,none,none,5,false,64
+ran-policy-admission-ctrl-02,admission-ctrl-02,admission-control,none,none,none,none,none,none,none,none,none,none,none,3,true,128

@@ -1,0 +1,44 @@
+# Site Metadata — indoor-enterprise-02
+# SpectrumOne 5G RAN — site-indoor-enterprise-02
+
+operator:
+  name: "SpectrumOne"
+  plmn:
+    mcc: "310"
+    mnc: "260"
+  region: "metro-north"
+
+site:
+  site_id: "indoor-enterprise-02"
+  type: "indoor"
+  address: "Metro General Hospital"
+  contact_phone: "555-0302"
+
+location:
+  latitude: 40.7650
+  longitude: -73.9680
+  altitude_m: 0
+
+infrastructure:
+  power_source: "grid+ups"
+  shelter_class: "indoor-rack"
+  access_type: "building-interior"
+  antenna_height_m: 0
+  backhaul_type: "fiber"
+
+environmental:
+  temperature_range_c: "15 to 35"
+  wind_rating_kmh: 0
+  humidity_range_pct: "20 to 80"
+  fire_suppression: true
+
+security:
+  access_code: "access_ie02_Ab3c"
+  alarm_system: true
+  badge_access: true
+
+maintenance:
+  last_inspection: "2025-11-15"
+  next_inspection: "2026-05-15"
+  maintenance_window: "02:00-06:00 UTC"
+  emergency_contact: "555-0302"
