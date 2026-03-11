@@ -20,6 +20,54 @@ An initial prototype (`src/decoct/corpus_classes.py`, ~250 lines) tested the con
 
 ---
 
+## 1.2 Getting Started
+
+```bash
+# Install with dev dependencies (sufficient for all pipeline work)
+pip install -e ".[dev]"
+
+# Also install LLM deps if working on QA evaluation or learn.py
+pip install -e ".[dev,llm]"
+
+# Run all entity-graph tests
+pytest -k entity -v
+
+# Run only the gate test (86 IOS-XR configs, must produce 0 reconstruction mismatches)
+pytest tests/test_entity_graph_e2e.py -v
+
+# Regenerate output from fixtures
+python scripts/run_pipeline.py           # IOS-XR → output/entity-graph/
+python scripts/run_hybrid_infra.py       # Hybrid → output/hybrid-infra/
+python scripts/run_entra_intune.py       # Entra → output/entra-intune/
+
+# CLI commands
+decoct entity-graph stats -i tests/fixtures/iosxr/configs -o output/entity-graph --format markdown
+decoct entity-graph generate-questions -i tests/fixtures/iosxr/configs -o output/entity-graph
+decoct entity-graph evaluate -i tests/fixtures/iosxr/configs -o output/entity-graph
+```
+
+### Test Fixtures and Output
+
+| Directory | Contents | Status |
+|---|---|---|
+| `tests/fixtures/iosxr/configs/` | 86 IOS-XR `.cfg` files (APE-R1-01 through Services-PE-08) | Checked in, generated from `tests/fixtures/iosxr/generate/` |
+| `tests/fixtures/entra-intune/resources/` | 88 Entra/Intune `.json` files (Graph API format) | Checked in |
+| `tests/fixtures/hybrid-infra/` | 100 mixed files (YAML/JSON/INI) across 8+ platforms | Checked in, generated from `tests/fixtures/hybrid-infra/generate/` |
+| `output/entity-graph/` | Tier A/B/C YAML output from IOS-XR corpus | Checked in (sample output, regenerated via `scripts/run_pipeline.py`) |
+| `output/hybrid-infra/` | Tier A/B/C output from hybrid-infra corpus | Checked in |
+| `output/entra-intune/` | Tier A/B/C output from Entra corpus | Checked in |
+
+### Related Documentation
+
+| Document | Purpose | Relationship to this doc |
+|---|---|---|
+| `docs/entity-graph-data-manual.md` | **Reader manual** — how to interpret and consume the three-tier output | Complementary: this doc describes how the pipeline works; the data manual describes how to read its output |
+| `docs/entity-graph-evaluation.md` | QA harness usage and evaluation methodology | Content absorbed into Section 6; retained for standalone reference |
+| `docs/dev/entity-graph-handoff.md` | Development history — bug-fix journal, implementation notes | Historical context; useful for understanding why certain decisions were made |
+| `docs/session-summary-2026-03-10.md` | Session-by-session development log | Historical; captured in condensed form in Section 10 |
+
+---
+
 ## 2. Core Data Model
 
 All types live in `src/decoct/core/types.py`.
@@ -105,10 +153,13 @@ These names are UPPER_CASE to match the spec notation. Suppressed via ruff per-f
 
 ## 3. Pipeline Architecture
 
-The pipeline is orchestrated by `run_entity_graph_pipeline()` in `src/decoct/entity_pipeline.py` (146 lines). It chains eight phases:
+The pipeline is orchestrated by `run_entity_graph_pipeline()` in `src/decoct/entity_pipeline.py`. It chains nine phases:
 
 ```
 Input files (.cfg, .yaml, .json, .ini, .conf)
+  │
+  ▼
+[Phase 0] Secrets Masking ─── pre-flatten document masking + post-flatten attribute masking
   │
   ▼
 [Phase 1] Canonicalise ─── adapter.parse() + adapter.extract_entities() → EntityGraph
@@ -135,6 +186,8 @@ Input files (.cfg, .yaml, .json, .ini, .conf)
 [Phase 8] Assembly ─── emit Tier A / B / C YAML
 ```
 
+Phase 0 and Phase 1 are interleaved per-file: for each source file, the pipeline masks secrets in the parsed document (Phase 0a), then extracts entities (Phase 1), then runs post-flatten attribute masking on all entities (Phase 0b). See §3.0 for details.
+
 Each phase is a separate module. The pipeline returns `EntityGraphResult`:
 
 ```python
@@ -149,7 +202,52 @@ class EntityGraphResult:
     tier_b_files: dict[str, dict[str, Any]]
     tier_c_yaml: dict[str, dict[str, Any]]
     original_composite_values: dict[tuple[str, str], Any]
+    secrets_audit: list[AuditEntry]     # (path, detection_method) — never stores values
 ```
+
+### 3.0 Phase 0: Secrets Masking
+
+**Module:** `src/decoct/secrets/` (shared with pass-based pipeline)
+
+Phase 0 is the security boundary — it MUST complete before any data reaches downstream phases or LLM review. It runs in two sub-phases:
+
+**Phase 0a — Pre-flatten document masking:** For adapters whose `parse()` returns a dict-like structure (hybrid-infra returns `(CommentedMap, Path)`, entra-intune returns `dict`), `mask_document()` walks the raw parsed tree and redacts secrets in-place before `extract_entities()` flattens them into attributes. IOS-XR returns `IosxrConfigTree` (not a dict) — it skips pre-flatten and relies entirely on post-flatten masking.
+
+**Phase 0b — Post-flatten attribute masking:** After all entities are extracted, `mask_entity_attributes()` scans every entity's attributes. This catches secrets that only become apparent at the dotted-path level (e.g., `tacacs-server.key`) and secrets inside CompositeValue internals.
+
+Both sub-phases use the same detection engine with four-stage detection (first match wins):
+
+1. **Path pattern** — dotted path matches a known secret path (e.g., `*.password`, `*.api_key`)
+2. **False-positive filter** — skip infrastructure data (UUIDs, IPs, MACs, file paths, template variables, pure numerics)
+3. **Regex** — value matches known secret formats (16 patterns: AWS keys, private key blocks, JWTs, Cisco type 7/8/9, etc.)
+4. **Charset-aware entropy** — separate thresholds for base64 (4.5) and hex (3.0) candidates, with all-digit discount to avoid false-positives on AS numbers, VLANs, and ports
+
+The detection logic is extracted from the pass-based pipeline's `strip_secrets` pass into the shared `src/decoct/secrets/` module — both pipelines use the same detection engine.
+
+#### Adapter Secret Configuration
+
+Adapters declare their own secret patterns by overriding two `BaseAdapter` methods:
+
+```python
+def secret_paths(self) -> list[str]: ...              # extra path denylist
+def secret_value_patterns(self) -> list[...] | None: ... # extra value-level regexes
+```
+
+The pipeline merges these with the global `DEFAULT_SECRET_PATHS` — no adapter type-switching in the orchestrator. Custom adapters bring their own patterns without modifying pipeline code.
+
+| Adapter | Extra secret paths | Value patterns |
+|---|---|---|
+| IOS-XR | TACACS/RADIUS keys, SNMP communities, network device paths | `key 7 ...`, `secret [057] ...`, `community ... RO/RW`, `key-string ...` |
+| Hybrid-Infra | Network device paths | None |
+| Entra-Intune | `*.clientSecret`, `*.secretText` | None |
+
+#### `[REDACTED]` Flow
+
+Redacted values become regular `"[REDACTED]"` strings that flow through compression normally. If all entities share a redacted path, it appears in `base_class`. If per-entity, it appears in Tier C. Reconstruction validation sees `[REDACTED]` on both sides and passes.
+
+#### Audit Trail
+
+Every redaction produces an `AuditEntry(path, detection_method)`. Actual secret values are NEVER logged, printed, or stored. The audit is returned on `EntityGraphResult.secrets_audit`.
 
 ### 3.1 Phase 1: Canonicalise
 
@@ -162,6 +260,8 @@ class BaseAdapter(ABC):
     def parse(self, source: str) -> Any: ...
     def extract_entities(self, parsed: Any, graph: EntityGraph) -> None: ...
     def source_type(self) -> str: ...
+    def secret_paths(self) -> list[str]: ...                            # default: []
+    def secret_value_patterns(self) -> list[tuple[str, Pattern]] | None: ...  # default: None
 ```
 
 One file → one entity. The adapter handles:
@@ -471,6 +571,9 @@ Per-type instance file. Uses **ID range compression** (`compress_id_ranges()`) t
 | `fk_type_compat_threshold` | 0.3 | 6 | FK detection (v1 stub, unused) |
 | `max_bootstrap_iterations` | 5 | 2+3 | Max refinement iterations before forced convergence |
 | `token_cost_class_ref` | 4 | 4 | Estimated token cost of a class reference per entity |
+| `secrets_entropy_threshold_b64` | 4.5 | 0 | Shannon entropy threshold for base64 secret candidates |
+| `secrets_entropy_threshold_hex` | 3.0 | 0 | Shannon entropy threshold for hex secret candidates |
+| `secrets_min_entropy_length` | 16 | 0 | Minimum string length for entropy-based detection |
 
 ---
 
@@ -714,11 +817,14 @@ src/decoct/
     config.py              39 lines — EntityGraphConfig
     canonical.py           78 lines — CANONICAL_KEY, CANONICAL_EQUAL, VALUE_KEY, ITEM_KEY
     composite_value.py     48 lines — CompositeValue wrapper
+    hashing.py             39 lines — STABLE_CONTENT_HASH() for deterministic IDs
+    io.py                         — I/O utilities for entity-graph file operations
 
   adapters/
-    base.py                31 lines — BaseAdapter ABC
+    base.py                      — BaseAdapter ABC (parse, extract_entities, source_type, secret_paths, secret_value_patterns)
+    entity_boundary.py     31 lines — Adapter boundary logic
     iosxr.py              563 lines — IOS-XR parser + entity extraction
-    hybrid_infra.py       364 lines — Multi-format adapter
+    hybrid_infra.py       364 lines — Multi-format adapter (YAML/JSON/INI)
     entra_intune.py       343 lines — Entra/Intune JSON adapter
 
   analysis/
@@ -738,21 +844,37 @@ src/decoct/
     delta.py              281 lines — Delta compression + subclass promotion
     normalisation.py      144 lines — Tier C construction
     phone_book.py          23 lines — Dense phone book builder
-    inversion.py           23 lines — FK detection (v1 stub)
+    inversion.py           23 lines — FK detection (v1 stub, returns empty dict)
 
   assembly/
-    tier_builder.py       274 lines — Tier A/B/C YAML builders + ID range compression
+    tier_builder.py       274 lines — Tier A/B/C YAML builders + ID range compression/expansion
+    assertions.py                 — Builds base_only_ratio and assertions for Tier A
+    token_estimator.py            — Token estimation stubs (v1: len(str)/4 approximation)
 
   reconstruction/
     reconstitute.py       228 lines — Entity reconstitution from Tier B + C
     validator.py          263 lines — Structural invariants + per-entity fidelity
 
-  entity_pipeline.py      146 lines — Top-level orchestrator
-  entity_graph_stats.py   388 lines — Compression statistics
+  secrets/
+    detection.py                 — Core detection: entropy, regex (16 patterns), false-positive filter, path matching
+    document_masker.py           — Pre-flatten tree walker for CommentedMap/dict documents
+    attribute_masker.py          — Post-flatten masking for Entity.attributes + CompositeValue internals
+    iosxr_patterns.py            — Adapter-specific patterns: IOS-XR, Entra-Intune, network devices
+    __init__.py                  — Re-exports shared API
+
+  entity_pipeline.py             — Top-level orchestrator (chains Phase 0 + 8 phases)
+  entity_graph_stats.py   388 lines — Compression statistics + CLI formatting
 
   qa/
-    questions.py           — Question generation (6 categories)
-    evaluate.py            — LLM evaluation harness
+    questions.py           — Question generation (6 categories: SINGLE_VALUE, MULTI_ENTITY,
+                             EXISTENCE, COMPARISON, COUNT, ORDERING)
+    evaluate.py            — LLM evaluation harness (fuzzy answer matching, raw vs compressed)
+
+scripts/
+  run_pipeline.py          — Runs IOS-XR corpus → output/entity-graph/
+  run_hybrid_infra.py      — Runs hybrid-infra corpus → output/hybrid-infra/
+  run_entra_intune.py      — Runs Entra corpus → output/entra-intune/
+  fetch_corpus.py          — Downloads public benchmark corpus
 ```
 
 ### Tests
@@ -773,6 +895,12 @@ tests/
   test_assembly.py                     — Assembly tests
   test_entity_graph_e2e.py             — THE gate test (86 configs)
   test_entity_graph_stats.py           — Statistics tests
+  test_secrets/
+    test_detection.py                  — Entropy, false-positive filter, detect_secret, hex discount
+    test_document_masker.py            — Fixture-based, plain dict, CommentedMap, custom options
+    test_attribute_masker.py           — String/composite/list attributes, extra patterns, audit paths
+    test_iosxr_patterns.py             — Each regex, non-secret preservation, path patterns
+    test_pipeline_integration.py       — Single-config pipeline, hybrid-infra, audit field, gate test
 ```
 
 ### Output (IOS-XR 86-config corpus)
@@ -845,14 +973,15 @@ e7a0114 Regenerate hybrid-infra output with map decomposition and Jaccard cluste
 
 ## 11. Current State and Open Items
 
-### What Works (as of 2026-03-10)
+### What Works (as of 2026-03-11)
 
-- Complete entity-graph pipeline with 8 phases
+- Complete entity-graph pipeline with 9 phases (Phase 0 secrets masking + 8 compression phases)
+- Secrets masking: shared detection engine (`src/decoct/secrets/`) used by both pass-based and entity-graph pipelines, with adapter-declared secret patterns via `BaseAdapter.secret_paths()` / `secret_value_patterns()`
 - Three adapters: IOS-XR (86 configs), Entra-Intune (88 resources), Hybrid-Infra (100 files)
-- 100% reconstruction fidelity on all three corpora
+- 100% reconstruction fidelity on all three corpora (with secrets masking active)
 - Statistics CLI with markdown/JSON output
 - QA comprehension harness with 6 question categories
-- Comprehensive test suite (97+ tests)
+- Comprehensive test suite (880 tests, 90% coverage)
 
 ### Compression Results
 
@@ -869,3 +998,457 @@ e7a0114 Regenerate hybrid-infra output with map decomposition and Jaccard cluste
 - **Token estimation**: `len(str) / 4` approximation; future: tiktoken cl100k_base
 - **FK detection**: v1 returns empty dict; future: detect foreign keys from value overlap across types
 - **Additional adapters**: XML/CLI normalisation planned for Phase 3 of overall decoct roadmap
+- **Secrets: entropy tuning**: current base64/hex thresholds work well on test corpora but may need per-adapter tuning for other platforms (e.g., Junos, Arista)
+- **Secrets: IOS-XR pre-flatten**: `IosxrConfigTree` is not dict-walkable so IOS-XR relies entirely on post-flatten masking; a `ConfigNode` walker could catch secrets earlier in the pipeline
+
+---
+
+## 12. Roadmap
+
+Six capabilities planned for the entity-graph pipeline.
+
+### Development Philosophy: Claude Code First, API Later
+
+R1, R3, and R4 require LLM intelligence to review data and produce artefacts (type hints, projection specs, Tier A guide text). Rather than building a multi-LLM API abstraction upfront, the approach is:
+
+1. **Design each capability as spec-in, artefact-out.** Every LLM-dependent step produces a well-defined YAML artefact (ingestion spec, projection spec, guide section). The deterministic pipeline consumes these artefacts — it never calls an LLM directly.
+
+2. **Use Claude Code as the initial LLM.** During development, a Claude Code session reads the pipeline output, applies domain reasoning, and writes the spec files interactively. This lets us iterate on the methodology — what questions to ask, what format the answers take, what the pipeline does with the answers — with a human in the loop.
+
+3. **Productionise with API calls later (R6).** Once the spec formats and review prompts are proven, wrap them in API calls via the `LLMClient` abstraction. The spec files become the contract: any LLM that produces a valid spec file works.
+
+This means **R6 is no longer a prerequisite for R1, R3, R4**. The dependency graph simplifies:
+
+```
+R2 Secrets Masking ✓ ──────────────────────────────┐
+       │                                           │
+       ▼                                           ▼
+R1 Ingestion Review ✓ ► R3 Progressive Projections ──► R5 MCP Server
+ (infer-spec CLI +         (Claude Code writes            │
+  spec machinery)           projection specs)              │
+                                │                         │
+                                ▼                         │
+                          R4 Enhanced Tier A ──────────────┘
+                           (Claude Code writes
+                            guide + index)
+
+R6 Multi-LLM Support ── later: replaces Claude Code with API calls for R3, R4
+                        (R1 already has API-based CLI via infer-spec)
+```
+
+### Spec File Convention
+
+All LLM-generated artefacts follow a common pattern:
+
+- **Location:** `specs/{capability}/{corpus}/` (e.g., `specs/ingestion/hybrid-infra/`, `specs/projections/iosxr-access-pe/`)
+- **Format:** YAML, validated by dataclass schemas in `src/decoct/`
+- **Versioned:** spec files are checked into git so methodology evolves with the codebase
+- **Reproducible:** the deterministic pipeline + spec files = identical output without LLM re-invocation
+- **Swappable:** during development Claude Code writes specs interactively; in production an API call writes the same spec format
+
+---
+
+### R1. LLM-Assisted Ingestion Review — COMPLETE
+
+**Status:** Implemented 2026-03-11. Spec machinery (R1a) and automated inference CLI (R1b) both complete.
+
+**Problem:** The hybrid-infra adapter assigns `schema_type_hint = None` for any format not matched by the 8 hard-coded patterns in `detect_platform()` (e.g., Nagios, HAProxy, Logrotate, systemd units). These "unknown" entities cluster by Jaccard similarity alone, producing types with opaque auto-generated names like `unknown-3`. The pipeline compresses them correctly, but the output lacks semantic meaning — an LLM reading the Tier A/B output has no idea what these entities represent.
+
+**Solution:** An **ingestion spec** that the adapter loads before entity extraction. The spec provides platform identification, composite value guidance, and relationship hints for entities that the adapter can't classify on its own.
+
+#### Ingestion Spec Format
+
+```yaml
+# specs/ingestion/hybrid-infra/ingestion_spec.yaml
+version: 1
+adapter: hybrid-infra
+generated_by: decoct-infer    # or "claude-code" for hand-authored
+entries:
+- file_pattern: "pg-*"
+  platform: postgresql
+  description: "PostgreSQL server configuration"
+
+- file_pattern: "package-json-*"
+  platform: package-json
+  description: "Node.js package manifest"
+  composite_paths:
+  - path: "dependencies"
+    kind: map
+    reason: "Package dependency map keyed by package name"
+  - path: "devDependencies"
+    kind: map
+    reason: "Dev dependency map keyed by package name"
+```
+
+#### R1a: Spec Machinery (Manual Authoring)
+
+**What was built:**
+
+- **Spec model:** `src/decoct/adapters/ingestion_models.py` — dataclasses (`IngestionSpec`, `IngestionEntry`, `CompositePathSpec`, `RelationshipHintSpec`)
+- **Spec loader:** `src/decoct/adapters/ingestion_spec.py` — `load_ingestion_spec()` (YAML → validated dataclass), `match_entry()` (fnmatch against file patterns)
+- **Adapter integration:** `HybridInfraAdapter` accepts optional `ingestion_spec` in constructor. When present, matches each file against spec entries and applies `platform` as `schema_type_hint`, `composite_paths` as override for default composite detection, and `relationship_hints` during relationship extraction.
+- **Hand-authored spec:** `specs/ingestion/hybrid-infra/ingestion_spec.yaml` — 12 entries covering all hybrid-infra fixture platforms
+
+#### R1b: Automated Spec Inference (CLI)
+
+**What was built:**
+
+- **Core module:** `src/decoct/learn_ingestion.py` — runs partial pipeline (canonicalise + type seeding), identifies `unknown-N` clusters, sends representative file samples to an LLM per cluster, assembles spec YAML
+- **CLI command:** `decoct entity-graph infer-spec -i <input_dir> [-o spec.yaml]`
+- **LLM provider:** OpenAI SDK with configurable `--base-url` (defaults to OpenRouter) and `--api-key-env` (defaults to `OPENROUTER_API_KEY`). Works with any OpenAI-compatible endpoint.
+- **Default model:** `google/gemini-2.5-flash-lite` — cost-effective ($0.10/M prompt tokens), reliable structured YAML output
+- **Dependencies:** `openai>=1.0` and `python-dotenv>=1.0` added to `[llm]` extras; `.env` file auto-loaded if present
+
+**CLI options:**
+
+```bash
+decoct entity-graph infer-spec \
+  --input-dir tests/fixtures/hybrid-infra/configs/ \
+  --adapter hybrid-infra \              # or entra-intune
+  --model google/gemini-2.5-flash-lite \  # any OpenRouter/OpenAI-compatible model
+  --base-url https://openrouter.ai/api/v1 \
+  --api-key-env OPENROUTER_API_KEY \
+  --output /tmp/inferred_spec.yaml
+```
+
+**Design decisions:**
+
+- One LLM call per unknown cluster — cleaner context per platform
+- Only unknown clusters get LLM calls — auto-detected types keep `detect_platform()` hints
+- Graceful degradation — LLM failure for one cluster → warn + skip, partial spec still useful
+- `on_progress` callback keeps the library module CLI-agnostic
+- Prompt engineering required 3 iterations to eliminate false-positive composite paths (config sections with named settings vs. genuine homogeneous collections)
+
+**Tests:** `tests/test_learn_ingestion.py` — 22 tests covering pure logic, validation, sample selection, round-trip serialization, mocked LLM integration, and CLI
+
+---
+
+### R2. Secrets Masking for Entity-Graph Pipeline — COMPLETE
+
+**Status:** Implemented 2026-03-11. See §3.0 for architecture details.
+
+**What was built:**
+
+- **Shared detection engine** (`src/decoct/secrets/`) — extracted from `passes/strip_secrets.py` and upgraded:
+  - 16 regex patterns (up from 6): added AWS secret keys, basic auth URLs, JWTs, GitLab PATs, Slack tokens, SendGrid, Stripe, Cisco type 7/8/9, Junos encrypted
+  - Charset-aware entropy with separate base64 (4.5) and hex (3.0) thresholds
+  - False-positive filter (runs before regex): UUIDs, IPs, MACs, file paths, template variables, indirect references, pure numerics
+  - Extended path denylist: 19 patterns (up from 10)
+  - Extended entropy-exempt paths: descriptions, comments
+
+- **Pre-flatten document masking** (`document_masker.py`) — walks CommentedMap/dict trees, used by hybrid-infra and entra-intune adapters
+
+- **Post-flatten attribute masking** (`attribute_masker.py`) — scans Entity.attributes including CompositeValue internals, supports adapter-specific value-level patterns
+
+- **Adapter-declared patterns** — `BaseAdapter` provides `secret_paths()` and `secret_value_patterns()` methods; each adapter overrides to declare its own patterns. The orchestrator has no adapter type-switching.
+
+- **Backward compatibility** — `passes/strip_secrets.py` is now a thin wrapper importing from `decoct.secrets`. All existing pass-pipeline imports and tests work unchanged.
+
+- **111 new tests** across 5 test modules; 880 total tests pass with 90% coverage.
+
+**Security invariant:** Phase 0 MUST complete before any Claude Code review of raw configs or any API-based LLM contact. This is enforced by pipeline phase ordering and by the convention that spec files are generated from masked output, never raw input.
+
+**Outstanding items:**
+- IOS-XR pre-flatten: `IosxrConfigTree` is not dict-walkable; a `ConfigNode` tree walker would catch secrets before flattening (currently handled entirely by post-flatten)
+- Entropy threshold tuning for additional platforms (Junos, Arista, Palo Alto)
+- No CLI flag to disable secrets masking (always on — intentional for safety, but may want `--no-secrets-mask` for debugging)
+
+---
+
+### R3. Progressive Discovery — Subject Projections
+
+**Problem:** The current three-tier output assumes the consumer loads everything for a type. For a 60-entity IOS-XR access-PE fleet, an LLM investigating a BGP issue must load the full Tier B (all classes, all attributes) and full Tier C (all instance data) — most of which is irrelevant to BGP. Disk is cheap; context tokens are not.
+
+**Solution:** A two-stage process: (1) produce a **projection spec** identifying subjects and their attribute paths, (2) a deterministic **projection generator** that slices the existing Tier B/C output according to the spec.
+
+#### Projection Spec Format
+
+```yaml
+# specs/projections/iosxr-access-pe/projection_spec.yaml
+version: 1
+source_type: iosxr-access-pe
+generated_by: claude-code
+subjects:
+- name: bgp
+  description: "BGP configuration — AS numbers, neighbors, address families, route policies"
+  include_paths:
+  - "router.bgp.**"
+  - "route-policy.*"
+  related_paths:
+  - path: "interface.Loopback0.ipv4"
+    reason: "Referenced as BGP router-id and update-source"
+  - path: "hostname"
+    reason: "Entity identifier"
+  example_questions:
+  - "What AS number do access-PE routers use?"
+  - "Which BGP address families are configured?"
+  - "Do any routers have BGP distance overrides?"
+
+- name: interfaces
+  description: "Interface configuration — IPs, MTUs, descriptions, bundle members"
+  include_paths:
+  - "interface.**"
+  related_paths:
+  - path: "hostname"
+    reason: "Entity identifier"
+  example_questions:
+  - "What is the MTU on TenGigE0/0/0/0?"
+  - "Which interfaces connect to P-CORE routers?"
+
+- name: evpn
+  description: "EVPN/VXLAN fabric — EVIs, bridge domains, ESI configuration"
+  include_paths:
+  - "evpn.**"
+  - "l2vpn.**"
+  - "bridge.**"
+  related_paths:
+  - path: "router.bgp.*.address-family"
+    reason: "l2vpn-evpn address family enables EVPN"
+  example_questions:
+  - "How many EVPN EVIs are configured per router?"
+  - "What is the EVI range across the fleet?"
+```
+
+#### Claude Code Workflow (Development)
+
+1. Run pipeline: `python scripts/run_pipeline.py` — produces Tier A/B/C in `output/entity-graph/`
+2. Claude Code reads the Tier B file for a type (e.g., `output/entity-graph/iosxr-access-pe_classes.yaml`)
+3. Claude Code identifies logical subjects by analysing attribute path prefixes and domain knowledge
+4. Claude Code writes `specs/projections/iosxr-access-pe/projection_spec.yaml`
+5. Run projection generator: `decoct entity-graph project --type iosxr-access-pe --spec specs/projections/iosxr-access-pe/projection_spec.yaml`
+6. Inspect projections, iterate on path coverage and subject boundaries
+
+#### Projected Output Structure
+
+```yaml
+# output/entity-graph/projections/iosxr-access-pe/bgp.yaml
+projection:
+  subject: bgp
+  source_type: iosxr-access-pe
+  description: "BGP configuration — AS numbers, neighbors, address families, route policies"
+  total_instances: 60
+  attribute_count: 12       # of the full type's ~170 attributes
+  example_questions:
+  - "What AS number do access-PE routers use?"
+  - "Which BGP address families are configured?"
+base_class:
+  router.bgp.65002.nsr: 'true'
+classes:
+  bgp_address_family_l2vpn:
+    inherits: base
+    own_attrs:
+      router.bgp.65002.address-family: l2vpn-evpn
+instance_data:
+  schema: [hostname, router.bgp.65002.router-id]
+  records:
+    APE-R1-01: [APE-R1-01, 10.0.1.1]
+```
+
+#### Mechanical Projection Generation
+
+No LLM needed for the actual filtering — it's deterministic:
+1. Filter `base_class` to matching paths (include_paths + related_paths)
+2. Filter each class/subclass `own_attrs` to matching paths (drop empty classes)
+3. Filter phone book columns to matching paths
+4. Filter instance_attrs to matching paths
+5. Recompute class assignments (some entities may collapse to `_base_only` in the projection)
+6. Validate: union of projected attributes for any entity == subset of original attributes for that entity
+
+**Module:** `src/decoct/projections/` — `generator.py` (deterministic projection builder), `models.py` (ProjectionSpec + ProjectedOutput dataclasses)
+
+**Output:** `output/entity-graph/projections/{type_id}/{subject}.yaml` — one file per subject per type
+
+**Depends on:** R2 (secrets masked in output before Claude Code reviews it)
+
+**CLI:** `decoct entity-graph project --type <type_id> --spec <spec_file>` (generate projections from spec), `decoct entity-graph project --all --spec-dir <dir>` (all types)
+
+**Later (R6):** Add `decoct entity-graph review-projections --type <type_id>` that sends Tier B to an LLM API and writes the projection spec automatically.
+
+---
+
+### R4. Enhanced Tier A — LLM Instruction Layer
+
+**Problem:** Current Tier A is a bare summary (type counts, class counts, topology). An LLM receiving Tier A has no guidance on what's available, how to navigate the data, or which projection to load for a given question. It's a table of contents without instructions.
+
+**Solution:** Expand Tier A with three new sections. The `guide` and `key_differentiators` are authored by Claude Code (or later by API) and stored in a **Tier A spec file**. The `projections` index is populated mechanically from R3 output.
+
+#### Tier A Spec Format
+
+```yaml
+# specs/tier-a/iosxr/tier_a_spec.yaml
+version: 1
+generated_by: claude-code
+corpus_description: |
+  86 IOS-XR router configurations from a service provider MPLS/EVPN network.
+  Five device roles: access-PE (60), BNG (8), P-core (6), route-reflector (4), services-PE (8).
+  All devices run IOS-XR with IS-IS, BGP, EVPN, and MPLS.
+how_to_use:
+- "To understand the fleet structure, read the 'types' and 'topology' sections below."
+- "To investigate a specific subject (e.g., BGP), load the relevant projection file."
+- "To get full detail on one entity, load its type's Tier B + C files."
+- "To compare entities, use the phone book in Tier C for tabular data."
+- "To reconstruct a full entity: base_class → class → subclass → overrides → instance_attrs → phone book."
+type_descriptions:
+  iosxr-access-pe:
+    summary: "Access/aggregation PE routers — customer-facing, EVPN/L2VPN termination"
+    key_differentiators:
+    - "BGP address-family (l2vpn-evpn vs ipv4-unicast)"
+    - "Distance settings vary across subclasses"
+  iosxr-p-core:
+    summary: "P/core routers — MPLS transport, IS-IS backbone"
+    key_differentiators:
+    - "Interface bundle configuration varies by ring position"
+  iosxr-rr:
+    summary: "Route reflectors — BGP session concentration, no customer traffic"
+    key_differentiators:
+    - "All RRs are structurally identical (base_only_ratio: 1.0)"
+```
+
+#### Enhanced Tier A Output
+
+```yaml
+guide:
+  purpose: |
+    This is a decoct entity-graph compression of 86 IOS-XR router configurations
+    from a service provider MPLS/EVPN network.
+  how_to_use:
+  - "To understand the fleet structure, read the 'types' and 'topology' sections below."
+  - "To investigate a specific subject (e.g., BGP), load the relevant projection file."
+  reconstruction:
+    summary: "base_class → class → subclass → overrides → instance_attrs → phone book"
+types:
+  iosxr-access-pe:
+    count: 60
+    classes: 3
+    subclasses: 3
+    base_attr_count: 47
+    compression_ratio: 0.78
+    summary: "Access/aggregation PE routers — customer-facing, EVPN/L2VPN termination"
+    key_differentiators:
+    - "BGP address-family (l2vpn-evpn vs ipv4-unicast)"
+    tier_b_ref: iosxr-access-pe_classes.yaml
+    tier_c_ref: iosxr-access-pe_instances.yaml
+projections:                          # auto-populated from R3 output
+  iosxr-access-pe:
+  - subject: bgp
+    file: projections/iosxr-access-pe/bgp.yaml
+    description: "BGP configuration — AS numbers, neighbors, address families"
+    example_questions:
+    - "What AS number do access-PE routers use?"
+```
+
+#### Claude Code Workflow (Development)
+
+1. Claude Code reads the existing Tier A output and Tier B files
+2. Claude Code writes `specs/tier-a/iosxr/tier_a_spec.yaml` with corpus description, usage instructions, and per-type summaries
+3. `build_tier_a()` merges: deterministic stats (counts, compression ratios) + spec file content (guide, descriptions) + projection index (from R3 output directory)
+
+**Module:** Extends `src/decoct/assembly/tier_builder.py` (`build_tier_a()`) + `src/decoct/assembly/tier_a_spec.py` (spec loader)
+
+**Depends on:** R3 (projection index requires projections to exist for the `projections` section; `guide` and `type_descriptions` can be built independently)
+
+**Later (R6):** Add `decoct entity-graph review-tier-a --output-dir <dir>` that sends Tier A/B to an LLM API and writes the spec automatically.
+
+---
+
+### R5. MCP Server — Progressive Disclosure
+
+**Problem:** Even with projections, an LLM must know which file to load. An MCP server enables the LLM to discover and request exactly the data it needs through tool calls, without pre-loading everything.
+
+**Solution:** An MCP server exposing the entity-graph output as tools for progressive disclosure.
+
+#### Tools
+
+| Tool | Parameters | Returns |
+|---|---|---|
+| `decoct_fleet_overview` | — | Tier A content (always small, safe to load fully) |
+| `decoct_list_projections` | `type_id?` | Available projections with descriptions and example questions |
+| `decoct_load_projection` | `type_id`, `subject` | Projected Tier B/C for one subject |
+| `decoct_load_type_classes` | `type_id` | Full Tier B for one type |
+| `decoct_load_type_instances` | `type_id` | Full Tier C for one type |
+| `decoct_get_entity` | `entity_id` | Reconstituted entity (runs reconstitution on the fly) |
+| `decoct_compare_entities` | `entity_ids[]` | Side-by-side diff of reconstituted entities |
+| `decoct_search_attributes` | `path_pattern`, `value_pattern?` | Entities matching attribute criteria |
+| `decoct_topology` | `type_id?` | Relationship graph (filtered or full) |
+
+#### Architecture
+
+```
+src/decoct/mcp/
+  server.py          — MCP server setup (FastMCP or low-level protocol)
+  tools.py           — tool implementations (thin wrappers over existing modules)
+  resources.py       — optional MCP resources for Tier A/B/C files
+```
+
+The server reads from a pre-computed output directory. No pipeline execution at query time — all tools operate on the assembled YAML files. `decoct_get_entity` uses `reconstitute_entity()` from the reconstruction module.
+
+**CLI:** `decoct mcp serve --output-dir <dir> [--port 8080]`
+
+**Depends on:** R3 (projections), R4 (enhanced Tier A for fleet_overview), R2 (secrets already masked in output)
+
+---
+
+### R6. Multi-LLM Support — Productionising the Spec Workflow
+
+**Partial status:** R1 ingestion review is already API-based via `decoct entity-graph infer-spec` (uses OpenAI SDK with configurable `--base-url`, defaults to OpenRouter). R3 and R4 still use Claude Code interactively.
+
+**Problem:** R3 and R4 are currently driven by Claude Code writing spec files interactively. For production use (CI pipelines, non-interactive runs, cost-sensitive deployments), these spec files need to be generated by API calls to various LLM providers.
+
+**Timing:** R6 for R3/R4 is implemented **after** those capabilities are proven with Claude Code. The spec formats and review prompts are already stable by this point — R6 wraps them in API calls.
+
+**Solution:** An `LLMClient` abstraction in `src/decoct/llm/`:
+
+```python
+# src/decoct/llm/client.py
+class LLMClient(Protocol):
+    def complete(self, system: str, messages: list[dict], max_tokens: int) -> str: ...
+    def model_name(self) -> str: ...
+
+class AnthropicClient(LLMClient): ...   # wraps anthropic.Anthropic()
+class OpenAICompatClient(LLMClient): ...  # wraps openai.OpenAI(base_url=...) — covers DeepSeek, Ollama, vLLM
+```
+
+**What R6 automates:**
+
+| Capability | Claude Code (development) | API call (production) |
+|---|---|---|
+| R1 Ingestion Review | ~~Claude Code reads unknown entities, writes `ingestion_spec.yaml`~~ | **Done:** `decoct entity-graph infer-spec` sends samples to LLM, writes spec |
+| R3 Projection Specs | Claude Code reads Tier B, writes `projection_spec.yaml` | `decoct entity-graph review-projections` sends Tier B to LLM, writes spec |
+| R4 Tier A Guide | Claude Code reads Tier A/B, writes `tier_a_spec.yaml` | `decoct entity-graph review-tier-a` sends Tier A/B to LLM, writes spec |
+
+The spec files are the contract. The deterministic pipeline doesn't care who wrote them.
+
+**DeepSeek specifics:**
+- Base URL: `https://api.deepseek.com` (OpenAI-compatible)
+- Model: `deepseek-chat` (DeepSeek-V3) or `deepseek-reasoner` (DeepSeek-R1)
+- API key via `DEEPSEEK_API_KEY` env var
+- Supports system messages, structured output via JSON mode
+
+**Dependency management:**
+- `pip install decoct[llm]` — Anthropic SDK + OpenAI SDK + python-dotenv (existing; OpenAI SDK added for R1 infer-spec)
+- Future: may add provider-specific extras if needed, but OpenAI-compatible SDK covers most providers via `--base-url`
+
+**Configuration:**
+- `--llm-provider anthropic|deepseek|openai-compat` CLI flag
+- `--llm-model <model-id>` override
+- `--llm-base-url <url>` for custom endpoints (Ollama, vLLM)
+- Environment: `DECOCT_LLM_PROVIDER`, `DECOCT_LLM_MODEL`
+
+**Migration:** Refactor `learn.py` to accept `LLMClient` instead of creating its own `anthropic.Anthropic()`.
+
+**Module:** `src/decoct/llm/` — `client.py` (protocol + implementations), `__init__.py` (factory), `review.py` (prompt templates for R1/R3/R4 review commands)
+
+---
+
+### Implementation Priority
+
+Recommended build order. R1–R4 use Claude Code for LLM work; R6 productionises later.
+
+| Priority | Item | Rationale |
+|---|---|---|
+| **P0** | R2 Secrets Masking ✓ | Security boundary — must exist before Claude Code reviews any raw configs |
+| **P1** | R1 Ingestion Review ✓ | Spec machinery + `infer-spec` CLI with OpenRouter/OpenAI-compatible LLM |
+| **P1** | R3 Progressive Projections | Architectural centrepiece; Claude Code writes projection specs |
+| **P2** | R4 Enhanced Tier A | Extends assembly; Claude Code writes guide + type descriptions |
+| **P2** | R5 MCP Server | Consumer of R3+R4, high user-facing value |
+| **P3** | R6 Multi-LLM Support | Productionise R3/R4 spec workflows in API calls (R1 already done) |
