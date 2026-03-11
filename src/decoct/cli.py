@@ -563,6 +563,58 @@ def evaluate(
         click.echo(result)
 
 
+@entity_graph.command(name="infer-spec")
+@click.option("--input-dir", "-i", required=True, type=click.Path(exists=True),
+              help="Directory of raw config files.")
+@click.option("--adapter", "adapter_name",
+              type=click.Choice(["hybrid-infra", "entra-intune"]),
+              default="hybrid-infra", show_default=True)
+@click.option("--model", default="google/gemini-2.5-flash-lite", show_default=True,
+              help="LLM model name (as expected by provider).")
+@click.option("--base-url", default="https://openrouter.ai/api/v1", show_default=True,
+              help="OpenAI-compatible API base URL.")
+@click.option("--api-key-env", default="OPENROUTER_API_KEY", show_default=True,
+              help="Environment variable holding the API key.")
+@click.option("--output", "-o", type=click.Path(), help="Write spec to file (default: stdout).")
+def infer_spec(
+    input_dir: str,
+    adapter_name: str,
+    model: str,
+    base_url: str,
+    api_key_env: str,
+    output: str | None,
+) -> None:
+    """Infer ingestion spec by identifying unknown platform types with an LLM.
+
+    Requires: pip install decoct[llm]
+    """
+    from decoct.learn_ingestion import dump_ingestion_spec, infer_ingestion_spec
+
+    try:
+        spec = infer_ingestion_spec(
+            input_dir=Path(input_dir),
+            adapter_name=adapter_name,
+            model=model,
+            base_url=base_url,
+            api_key_env=api_key_env,
+            on_progress=lambda msg: click.echo(msg, err=True),
+        )
+    except ImportError as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+    except Exception as e:  # noqa: BLE001
+        click.echo(f"Error inferring spec: {e}", err=True)
+        sys.exit(1)
+
+    spec_yaml = dump_ingestion_spec(spec)
+
+    if output:
+        Path(output).write_text(spec_yaml)
+        click.echo(f"Spec written to {output}", err=True)
+    else:
+        click.echo(spec_yaml, nl=False)
+
+
 @schema.command()
 @click.option("--example", "-e", "examples", multiple=True, type=click.Path(exists=True), help="Example config files.")
 @click.option("--doc", "-d", "docs", multiple=True, type=click.Path(exists=True), help="Documentation files.")

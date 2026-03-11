@@ -78,7 +78,7 @@ def _read_file(path: Path) -> str:
     return f"### {path.name}\n```\n{content}\n```\n"
 
 
-def _extract_yaml_block(response_text: str) -> str:
+def extract_yaml_block(response_text: str) -> str:
     """Extract YAML from a markdown code block or raw response."""
     # Look for ```yaml ... ``` block
     import re
@@ -95,7 +95,8 @@ def _extract_yaml_block(response_text: str) -> str:
 
 
 # Keep backward-compatible alias
-_extract_schema_yaml = _extract_yaml_block
+_extract_yaml_block = extract_yaml_block  # backward-compatible private alias
+_extract_schema_yaml = extract_yaml_block
 
 
 def _validate_schema(schema_yaml: str) -> dict[str, Any]:
@@ -181,7 +182,7 @@ def learn_schema(
     )
 
     response_text = message.content[0].text
-    schema_yaml = _extract_yaml_block(response_text)
+    schema_yaml = extract_yaml_block(response_text)
 
     # Validate
     _validate_schema(schema_yaml)
@@ -498,7 +499,7 @@ def learn_assertions(
     )
 
     response_text = message.content[0].text
-    assertions_yaml = _extract_yaml_block(response_text)
+    assertions_yaml = extract_yaml_block(response_text)
 
     # Validate
     _validate_assertions(assertions_yaml)

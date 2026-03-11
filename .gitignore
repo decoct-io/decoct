@@ -32,6 +32,9 @@ htmlcov/
 Thumbs.db
 *:Zone.Identifier
 
+# Secrets
+.env
+
 # decoct
 .decoct/
 corpus/

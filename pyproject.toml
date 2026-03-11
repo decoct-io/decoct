@@ -40,6 +40,8 @@ dev = [
 ]
 llm = [
     "anthropic>=0.40",
+    "openai>=1.0",
+    "python-dotenv>=1.0",
 ]
 
 [project.scripts]
