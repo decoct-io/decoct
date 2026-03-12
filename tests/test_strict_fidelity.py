@@ -15,12 +15,10 @@ from decoct.core.entity_graph import EntityGraph
 from decoct.core.types import Attribute, Entity
 from decoct.reconstruction.strict_fidelity import (
     StrictFidelityError,
-    StrictFidelityMismatch,
     expand_entity_leaves,
     normalize_leaf,
     validate_strict_fidelity,
 )
-
 
 # ===========================================================================
 # normalize_leaf tests

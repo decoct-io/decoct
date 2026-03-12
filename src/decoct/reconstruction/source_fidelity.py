@@ -13,6 +13,7 @@ accounting for:
 from __future__ import annotations
 
 import logging
+from collections.abc import Mapping
 from dataclasses import dataclass, field
 
 from decoct.core.composite_value import CompositeValue
@@ -95,13 +96,13 @@ class _EntityLookup:
 
 
 def _expand_entity_to_lookup(
-    entity_attrs: dict[str, object],
+    entity_attrs: Mapping[str, object],
 ) -> _EntityLookup:
     """Build a lookup structure from entity attributes."""
     lookup = _EntityLookup()
 
     for path, attr in entity_attrs.items():
-        value = attr.value  # type: ignore[union-attr]
+        value = attr.value  # type: ignore[attr-defined]
         if isinstance(value, CompositeValue):
             lookup.composites[path] = value
         else:
@@ -283,8 +284,8 @@ def _check_source_leaf(
             return None
         # Reconstruct: extra entity segments after last matched source segment
         # plus entity value should equal source value
-        reconstructed = _reconstruct_after_subsequence(source_parts, entity_parts, direct_val)
-        if reconstructed is not None and reconstructed.strip() == value.strip():
+        subseq_reconstructed = _reconstruct_after_subsequence(source_parts, entity_parts, direct_val)
+        if subseq_reconstructed is not None and subseq_reconstructed.strip() == value.strip():
             return None
 
     return SourceFidelityMismatch(

@@ -12,7 +12,6 @@ address-family lines as route-policy body), the counts will diverge.
 from __future__ import annotations
 
 import logging
-from dataclasses import dataclass
 
 from decoct.adapters.iosxr import (
     POLICY_TERMINATORS,

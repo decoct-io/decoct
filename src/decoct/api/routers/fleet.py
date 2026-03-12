@@ -15,7 +15,7 @@ router = APIRouter()
 def get_fleet_overview(request: Request) -> dict[str, Any]:
     """Return Tier A fleet overview."""
     store = request.app.state.store
-    return store.tier_a
+    return dict(store.tier_a)
 
 
 @router.get("/types", response_model=TypeListResponse)

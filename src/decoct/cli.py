@@ -625,11 +625,11 @@ def run_eval_cmd(
     Requires: pip install decoct[llm]
     """
     from decoct.qa.eval_evaluate import (
-        EvalEvaluationReport,
         evaluate_eval_questions,
         format_eval_report_json,
         format_eval_report_markdown,
     )
+    from decoct.qa.eval_models import EvalEvaluationReport
     from decoct.qa.generate_eval import load_eval_bank
 
     bank = load_eval_bank(Path(questions))

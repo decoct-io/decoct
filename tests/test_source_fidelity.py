@@ -13,8 +13,6 @@ import pytest
 from decoct.adapters.iosxr import (
     ConfigNode,
     IosxrAdapter,
-    IosxrConfigTree,
-    IosxrMetadata,
     parse_iosxr_config,
 )
 from decoct.core.composite_value import CompositeValue
@@ -29,7 +27,6 @@ from decoct.reconstruction.parser_validation import (
 )
 from decoct.reconstruction.source_fidelity import (
     SourceFidelityError,
-    SourceFidelityMismatch,
     validate_source_fidelity,
 )
 
@@ -50,8 +47,8 @@ class TestParserValidation:
         text = cfg_path.read_text(encoding="utf-8")
         tree = parse_iosxr_config(text)
 
-        raw_counts = count_section_lines(text)
-        tree_counts = count_tree_section_nodes(tree)
+        count_section_lines(text)
+        count_tree_section_nodes(tree)
 
         discrepancies = validate_parser_structure(text, tree, cfg_path.stem, mode="warn")
         assert discrepancies == [], f"Unexpected discrepancies: {discrepancies}"

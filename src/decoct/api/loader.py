@@ -220,7 +220,8 @@ class OutputStore:
         if not proj_file.exists():
             return None
         yaml = YAML(typ="safe")
-        return yaml.load(proj_file.read_text()) or {}  # type: ignore[return-value]
+        result = yaml.load(proj_file.read_text())
+        return result if isinstance(result, dict) else {}
 
     def has_type(self, type_id: str) -> bool:
         return type_id in self.tier_a.get("types", {})

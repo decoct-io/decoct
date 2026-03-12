@@ -147,7 +147,7 @@ def _expand_composite(
 
 def _expand_nested(
     base_path: str,
-    data: dict | list,
+    data: dict[str, object] | list[object],
     out: list[tuple[str, str]],
 ) -> None:
     """Expand plain nested dicts/lists (not wrapped in CompositeValue)."""

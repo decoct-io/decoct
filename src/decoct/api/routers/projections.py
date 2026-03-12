@@ -38,4 +38,4 @@ def get_projection(request: Request, type_id: str, subject: str) -> dict[str, An
     data = store.load_projection(type_id, subject)
     if data is None:
         raise HTTPException(status_code=404, detail="Projection file not found")
-    return data
+    return dict(data)

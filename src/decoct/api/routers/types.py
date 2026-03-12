@@ -38,7 +38,7 @@ def get_type_detail(request: Request, type_id: str) -> dict[str, Any]:
     """Return Tier B data for a type (classes, templates, base)."""
     _require_type(request, type_id)
     store = request.app.state.store
-    return store.classes_raw[type_id]
+    return dict(store.classes_raw[type_id])
 
 
 @router.get("/classes")

@@ -118,7 +118,7 @@ def run_entity_graph_pipeline(
 
     # Build secret config from adapter
     secret_paths = list(DEFAULT_SECRET_PATHS) + adapter.secret_paths()
-    extra_value_patterns = adapter.secret_value_patterns()
+    extra_value_patterns = adapter.secret_value_patterns() or []
 
     all_audit: list[AuditEntry] = []
     all_source_leaves: dict[str, list[tuple[str, str]]] = {}
