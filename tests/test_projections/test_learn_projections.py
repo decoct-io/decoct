@@ -11,6 +11,7 @@ import pytest
 from decoct.learn_projections import (
     _build_spec,
     _extract_path_prefixes,
+    _extract_tier_c_context,
     _validate_llm_response,
     infer_projection_spec,
 )
@@ -54,6 +55,71 @@ class TestExtractPathPrefixes:
         }
         prefixes = _extract_path_prefixes(tier_b)
         assert "evpn" in prefixes
+
+
+class TestExtractTierCContext:
+    def test_extracts_phone_book_schema(self) -> None:
+        tier_c = {
+            "instance_data": {
+                "schema": ["hostname", "interface.Loopback0.ipv4", "router.isis.prefix-sid"],
+                "records": {
+                    "device-01": ["device-01", "10.0.0.1", "index 16001"],
+                    "device-02": ["device-02", "10.0.0.2", "index 16002"],
+                },
+            },
+        }
+        context = _extract_tier_c_context(tier_c)
+        assert "3 per-entity variable attributes" in context
+        assert "``hostname``" in context
+        assert "``interface.Loopback0.ipv4``" in context
+        assert "``router.isis.prefix-sid``" in context
+        assert "2 entities" in context
+
+    def test_extracts_override_keys(self) -> None:
+        tier_c = {
+            "instance_data": {"schema": [], "records": {}},
+            "overrides": {
+                "device-01": {"delta": {"mysqld.innodb_buffer_pool_size": "2G"}},
+                "device-02": {"delta": {"mysqld.server_id": "2", "mysqld.innodb_buffer_pool_size": "4G"}},
+            },
+        }
+        context = _extract_tier_c_context(tier_c)
+        assert "2 attributes with per-entity exceptions" in context
+        assert "``mysqld.innodb_buffer_pool_size``" in context
+        assert "``mysqld.server_id``" in context
+
+    def test_extracts_instance_attrs(self) -> None:
+        tier_c = {
+            "instance_data": {"schema": [], "records": {}},
+            "instance_attrs": {
+                "policy-1": {"conditions.locations.includeLocations": ["NL-Blocked"]},
+            },
+        }
+        context = _extract_tier_c_context(tier_c)
+        assert "Instance-specific complex attributes" in context
+        assert "``conditions.locations.includeLocations``" in context
+
+    def test_extracts_class_assignments(self) -> None:
+        tier_c = {
+            "instance_data": {"schema": [], "records": {}},
+            "class_assignments": {
+                "_base_only": {"instances": ["a", "b", "c"]},
+                "special": {"instances": ["d"]},
+            },
+        }
+        context = _extract_tier_c_context(tier_c)
+        assert "2 classes" in context
+        assert "``_base_only``: 3 instances" in context
+        assert "``special``: 1 instances" in context
+
+    def test_empty_tier_c(self) -> None:
+        context = _extract_tier_c_context({})
+        assert "no per-entity scalar variance" in context
+
+    def test_no_phone_book_schema(self) -> None:
+        tier_c = {"instance_data": {"schema": [], "records": {}}}
+        context = _extract_tier_c_context(tier_c)
+        assert "no per-entity scalar variance" in context
 
 
 class TestValidateLlmResponse:
@@ -134,11 +200,13 @@ class TestInferProjectionSpec:
             infer_projection_spec(tmp_path, "nonexistent")
 
     @patch("decoct.learn_projections._call_llm")
-    def test_infer_success(self, mock_call: MagicMock, tmp_path: Path) -> None:
-        # Write a minimal Tier B file
+    def test_infer_success_with_tier_c(self, mock_call: MagicMock, tmp_path: Path) -> None:
+        """Tier B + Tier C both present — LLM receives both."""
         from ruamel.yaml import YAML
 
         yaml = YAML(typ="rt")
+
+        # Write Tier B
         tier_b = {
             "meta": {"entity_type": "test-type", "total_instances": 2},
             "base_class": {"router.bgp.65002": "value", "hostname": "test"},
@@ -147,6 +215,21 @@ class TestInferProjectionSpec:
         classes_file = tmp_path / "test-type_classes.yaml"
         with classes_file.open("w") as f:
             yaml.dump(tier_b, f)
+
+        # Write Tier C
+        tier_c = {
+            "instance_data": {
+                "schema": ["hostname", "router.bgp.router-id"],
+                "records": {
+                    "device-01": ["device-01", "10.0.0.1"],
+                    "device-02": ["device-02", "10.0.0.2"],
+                },
+            },
+            "class_assignments": {"_base_only": {"instances": ["device-01", "device-02"]}},
+        }
+        instances_file = tmp_path / "test-type_instances.yaml"
+        with instances_file.open("w") as f:
+            yaml.dump(tier_c, f)
 
         mock_call.return_value = {
             "subjects": [
@@ -171,3 +254,43 @@ class TestInferProjectionSpec:
         assert len(spec.subjects) == 1
         assert spec.subjects[0].name == "bgp"
         assert len(progress_msgs) > 0
+
+        # Verify _call_llm received tier_c_context
+        call_args = mock_call.call_args
+        tier_c_context_arg = call_args[0][1]  # second positional arg
+        assert "router.bgp.router-id" in tier_c_context_arg
+        assert "2 per-entity variable attributes" in tier_c_context_arg
+
+    @patch("decoct.learn_projections._call_llm")
+    def test_infer_without_tier_c(self, mock_call: MagicMock, tmp_path: Path) -> None:
+        """Tier B only — degrades gracefully without Tier C."""
+        from ruamel.yaml import YAML
+
+        yaml = YAML(typ="rt")
+        tier_b = {
+            "meta": {"entity_type": "test-type", "total_instances": 2},
+            "base_class": {"router.bgp.65002": "value"},
+            "classes": {},
+        }
+        classes_file = tmp_path / "test-type_classes.yaml"
+        with classes_file.open("w") as f:
+            yaml.dump(tier_b, f)
+
+        mock_call.return_value = {
+            "subjects": [
+                {
+                    "name": "bgp",
+                    "include_paths": ["router.bgp.**"],
+                },
+            ],
+        }
+
+        spec = infer_projection_spec(tmp_path, "test-type")
+
+        assert isinstance(spec, ProjectionSpec)
+        assert len(spec.subjects) == 1
+
+        # Verify _call_llm received fallback context
+        call_args = mock_call.call_args
+        tier_c_context_arg = call_args[0][1]
+        assert "No Tier C data available" in tier_c_context_arg
