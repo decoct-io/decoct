@@ -45,7 +45,7 @@ src/decoct/
   adapters/           BaseAdapter + IOS-XR (.cfg), Hybrid-Infra (YAML/JSON/INI), Entra-Intune (JSON)
   analysis/           Attribute profiling, Shannon entropy, tier/role classification
   discovery/          Type seeding (Jaccard), bootstrap loop, anti-unification, composite decomposition
-  compression/        Class extraction (greedy bundles), delta compression, normalisation, phone book
+  compression/        CompressionEngine ABC + registry, greedy-bundle engine, class extraction, delta compression, normalisation, phone book
   assembly/           Tier A/B/C YAML builders, ID range compression, assertions, token estimation
   reconstruction/     Entity reconstitution + validation (100% fidelity gate test) + strict source fidelity
   qa/                 Question generation (6 categories) + LLM evaluation harness
@@ -67,8 +67,7 @@ src/decoct/
 1.5. Source Fidelity — strict bidirectional token-sequence validation (0 mismatches for JSON/YAML/INI; warn mode for IOS-XR)
 2. Bootstrap Loop — seed types (Jaccard clustering) → profile → refine (anti-unification) → converge
 3. Composite Decomposition — template extraction + per-entity deltas for high-cardinality composites
-4. Class Extraction — greedy frequent-bundle clustering for shared attribute sets
-5. Delta Compression — subclass promotion for residual B-layer differences (max depth 2)
+4+5. Compression Engine — pluggable engine (default: greedy-bundle) runs class extraction + delta compression
 6. Normalisation — build Tier C (phone book for dense scalars, instance_attrs for sparse)
 7. Reconstruction Validation — gate test: 8 structural invariants + per-entity fidelity check
 8. Assembly — emit Tier A (fleet overview), Tier B (class definitions), Tier C (per-entity differences)

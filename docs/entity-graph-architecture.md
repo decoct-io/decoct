@@ -170,10 +170,8 @@ Input files (.cfg, .yaml, .json, .ini, .conf)
 [Phase 3.5] Composite Decomposition ─── shadow map + template extraction
   │
   ▼
-[Phase 4] Class Extraction ─── greedy frequent-bundle clustering
-  │
-  ▼
-[Phase 5] Delta Compression ─── subclass promotion for compression gain
+[Phase 4+5] Compression Engine ─── pluggable engine (default: greedy-bundle)
+  │                               class extraction + delta compression
   │
   ▼
 [Phase 6] Normalisation ─── build Tier C (phone book + instance_attrs)
@@ -462,7 +460,55 @@ After decomposition, affected attributes are **re-profiled** with fresh entropy/
 
 Template IDs follow the format `{type_id}.{path}.T{index}`.
 
-### 3.4 Phase 4: Class Extraction
+### 3.4 Phase 4+5: Compression Engine
+
+**Modules:** `src/decoct/compression/engine.py`, `src/decoct/compression/greedy_bundle.py`
+
+Phase 4 (class extraction) and Phase 5 (delta compression) are executed by a pluggable `CompressionEngine`. The engine is selected via `EntityGraphConfig.compression_engine` (default: `"greedy-bundle"`) or the `--compression-engine` CLI flag on the `entity-graph` command group.
+
+```python
+from decoct.compression import CompressionEngine, get_engine, registry
+
+class CompressionEngine(ABC):
+    @abstractmethod
+    def compress(self, type_map, graph, profiles, config) -> dict[str, ClassHierarchy]: ...
+    @abstractmethod
+    def name(self) -> str: ...
+```
+
+The `_EngineRegistry` manages registration and lookup:
+- `registry.register(EngineClass)` — registers an engine (usable as a decorator); raises `ValueError` on duplicate names
+- `registry.get(name)` — returns a new instance; raises `KeyError` with available names on miss
+- `registry.available()` — sorted list of registered engine names
+- `get_engine(name)` — convenience wrapper around `registry.get()`
+
+Custom engines subclass `CompressionEngine` and register with the global `registry`:
+
+```python
+from decoct.compression.engine import CompressionEngine, registry
+
+@registry.register
+class MyEngine(CompressionEngine):
+    def compress(self, type_map, graph, profiles, config):
+        ...
+    def name(self):
+        return "my-engine"
+```
+
+The pipeline dispatches via:
+
+```python
+engine = get_engine(config.compression_engine)
+hierarchies = engine.compress(type_map, graph, profiles, config)
+```
+
+#### Default Engine: Greedy Bundle
+
+**Module:** `src/decoct/compression/greedy_bundle.py`
+
+`GreedyBundleEngine` wraps the existing `extract_classes()` (Phase 4) and `delta_compress()` (Phase 5) functions. It is auto-registered as `"greedy-bundle"` on import.
+
+#### Phase 4: Class Extraction
 
 **Module:** `src/decoct/compression/class_extractor.py` (245 lines)
 
@@ -497,7 +543,7 @@ class ClassHierarchy:
     subclasses: dict[str, SubclassDef]  # subclasses (populated by Phase 5)
 ```
 
-### 3.5 Phase 5: Delta Compression
+#### Phase 5: Delta Compression
 
 **Module:** `src/decoct/compression/delta.py` (281 lines)
 
@@ -640,6 +686,7 @@ Per-type instance file. Uses **ID range compression** (`compress_id_ranges()`) t
 | `fk_type_compat_threshold` | 0.3 | 6 | FK detection (v1 stub, unused) |
 | `max_bootstrap_iterations` | 5 | 2+3 | Max refinement iterations before forced convergence |
 | `token_cost_class_ref` | 4 | 4 | Estimated token cost of a class reference per entity |
+| `compression_engine` | `"greedy-bundle"` | 4+5 | Selects the compression engine (class extraction + delta compression) |
 | `secrets_entropy_threshold_b64` | 4.5 | 0 | Shannon entropy threshold for base64 secret candidates |
 | `secrets_entropy_threshold_hex` | 3.0 | 0 | Shannon entropy threshold for hex secret candidates |
 | `secrets_min_entropy_length` | 16 | 0 | Minimum string length for entropy-based detection |
@@ -823,6 +870,10 @@ Intentionally simple implementations that produce correct output but leave room 
 | `token_estimate_*()` | `len(str) / 4` approximation | tiktoken cl100k_base |
 | `detect_foreign_keys_on_scalar_attrs()` | Returns empty dict | FK detection from value overlap |
 
+### 7.12 Swappable Compression Engine
+
+Phase 4 (class extraction) and Phase 5 (delta compression) were originally hardcoded as direct function calls in the pipeline orchestrator. To enable experimentation with alternative compression algorithms, these phases are now dispatched through a `CompressionEngine` ABC with a registry pattern (`src/decoct/compression/engine.py`). The default `GreedyBundleEngine` wraps the existing `extract_classes()` + `delta_compress()` calls unchanged. New engines can be added by subclassing `CompressionEngine`, implementing `compress()` and `name()`, and registering with `registry.register()`. The engine is selected via `EntityGraphConfig.compression_engine` or the `--compression-engine` CLI flag.
+
 ---
 
 ## 8. Test Architecture
@@ -910,6 +961,8 @@ src/decoct/
     composite_decomp.py   354 lines — Composite decomposition + map-inner decomposition
 
   compression/
+    engine.py                    — CompressionEngine ABC + _EngineRegistry + get_engine()
+    greedy_bundle.py             — GreedyBundleEngine (default: wraps extract_classes + delta_compress)
     class_extractor.py    245 lines — Greedy frequent-bundle class extraction
     delta.py              281 lines — Delta compression + subclass promotion
     normalisation.py      144 lines — Tier C construction
@@ -968,6 +1021,7 @@ tests/
   test_analysis.py                     — Profiling + classification tests
   test_discovery.py                    — Type seeding + refinement tests
   test_composite_decomp.py             — Composite decomposition tests
+  test_compression_engine.py            — Compression engine ABC, registry, GreedyBundleEngine tests
   test_class_extractor.py              — Class extraction tests
   test_delta.py                        — Delta compression tests
   test_normalisation.py                — Normalisation tests
@@ -1105,6 +1159,7 @@ e7a0114 Regenerate hybrid-infra output with map decomposition and Jaccard cluste
 - Statistics CLI with markdown/JSON output
 - QA comprehension harness with 6 question categories
 - Subject projections: deterministic generator + LLM-assisted spec inference (R3 complete), validated E2E on all three corpora — IOS-XR (hand-authored spec), Entra-Intune (3 types), Hybrid-Infra (4 types including 137-param PostgreSQL)
+- Swappable compression engine: `CompressionEngine` ABC + registry pattern for Phase 4+5. Default `GreedyBundleEngine` wraps existing algorithms. Selectable via `EntityGraphConfig.compression_engine` or `--compression-engine` CLI flag
 - Comprehensive test suite (716+ tests)
 
 ### Compression Results
