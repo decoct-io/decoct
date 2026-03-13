@@ -1,0 +1,8 @@
+service_config:
+  _class: ServiceConfig
+export_policy:
+  service_policy:
+    telemetry:
+      interval: 30
+      protocol: grpc
+      encoding: gpb

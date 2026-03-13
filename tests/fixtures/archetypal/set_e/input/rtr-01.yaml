@@ -1,0 +1,6 @@
+config_block:
+  type: static_route
+  prefix: 10.99.0.0/24
+  next_hop: 10.1.0.1
+  ad: 200
+  tag: 100

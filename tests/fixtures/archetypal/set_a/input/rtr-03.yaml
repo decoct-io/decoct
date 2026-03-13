@@ -1,0 +1,27 @@
+base_infra:
+  ntp_primary: 10.100.1.1
+  ntp_secondary: 10.100.1.2
+  ntp_source: Loopback0
+  ntp_auth_enabled: true
+  ntp_auth_key_id: 42
+  ntp_auth_algo: md5
+  log_host: 10.100.2.1
+  log_protocol: tcp
+  log_port: 514
+  log_facility: local6
+  log_severity: informational
+  log_buffer: 1048576
+  aaa_login: RADIUS_AUTH
+  aaa_enable: LOCAL
+  aaa_authz: RADIUS_AUTH
+  aaa_acct: RADIUS_ACCT
+  radius_host_1: 10.100.3.1
+  radius_host_2: 10.100.3.2
+  radius_timeout: 5
+  snmp_community: ARCHETYPAL_RO
+  snmp_location: site-D
+  snmp_contact: noc@archetypal.lab
+snmp_security:
+  snmp_auth_enabled: 1
+  snmp_encrypt: true
+  snmp_version: 3

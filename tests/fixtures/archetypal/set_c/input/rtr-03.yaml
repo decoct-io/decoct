@@ -1,0 +1,14 @@
+monitor_target:
+  polling_interval: 300
+  timeout: 10
+  retries: 3
+  threshold_warn: 75
+  threshold_crit: 95
+  threshold_info: 50
+  escalation_group: tier2
+  suppress_flap: true
+service_policy:
+  streaming:
+    sensor_group: ENVMON
+    destination: 10.0.3.1
+    cadence: 10000

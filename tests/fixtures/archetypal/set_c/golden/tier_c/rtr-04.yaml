@@ -1,0 +1,12 @@
+monitor_target:
+  _class: MonitorTarget
+  threshold_info: 50
+  escalation_group: tier2
+  suppress_flap: true
+  correlation_id: auto
+  dependency_check: true
+service_policy:
+  snmp_polling:
+    community: MONITOR_RO
+    interval: 300
+    target: 10.0.4.1

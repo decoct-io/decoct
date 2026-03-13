@@ -1,0 +1,8 @@
+monitor_target:
+  _class: MonitorTarget
+  threshold_info: 50
+service_policy:
+  sflow:
+    sample_rate: 1024
+    collector: 10.0.1.1
+    port: 6343

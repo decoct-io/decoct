@@ -1,0 +1,20 @@
+positive_sections:
+- bgp_policy
+negative_sections: []
+classes:
+  bgp_policy:
+    class_count: 2
+    class_names:
+    - BgpPolicyCore
+    - BgpPolicyVpn
+    group_1:
+    - rtr-00
+    - rtr-01
+    group_2:
+    - rtr-02
+    - rtr-03
+    raw_hosts:
+    - rtr-04
+    shared_fields_not_merged:
+    - asn
+    - router_id_source

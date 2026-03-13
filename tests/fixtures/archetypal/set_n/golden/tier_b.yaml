@@ -1,0 +1,20 @@
+BgpPolicyCore:
+  asn: 65000
+  router_id_source: loopback0
+  address_family: ipv4-unicast
+  bestpath: as-path-multipath-relax
+  graceful_restart: true
+  graceful_restart_time: 120
+  max_paths_ebgp: 8
+  max_paths_ibgp: 8
+BgpPolicyVpn:
+  asn: 65000
+  router_id_source: loopback0
+  address_family: vpnv4-unicast
+  bestpath: compare-routerid
+  graceful_restart: false
+  max_paths_ebgp: 2
+  confederation_id: 100
+  confederation_peers:
+  - 65001
+  - 65002

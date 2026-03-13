@@ -1,0 +1,5 @@
+config_block:
+  host: 10.100.4.0
+  port: 49
+  key_encrypted: 0F5A3E7C
+  timeout: 10

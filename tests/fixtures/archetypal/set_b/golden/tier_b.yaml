@@ -1,0 +1,12 @@
+QosPolicy:
+  policy_name: CORE-QOS
+  bandwidth_pct: 20
+  priority: true
+  dscp: ef
+  police_rate: 100mbps
+  burst: 50ms
+  queue_limit: 512
+  wred_min: 64
+  wred_max: 256
+  ecn: true
+  shaping_rate: 1gbps

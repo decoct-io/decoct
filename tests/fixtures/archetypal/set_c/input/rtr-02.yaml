@@ -1,0 +1,13 @@
+monitor_target:
+  polling_interval: 300
+  timeout: 10
+  retries: 3
+  threshold_warn: 75
+  threshold_crit: 95
+  threshold_info: 50
+  escalation_group: tier2
+service_policy:
+  netflow:
+    version: 9
+    exporter: 10.0.2.1
+    template_timeout: 600

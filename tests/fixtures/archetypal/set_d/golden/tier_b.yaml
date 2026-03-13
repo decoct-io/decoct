@@ -1,0 +1,12 @@
+LoopbackInterface:
+  interface_type: Loopback
+  description: Router-ID
+  mtu: 1500
+  admin_state: up
+  vrf: default
+  isis_passive: true
+  isis_metric: 10
+  mpls_ldp: true
+  mpls_te: false
+  _identity:
+  - ipv4_address

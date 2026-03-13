@@ -1,0 +1,7 @@
+qos_policy:
+  _class: QosPolicy
+  _remove:
+  - burst
+  - wred_min
+  - wred_max
+  - ecn

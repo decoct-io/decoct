@@ -1,0 +1,240 @@
+positive_sections:
+- system_base
+- access_control
+- alert_targets
+- loopback0
+- change_procedures
+- fabric_interfaces
+- telemetry_stack
+- routing_policy
+- isis_config
+- vrf_routing
+- policy_maps
+- bgp_neighbors
+negative_sections:
+- auth_methods
+- vendor_extensions
+- path_export
+absent_sections:
+  access_control:
+  - rtr-06
+  - rtr-09
+  change_procedures:
+  - rtr-03
+  - rtr-06
+  fabric_interfaces:
+  - rtr-05
+  - rtr-07
+classes:
+  system_base:
+    class_name: SystemBase
+    class_count: 1
+    static_field_count: 16
+    identity_fields:
+    - snmp_location
+    hosts: &id001
+    - rtr-00
+    - rtr-01
+    - rtr-02
+    - rtr-03
+    - rtr-04
+    - rtr-05
+    - rtr-06
+    - rtr-07
+    - rtr-08
+    - rtr-09
+  access_control:
+    class_name: AccessPolicy
+    class_count: 1
+    static_field_count: 14
+    removal_progression:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    hosts:
+    - rtr-00
+    - rtr-01
+    - rtr-02
+    - rtr-03
+    - rtr-04
+    - rtr-05
+    - rtr-07
+    - rtr-08
+  alert_targets:
+    class_name: AlertTarget
+    class_count: 1
+    static_field_count: 5
+    addition_progression:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    hosts: *id001
+  loopback0:
+    class_name: Loopback0Config
+    class_count: 1
+    static_field_count: 10
+    identity_fields:
+    - ipv4_address
+    hosts: *id001
+  change_procedures:
+    class_name: ChangeProcedure
+    class_count: 1
+    hosts_matching:
+    - rtr-00
+    - rtr-01
+    - rtr-02
+    - rtr-04
+    - rtr-07
+    - rtr-08
+    - rtr-09
+    hosts_raw:
+    - rtr-05
+    raw_reason: list_reorder
+    hosts:
+    - rtr-00
+    - rtr-01
+    - rtr-02
+    - rtr-04
+    - rtr-05
+    - rtr-07
+    - rtr-08
+    - rtr-09
+  fabric_interfaces:
+    class_name: FabricInterface
+    class_count: 1
+    static_field_count: 5
+    identity_fields:
+    - name
+    - ipv4_address
+    instance_count_per_host: 4
+    overrides:
+    - host: rtr-02
+      instance: 2
+      field: speed
+      value: 10g
+    removals:
+    - host: rtr-08
+      instance: 3
+      field: isis_metric
+    hosts:
+    - rtr-00
+    - rtr-01
+    - rtr-02
+    - rtr-03
+    - rtr-04
+    - rtr-06
+    - rtr-08
+    - rtr-09
+  telemetry_stack:
+    class_name: TelemetryStack
+    class_count: 1
+    hosts: *id001
+  routing_policy:
+    class_count: 2
+    class_names:
+    - RoutingPolicyCore
+    - RoutingPolicyVpn
+    group_1:
+    - rtr-00
+    - rtr-01
+    - rtr-02
+    - rtr-03
+    group_2:
+    - rtr-04
+    - rtr-05
+    - rtr-07
+    - rtr-08
+    raw_hosts:
+    - rtr-06
+    - rtr-09
+    shared_fields_not_merged:
+    - asn
+    - router_id_source
+    hosts: *id001
+  isis_config:
+    class_name: IsisConfig
+    class_count: 1
+    static_field_count: 12
+    identity_fields:
+    - net_address
+    compound_operations:
+      rtr-02: identity + removal
+      rtr-03: identity + override
+      rtr-06: identity + 2_removals
+    hosts: *id001
+  vrf_routing:
+    class_name: VrfConfig
+    class_count: 1
+    static_field_count: 5
+    identity_fields:
+    - vrf_name
+    - rd_value
+    instance_count_per_host: 3
+    overrides:
+    - host: rtr-03
+      instance: 1
+      field: route_limit
+      value: 5000
+    removals:
+    - host: rtr-04
+      instance: 2
+      field: route_warning_pct
+    hosts: *id001
+  policy_maps:
+    class_name: PolicyMap
+    class_count: 1
+    hosts: *id001
+  bgp_neighbors:
+    class_name: BgpNeighborConfig
+    class_count: 1
+    static_field_count: 10
+    identity_fields:
+    - peer_name
+    - peer_address
+    instance_count_per_host: 3
+    instance_dot_overrides:
+    - host: rtr-01
+      instance: 1
+      path: transport.md5_auth
+      value: false
+    - host: rtr-04
+      instance: 0
+      path: afi.vpnv4
+      value: true
+    instance_dot_removals:
+    - host: rtr-02
+      instance: 2
+      path: timers.connect_retry
+    - host: rtr-08
+      instance: 1
+      path: timers.hold
+    hosts: *id001
+traps:
+  auth_methods:
+    expected_classes: 0
+    reason: type_coercion
+    hosts: *id001
+  vendor_extensions:
+    expected_classes: 0
+    reason: heterogeneous
+    incidental_overlap:
+    - host
+    - port
+    - timeout
+    hosts: *id001
+  path_export:
+    expected_classes: 0
+    reason: same_children_different_parents
+    hosts: *id001

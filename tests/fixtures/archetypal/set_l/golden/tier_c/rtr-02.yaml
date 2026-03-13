@@ -1,0 +1,20 @@
+interfaces:
+  _class: InterfaceConfig
+  instances:
+  - name: GigE0/0/0/0
+    ipv4_address: 10.0.2.1
+  - name: GigE0/0/0/1
+    ipv4_address: 10.0.2.2
+  - name: GigE0/0/0/2
+    ipv4_address: 10.0.2.3
+  - name: GigE0/0/0/3
+    ipv4_address: 10.0.2.4
+  - name: GigE0/0/0/4
+    ipv4_address: 10.0.2.5
+  - name: GigE0/0/0/5
+    ipv4_address: 10.0.2.6
+  - name: GigE0/0/0/6
+    ipv4_address: 10.0.2.7
+    speed: 1g
+  - name: GigE0/0/0/7
+    ipv4_address: 10.0.2.8

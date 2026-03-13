@@ -1,0 +1,15 @@
+loopback_interface:
+  interface_type: Loopback
+  description: Router-ID
+  mtu: 1500
+  admin_state: up
+  vrf: default
+  isis_passive: true
+  isis_metric: 10
+  mpls_ldp: true
+  mpls_te: false
+  ipv4_address: 10.0.0.1
+dns_resolution:
+  dns:
+    server: 10.100.1.1
+    search: archetypal.lab

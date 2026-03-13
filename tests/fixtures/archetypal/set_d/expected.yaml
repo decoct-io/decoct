@@ -1,0 +1,17 @@
+positive_sections:
+- loopback_interface
+negative_sections:
+- dns_resolution
+classes:
+  loopback_interface:
+    class_name: LoopbackInterface
+    class_count: 1
+    static_field_count: 9
+    identity_fields:
+    - ipv4_address
+traps:
+  dns_resolution:
+    expected_classes: 0
+    max_classes: 2
+    reason: structural_nesting
+    note: 0 classes (all raw) or at most 2 (flat pair + nested pair). Never 1.

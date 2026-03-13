@@ -1,0 +1,19 @@
+positive_sections:
+- monitor_target
+negative_sections:
+- service_policy
+classes:
+  monitor_target:
+    class_name: MonitorTarget
+    class_count: 1
+    static_field_count: 5
+    addition_progression:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 5
+traps:
+  service_policy:
+    expected_classes: 0
+    reason: low_jaccard_disguised

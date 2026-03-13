@@ -1,0 +1,13 @@
+maintenance_schedule:
+  approval_required: true
+  steps:
+  - drain_traffic
+  - snapshot_config
+  - backup_database
+  - restart_services
+  - apply_patches
+  - validate_health
+  - run_smoke_tests
+  - restore_traffic
+  - notify_stakeholders
+  - close_ticket

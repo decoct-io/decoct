@@ -1,0 +1,21 @@
+positive_sections:
+- interfaces
+negative_sections: []
+classes:
+  interfaces:
+    class_name: InterfaceConfig
+    class_count: 1
+    static_field_count: 6
+    identity_fields:
+    - name
+    - ipv4_address
+    instance_count_per_host: 8
+    overrides:
+    - host: rtr-02
+      instance: 6
+      field: speed
+      value: 1g
+    removals:
+    - host: rtr-03
+      instance: 7
+      field: mpls_ldp

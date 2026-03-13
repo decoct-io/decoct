@@ -1,0 +1,7 @@
+config_block:
+  acl_name: PROTECT-RE
+  seq: 10
+  action: permit
+  protocol: tcp
+  src: 10.100.0.0/24
+  dst: any

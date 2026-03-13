@@ -1,0 +1,7 @@
+base_infra:
+  _class: BaseInfra
+  snmp_location: site-C
+snmp_security:
+  snmp_auth_enabled: true
+  snmp_encrypt: 'yes'
+  snmp_version: '3'

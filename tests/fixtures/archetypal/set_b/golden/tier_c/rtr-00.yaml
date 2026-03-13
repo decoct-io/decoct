@@ -1,0 +1,2 @@
+qos_policy:
+  _class: QosPolicy

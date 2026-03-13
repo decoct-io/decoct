@@ -1,0 +1,10 @@
+service_config:
+  _class: ServiceConfig
+  _remove:
+  - service_policy.logging
+export_policy:
+  service_policy:
+    streaming:
+      interval: 30
+      protocol: grpc
+      encoding: gpb

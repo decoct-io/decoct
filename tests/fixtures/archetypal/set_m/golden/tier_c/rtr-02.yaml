@@ -1,0 +1,13 @@
+service_config:
+  _class: ServiceConfig
+  'service_policy.interval': 60
+  'service_policy.telemetry.encoding': json
+  'service_policy.telemetry.auth.method': certificate
+  'service_policy.telemetry.auth.ca': /etc/pki/ca.pem
+  'service_policy.telemetry.auth.verify': true
+export_policy:
+  service_policy:
+    netflow:
+      interval: 30
+      protocol: grpc
+      encoding: gpb

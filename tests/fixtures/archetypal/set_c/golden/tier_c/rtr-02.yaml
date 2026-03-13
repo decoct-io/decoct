@@ -1,0 +1,9 @@
+monitor_target:
+  _class: MonitorTarget
+  threshold_info: 50
+  escalation_group: tier2
+service_policy:
+  netflow:
+    version: 9
+    exporter: 10.0.2.1
+    template_timeout: 600

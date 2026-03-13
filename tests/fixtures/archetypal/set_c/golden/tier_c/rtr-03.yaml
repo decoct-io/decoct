@@ -1,0 +1,10 @@
+monitor_target:
+  _class: MonitorTarget
+  threshold_info: 50
+  escalation_group: tier2
+  suppress_flap: true
+service_policy:
+  streaming:
+    sensor_group: ENVMON
+    destination: 10.0.3.1
+    cadence: 10000

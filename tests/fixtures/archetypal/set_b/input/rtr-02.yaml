@@ -1,0 +1,9 @@
+qos_policy:
+  policy_name: CORE-QOS
+  bandwidth_pct: 20
+  priority: true
+  dscp: ef
+  police_rate: 100mbps
+  queue_limit: 512
+  ecn: true
+  shaping_rate: 1gbps

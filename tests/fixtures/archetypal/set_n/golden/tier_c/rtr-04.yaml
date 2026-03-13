@@ -1,0 +1,10 @@
+bgp_policy:
+  asn: 65100
+  router_id_source: loopback1
+  address_family: ipv6-unicast
+  bestpath: as-path-multipath-relax
+  graceful_restart: true
+  graceful_restart_time: 300
+  max_paths_ebgp: 16
+  bfd_enabled: true
+  bfd_interval: 150

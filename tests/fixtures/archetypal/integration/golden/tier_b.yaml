@@ -1,0 +1,169 @@
+SystemBase:
+  ntp_primary: 10.100.1.1
+  ntp_secondary: 10.100.1.2
+  ntp_source: Loopback0
+  ntp_auth_enabled: true
+  ntp_auth_key_id: 42
+  ntp_auth_algo: md5
+  log_host: 10.100.2.1
+  log_protocol: tcp
+  log_port: 514
+  log_facility: local6
+  log_severity: informational
+  log_buffer: 1048576
+  aaa_login: RADIUS_AUTH
+  aaa_enable: LOCAL
+  radius_host_1: 10.100.3.1
+  snmp_community: INTEG_RO
+  _identity:
+  - snmp_location
+AccessPolicy:
+  policy_name: BASELINE-FW
+  default_action: deny
+  log_denied: true
+  rate_limit: 1000pps
+  timeout: 30
+  icmp_allow: true
+  ssh_allow: true
+  snmp_allow: true
+  ntp_allow: true
+  bgp_allow: true
+  ldp_allow: true
+  rsvp_allow: true
+  bfd_allow: true
+  tacacs_allow: true
+AlertTarget:
+  polling_interval: 300
+  timeout: 10
+  retries: 3
+  threshold_warn: 75
+  threshold_crit: 95
+Loopback0Config:
+  interface_type: Loopback
+  description: Router-ID
+  mtu: 1500
+  admin_state: up
+  vrf: default
+  isis_passive: true
+  isis_metric: 10
+  mpls_ldp: true
+  mpls_te: false
+  bfd_enabled: true
+  _identity:
+  - ipv4_address
+ChangeProcedure:
+  approval_required: true
+  max_duration_hours: 4
+  steps:
+  - drain_traffic
+  - snapshot_config
+  - backup_database
+  - health_check_pre
+  - apply_patches
+  - restart_services
+  - validate_routing
+  - run_smoke_tests
+  - restore_traffic
+  - health_check_post
+  - notify_stakeholders
+  - close_ticket
+FabricInterface:
+  mtu: 9216
+  speed: 100g
+  duplex: full
+  admin_state: up
+  isis_metric: 10
+  _identity:
+  - name
+  - ipv4_address
+TelemetryStack:
+  global_interval: 30
+  retry: 3
+  transport:
+    protocol: grpc
+    port: 50051
+    tls:
+      enabled: true
+      cipher: aes-256-gcm
+  collectors:
+  - 10.200.0.1
+  - 10.200.0.2
+  logging:
+    interval: 60
+    facility: local7
+    severity: warning
+RoutingPolicyCore:
+  asn: 65000
+  router_id_source: loopback0
+  address_family: ipv4-unicast
+  bestpath: as-path-multipath-relax
+  graceful_restart: true
+  graceful_restart_time: 120
+  max_paths_ebgp: 8
+  max_paths_ibgp: 8
+  default_originate: false
+RoutingPolicyVpn:
+  asn: 65000
+  router_id_source: loopback0
+  address_family: vpnv4-unicast
+  bestpath: compare-routerid
+  graceful_restart: false
+  max_paths_ebgp: 2
+  confederation_id: 100
+  confederation_peers:
+  - 65001
+  - 65002
+  soo_enabled: true
+IsisConfig:
+  process_id: 1
+  is_type: level-2-only
+  metric_style: wide
+  net_area: '49.0001'
+  auth_type: md5
+  auth_password: ISIS_KEY_1
+  lsp_gen_interval: 5
+  lsp_refresh: 900
+  lsp_lifetime: 1200
+  spf_interval: 10
+  spf_initial_wait: 50
+  max_lsp_lifetime: 65535
+  _identity:
+  - net_address
+VrfConfig:
+  rd_format: type0
+  import_policy: VRF-IMPORT
+  export_policy: VRF-EXPORT
+  route_limit: 10000
+  route_warning_pct: 80
+  _identity:
+  - vrf_name
+  - rd_value
+PolicyMap:
+  policy:
+    name: CORE-RM
+    default_action: deny
+    match:
+      prefix_list: CORE-PREFIXES
+      community: CORE-COMM
+      as_path: CORE-ASPATH
+    set:
+      local_pref: 200
+      med: 100
+      community: 65000:100
+BgpNeighborConfig:
+  remote_as: 65001
+  transport:
+    protocol: tcp
+    port: 179
+    md5_auth: true
+    ttl_security: 1
+  timers:
+    keepalive: 30
+    hold: 90
+    connect_retry: 10
+  afi:
+    ipv4_unicast: true
+    vpnv4: false
+  _identity:
+  - peer_name
+  - peer_address

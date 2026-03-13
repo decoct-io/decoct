@@ -1,0 +1,72 @@
+system_base:
+  _class: SystemBase
+  snmp_location: site-01
+access_control:
+  _class: AccessPolicy
+  _remove:
+  - tacacs_allow
+alert_targets:
+  _class: AlertTarget
+  threshold_info: 50
+loopback0:
+  _class: Loopback0Config
+  ipv4_address: 10.255.0.1
+change_procedures:
+  _class: ChangeProcedure
+fabric_interfaces:
+  _class: FabricInterface
+  instances:
+  - name: HuGigE0/0/0/0
+    ipv4_address: 10.11.0.1
+  - name: HuGigE0/0/0/1
+    ipv4_address: 10.11.1.1
+  - name: HuGigE0/0/0/2
+    ipv4_address: 10.11.2.1
+  - name: HuGigE0/0/0/3
+    ipv4_address: 10.11.3.1
+telemetry_stack:
+  _class: TelemetryStack
+  'global_interval': 60
+routing_policy:
+  _class: RoutingPolicyCore
+isis_config:
+  _class: IsisConfig
+  net_address: 49.0001.0100.0000.0001.00
+vrf_routing:
+  _class: VrfConfig
+  instances:
+  - vrf_name: CUST-A
+    rd_value: 65000:200
+  - vrf_name: CUST-B
+    rd_value: 65000:300
+  - vrf_name: MGMT
+    rd_value: 65000:400
+policy_maps:
+  _class: PolicyMap
+  'policy.match.as_path': EDGE-ASPATH
+bgp_neighbors:
+  _class: BgpNeighborConfig
+  instances:
+  - peer_name: PE-01
+    peer_address: 10.11.1.1
+  - peer_name: PE-02
+    peer_address: 10.11.1.2
+    'transport.md5_auth': false
+  - peer_name: PE-03
+    peer_address: 10.11.1.3
+auth_methods:
+  mfa_enabled: 'true'
+  timeout: 30
+  max_retries: 3
+  method: radius
+vendor_extensions:
+  host: 10.100.10.2
+  port: 49
+  key_enc: A1B2C3D4
+  timeout: 10
+path_export:
+  export_policy:
+    sflow_export:
+      interval: 30
+      protocol: grpc
+      encoding: gpb

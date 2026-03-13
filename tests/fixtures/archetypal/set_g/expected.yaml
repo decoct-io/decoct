@@ -1,0 +1,15 @@
+positive_sections:
+- maintenance_schedule
+negative_sections: []
+classes:
+  maintenance_schedule:
+    class_name: MaintenanceSchedule
+    class_count: 1
+    hosts_matching:
+    - rtr-00
+    - rtr-01
+    - rtr-02
+    - rtr-04
+    hosts_raw:
+    - rtr-03
+    raw_reason: list_reorder

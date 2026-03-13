@@ -1,0 +1,7 @@
+monitor_target:
+  _class: MonitorTarget
+service_policy:
+  telemetry:
+    interval: 30
+    protocol: grpc
+    encoding: gpb

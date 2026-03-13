@@ -1,0 +1,6 @@
+config_block:
+  tunnel_id: 1
+  destination: 10.0.0.99
+  bandwidth: 1g
+  path_type: dynamic
+  timeout: 30

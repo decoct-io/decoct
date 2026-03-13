@@ -1,0 +1,11 @@
+monitor_target:
+  polling_interval: 300
+  timeout: 10
+  retries: 3
+  threshold_warn: 75
+  threshold_crit: 95
+service_policy:
+  telemetry:
+    interval: 30
+    protocol: grpc
+    encoding: gpb

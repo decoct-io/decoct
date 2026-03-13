@@ -1,0 +1,18 @@
+positive_sections:
+- service_config
+negative_sections:
+- export_policy
+classes:
+  service_config:
+    class_name: ServiceConfig
+    class_count: 1
+    dot_notation_operations:
+      rtr-00: none
+      rtr-01: scalar_override + list_replace
+      rtr-02: multi_depth_override + subtree_add
+      rtr-03: subtree_remove
+      rtr-04: scalar_override + list_replace + field_remove
+traps:
+  export_policy:
+    expected_classes: 0
+    reason: same_children_different_parents

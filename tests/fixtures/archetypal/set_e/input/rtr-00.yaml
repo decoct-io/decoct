@@ -1,0 +1,7 @@
+config_block:
+  protocol: bgp
+  neighbor: 10.1.0.0
+  remote_as: 65100
+  family: ipv4-unicast
+  graceful_restart: true
+  timeout: 30

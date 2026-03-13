@@ -1,0 +1,10 @@
+InterfaceConfig:
+  mtu: 9000
+  speed: 10g
+  duplex: full
+  admin_state: up
+  isis_metric: 10
+  mpls_ldp: true
+  _identity:
+  - name
+  - ipv4_address

@@ -1,0 +1,17 @@
+positive_sections:
+- base_infra
+negative_sections:
+- snmp_security
+classes:
+  base_infra:
+    class_name: BaseInfra
+    class_count: 1
+    static_field_count: 21
+    identity_fields:
+    - snmp_location
+    override_fields:
+    - snmp_location
+traps:
+  snmp_security:
+    expected_classes: 0
+    reason: type_coercion

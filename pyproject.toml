@@ -71,6 +71,13 @@ select = ["E", "F", "I", "N", "W", "UP"]
 "src/decoct/core/hashing.py" = ["N802"]
 # Spec-mandated H_norm parameter name (§3.4)
 "src/decoct/analysis/tier_classifier.py" = ["N803"]
+# Scripts use sys.path.insert before imports
+"scripts/*.py" = ["E402", "I001"]
+# Archetypal fixtures use conftest-injected helpers module
+"tests/fixtures/archetypal/*.py" = ["I001"]
+"tests/fixtures/archetypal/integration/*.py" = ["I001"]
+# Generator scripts provided as-is
+"tests/fixtures/archetypal/integration/generate_integration.py" = ["E501", "F401", "F841"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

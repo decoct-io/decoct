@@ -1,0 +1,21 @@
+service_config:
+  service_policy:
+    interval: 30
+    retry: 3
+    telemetry:
+      interval: 30
+      protocol: grpc
+      encoding: gpb
+      collectors:
+      - 10.0.0.1
+      - 10.0.0.2
+    logging:
+      interval: 60
+      facility: local6
+      severity: informational
+export_policy:
+  service_policy:
+    telemetry:
+      interval: 30
+      protocol: grpc
+      encoding: gpb

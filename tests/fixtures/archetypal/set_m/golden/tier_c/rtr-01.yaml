@@ -1,0 +1,13 @@
+service_config:
+  _class: ServiceConfig
+  'service_policy.interval': 60
+  'service_policy.telemetry.collectors':
+  - 10.0.0.3
+  - 10.0.0.4
+  - 10.0.0.5
+export_policy:
+  service_policy:
+    sflow:
+      interval: 30
+      protocol: grpc
+      encoding: gpb

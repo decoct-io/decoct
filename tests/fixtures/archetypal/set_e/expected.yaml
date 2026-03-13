@@ -1,0 +1,11 @@
+positive_sections: []
+negative_sections:
+- config_block
+classes: {}
+traps:
+  config_block:
+    expected_classes: 0
+    reason: heterogeneous
+    incidental_overlap:
+    - timeout
+    - protocol
