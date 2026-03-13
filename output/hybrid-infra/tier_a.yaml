@@ -5,102 +5,270 @@ types:
     subclasses: 0
     tier_b_ref: ansible-inventory_classes.yaml
     tier_c_ref: ansible-inventory_instances.yaml
+    summary: Ansible inventory files (3 instances) define hosts, groups, and 
+      host-level variables for Ansible automation. All instances share a single 
+      base class with a common deploy user.
+    key_differentiators:
+    - Contains host and group definitions with group-level variables, unlike 
+      playbooks which contain executable tasks.
+    - 'All instances share the same `ansible_user: deploy`, with per-entity differences
+      only in host lists and group structures.'
   ansible-playbook:
     count: 16
     classes: 2
     subclasses: 0
     tier_b_ref: ansible-playbook_classes.yaml
     tier_c_ref: ansible-playbook_instances.yaml
+    summary: Ansible playbooks (16 instances, 2 classes) automate infrastructure
+      provisioning and application deployment, defining ordered task lists with 
+      handlers for the ridgeline platform.
+    key_differentiators:
+    - The largest Ansible type, with two distinct classes separating simpler 
+      playbooks from those with explicit `gather_facts` and `any_errors_fatal` 
+      settings.
+    - Contains composite templates for reusable task sequences (apt install, 
+      file copy, template deploy, systemd enable, health check) and handlers 
+      (service restart).
+    - Uses Ansible builtin modules (apt, copy, template, file, systemd, 
+      wait_for, uri, pip) for end-to-end service deployment workflows.
   ansible-vars:
     count: 3
     classes: 1
     subclasses: 0
     tier_b_ref: ansible-vars_classes.yaml
     tier_c_ref: ansible-vars_instances.yaml
+    summary: Ansible variable files (3 instances) store sensitive and 
+      environment-specific key-value pairs consumed by playbooks, including 
+      redacted API keys and database passwords.
+    key_differentiators:
+    - Purely declarative variable storage with no executable logic or host 
+      definitions.
+    - Contains sensitive values (api_key, db_password) that are redacted, 
+      distinguishing it from other config types.
   app-config-json:
     count: 3
     classes: 1
     subclasses: 0
     tier_b_ref: app-config-json_classes.yaml
     tier_c_ref: app-config-json_instances.yaml
+    summary: JSON application configuration files (3 instances) define runtime 
+      settings for applications including authentication, CORS, logging, rate 
+      limiting, and Redis connection parameters.
+    key_differentiators:
+    - Configures application-layer concerns (CORS policies, rate limiting, Redis
+      pool settings) rather than OS or infrastructure settings.
+    - All instances share identical base attributes, differing only in 
+      per-entity values like Redis host, log level, and CORS allowed origins.
+    - Uses JSON format, in contrast to yaml-app-config which covers similar 
+      concerns in YAML.
   cloud-init:
     count: 6
     classes: 2
     subclasses: 1
     tier_b_ref: cloud-init_classes.yaml
     tier_c_ref: cloud-init_instances.yaml
+    summary: Cloud-init configurations (6 instances, 2 classes, 1 subclass) 
+      define first-boot provisioning for cloud VMs, covering SSH keys, NTP, 
+      package management, and timezone settings.
+    key_differentiators:
+    - The only type focused on initial VM provisioning at boot time, before 
+      configuration management tools take over.
+    - 'Two-tier class hierarchy: base instances use default NTP, while the majority
+      specify explicit NTP servers, timezone, and package update policies.'
+    - Manages cloud-specific concerns like growpart, ec2 metadata, and 
+      preserve_hostname that no other type addresses.
   docker-compose:
     count: 16
     classes: 2
     subclasses: 0
     tier_b_ref: docker-compose_classes.yaml
     tier_c_ref: docker-compose_instances.yaml
+    summary: Docker Compose files (16 instances, 2 classes) define 
+      multi-container application stacks with services, networks, and optionally
+      named volumes.
+    key_differentiators:
+    - Tied with ansible-playbook as the most populous type (16 instances), 
+      reflecting heavy containerized deployment.
+    - Uses composite templates for services (image, healthcheck, deploy 
+      strategy, resource limits), networks (bridge driver), and volumes.
+    - Two classes distinguish stacks with named volumes from those without, with
+      10 base-only and 6 volume-enabled instances.
   docker-daemon:
     count: 3
     classes: 1
     subclasses: 0
     tier_b_ref: docker-daemon_classes.yaml
     tier_c_ref: docker-daemon_instances.yaml
+    summary: Docker daemon configuration files (3 instances) control the Docker 
+      engine itself, specifying storage driver, logging, and network forwarding 
+      behavior.
+    key_differentiators:
+    - Configures the container runtime engine rather than container 
+      applications, complementing docker-compose.
+    - All instances share identical settings (overlay2 storage, json-file 
+      logging, ip-forward and iptables enabled), with per-entity differences in 
+      log options and DNS.
   mariadb:
     count: 5
     classes: 2
     subclasses: 1
     tier_b_ref: mariadb_classes.yaml
     tier_c_ref: mariadb_instances.yaml
+    summary: MariaDB server configurations (5 instances, 2 classes, 1 subclass) 
+      tune database performance with extensive InnoDB, buffer, and replication 
+      settings under the mysqld section.
+    key_differentiators:
+    - Contains the most extensive base class attribute set of any type, with 50+
+      mysqld parameters covering InnoDB, binlog, and connection tuning.
+    - Two-tier class hierarchy separates a minimal base instance from those with
+      explicit InnoDB flush/log/dirty-page settings and further subclass 
+      refinements for change buffering and heap table sizes.
+    - Shares the relational database domain with postgresql but uses entirely 
+      different parameter names and MariaDB-specific InnoDB settings.
   package-json:
     count: 4
     classes: 1
     subclasses: 0
     tier_b_ref: package-json_classes.yaml
     tier_c_ref: package-json_instances.yaml
+    summary: Node.js package.json files (4 instances) define project metadata 
+      for JavaScript/TypeScript applications, sharing common license and 
+      visibility settings.
+    key_differentiators:
+    - The only type representing software project metadata rather than runtime 
+      or infrastructure configuration.
+    - 'All instances share `license: UNLICENSED` and `private: true`, with per-entity
+      differences in package name, version, dependencies, and scripts.'
   postgresql:
     count: 6
     classes: 2
     subclasses: 1
     tier_b_ref: postgresql_classes.yaml
     tier_c_ref: postgresql_instances.yaml
+    summary: PostgreSQL server configurations (6 instances, 2 classes, 1 
+      subclass) provide comprehensive database tuning with 130+ parameters 
+      spanning autovacuum, WAL, checkpointing, and query planning.
+    key_differentiators:
+    - Has the largest base class in the entire corpus with 130+ shared 
+      parameters, reflecting PostgreSQL's extensive configuration surface.
+    - Class hierarchy adds parallel worker settings, checkpoint timeout, and 
+      statistics target for production-tuned instances.
+    - Covers WAL management, replication, and cost-based optimizer tuning that 
+      are PostgreSQL-specific and absent from the mariadb type.
   prometheus:
     count: 3
     classes: 1
     subclasses: 0
     tier_b_ref: prometheus_classes.yaml
     tier_c_ref: prometheus_instances.yaml
+    summary: Prometheus monitoring configurations (3 instances) define global 
+      scrape settings, target limits, and label handling for the metrics 
+      collection system.
+    key_differentiators:
+    - The only monitoring/observability system configuration type in the corpus.
+    - All instances share identical global scrape settings, differing only in 
+      per-entity scrape targets, intervals, and evaluation intervals.
+    - Focuses on metric collection parameters (scrape_timeout, sample_limit, 
+      label constraints) rather than alerting rules.
   sshd:
     count: 4
     classes: 2
     subclasses: 0
     tier_b_ref: sshd_classes.yaml
     tier_c_ref: sshd_instances.yaml
+    summary: SSH daemon configurations (4 instances, 2 classes) harden and tune 
+      the OpenSSH server, controlling authentication methods, port settings, and
+      session behavior.
+    key_differentiators:
+    - The only type governing remote access security, with hardened defaults 
+      like PubkeyAuthentication enabled and PermitEmptyPasswords disabled.
+    - Two classes separate minimal base-only instances from those with explicit 
+      AddressFamily, ClientAliveCountMax, and Port settings.
+    - Uses PascalCase attribute names (OpenSSH convention), unlike the 
+      snake_case or dotted-path conventions in other types.
   sysctl:
     count: 6
     classes: 2
     subclasses: 0
     tier_b_ref: sysctl_classes.yaml
     tier_c_ref: sysctl_instances.yaml
+    summary: Linux kernel parameter configurations (6 instances, 2 classes) tune
+      networking and memory management via sysctl settings applied at runtime.
+    key_differentiators:
+    - Operates at the lowest level in the stack, modifying kernel parameters 
+      directly rather than application or service configuration.
+    - Two classes separate networking-only instances (tcp_syncookies) from those
+      also tuning VM dirty page ratios and memory overcommit.
+    - Uses dot-separated kernel parameter paths (net.ipv4.*, vm.*) that map 
+      directly to /proc/sys entries.
   systemd-unit:
     count: 10
     classes: 2
     subclasses: 1
     tier_b_ref: systemd-unit_classes.yaml
     tier_c_ref: systemd-unit_instances.yaml
+    summary: Systemd unit files (10 instances, 2 classes, 1 subclass) define 
+      service lifecycle management including startup ordering, resource limits, 
+      and environment variables for the ridgeline platform services.
+    key_differentiators:
+    - Controls process lifecycle at the OS init-system level, complementing 
+      docker-compose for non-containerized services.
+    - Class hierarchy progresses from minimal units to those with 
+      multi-user.target installation, environment variables, and file descriptor
+      limits, then to a subclass with dedicated user/group and process limits.
+    - Contains redacted environment variables, indicating sensitive runtime 
+      configuration passed to services.
   tfvars:
     count: 5
     classes: 2
     subclasses: 0
     tier_b_ref: tfvars_classes.yaml
     tier_c_ref: tfvars_instances.yaml
+    summary: Terraform variable files (5 instances, 2 classes) supply input 
+      values for infrastructure-as-code deployments, including compute sizing, 
+      feature flags, and tagging conventions.
+    key_differentiators:
+    - The only IaC provisioning type, defining infrastructure parameters 
+      consumed by Terraform/OpenTofu rather than configuring running systems.
+    - 'All instances share project tagging (managed_by: opentofu, project: ridgeline,
+      team: platform) and redacted secrets.'
+    - Two classes distinguish base deployments from those specifying edge 
+      compute instance types and monitoring enablement.
   traefik:
     count: 4
     classes: 2
     subclasses: 0
     tier_b_ref: traefik_classes.yaml
     tier_c_ref: traefik_instances.yaml
+    summary: Traefik reverse proxy configurations (4 instances, 2 classes) 
+      define ingress routing, access logging, Docker provider integration, TLS 
+      settings, and optional Prometheus metrics export.
+    key_differentiators:
+    - The only ingress/reverse-proxy type, handling HTTP routing, TLS 
+      termination, and load balancing at the edge of the application stack.
+    - Integrates with Docker via the providers.docker settings, automatically 
+      discovering services from the Docker socket.
+    - The non-base class adds Prometheus metrics export configuration, linking 
+      traefik to the prometheus monitoring type.
+    - Includes detailed server transport timeout and connection pooling settings
+      absent from other types.
   yaml-app-config:
     count: 3
     classes: 1
     subclasses: 0
     tier_b_ref: yaml-app-config_classes.yaml
     tier_c_ref: yaml-app-config_instances.yaml
+    summary: YAML application configuration files (3 instances) define runtime 
+      settings for the ridgeline-platform application, covering logging, 
+      environment mode, and file rotation policies.
+    key_differentiators:
+    - Shares the application configuration domain with app-config-json but uses 
+      YAML format and different attribute structures.
+    - Explicitly names the application (ridgeline-platform) and configures 
+      structured file-based logging with rotation (compress, max_backups, 
+      max_size).
+    - All instances share identical base attributes, differing only in 
+      per-entity values like log level and server port.
 assertions:
   ansible-inventory:
     base_only_ratio: 1.0
@@ -154,3 +322,267 @@ assertions:
     base_only_ratio: 1.0
     max_inheritance_depth: 2
 topology: {}
+guide:
+  corpus_description: This infrastructure corpus contains 100 entities across 17
+    distinct types, representing a hybrid infrastructure stack for the 
+    "ridgeline" platform. It spans configuration management (Ansible), 
+    containerization (Docker Compose, Docker daemon), databases (PostgreSQL, 
+    MariaDB), reverse proxying (Traefik), monitoring (Prometheus), OS-level 
+    tuning (sysctl, sshd, systemd, cloud-init), IaC variables (Terraform 
+    tfvars), and application configuration (JSON and YAML app configs, 
+    package.json).
+  how_to_use:
+  - Start with this Tier A file for a high-level orientation of all 17 entity 
+    types, their instance counts, and class/subclass structure.
+  - For detailed class definitions, shared attributes, and inheritance 
+    hierarchies for each type, consult the Tier B files referenced by 
+    `tier_b_ref` (e.g., `docker-compose_classes.yaml`).
+  - To find per-entity differences and unique attribute values for individual 
+    instances, refer to the Tier C files referenced by `tier_c_ref` (e.g., 
+    `docker-compose_instances.yaml`).
+  - A `base_only_ratio` of 1.0 in the assertions means all instances of that 
+    type share identical attributes; lower ratios indicate more variation 
+    captured by additional classes and subclasses.
+  - Types with `composite_templates` in Tier B (ansible-playbook, 
+    docker-compose) contain structured sub-objects (tasks, handlers, services, 
+    networks, volumes) that are templated separately from flat attributes.
+  reconstruction: 'To reconstruct any entity: start with base_class attributes from
+    Tier B, overlay class own_attrs, then overlay subclass own_attrs (if assigned),
+    then apply Tier C instance-specific overrides and instance_attrs.'
+projections:
+  ansible-inventory:
+  - children-groups
+  - global-vars
+  - host-groups
+  - identity
+  - network-services
+  ansible-playbook:
+  - apt-package-management
+  - become-settings
+  - error-handling
+  - file-copy-management
+  - file-management
+  - file-operations
+  - handler-definitions
+  - handlers
+  - health-checks-and-waits
+  - package-management
+  - play-metadata
+  - playbook-basics
+  - playbook-identity
+  - service-health-checks
+  - service-management
+  - systemd-service-management
+  - task-execution-details
+  - tasks
+  - template-deployment
+  - variable-management
+  ansible-vars:
+  - application-environment
+  - credentials
+  - environment-identity
+  - grafana-access
+  - secrets-and-keys
+  app-config-json:
+  - application-identity
+  - authentication-settings
+  - authentication
+  - cors-and-rate-limiting
+  - cors-configuration
+  - database-connection
+  - database
+  - feature-flags
+  - features
+  - logging-and-environment
+  - logging-setup
+  - rate-limiting-parameters
+  - redis-connection
+  - redis
+  cloud-init:
+  - ca-certificates-resolution
+  - disk-and-storage
+  - file-and-host-management
+  - hostname-and-networking
+  - ntp-and-time
+  - ntp-configuration
+  - package-management
+  - packages-and-updates
+  - power-and-ca
+  - runcmd-and-write-files
+  - runtime-commands-and-metadata
+  - ssh-security
+  - ssh
+  - system-identity
+  - system-power-and-disk-settings
+  - user-management
+  docker-compose:
+  - compose-networks-config
+  - compose-volumes-external
+  - deployment
+  - healthchecks
+  - logging
+  - network-configuration
+  - networking
+  - service-configuration
+  - service-deployment-strategy
+  - service-healthchecks
+  - service-identity
+  - service-logging
+  - service-network-ports
+  - service-permissions-volumes
+  - service-resource-allocation
+  - services
+  - volume-configuration
+  - volumes
+  docker-daemon:
+  - daemon-identity-and-debug
+  - daemon-logging-config
+  - daemon-metrics-and-limits
+  - daemon-network-settings
+  - daemon-security-features
+  - logging
+  - networking
+  - resource-limits
+  - storage-and-runtime
+  mariadb:
+  - binary-logging-and-replication
+  - character-and-collation-settings
+  - character-set-and-security
+  - connection-and-buffer-management
+  - connections-and-timeouts
+  - database-identity-and-logging
+  - general-system-settings
+  - innodb-core-configuration
+  - innodb
+  - logging-and-monitoring
+  - memory-and-buffers
+  - query-optimizer-and-tables
+  - replication
+  - table-cache-and-io
+  package-json:
+  - dependencies
+  - dev-dependencies
+  - engines
+  - package-dependencies
+  - package-dev-dependencies
+  - package-engines
+  - package-entrypoints
+  - package-identity
+  - package-scripts
+  - scripts
+  postgresql:
+  - advanced-query-optimization
+  - autovacuum-settings
+  - background-writer-and-checkpoints
+  - checkpoint-tuning
+  - connection-security-and-system
+  - connections-and-authentication
+  - identity-and-connection
+  - logging-and-monitoring
+  - logging-configuration
+  - memory-and-buffers
+  - memory-and-io-buffers
+  - networking-and-tcp
+  - performance-tuning-costs
+  - query-planner-and-parallelism
+  - query-planning-and-optimization
+  - security-and-authentication
+  - storage-and-io
+  - system-resource-limits
+  - vacuum-and-maintenance
+  - vacuum-cost-management
+  - wal-and-replication
+  - wal-replication-and-recovery
+  prometheus:
+  - alerting-configuration
+  - alerting
+  - global-scheduling
+  - global-settings
+  - remote-write-settings
+  - remote-write
+  - rule-files
+  - rules
+  - scrape-configs
+  - scrape-job-configs
+  sshd:
+  - authentication
+  - connection-parameters
+  - forwarding-and-tunneling
+  - general-settings
+  - logging
+  - security-and-hardening
+  - session-and-connection
+  - ssh-access-control-and-logging
+  - ssh-authentication-methods
+  - ssh-connection-settings
+  - ssh-forwarding-and-tunneling
+  - ssh-general-configuration
+  sysctl:
+  - fs-limits
+  - kernel-and-filesystem
+  - kernel-limits
+  - network-backlog
+  - network-core
+  - network-tcp
+  - tcp-connection-management
+  - tcp-memory-tuning
+  - virtual-memory
+  - vm-memory-management
+  systemd-unit:
+  - install-settings
+  - resource-limits
+  - restart-and-lifecycle
+  - service-execution
+  - service-resource-limits
+  - service-restart-policy
+  - service-runtime
+  - timer-settings
+  - timers
+  - unit-identity
+  - unit-metadata
+  tfvars:
+  - compute-resources
+  - compute
+  - environment-and-tags
+  - feature-flags
+  - features-and-backups
+  - identity-and-workspace
+  - networking-details
+  - networking
+  - secrets-and-sensitive-data
+  - secrets
+  traefik:
+  - access-logging
+  - api-and-dashboard
+  - api-config
+  - entrypoints-config
+  - entrypoints
+  - general-logging
+  - global-settings
+  - http-routing-config
+  - logging-and-access-log
+  - metrics-and-health
+  - metrics-prometheus-config
+  - providers-docker-config
+  - providers-file-config
+  - providers
+  - routing-and-middleware
+  - server-transport-security
+  - tls-and-transport
+  - tls-options
+  yaml-app-config:
+  - app-identity
+  - application-identity
+  - cache-settings
+  - caching
+  - cors-and-rate-limiting
+  - cors-policy
+  - database-connection
+  - database
+  - feature-flags
+  - features
+  - logging-configuration
+  - logging
+  - rate-limiting
+  - service-declarations
+  - service-mesh

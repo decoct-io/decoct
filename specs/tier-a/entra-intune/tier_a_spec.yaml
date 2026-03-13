@@ -1,251 +1,142 @@
 version: 1
 generated_by: decoct-infer
-corpus_description: This infrastructure corpus contains 96 entities across 24 
-  distinct types, primarily focusing on Entra (Azure AD) and Intune 
-  configurations. It includes various Entra application registrations, 
-  conditional access policies, groups, cross-tenant synchronization settings, 
-  named locations, and Intune app protection, compliance, and device 
-  configuration policies.
+corpus_description: 'This infrastructure corpus contains 88 Microsoft Entra ID and
+  Intune configuration entities across 8 distinct types: 12 application registrations,
+  20 conditional access policies, 3 cross-tenant access settings, 25 groups, 6 named
+  locations, 4 app protection policies, 10 compliance policies, and 8 device configuration
+  profiles.'
 how_to_use:
-- Start with this Tier A orientation guide for an overview of all entity types, 
-  their counts, and high-level summaries.
-- For detailed class definitions and attributes shared across multiple entities,
-  refer to the `tier_b_ref` YAML file specified for each entity type (e.g., 
-  `entra-application_classes.yaml`).
-- To inspect the unique attributes and specific deviations for individual 
-  entities, consult the `tier_c_ref` YAML file (e.g., 
-  `entra-application_instances.yaml`).
-- Differentiators highlight common variations or unique characteristics of 
-  instances within each type, often informing how class hierarchies are 
-  structured in Tier B.
-- Note that types with numerical suffixes (e.g., `entra-application_1`) 
-  represent specialized or unique configurations that didn't fit into broader, 
-  more generalized types.
+- Start with this Tier A orientation guide for a high-level overview of all 8 
+  entity types, their instance counts, class hierarchies, and summaries.
+- For detailed class definitions and shared attributes, consult the Tier B file 
+  referenced by each type's `tier_b_ref` field (e.g., 
+  `entra-conditional-access_classes.yaml`). Classes show attributes common to 
+  groups of entities; subclasses refine these with additional shared attributes.
+- To inspect per-entity differences and unique attribute values, refer to the 
+  Tier C file referenced by each type's `tier_c_ref` field (e.g., 
+  `entra-conditional-access_instances.yaml`).
+- The `base_only_ratio` in Tier A assertions indicates the fraction of instances
+  that only inherit the base class without belonging to a more specific class. A
+  ratio of 1.0 means all instances share only the base class attributes, with 
+  all variation captured at the instance level in Tier C.
+- Types with `composite_templates` in Tier B (such as `intune-compliance` and 
+  `intune-device-config`) contain structured sub-objects (e.g., assignment 
+  targets) that have been decomposed into reusable templates with per-entity 
+  deltas.
 type_descriptions:
   entra-application:
-    summary: Represents general Azure AD application registrations with minimal 
-      common attributes.
+    summary: Azure AD application registrations sharing common OAuth and 
+      publisher settings. 75% of instances belong to a class configured for 
+      single-tenant organizational use.
     key_differentiators:
-    - These applications lack specific `appId`, `displayName`, `redirectUris`, 
-      or `requiredResourceAccess` configurations in their base class.
-    - They share generic settings like `requestedAccessTokenVersion`, 
-      `isDeviceOnlyAuthSupported`, and `publisherDomain`.
-  entra-application_1:
-    summary: Describes a specific Azure AD application, 
-      "App-B2C-Customer-Portal", designed for B2C customer interaction.
-    key_differentiators:
-    - Includes detailed B2C-specific optional claims and redirect URIs for SPA 
-      and web authentication.
-    - Explicitly sets `signInAudience` to `AzureADandPersonalMicrosoftAccount`.
-    - Features a unique `appId` and `displayName` for clear identification.
-  entra-application_2:
-    summary: Represents Azure AD applications tailored for internal 
-      organizational use.
-    key_differentiators:
-    - 'All instances are configured with `signInAudience: AzureADMyOrg`, indicating
-      they are for single-tenant or internal use.'
-    - Lacks specific `appId` or redirect URI details in its base class beyond 
-      shared general settings.
-  entra-application_3:
-    summary: Represents a specific legacy Windows application registered in 
-      Azure AD, "App-Legacy-WinApp".
-    key_differentiators:
-    - This application supports device-only and fallback public client 
-      authentication.
-    - Features a key credential (X.509 certificate) for authentication, which is
-      characteristic of legacy applications.
-    - Configured for `AzureADMyOrg` sign-in audience and a specific `appId` and 
-      `displayName`.
-  entra-application_4:
-    summary: Encompasses Azure AD applications for internal use, with some 
-      having defined resource access.
-    key_differentiators:
-    - All instances are configured for `AzureADMyOrg` sign-in audience.
-    - A significant portion of these applications (4 out of 6) explicitly define
-      `requiredResourceAccess` to other resources, distinguishing them from the 
-      base class.
-    - The base class itself does not include `isFallbackPublicClient` to be 
-      true.
+    - All instances share token version 2, the contoso.com publisher domain, and
+      disabled implicit grant flows, forming a consistent application baseline.
+    - The dominant class (9 of 12 instances) adds 
+      isDeviceOnlyAuthSupported=false and signInAudience=AzureADMyOrg, 
+      indicating internal single-tenant applications.
+    - Unlike conditional access or compliance types, application entities carry 
+      no policy enforcement attributes; they define identity and authentication 
+      surface area.
   entra-conditional-access:
-    summary: Represents general Conditional Access policies that enforce session
-      controls and an enabled state.
+    summary: Conditional Access policies governing authentication requirements 
+      across the tenant, with class hierarchies for MFA enforcement and legacy 
+      authentication blocking.
     key_differentiators:
-    - "The base class ensures `sessionControls.disableResilienceDefaults: 'false'`
-      and `state: enabled`."
-    - A common variation includes all users in the policy and specifies an `OR` 
-      operator for grant controls.
-  entra-conditional-access_1:
-    summary: Defines a Conditional Access policy ("CA-Block-Legacy-Auth-Global")
-      aimed at blocking legacy authentication globally.
-    key_differentiators:
-    - Targets all applications and all users, excluding a specific IT Admins 
-      group.
-    - Explicitly blocks older client app types like `exchangeActiveSync` and 
-      `other`.
-    - Uses `block` as a built-in control, indicating a strong restrictive 
-      policy.
-  entra-conditional-access_10:
-    summary: Specifies a Conditional Access policy ("CA-SignIn-Risk-Medium-MFA")
-      that requires MFA for medium or low sign-in risks.
-    key_differentiators:
-    - Targets all applications and users from browser and mobile/desktop 
-      clients.
-    - 'This policy specifically activates based on `signInRiskLevels: medium, low`.'
-    - Requires `mfa` (multi-factor authentication) as a grant control.
-  entra-conditional-access_11:
-    summary: Represents general Conditional Access policies applied to browser 
-      and mobile/desktop client apps for all users.
-    key_differentiators:
-    - All instances include all applications and users, specifically targeting 
-      `browser` and `mobileAppsAndDesktopClients`.
-    - The base class does not define specific grant controls, allowing for 
-      variations in enforcement.
-  entra-conditional-access_2:
-    summary: Describes Conditional Access policies that primarily target browser
-      and mobile/desktop clients for all users.
-    key_differentiators:
-    - These policies are broadly applied to `browser` and 
-      `mobileAppsAndDesktopClients` without specifying application inclusions 
-      initially.
-    - The base class does not define specific `grantControls`, suggesting these 
-      policies might have varied enforcement actions in Tier C.
-  entra-conditional-access_3:
-    summary: Defines a Conditional Access policy 
-      ("CA-Compliant-Device-Internal") requiring compliant devices for specific 
-      user groups.
-    key_differentiators:
-    - Targets specific groups (`SG-Engineering`, `SG-Finance-Users`) and 
-      excludes particular applications.
-    - Enforces `compliantDevice` as a grant control, critical for internal 
-      device security.
-    - Applies to `windows` platforms and browser/mobile app clients.
-  entra-conditional-access_4:
-    summary: Characterizes a disabled draft Conditional Access policy 
-      ("CA-Disabled-Draft-TestPolicy") intended for testing MFA and persistent 
-      browser settings.
-    key_differentiators:
-    - 'The policy is explicitly `state: disabled`, indicating it is not active.'
-    - Includes `persistentBrowser` settings that force the browser to never 
-      persist sessions.
-    - Requires `mfa` as a grant control, but it's not enforced due to the 
-      disabled state.
-  entra-conditional-access_5:
-    summary: Describes Conditional Access policies applicable to all 
-      applications and users across various client types.
-    key_differentiators:
-    - Similar to `entra-conditional-access_11`, it targets all applications and 
-      users.
-    - Explicitly includes `browser` and `mobileAppsAndDesktopClients` in its 
-      conditions.
-    - The base class itself does not specify a specific 
-      `grantControls.builtInControls`, allowing for diverse policy outcomes in 
-      instances.
-  entra-conditional-access_6:
-    summary: Represents a Conditional Access policy 
-      ("CA-Location-Require-MFA-External") that enforces MFA for users accessing
-      from external locations.
-    key_differentiators:
-    - Conditions target `AllTrusted` locations, effectively addressing external 
-      access.
-    - Enforces MFA and specific sign-in frequency requirements (4 hours), 
-      indicating a heightened security posture.
-    - Applies to all applications and users via browser and mobile/desktop 
-      clients.
-  entra-conditional-access_7:
-    summary: Defines a Conditional Access policy ("CA-MFA-Global-Admins") that 
-      mandates MFA for IT Admin groups.
-    key_differentiators:
-    - Targets a specific user group (`SG-IT-Admins`), highlighting 
-      administrative access control.
-    - Requires `mfa` as a grant control, a standard practice for privileged 
-      accounts.
-    - Includes metadata like `clientSecret` and `policyVersion`, likely for 
-      programmatic management.
-  entra-conditional-access_8:
-    summary: Characterizes a Conditional Access policy 
-      ("CA-Report-Only-AllUsers-MFA") in report-only mode, testing MFA and 
-      persistent sessions for all users.
-    key_differentiators:
-    - "This policy is in `state: enabledForReportingButNotEnforced`, indicating it's
-      for monitoring without active enforcement."
-    - Features `persistentBrowser` settings for "always" persistent sessions and
-      a sign-in frequency of 8 hours.
-    - Requires `mfa` as a grant control, but only for reporting purposes.
-  entra-conditional-access_9:
-    summary: Describes a Conditional Access policy ("CA-SignIn-Risk-High-Block")
-      designed to block access for high sign-in risks, excluding IT Admins.
-    key_differentiators:
-    - Blocks access for `high` `signInRiskLevels`.
-    - Excludes `SG-IT-Admins` from the policy, providing an exception for 
-      privileged users.
-    - Sets `sessionControls.disableResilienceDefaults` to `true`, potentially 
-      affecting policy stability during outages.
+    - The largest policy type in the corpus (20 instances) with the most complex
+      class hierarchy (3 classes, 2 subclasses) and the lowest base_only_ratio 
+      (0.1), indicating highly structured policy patterns.
+    - One major class (11 instances) targets all applications via browser and 
+      mobile/desktop clients, with a subclass (6 instances) enforcing MFA as an 
+      enabled policy.
+    - A second class (7 instances) targets all users with an OR grant operator, 
+      with a subclass (4 instances) blocking legacy authentication protocols 
+      (exchangeActiveSync, other).
+    - The only type where `sessionControls.disableResilienceDefaults` appears as
+      a shared class-level attribute, reflecting tenant-wide session resilience 
+      configuration.
   entra-cross-tenant:
-    summary: Defines baseline cross-tenant access settings, permitting B2B 
-      collaboration and direct connect for all applications and users.
+    summary: Cross-tenant access policies defining B2B collaboration and direct 
+      connect settings. All 3 instances share identical base attributes with no 
+      class differentiation.
     key_differentiators:
-    - All instances have explicitly `allowed` `b2bCollaborationInbound` and 
-      `Outbound` for all applications and users by default.
-    - "All instances specify `isServiceProvider: 'false'`, indicating they are not
-      acting as service providers."
-    - Does not include `b2bDirectConnect` access type by default in its base 
-      class.
+    - The most homogeneous type in the corpus (base_only_ratio 1.0) with 
+      extensive shared configuration covering inbound/outbound B2B collaboration
+      and direct connect for all applications and users.
+    - All instances explicitly allow B2B collaboration in both directions while 
+      setting isServiceProvider=false, establishing a uniform partner access 
+      posture.
+    - The only type that defines structured list-valued attributes (targets 
+      arrays with target/targetType pairs) in its base class, reflecting the 
+      Microsoft Graph cross-tenant access schema.
   entra-group:
-    summary: Represents Entra ID groups with common mail-related and security 
+    summary: Entra ID security and mail groups with a dominant subclass pattern 
+      of security-enabled, non-mail-enabled groups that form the majority of the
+      fleet.
+    key_differentiators:
+    - The most populous type (25 instances), with 19 of them falling into a 
+      single subclass that sets securityEnabled=true, mailEnabled=false, and 
+      hideFromAddressLists=false.
+    - All instances share isSubscribedByMail=true as the sole base class 
+      attribute, with all other group characteristics determined at the class or
+      instance level.
+    - Distinguished from other Entra types by its focus on group membership and 
+      visibility settings (external senders, auto-subscription, Outlook 
+      visibility) rather than authentication or policy enforcement.
+  entra-named-location:
+    summary: Named location definitions used as conditions in Conditional Access
+      policies. All variation exists at the instance level with an empty base 
+      class.
+    key_differentiators:
+    - The only type with a completely empty base class (base_only_ratio 1.0), 
+      meaning every attribute is unique to individual instances -- each named 
+      location defines distinct IP ranges or country-based boundaries.
+    - The smallest Entra type (6 instances) serving as reference data for 
+      conditional access policies rather than enforcing policies directly.
+    - Unlike all other types in this corpus, named locations carry no boolean 
+      flags or enum settings in shared classes; their value lies entirely in 
+      their per-instance network or geographic definitions.
+  intune-app-protection:
+    summary: Intune App Protection policies enforcing mobile application data 
+      transfer restrictions and PIN/compliance requirements across all 4 
+      instances.
+    key_differentiators:
+    - All instances share an unusually rich base class with 10 shared attributes
+      covering data transfer controls 
+      (allowedOutboundDataTransferDestinations=managedApps), clipboard 
+      restrictions, and PIN/compliance requirements.
+    - The base_only_ratio of 1.0 means all variation is at the instance level, 
+      suggesting these policies differ only in which apps or platforms they 
+      target.
+    - The only Intune type focused on application-level data loss prevention 
+      rather than device-level compliance or configuration.
+  intune-compliance:
+    summary: Intune device compliance policies defining health and security 
+      baselines, with a subclass for Windows-specific firewall and anti-spyware 
       settings.
     key_differentiators:
-    - Includes base settings for external senders, new member auto-subscription,
-      and mail subscription.
-    - "A large number of instances (19) have `securityEnabled: 'true'` and are not
-      hidden from address lists or Outlook clients."
-    - A subclass exists where security-enabled groups are not assignable to 
-      roles and do not have mail enabled.
-  entra-group_1:
-    summary: Describes a specific M365 Unified Group ("M365-AllCompany-Comms") 
-      for company-wide communications.
-    key_differentiators:
-    - This group is explicitly `mailEnabled`, has a `mail` address, and 
-      `proxyAddresses`.
-    - "Features `allowExternalSenders: 'true'` and `autoSubscribeNewMembers: 'true'`,
-      facilitating broad communication."
-    - 'Has `groupTypes: Unified` and `visibility: Public`, designating it as a collaborative
-      M365 group.'
-  entra-named-location:
-    summary: Represents Entra ID named locations, typically used in Conditional 
-      Access policies to define trusted or untrusted network zones.
-    key_differentiators:
-    - The base class is empty, implying all differentiating characteristics are 
-      present at the instance level (Tier C).
-    - These entities are essentially containers for specific IP ranges or 
-      countries, whose specifics would be in their instance data.
-  intune-app-protection:
-    summary: Defines Intune App Protection policies with common settings for 
-      data transfer and PIN requirements.
-    key_differentiators:
-    - 'All instances share stringent data transfer restrictions, such as `allowedInboundDataTransferSources:
-      allApps` and `allowedOutboundDataTransferDestinations: managedApps`.'
-    - "Mandates `pinRequired: 'true'` and `deviceComplianceRequired: 'true'` for enhanced
-      security."
-    - The base class lacks specific app or platform targeting, implying 
-      universality or instance-level customization.
-  intune-compliance:
-    summary: Encompasses Intune Compliance policies with a focus on device 
-      health and security.
-    key_differentiators:
-    - The base class is minimal, indicating compliance policies vary 
-      significantly.
-    - 'Several policies (`instance_count_inclusive: 3`) explicitly disable `earlyLaunchAntiMalwareDriverEnabled`
-      and `passwordRequiredToUnlockFromIdle`.'
-    - "Some policies (`instance_count_inclusive: 3` in a subclass) further specify
-      `activeFirewallRequired: 'false'` and `antiSpywareRequired: 'false'`, potentially
-      indicating policies for specific device types or less stringent environments."
+    - Features composite templates for assignment targets (3 distinct group 
+      assignment patterns), making it one of only two types with decomposed 
+      structured sub-objects.
+    - A subclass of 3 instances explicitly disables firewall, anti-spyware, and 
+      healthy device report requirements, suggesting policies tailored for 
+      non-Windows or less-restricted device categories.
+    - The high base_only_ratio (0.7) indicates most compliance policies share 
+      only minimal common attributes (`roleScopeTagIds`, `version`), with 
+      significant per-policy variation at the instance level.
   intune-device-config:
-    summary: Describes Intune Device Configuration profiles for Android devices,
-      primarily focusing on blocking various features and actions.
+    summary: Intune device configuration profiles primarily targeting Android 
+      devices, with an extensive base class of 25 shared boolean restrictions 
+      covering cellular, storage, web browser, and kiosk settings.
     key_differentiators:
-    - The base class blocks a wide array of features, including clipboard 
-      sharing, copy-paste, YouTube, and various cellular/storage options.
-    - "Most policies (`instance_count_inclusive: 6`) explicitly set `compliantAppListType:
-      none` and `wiFiBlocked: 'false'`."
-    - These policies are heavily focused on imposing restrictions on device 
-      functionality and connectivity.
+    - Has the largest base class in the corpus (25 attributes), predominantly 
+      boolean flags set to false, establishing a permissive baseline that 
+      individual profiles can selectively tighten.
+    - The dominant class (6 of 8 instances) adds compliantAppListType=none and 
+      wiFiBlocked=false, indicating standard Android device profiles without app
+      compliance list enforcement.
+    - Like intune-compliance, includes composite templates for assignment 
+      targets (2 distinct group assignment patterns), enabling reuse of 
+      targeting configurations across profiles.
+    - The only type whose attributes are almost entirely device-restriction 
+      booleans, contrasting with compliance policies that focus on health 
+      attestation and app-protection policies that focus on data flow controls.

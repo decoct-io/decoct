@@ -5,30 +5,100 @@ types:
     subclasses: 3
     tier_b_ref: iosxr-access-pe_classes.yaml
     tier_c_ref: iosxr-access-pe_instances.yaml
+    summary: Access Provider Edge routers (60 instances) connect end-user and 
+      subscriber networks to the MPLS/SR core. They are the most diverse type in
+      the fleet, with 3 classes and 3 subclasses differentiated by BGP ASN and 
+      confederation membership.
+    key_differentiators:
+    - Only type with multiple classes and subclasses; instances are split across
+      three BGP ASNs (65002, 65003, 65004), each with its own class, and each 
+      class has a subclass adding confederation peer configuration.
+    - Features EVPN EVI composite templates and L2VPN constructs (BVI 
+      interfaces, Bundle-Ether sub-interfaces with dot1q encapsulation) for 
+      subscriber access services.
+    - Includes BVI100/200/300 interfaces with IPv4 addressing, indicating 
+      bridged virtual interface connectivity for subscriber VLANs.
+    - BGP neighbors are defined per-class as composite structures with dual 
+      route reflector peerings, vpnv4-unicast, and l2vpn-evpn address families.
   iosxr-bng:
     count: 8
     classes: 1
     subclasses: 0
     tier_b_ref: iosxr-bng_classes.yaml
     tier_c_ref: iosxr-bng_instances.yaml
+    summary: Broadband Network Gateway devices (8 instances) terminate 
+      subscriber PPPoE sessions and manage RADIUS-based authentication, 
+      authorization, and accounting. All instances share a single base class 
+      with no additional class differentiation.
+    key_differentiators:
+    - Only type with AAA subscriber configurations (RADIUS group authentication,
+      authorization, and accounting) and dynamic templates for PPP/IPv4 
+      unnumbered subscriber sessions.
+    - Configures PPPoE session limits (max 32000, per-MAC limit of 4 with 
+      throttling), indicating high-scale broadband subscriber termination.
+    - Includes RADIUS server key and timeout settings not present on any other 
+      device type.
+    - Uses BGP ASN 65005 with confederation membership, distinct from all other 
+      PE types.
   iosxr-p-core:
     count: 6
     classes: 1
     subclasses: 0
     tier_b_ref: iosxr-p-core_classes.yaml
     tier_c_ref: iosxr-p-core_instances.yaml
+    summary: Provider Core backbone routers (6 instances) form the transit 
+      backbone, interconnecting access PEs, BNGs, services PEs, and route 
+      reflectors. All instances share a single base class.
+    key_differentiators:
+    - Only type with HundredGigE interfaces (0/0/1/0 and 0/0/1/1) alongside four
+      TenGigE interfaces, reflecting high-capacity core link requirements.
+    - Includes explicit MPLS traffic-engineering interface configuration for all
+      six physical interfaces, enabling RSVP-TE or SR-TE path setup.
+    - Configures `set-overload-bit on-startup 600` in IS-IS, implementing a 
+      controlled 10-minute convergence delay after reload to avoid blackholing 
+      traffic.
+    - Uses BGP ASN 65001, acting as the central confederation member that peers 
+      with all other sub-ASNs (65002-65006).
   iosxr-rr:
     count: 4
     classes: 1
     subclasses: 0
     tier_b_ref: iosxr-rr_classes.yaml
     tier_c_ref: iosxr-rr_instances.yaml
+    summary: Route Reflectors (4 instances) provide iBGP route reflection across
+      the confederation, reducing the need for full-mesh BGP peerings. All 
+      instances share a single base class.
+    key_differentiators:
+    - Only type that explicitly enables BGP address families for l2vpn-evpn, 
+      vpnv4-unicast, and vpnv6-unicast in the base class, reflecting its role in
+      reflecting all service routes.
+    - Shares BGP ASN 65001 with P-core routers but is distinguished by its route
+      reflector function and the explicit `address-family` declarations.
+    - Has four TenGigE interfaces (0/0/0/0 through 0/0/0/3) for redundant 
+      peering with P-core routers, but no HundredGigE or subscriber-facing 
+      interfaces.
+    - No subscriber, EVPN EVI, or service-specific configuration; the device 
+      role is purely control-plane route distribution.
   iosxr-services-pe:
     count: 8
     classes: 1
     subclasses: 0
     tier_b_ref: iosxr-services-pe_classes.yaml
     tier_c_ref: iosxr-services-pe_instances.yaml
+    summary: Services Provider Edge routers (8 instances) deliver external 
+      transit and peering services via eBGP. All instances share a single base 
+      class with a composite template for BGP neighbor configuration.
+    key_differentiators:
+    - Only type with an explicit route-policy (RPL-EBGP-OUT) that sets MED and 
+      community values, indicating outbound policy control for external peering.
+    - BGP neighbors are defined as a composite template with external peer AS 
+      64800 and description "TRANSIT-A", distinguishing these as 
+      transit/peering-facing devices rather than internal service providers.
+    - Configures multiple Loopback interfaces (Loopback0 through Loopback3), 
+      more than any other type, likely used for different service contexts or 
+      VRF anchoring.
+    - Uses BGP ASN 65006, the only sub-AS dedicated to external service delivery
+      within the confederation.
 assertions:
   iosxr-access-pe:
     base_only_ratio: 0.0
@@ -56,3 +126,121 @@ topology:
   - iosxr-p-core
   iosxr-services-pe:
   - iosxr-p-core
+guide:
+  corpus_description: 'This infrastructure corpus contains 86 Cisco IOS-XR router
+    configurations organized into 5 device roles: 60 access PEs, 8 broadband network
+    gateways (BNGs), 6 P-core backbone routers, 4 route reflectors, and 8 services
+    PEs. All devices share a common IS-IS CORE domain with segment routing, MPLS LDP,
+    and BGP confederation (AS 64512) architecture.'
+  how_to_use:
+  - Start with this Tier A orientation guide for a fleet-wide overview of entity
+    types, instance counts, class/subclass counts, topology relationships, and 
+    assertions.
+  - For shared attribute definitions and class inheritance hierarchies, consult 
+    the Tier B files referenced by each type's `tier_b_ref` field (e.g., 
+    `iosxr-access-pe_classes.yaml`).
+  - To find per-device differences such as unique IP addresses, hostnames, and 
+    interface addresses, refer to the Tier C files referenced by `tier_c_ref` 
+    (e.g., `iosxr-access-pe_instances.yaml`).
+  - Use the `topology` section in Tier A to understand adjacency relationships 
+    between device types; for example, access PEs, BNGs, and services PEs all 
+    connect to P-core routers, which in turn peer with route reflectors.
+  - A `base_only_ratio` of 1.0 in the assertions means every instance of that 
+    type uses only the base class with no class-level differentiation; a ratio 
+    of 0.0 (as with iosxr-access-pe) means all instances belong to specialized 
+    classes or subclasses.
+  reconstruction: 'To reconstruct any entity: start with base_class attributes from
+    Tier B, overlay class own_attrs, then overlay subclass own_attrs (if assigned),
+    then apply Tier C instance-specific overrides and instance_attrs.'
+projections:
+  iosxr-access-pe:
+  - aaa-security
+  - bgp-config
+  - bgp-global-and-neighbors
+  - bgp-routing
+  - bgp
+  - control-plane-access
+  - device-identity
+  - evpn
+  - global-interface-parameters
+  - interface-identity
+  - interfaces
+  - isis-core-routing
+  - isis-routing
+  - logging-configuration
+  - mpls-segment-routing
+  - mpls
+  - ntp-settings
+  - static-routes
+  - system-services
+  iosxr-bng:
+  - aaa-security
+  - bgp-routing-confederation
+  - bgp
+  - device-identity
+  - general-interface-bundle-ether
+  - interface-loopback-management
+  - interface-physical-core
+  - interfaces
+  - isis-routing
+  - mpls
+  - policy-maps-qos
+  - pppoe-subscriber-services
+  - static-routes
+  - subscriber-management
+  - system-logging-access
+  - system-services
+  iosxr-p-core:
+  - aaa-security
+  - bgp-core-protocol
+  - bgp
+  - device-identity
+  - interfaces
+  - isis-core-protocol
+  - isis-interface-config
+  - isis-routing
+  - loopback-interfaces
+  - management-interfaces
+  - mpls-traffic-engineering
+  - mpls
+  - network-services
+  - physical-interfaces
+  - snmp-settings
+  - static-routes
+  - system-services
+  iosxr-rr:
+  - aaa-security
+  - bgp-global-and-address-families
+  - bgp-neighbors
+  - bgp
+  - device-identity
+  - interfaces
+  - isis-global-and-address-families
+  - isis-interface-settings
+  - isis-routing
+  - logging-and-ntp
+  - management-interfaces
+  - mpls-and-segment-routing-infra
+  - mpls
+  - static-routes
+  - system-services
+  - ten-gig-ethernet-interfaces
+  iosxr-services-pe:
+  - aaa-security
+  - authentication-and-logging
+  - bgp-core-and-vrf-summary
+  - bgp-vrf-neighbors-redistribution
+  - bgp
+  - control-plane-access
+  - device-identity-and-location
+  - interface-addressing
+  - interfaces
+  - isis-core-routing
+  - isis-routing
+  - mpls
+  - route-policies
+  - route-policy
+  - snmp-ntp-and-domain-services
+  - static-routes
+  - system-services
+  - vrf-configuration-and-route-targets

@@ -5,48 +5,156 @@ types:
     subclasses: 0
     tier_b_ref: entra-application_classes.yaml
     tier_c_ref: entra-application_instances.yaml
+    summary: Azure AD application registrations sharing common OAuth and 
+      publisher settings. 75% of instances belong to a class configured for 
+      single-tenant organizational use.
+    key_differentiators:
+    - All instances share token version 2, the contoso.com publisher domain, and
+      disabled implicit grant flows, forming a consistent application baseline.
+    - The dominant class (9 of 12 instances) adds 
+      isDeviceOnlyAuthSupported=false and signInAudience=AzureADMyOrg, 
+      indicating internal single-tenant applications.
+    - Unlike conditional access or compliance types, application entities carry 
+      no policy enforcement attributes; they define identity and authentication 
+      surface area.
   entra-conditional-access:
     count: 20
     classes: 3
     subclasses: 2
     tier_b_ref: entra-conditional-access_classes.yaml
     tier_c_ref: entra-conditional-access_instances.yaml
+    summary: Conditional Access policies governing authentication requirements 
+      across the tenant, with class hierarchies for MFA enforcement and legacy 
+      authentication blocking.
+    key_differentiators:
+    - The largest policy type in the corpus (20 instances) with the most complex
+      class hierarchy (3 classes, 2 subclasses) and the lowest base_only_ratio 
+      (0.1), indicating highly structured policy patterns.
+    - One major class (11 instances) targets all applications via browser and 
+      mobile/desktop clients, with a subclass (6 instances) enforcing MFA as an 
+      enabled policy.
+    - A second class (7 instances) targets all users with an OR grant operator, 
+      with a subclass (4 instances) blocking legacy authentication protocols 
+      (exchangeActiveSync, other).
+    - The only type where `sessionControls.disableResilienceDefaults` appears as
+      a shared class-level attribute, reflecting tenant-wide session resilience 
+      configuration.
   entra-cross-tenant:
     count: 3
     classes: 1
     subclasses: 0
     tier_b_ref: entra-cross-tenant_classes.yaml
     tier_c_ref: entra-cross-tenant_instances.yaml
+    summary: Cross-tenant access policies defining B2B collaboration and direct 
+      connect settings. All 3 instances share identical base attributes with no 
+      class differentiation.
+    key_differentiators:
+    - The most homogeneous type in the corpus (base_only_ratio 1.0) with 
+      extensive shared configuration covering inbound/outbound B2B collaboration
+      and direct connect for all applications and users.
+    - All instances explicitly allow B2B collaboration in both directions while 
+      setting isServiceProvider=false, establishing a uniform partner access 
+      posture.
+    - The only type that defines structured list-valued attributes (targets 
+      arrays with target/targetType pairs) in its base class, reflecting the 
+      Microsoft Graph cross-tenant access schema.
   entra-group:
     count: 25
     classes: 2
     subclasses: 1
     tier_b_ref: entra-group_classes.yaml
     tier_c_ref: entra-group_instances.yaml
+    summary: Entra ID security and mail groups with a dominant subclass pattern 
+      of security-enabled, non-mail-enabled groups that form the majority of the
+      fleet.
+    key_differentiators:
+    - The most populous type (25 instances), with 19 of them falling into a 
+      single subclass that sets securityEnabled=true, mailEnabled=false, and 
+      hideFromAddressLists=false.
+    - All instances share isSubscribedByMail=true as the sole base class 
+      attribute, with all other group characteristics determined at the class or
+      instance level.
+    - Distinguished from other Entra types by its focus on group membership and 
+      visibility settings (external senders, auto-subscription, Outlook 
+      visibility) rather than authentication or policy enforcement.
   entra-named-location:
     count: 6
     classes: 1
     subclasses: 0
     tier_b_ref: entra-named-location_classes.yaml
     tier_c_ref: entra-named-location_instances.yaml
+    summary: Named location definitions used as conditions in Conditional Access
+      policies. All variation exists at the instance level with an empty base 
+      class.
+    key_differentiators:
+    - The only type with a completely empty base class (base_only_ratio 1.0), 
+      meaning every attribute is unique to individual instances -- each named 
+      location defines distinct IP ranges or country-based boundaries.
+    - The smallest Entra type (6 instances) serving as reference data for 
+      conditional access policies rather than enforcing policies directly.
+    - Unlike all other types in this corpus, named locations carry no boolean 
+      flags or enum settings in shared classes; their value lies entirely in 
+      their per-instance network or geographic definitions.
   intune-app-protection:
     count: 4
     classes: 1
     subclasses: 0
     tier_b_ref: intune-app-protection_classes.yaml
     tier_c_ref: intune-app-protection_instances.yaml
+    summary: Intune App Protection policies enforcing mobile application data 
+      transfer restrictions and PIN/compliance requirements across all 4 
+      instances.
+    key_differentiators:
+    - All instances share an unusually rich base class with 10 shared attributes
+      covering data transfer controls 
+      (allowedOutboundDataTransferDestinations=managedApps), clipboard 
+      restrictions, and PIN/compliance requirements.
+    - The base_only_ratio of 1.0 means all variation is at the instance level, 
+      suggesting these policies differ only in which apps or platforms they 
+      target.
+    - The only Intune type focused on application-level data loss prevention 
+      rather than device-level compliance or configuration.
   intune-compliance:
     count: 10
     classes: 2
     subclasses: 1
     tier_b_ref: intune-compliance_classes.yaml
     tier_c_ref: intune-compliance_instances.yaml
+    summary: Intune device compliance policies defining health and security 
+      baselines, with a subclass for Windows-specific firewall and anti-spyware 
+      settings.
+    key_differentiators:
+    - Features composite templates for assignment targets (3 distinct group 
+      assignment patterns), making it one of only two types with decomposed 
+      structured sub-objects.
+    - A subclass of 3 instances explicitly disables firewall, anti-spyware, and 
+      healthy device report requirements, suggesting policies tailored for 
+      non-Windows or less-restricted device categories.
+    - The high base_only_ratio (0.7) indicates most compliance policies share 
+      only minimal common attributes (`roleScopeTagIds`, `version`), with 
+      significant per-policy variation at the instance level.
   intune-device-config:
     count: 8
     classes: 2
     subclasses: 0
     tier_b_ref: intune-device-config_classes.yaml
     tier_c_ref: intune-device-config_instances.yaml
+    summary: Intune device configuration profiles primarily targeting Android 
+      devices, with an extensive base class of 25 shared boolean restrictions 
+      covering cellular, storage, web browser, and kiosk settings.
+    key_differentiators:
+    - Has the largest base class in the corpus (25 attributes), predominantly 
+      boolean flags set to false, establishing a permissive baseline that 
+      individual profiles can selectively tighten.
+    - The dominant class (6 of 8 instances) adds compliantAppListType=none and 
+      wiFiBlocked=false, indicating standard Android device profiles without app
+      compliance list enforcement.
+    - Like intune-compliance, includes composite templates for assignment 
+      targets (2 distinct group assignment patterns), enabling reuse of 
+      targeting configurations across profiles.
+    - The only type whose attributes are almost entirely device-restriction 
+      booleans, contrasting with compliance policies that focus on health 
+      attestation and app-protection policies that focus on data flow controls.
 assertions:
   entra-application:
     base_only_ratio: 0.25
@@ -73,3 +181,144 @@ assertions:
     base_only_ratio: 0.25
     max_inheritance_depth: 2
 topology: {}
+guide:
+  corpus_description: 'This infrastructure corpus contains 88 Microsoft Entra ID and
+    Intune configuration entities across 8 distinct types: 12 application registrations,
+    20 conditional access policies, 3 cross-tenant access settings, 25 groups, 6 named
+    locations, 4 app protection policies, 10 compliance policies, and 8 device configuration
+    profiles.'
+  how_to_use:
+  - Start with this Tier A orientation guide for a high-level overview of all 8 
+    entity types, their instance counts, class hierarchies, and summaries.
+  - For detailed class definitions and shared attributes, consult the Tier B 
+    file referenced by each type's `tier_b_ref` field (e.g., 
+    `entra-conditional-access_classes.yaml`). Classes show attributes common to 
+    groups of entities; subclasses refine these with additional shared 
+    attributes.
+  - To inspect per-entity differences and unique attribute values, refer to the 
+    Tier C file referenced by each type's `tier_c_ref` field (e.g., 
+    `entra-conditional-access_instances.yaml`).
+  - The `base_only_ratio` in Tier A assertions indicates the fraction of 
+    instances that only inherit the base class without belonging to a more 
+    specific class. A ratio of 1.0 means all instances share only the base class
+    attributes, with all variation captured at the instance level in Tier C.
+  - Types with `composite_templates` in Tier B (such as `intune-compliance` and 
+    `intune-device-config`) contain structured sub-objects (e.g., assignment 
+    targets) that have been decomposed into reusable templates with per-entity 
+    deltas.
+  reconstruction: 'To reconstruct any entity: start with base_class attributes from
+    Tier B, overlay class own_attrs, then overlay subclass own_attrs (if assigned),
+    then apply Tier C instance-specific overrides and instance_attrs.'
+projections:
+  entra-application:
+  - access-claims
+  - api-permissions
+  - application-identity
+  - authentication-settings
+  - authentication
+  - credential-management
+  - credentials
+  - identity
+  - oauth-api-settings
+  - uri-configuration
+  - web-and-spa
+  entra-conditional-access:
+  - application-conditions
+  - conditions-applications
+  - conditions-risk-and-location
+  - conditions-users
+  - general-settings
+  - grant-and-session-controls
+  - grant-controls-and-state
+  - grant-controls
+  - identity-and-metadata
+  - location-and-risk-conditions
+  - policy-state
+  - session-controls
+  - user-conditions
+  entra-cross-tenant:
+  - b2b-collaboration-inbound
+  - b2b-collaboration-outbound
+  - b2b-collaboration
+  - b2b-direct-connect-inbound
+  - b2b-direct-connect-outbound
+  - b2b-direct-connect
+  - identity-metadata
+  - identity
+  - inbound-trust-settings
+  - inbound-trust
+  - service-provider-status
+  entra-group:
+  - group-type-details
+  - group-type
+  - identity-and-basic-metadata
+  - identity
+  - mail-and-communication
+  - mail-and-visibility-settings
+  - membership-rules
+  - membership
+  - security-and-role-assignment
+  - visibility
+  entra-named-location:
+  - country-locations
+  - geo-context
+  - identity-and-trust
+  - identity
+  - ip-ranges
+  intune-app-protection:
+  - access-check-intervals
+  - app-protection-identity
+  - app-scope
+  - assigned-applications
+  - assignments
+  - authentication-and-pin
+  - browser-and-contact-settings
+  - data-transfer-settings
+  - data-transfer
+  - device-compliance-and-encryption
+  - encryption-and-security
+  - identity
+  - offline-access
+  - policy-assignments
+  - policy-scope-and-version
+  - security-pin-settings
+  intune-compliance:
+  - android-security
+  - assignments-and-actions
+  - assignments
+  - compliance-misc-settings
+  - compliance-settings
+  - device-security
+  - device-threat-protection
+  - firewall-settings
+  - firewall
+  - identity-metadata
+  - identity
+  - password-passcode-requirements
+  - password-requirements
+  - security-configuration
+  - system-integrity-encryption
+  - threat-protection
+  intune-device-config:
+  - app-restrictions
+  - app-settings
+  - application-web-browsing-controls
+  - assignments
+  - browser-settings
+  - cellular-settings
+  - cellular-wifi-connectivity
+  - device-features
+  - device-identity
+  - device-security
+  - device-sharing-and-enrollment
+  - feature-restriction-general
+  - fundamental-security-settings
+  - google-account-and-voice
+  - hardware-restrictions
+  - identity
+  - kiosk-mode-settings
+  - network
+  - password-settings
+  - storage-data-protection
+  - storage-settings
+  - web-browser

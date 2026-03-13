@@ -1,9 +1,0 @@
-meta:
-  entity_type: unknown-22
-  tier_b_ref: unknown-22_classes.yaml
-  total_instances: 1
-class_assignments:
-  _base_only:
-    instances:
-    - tfvars-edge
-foreign_keys: {}
