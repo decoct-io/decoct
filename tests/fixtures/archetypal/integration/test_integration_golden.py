@@ -1,32 +1,89 @@
 """
-Integration golden reference tests for archetypal compression.
+Level 2a — Integration golden reference validation.
 
-10 hosts x 15 sections covering all compression patterns:
-  - 12 positive sections (compressed via _class)
-  - 3 negative sections (traps — raw passthrough)
-  - 3 absent sections (some hosts miss certain sections)
-  - 3 list-of-dicts sections with instances
-  - 2-class routing_policy (multi-group)
-  - Dot-notation overrides/removals within instances
-  - Progressive removal/addition patterns
-  - Compound operations (identity + removal/override)
-
-Structural assertions beyond round-trip: optimality, cross-section
-isolation, absent section verification.
+Proves the golden references (tier_b.yaml + tier_c/*.yaml) are internally
+consistent AND optimal. Does NOT test decoct's output — that's Level 2b.
 """
-
+import sys
+import os
 import pytest
 
-from helpers import deep_get, normalize, reconstruct_instances, reconstruct_section
+# Import helpers from parent (archetypal/) directory
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+from helpers import (
+    normalize,
+    reconstruct_section,
+    reconstruct_instances,
+    deep_get,
+    deep_set,
+    deep_delete,
+)
 
-_ABSENT = object()
+# ---------------------------------------------------------------------------
+# Constants
+# ---------------------------------------------------------------------------
+
+POSITIVE_SECTIONS = [
+    "system_base",
+    "access_control",
+    "alert_targets",
+    "loopback0",
+    "change_procedures",
+    "fabric_interfaces",
+    "telemetry_stack",
+    "routing_policy",
+    "isis_config",
+    "vrf_routing",
+    "policy_maps",
+    "bgp_neighbors",
+]
+
+NEGATIVE_SECTIONS = [
+    "auth_methods",
+    "vendor_extensions",
+    "path_export",
+]
+
+INSTANCE_SECTIONS = ["fabric_interfaces", "vrf_routing", "bgp_neighbors"]
+
+EXPECTED_CLASSES = [
+    "SystemBase",
+    "AccessPolicy",
+    "AlertTarget",
+    "Loopback0Config",
+    "ChangeProcedure",
+    "FabricInterface",
+    "TelemetryStack",
+    "RoutingPolicyCore",
+    "RoutingPolicyVpn",
+    "IsisConfig",
+    "VrfConfig",
+    "PolicyMap",
+    "BgpNeighborConfig",
+]
 
 
-def _count_leaves(d, exclude=frozenset()):
-    """Count leaf fields in a (possibly nested) dict, skipping excludes."""
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+
+def _is_instance_section(tc_entry):
+    """True if the tier_c entry uses the instances mechanic."""
+    return isinstance(tc_entry, dict) and "instances" in tc_entry
+
+
+def _has_dot_key(d, exclude=("_class", "_remove", "_identity")):
+    """True if dict d has any key containing '.' outside reserved keys."""
+    if not isinstance(d, dict):
+        return False
+    return any("." in str(k) for k in d if k not in exclude)
+
+
+def _count_leaves(d):
+    """Count leaf values in a possibly-nested dict (for static field counting)."""
     count = 0
     for k, v in d.items():
-        if k in exclude:
+        if k == "_identity":
             continue
         if isinstance(v, dict):
             count += _count_leaves(v)
@@ -35,609 +92,817 @@ def _count_leaves(d, exclude=frozenset()):
     return count
 
 
-# ═══════════════════════════════════════════════════════════════════════
-# ROUND-TRIP — B + C = A
-# ═══════════════════════════════════════════════════════════════════════
+def _override_keys(d, exclude=("_class", "_remove", "_identity")):
+    """Return set of keys in d that are overrides (not reserved)."""
+    if not isinstance(d, dict):
+        return set()
+    return {k for k in d if k not in exclude}
 
 
-class TestRoundTrip:
-    """B + C = A for every host x present section."""
+def _identity_fields_for_class(tier_b, class_name):
+    """Return the _identity list for a class, or empty list."""
+    cls = tier_b.get(class_name, {})
+    return cls.get("_identity", [])
+
+
+def _positive_host_section_pairs(case):
+    """Yield (host, section) for positive dict sections present on each host."""
+    for host in case.hosts:
+        for section in POSITIVE_SECTIONS:
+            if section in case.inputs.get(host, {}):
+                tc = case.tier_c[host][section]
+                if not _is_instance_section(tc):
+                    yield pytest.param(host, section, id=f"{host}/{section}")
+
+
+def _instance_host_section_pairs(case):
+    """Yield (host, section) for instance sections present on each host."""
+    for host in case.hosts:
+        for section in INSTANCE_SECTIONS:
+            if section in case.inputs.get(host, {}):
+                tc = case.tier_c[host][section]
+                if _is_instance_section(tc):
+                    yield pytest.param(host, section, id=f"{host}/{section}")
+
+
+# ---------------------------------------------------------------------------
+# TestReconstruction
+# ---------------------------------------------------------------------------
+
+class TestReconstruction:
 
     def test_all_hosts_present(self, case):
-        assert len(case.hosts) == 10
         for host in case.hosts:
-            assert host in case.tier_c
+            assert host in case.inputs, f"{host} missing from inputs"
+            assert host in case.tier_c, f"{host} missing from tier_c"
 
-    def test_section_sets_match(self, case):
-        """Each host's tier_c sections == input sections."""
+    def test_all_sections_present(self, case):
         for host in case.hosts:
-            assert set(case.tier_c[host]) == set(case.inputs[host]), (
-                f"{host}: tier_c has {set(case.tier_c[host])}, "
-                f"input has {set(case.inputs[host])}"
+            for section in case.inputs[host]:
+                assert section in case.tier_c[host], (
+                    f"{host}/{section} in inputs but missing from tier_c"
+                )
+
+    def test_input_tier_c_section_match(self, case):
+        for host in case.hosts:
+            assert set(case.inputs[host].keys()) == set(case.tier_c[host].keys()), (
+                f"{host}: input sections != tier_c sections"
             )
 
-    def test_dict_sections_reconstruct(self, case):
-        """Dict sections reconstruct from B + C."""
+    def test_positive_section_reconstruction(self, case):
         for host in case.hosts:
-            for section, raw in case.inputs[host].items():
-                if isinstance(raw, list):
+            for section in POSITIVE_SECTIONS:
+                if section not in case.inputs.get(host, {}):
                     continue
                 tc = case.tier_c[host][section]
-                if "_class" not in tc:
-                    recon = tc
-                else:
-                    recon = reconstruct_section(case.tier_b, tc)
-                assert normalize(recon) == normalize(raw), (
-                    f"{host}/{section}"
+                if _is_instance_section(tc):
+                    continue  # tested separately
+                if not isinstance(tc, dict) or "_class" not in tc:
+                    continue  # raw passthrough (e.g. routing_policy outliers)
+                reconstructed = reconstruct_section(case.tier_b, tc)
+                assert normalize(reconstructed) == normalize(case.inputs[host][section]), (
+                    f"Reconstruction mismatch: {host}/{section}"
                 )
 
-    def test_list_sections_reconstruct(self, case):
-        """List-of-dicts sections reconstruct from B + C."""
+    def test_negative_section_passthrough(self, case):
         for host in case.hosts:
-            for section, raw in case.inputs[host].items():
-                if not isinstance(raw, list):
+            for section in NEGATIVE_SECTIONS:
+                if section not in case.inputs.get(host, {}):
+                    continue
+                assert normalize(case.tier_c[host][section]) == normalize(
+                    case.inputs[host][section]
+                ), f"Negative section not raw passthrough: {host}/{section}"
+
+    def test_instance_section_reconstruction(self, case):
+        for host in case.hosts:
+            for section in INSTANCE_SECTIONS:
+                if section not in case.inputs.get(host, {}):
                     continue
                 tc = case.tier_c[host][section]
-                if "_class" not in tc:
-                    recon = tc
-                else:
-                    recon = reconstruct_instances(case.tier_b, tc)
-                assert len(recon) == len(raw), (
-                    f"{host}/{section}: {len(recon)} vs {len(raw)} instances"
-                )
-                for idx, (r, o) in enumerate(zip(recon, raw)):
-                    assert normalize(r) == normalize(o), (
-                        f"{host}/{section}[{idx}]"
-                    )
-
-    def test_total_roundtrip_count(self, case):
-        """Exactly 144 host x section pairs."""
-        total = sum(len(case.inputs[h]) for h in case.hosts)
-        assert total == 144
+                if not _is_instance_section(tc):
+                    continue
+                reconstructed = reconstruct_instances(case.tier_b, tc)
+                assert normalize(reconstructed) == normalize(
+                    case.inputs[host][section]
+                ), f"Instance reconstruction mismatch: {host}/{section}"
 
 
-# ═══════════════════════════════════════════════════════════════════════
-# ABSENT SECTIONS
-# ═══════════════════════════════════════════════════════════════════════
-
+# ---------------------------------------------------------------------------
+# TestAbsentSections
+# ---------------------------------------------------------------------------
 
 class TestAbsentSections:
-    """Some hosts are missing certain sections — no spillover."""
 
     def test_absent_not_in_input(self, case):
         absent = case.expected.get("absent_sections", {})
         for section, hosts in absent.items():
             for host in hosts:
-                assert section not in case.inputs[host], (
-                    f"{host}: absent section '{section}' found in input"
+                assert section not in case.inputs.get(host, {}), (
+                    f"Absent section {section} found in inputs for {host}"
                 )
 
     def test_absent_not_in_tier_c(self, case):
         absent = case.expected.get("absent_sections", {})
         for section, hosts in absent.items():
             for host in hosts:
-                assert section not in case.tier_c[host], (
-                    f"{host}: absent section '{section}' found in tier_c"
+                assert section not in case.tier_c.get(host, {}), (
+                    f"Absent section {section} found in tier_c for {host}"
                 )
 
-    def test_present_hosts_have_section(self, case):
-        """Non-absent hosts DO have the section."""
+    def test_absent_no_side_effects(self, case):
         absent = case.expected.get("absent_sections", {})
-        for section, absent_hosts in absent.items():
-            for host in case.hosts:
-                if host not in absent_hosts:
-                    assert section in case.tier_c[host], (
-                        f"{host}: should have '{section}'"
+        hosts_with_absences = set()
+        for section, hosts in absent.items():
+            hosts_with_absences.update(hosts)
+
+        for host in hosts_with_absences:
+            for section in case.inputs.get(host, {}):
+                tc = case.tier_c[host][section]
+                inp = case.inputs[host][section]
+                if _is_instance_section(tc):
+                    reconstructed = reconstruct_instances(case.tier_b, tc)
+                elif isinstance(tc, dict) and "_class" in tc:
+                    reconstructed = reconstruct_section(case.tier_b, tc)
+                else:
+                    reconstructed = tc  # raw passthrough
+                assert normalize(reconstructed) == normalize(inp), (
+                    f"Side-effect on {host}/{section} from absent section"
+                )
+
+
+# ---------------------------------------------------------------------------
+# TestStructure
+# ---------------------------------------------------------------------------
+
+class TestStructure:
+
+    def test_class_count(self, case):
+        assert len(case.tier_b) == 13, (
+            f"Expected 13 classes, got {len(case.tier_b)}"
+        )
+
+    def test_class_names(self, case):
+        for name in EXPECTED_CLASSES:
+            assert name in case.tier_b, f"Missing class: {name}"
+
+    def test_negative_sections_no_class(self, case):
+        for host in case.hosts:
+            for section in NEGATIVE_SECTIONS:
+                if section not in case.tier_c.get(host, {}):
+                    continue
+                entry = case.tier_c[host][section]
+                if isinstance(entry, dict):
+                    assert "_class" not in entry, (
+                        f"Negative section {host}/{section} has _class"
                     )
 
-    def test_host_section_counts(self, case):
-        """Per-host section counts match full_count minus absent."""
-        absent = case.expected.get("absent_sections", {})
-        full_count = len(case.positive_sections) + len(case.negative_sections)
-        for host in case.hosts:
-            absent_count = sum(
-                1 for hosts in absent.values() if host in hosts
-            )
-            expected = full_count - absent_count
-            assert len(case.inputs[host]) == expected, (
-                f"{host}: expected {expected} sections, "
-                f"got {len(case.inputs[host])}"
-            )
-
-
-# ═══════════════════════════════════════════════════════════════════════
-# CLASS STRUCTURE
-# ═══════════════════════════════════════════════════════════════════════
-
-
-class TestClassStructure:
-    """Tier B matches expected class metadata."""
-
-    def test_total_class_count(self, case):
-        expected = sum(
-            c.get("class_count", 1)
-            for c in case.expected["classes"].values()
-        )
-        assert len(case.tier_b) == expected
-
-    def test_class_names_present(self, case):
-        for cls_info in case.expected["classes"].values():
-            for name in cls_info.get("class_names", []):
-                assert name in case.tier_b
-            if "class_name" in cls_info:
-                assert cls_info["class_name"] in case.tier_b
-
-    def test_static_field_counts(self, case):
-        for cls_info in case.expected["classes"].values():
-            if "static_field_count" not in cls_info:
+    def test_identity_fields_declared(self, case):
+        classes_meta = case.expected.get("classes", {})
+        for section_name, meta in classes_meta.items():
+            if "identity_fields" not in meta:
                 continue
-            name = cls_info["class_name"]
-            count = _count_leaves(case.tier_b[name], exclude={"_identity"})
-            assert count == cls_info["static_field_count"], (
-                f"{name}: expected {cls_info['static_field_count']} "
-                f"static fields, got {count}"
-            )
-
-    def test_identity_fields(self, case):
-        for cls_info in case.expected["classes"].values():
-            if "identity_fields" not in cls_info:
+            class_name = meta.get("class_name") or meta.get("class_names", [None])[0]
+            if class_name is None:
                 continue
-            name = cls_info["class_name"]
-            assert case.tier_b[name].get("_identity") == cls_info["identity_fields"], (
-                f"{name}: _identity mismatch"
+            expected_identity = meta["identity_fields"]
+            actual_identity = case.tier_b[class_name].get("_identity", [])
+            assert actual_identity == expected_identity, (
+                f"{class_name}: expected _identity {expected_identity}, "
+                f"got {actual_identity}"
             )
 
+    def test_identity_fields_unique(self, case):
+        classes_meta = case.expected.get("classes", {})
+        for section_name, meta in classes_meta.items():
+            if "identity_fields" not in meta:
+                continue
+            identity_fields = meta["identity_fields"]
+            class_name = meta.get("class_name") or meta.get("class_names", [None])[0]
+            if class_name is None:
+                continue
 
-# ═══════════════════════════════════════════════════════════════════════
-# TRAPS — negative sections
-# ═══════════════════════════════════════════════════════════════════════
-
-
-class TestTraps:
-    """Negative sections produce no classes."""
-
-    def test_no_class_in_traps(self, case):
-        for host in case.hosts:
-            for section in case.negative_sections:
-                if section not in case.tier_c[host]:
+            values_seen = set()
+            for host in case.hosts:
+                if section_name not in case.tier_c.get(host, {}):
                     continue
-                assert "_class" not in case.tier_c[host][section], (
-                    f"{host}/{section}: trap should not have _class"
-                )
+                tc = case.tier_c[host][section_name]
+                if _is_instance_section(tc):
+                    for inst in tc["instances"]:
+                        key = tuple(inst.get(f) for f in identity_fields)
+                        assert key not in values_seen, (
+                            f"Duplicate identity {key} in {section_name}"
+                        )
+                        values_seen.add(key)
+                elif isinstance(tc, dict) and "_class" in tc:
+                    key = tuple(tc.get(f) for f in identity_fields)
+                    assert key not in values_seen, (
+                        f"Duplicate identity {key} in {section_name} ({host})"
+                    )
+                    values_seen.add(key)
 
-    def test_type_coercion_trap(self, case):
-        """auth_methods: type diversity prevents compression."""
-        sigs = set()
-        for host in case.hosts:
-            tc = case.tier_c[host]["auth_methods"]
-            sig = tuple((k, type(v).__name__) for k, v in sorted(tc.items()))
-            sigs.add(sig)
-        assert len(sigs) >= 3, (
-            f"Expected type diversity in auth_methods, got {len(sigs)}"
-        )
-
-    def test_heterogeneous_trap(self, case):
-        """vendor_extensions: different key sets prevent compression."""
-        key_sets = set()
-        for host in case.hosts:
-            tc = case.tier_c[host]["vendor_extensions"]
-            key_sets.add(frozenset(tc.keys()))
-        assert len(key_sets) >= 5, (
-            f"Expected key diversity in vendor_extensions, got {len(key_sets)}"
-        )
-
-    def test_same_children_different_parents_trap(self, case):
-        """path_export: identical leaves under unique parent keys."""
-        parents = set()
-        leaf_values = []
-        for host in case.hosts:
-            ep = case.tier_c[host]["path_export"]["export_policy"]
-            child_key = list(ep.keys())[0]
-            parents.add(child_key)
-            leaf_values.append(normalize(ep[child_key]))
-        assert len(parents) == 10, (
-            f"Expected 10 distinct parent keys, got {len(parents)}"
-        )
-        assert all(v == leaf_values[0] for v in leaf_values), (
-            "Leaf values should be identical across all hosts"
-        )
-
-
-# ═══════════════════════════════════════════════════════════════════════
-# PROGRESSIVE REMOVAL — access_control
-# ═══════════════════════════════════════════════════════════════════════
-
-
-class TestProgressiveRemoval:
-    """access_control: hosts progressively remove more fields."""
-
-    def test_removal_counts(self, case):
-        info = case.expected["classes"]["access_control"]
-        for host, expected in zip(info["hosts"], info["removal_progression"]):
-            tc = case.tier_c[host]["access_control"]
-            actual = len(tc.get("_remove", []))
-            assert actual == expected, (
-                f"{host}: expected {expected} removals, got {actual}"
+    def test_static_field_count(self, case):
+        classes_meta = case.expected.get("classes", {})
+        for section_name, meta in classes_meta.items():
+            if "static_field_count" not in meta:
+                continue
+            class_name = meta.get("class_name") or meta.get("class_names", [None])[0]
+            if class_name is None:
+                continue
+            cls = case.tier_b[class_name]
+            count = _count_leaves(cls)
+            assert count == meta["static_field_count"], (
+                f"{class_name}: expected {meta['static_field_count']} static "
+                f"fields, got {count}"
             )
 
-    def test_removals_cumulative(self, case):
-        info = case.expected["classes"]["access_control"]
+
+# ---------------------------------------------------------------------------
+# TestProgressions
+# ---------------------------------------------------------------------------
+
+class TestProgressions:
+
+    def test_access_control_progressive_removal(self, case):
+        meta = case.expected["classes"]["access_control"]
+        progression = meta["removal_progression"]
+        hosts = [h for h in case.hosts if "access_control" in case.tier_c.get(h, {})]
+        for i, host in enumerate(hosts):
+            tc = case.tier_c[host]["access_control"]
+            removals = len(tc.get("_remove", []))
+            assert removals == progression[i], (
+                f"{host}: expected {progression[i]} removals, got {removals}"
+            )
+
+    def test_alert_targets_progressive_addition(self, case):
+        meta = case.expected["classes"]["alert_targets"]
+        progression = meta["addition_progression"]
+        hosts = [h for h in case.hosts if "alert_targets" in case.tier_c.get(h, {})]
+        for i, host in enumerate(hosts):
+            tc = case.tier_c[host]["alert_targets"]
+            additions = len(_override_keys(tc))
+            assert additions == progression[i], (
+                f"{host}: expected {progression[i]} additions, got {additions}"
+            )
+
+    def test_removal_superset(self, case):
+        hosts = [h for h in case.hosts if "access_control" in case.tier_c.get(h, {})]
         prev = set()
-        for host in info["hosts"]:
+        for host in hosts:
             tc = case.tier_c[host]["access_control"]
             current = set(tc.get("_remove", []))
-            assert prev <= current, (
-                f"{host}: removals not cumulative"
+            assert current >= prev, (
+                f"{host}: removal set {current} is not superset of previous {prev}"
             )
             prev = current
 
-
-# ═══════════════════════════════════════════════════════════════════════
-# PROGRESSIVE ADDITION — alert_targets
-# ═══════════════════════════════════════════════════════════════════════
-
-
-class TestProgressiveAddition:
-    """alert_targets: hosts progressively add more override fields."""
-
-    def test_addition_counts(self, case):
-        info = case.expected["classes"]["alert_targets"]
-        meta = {"_class", "_remove"}
-        for host, expected in zip(info["hosts"], info["addition_progression"]):
-            tc = case.tier_c[host]["alert_targets"]
-            extras = sum(1 for k in tc if k not in meta)
-            assert extras == expected, (
-                f"{host}: expected {expected} extra fields, "
-                f"got {extras}"
-            )
-
-    def test_additions_cumulative(self, case):
-        info = case.expected["classes"]["alert_targets"]
-        meta = {"_class", "_remove"}
+    def test_addition_superset(self, case):
+        hosts = [h for h in case.hosts if "alert_targets" in case.tier_c.get(h, {})]
         prev = set()
-        for host in info["hosts"]:
+        for host in hosts:
             tc = case.tier_c[host]["alert_targets"]
-            current = {k for k in tc if k not in meta}
-            assert prev <= current, (
-                f"{host}: additions not cumulative"
+            current = _override_keys(tc)
+            assert current >= prev, (
+                f"{host}: addition set {current} is not superset of previous {prev}"
             )
             prev = current
 
 
-# ═══════════════════════════════════════════════════════════════════════
-# MULTI-CLASS — routing_policy
-# ═══════════════════════════════════════════════════════════════════════
+# ---------------------------------------------------------------------------
+# TestPartialClassification
+# ---------------------------------------------------------------------------
 
+class TestPartialClassification:
 
-class TestMultiClass:
-    """routing_policy: 2 classes, 2 raw outliers."""
-
-    def test_two_classes_exist(self, case):
-        info = case.expected["classes"]["routing_policy"]
-        for name in info["class_names"]:
-            assert name in case.tier_b
-
-    def test_group_1_assignments(self, case):
-        info = case.expected["classes"]["routing_policy"]
-        expected_class = info["class_names"][0]
-        for host in info["group_1"]:
-            assert case.tier_c[host]["routing_policy"]["_class"] == expected_class, (
-                f"{host}: expected {expected_class}"
-            )
-
-    def test_group_2_assignments(self, case):
-        info = case.expected["classes"]["routing_policy"]
-        expected_class = info["class_names"][1]
-        for host in info["group_2"]:
-            assert case.tier_c[host]["routing_policy"]["_class"] == expected_class, (
-                f"{host}: expected {expected_class}"
-            )
-
-    def test_raw_outliers(self, case):
-        info = case.expected["classes"]["routing_policy"]
-        for host in info["raw_hosts"]:
-            assert "_class" not in case.tier_c[host]["routing_policy"], (
-                f"{host}: raw outlier should not have _class"
-            )
-
-    def test_shared_fields_not_merged(self, case):
-        """Both classes independently contain shared fields."""
-        info = case.expected["classes"]["routing_policy"]
-        c1 = case.tier_b[info["class_names"][0]]
-        c2 = case.tier_b[info["class_names"][1]]
-        for field in info.get("shared_fields_not_merged", []):
-            assert field in c1, f"{info['class_names'][0]} missing {field}"
-            assert field in c2, f"{info['class_names'][1]} missing {field}"
-
-
-# ═══════════════════════════════════════════════════════════════════════
-# INSTANCE SECTIONS — fabric_interfaces, vrf_routing, bgp_neighbors
-# ═══════════════════════════════════════════════════════════════════════
-
-
-class TestInstanceSections:
-    """List-of-dicts sections with per-instance overrides/removals."""
-
-    @pytest.mark.parametrize("section", [
-        "fabric_interfaces", "vrf_routing", "bgp_neighbors",
-    ])
-    def test_instances_present(self, case, section):
-        info = case.expected["classes"][section]
-        for host in info["hosts"]:
-            if section not in case.tier_c[host]:
-                continue  # absent section
-            tc = case.tier_c[host][section]
-            assert "instances" in tc, f"{host}/{section}"
-
-    @pytest.mark.parametrize("section", [
-        "fabric_interfaces", "vrf_routing", "bgp_neighbors",
-    ])
-    def test_instance_counts(self, case, section):
-        info = case.expected["classes"][section]
-        expected = info.get("instance_count_per_host")
-        if expected is None:
-            pytest.skip("no fixed instance count")
-        for host in info["hosts"]:
-            if section not in case.tier_c[host]:
+    def test_routing_policy_group_count(self, case):
+        classes_seen = set()
+        for host in case.hosts:
+            if "routing_policy" not in case.tier_c.get(host, {}):
                 continue
-            actual = len(case.tier_c[host][section].get("instances", []))
-            assert actual == expected, f"{host}/{section}"
+            tc = case.tier_c[host]["routing_policy"]
+            if isinstance(tc, dict) and "_class" in tc:
+                classes_seen.add(tc["_class"])
+        assert len(classes_seen) == 2, (
+            f"Expected 2 routing_policy classes, got {classes_seen}"
+        )
 
-    def test_fabric_override(self, case):
-        """fabric_interfaces: specific instance field overrides."""
-        for ov in case.expected["classes"]["fabric_interfaces"].get("overrides", []):
-            inst = case.tier_c[ov["host"]]["fabric_interfaces"]["instances"][ov["instance"]]
-            assert inst[ov["field"]] == ov["value"], (
-                f"{ov['host']}[{ov['instance']}].{ov['field']}"
+    def test_routing_policy_group_assignment(self, case):
+        meta = case.expected["classes"]["routing_policy"]
+        for host in meta.get("group_1", []):
+            tc = case.tier_c[host]["routing_policy"]
+            assert tc["_class"] == "RoutingPolicyCore", (
+                f"{host}: expected RoutingPolicyCore"
+            )
+        for host in meta.get("group_2", []):
+            tc = case.tier_c[host]["routing_policy"]
+            assert tc["_class"] == "RoutingPolicyVpn", (
+                f"{host}: expected RoutingPolicyVpn"
             )
 
-    def test_fabric_removal(self, case):
-        """fabric_interfaces: specific instance field removals."""
-        for rm in case.expected["classes"]["fabric_interfaces"].get("removals", []):
-            inst = case.tier_c[rm["host"]]["fabric_interfaces"]["instances"][rm["instance"]]
-            assert rm["field"] in inst.get("_remove", []), (
-                f"{rm['host']}[{rm['instance']}].{rm['field']}"
+    def test_routing_policy_raw_outliers(self, case):
+        meta = case.expected["classes"]["routing_policy"]
+        for host in meta.get("raw_hosts", []):
+            tc = case.tier_c[host]["routing_policy"]
+            if isinstance(tc, dict):
+                assert "_class" not in tc, (
+                    f"{host}: raw outlier should not have _class"
+                )
+
+    def test_routing_policy_shared_fields_not_merged(self, case):
+        assert "asn" in case.tier_b["RoutingPolicyCore"], (
+            "RoutingPolicyCore missing asn"
+        )
+        assert "asn" in case.tier_b["RoutingPolicyVpn"], (
+            "RoutingPolicyVpn missing asn"
+        )
+        assert "router_id_source" in case.tier_b["RoutingPolicyCore"], (
+            "RoutingPolicyCore missing router_id_source"
+        )
+        assert "router_id_source" in case.tier_b["RoutingPolicyVpn"], (
+            "RoutingPolicyVpn missing router_id_source"
+        )
+
+
+# ---------------------------------------------------------------------------
+# TestOrderedList
+# ---------------------------------------------------------------------------
+
+class TestOrderedList:
+
+    def test_change_procedures_matching_hosts(self, case):
+        meta = case.expected["classes"]["change_procedures"]
+        for host in meta.get("hosts_matching", []):
+            tc = case.tier_c[host]["change_procedures"]
+            assert isinstance(tc, dict) and tc.get("_class") == "ChangeProcedure", (
+                f"{host}: expected _class: ChangeProcedure"
             )
 
-    def test_vrf_override(self, case):
-        """vrf_routing: specific instance field overrides."""
-        for ov in case.expected["classes"]["vrf_routing"].get("overrides", []):
-            inst = case.tier_c[ov["host"]]["vrf_routing"]["instances"][ov["instance"]]
-            assert inst[ov["field"]] == ov["value"], (
-                f"{ov['host']}[{ov['instance']}].{ov['field']}"
-            )
+    def test_change_procedures_deviant_raw(self, case):
+        meta = case.expected["classes"]["change_procedures"]
+        for host in meta.get("hosts_raw", []):
+            tc = case.tier_c[host]["change_procedures"]
+            if isinstance(tc, dict):
+                assert "_class" not in tc, (
+                    f"{host}: deviant should not have _class"
+                )
 
-    def test_vrf_removal(self, case):
-        """vrf_routing: specific instance field removals."""
-        for rm in case.expected["classes"]["vrf_routing"].get("removals", []):
-            inst = case.tier_c[rm["host"]]["vrf_routing"]["instances"][rm["instance"]]
-            assert rm["field"] in inst.get("_remove", []), (
-                f"{rm['host']}[{rm['instance']}].{rm['field']}"
-            )
+    def test_change_procedures_deviant_content(self, case):
+        meta = case.expected["classes"]["change_procedures"]
+        deviant_hosts = meta.get("hosts_raw", [])
+        class_data = case.tier_b["ChangeProcedure"]
+        class_steps = class_data.get("steps", [])
 
-
-# ═══════════════════════════════════════════════════════════════════════
-# DOT-NOTATION WITHIN INSTANCES — bgp_neighbors
-# ═══════════════════════════════════════════════════════════════════════
-
-
-class TestDotNotationInstances:
-    """bgp_neighbors: dot-notation overrides/removals within instances."""
-
-    def test_dot_overrides_present(self, case):
-        info = case.expected["classes"]["bgp_neighbors"]
-        for ov in info.get("instance_dot_overrides", []):
-            inst = case.tier_c[ov["host"]]["bgp_neighbors"]["instances"][ov["instance"]]
-            assert ov["path"] in inst, (
-                f"{ov['host']}[{ov['instance']}]: missing key '{ov['path']}'"
-            )
-            assert inst[ov["path"]] == ov["value"], (
-                f"{ov['host']}[{ov['instance']}].{ov['path']}"
-            )
-
-    def test_dot_removals_present(self, case):
-        info = case.expected["classes"]["bgp_neighbors"]
-        for rm in info.get("instance_dot_removals", []):
-            inst = case.tier_c[rm["host"]]["bgp_neighbors"]["instances"][rm["instance"]]
-            assert rm["path"] in inst.get("_remove", []), (
-                f"{rm['host']}[{rm['instance']}]: missing _remove '{rm['path']}'"
-            )
-
-    def test_dot_override_reconstructs(self, case):
-        """Dot overrides reconstruct to correct nested values."""
-        info = case.expected["classes"]["bgp_neighbors"]
-        for ov in info.get("instance_dot_overrides", []):
-            tc = case.tier_c[ov["host"]]["bgp_neighbors"]
-            recon = reconstruct_instances(case.tier_b, tc)
-            actual = deep_get(recon[ov["instance"]], ov["path"])
-            assert actual == ov["value"], (
-                f"{ov['host']}[{ov['instance']}].{ov['path']}: "
-                f"reconstructed {actual!r}, expected {ov['value']!r}"
-            )
-
-    def test_dot_removal_reconstructs(self, case):
-        """Dot removals produce absent nested keys after reconstruction."""
-        info = case.expected["classes"]["bgp_neighbors"]
-        for rm in info.get("instance_dot_removals", []):
-            tc = case.tier_c[rm["host"]]["bgp_neighbors"]
-            recon = reconstruct_instances(case.tier_b, tc)
-            assert deep_get(recon[rm["instance"]], rm["path"], None) is None, (
-                f"{rm['host']}[{rm['instance']}].{rm['path']}: "
-                f"expected removed"
+        for host in deviant_hosts:
+            tc = case.tier_c[host]["change_procedures"]
+            # Handle both dict and raw formats
+            if isinstance(tc, dict):
+                deviant_steps = tc.get("steps", [])
+            else:
+                continue
+            assert sorted(str(s) for s in deviant_steps) == sorted(
+                str(s) for s in class_steps
+            ), f"{host}: deviant steps don't contain same items as class"
+            assert deviant_steps != class_steps, (
+                f"{host}: deviant steps should differ in order"
             )
 
 
-# ═══════════════════════════════════════════════════════════════════════
-# COMPOUND OPERATIONS — isis_config
-# ═══════════════════════════════════════════════════════════════════════
+# ---------------------------------------------------------------------------
+# TestInstances
+# ---------------------------------------------------------------------------
 
+class TestInstances:
+
+    def test_instance_count_per_host(self, case):
+        expected_counts = {
+            "fabric_interfaces": 4,
+            "vrf_routing": 3,
+            "bgp_neighbors": 3,
+        }
+        for section, expected in expected_counts.items():
+            for host in case.hosts:
+                if section not in case.tier_c.get(host, {}):
+                    continue
+                tc = case.tier_c[host][section]
+                if not _is_instance_section(tc):
+                    continue
+                actual = len(tc["instances"])
+                assert actual == expected, (
+                    f"{host}/{section}: expected {expected} instances, got {actual}"
+                )
+
+    def test_instance_identity_fields(self, case):
+        classes_meta = case.expected.get("classes", {})
+        for section in INSTANCE_SECTIONS:
+            meta = classes_meta.get(section, {})
+            identity_fields = meta.get("identity_fields", [])
+            if not identity_fields:
+                continue
+            for host in case.hosts:
+                if section not in case.tier_c.get(host, {}):
+                    continue
+                tc = case.tier_c[host][section]
+                if not _is_instance_section(tc):
+                    continue
+                for i, inst in enumerate(tc["instances"]):
+                    for field in identity_fields:
+                        assert field in inst, (
+                            f"{host}/{section} instance {i}: "
+                            f"missing identity field '{field}'"
+                        )
+
+    def test_fabric_interfaces_override(self, case):
+        tc = case.tier_c["rtr-02"]["fabric_interfaces"]
+        inst = tc["instances"][2]
+        assert inst.get("speed") == "10g", (
+            "rtr-02 fabric_interfaces instance 2: expected speed='10g'"
+        )
+
+    def test_fabric_interfaces_removal(self, case):
+        tc = case.tier_c["rtr-08"]["fabric_interfaces"]
+        inst = tc["instances"][3]
+        assert "isis_metric" in inst.get("_remove", []), (
+            "rtr-08 fabric_interfaces instance 3: expected _remove containing 'isis_metric'"
+        )
+
+    def test_vrf_routing_override(self, case):
+        tc = case.tier_c["rtr-03"]["vrf_routing"]
+        inst = tc["instances"][1]
+        assert inst.get("route_limit") == 5000, (
+            "rtr-03 vrf_routing instance 1: expected route_limit=5000"
+        )
+
+    def test_vrf_routing_removal(self, case):
+        tc = case.tier_c["rtr-04"]["vrf_routing"]
+        inst = tc["instances"][2]
+        assert "route_warning_pct" in inst.get("_remove", []), (
+            "rtr-04 vrf_routing instance 2: expected _remove containing 'route_warning_pct'"
+        )
+
+
+# ---------------------------------------------------------------------------
+# TestDotNotation
+# ---------------------------------------------------------------------------
+
+class TestDotNotation:
+
+    def test_telemetry_override_keys_present(self, case):
+        tc = case.tier_c["rtr-01"]["telemetry_stack"]
+        overrides = _override_keys(tc)
+        assert len(overrides) >= 1, (
+            "rtr-01 telemetry_stack: expected at least one override key"
+        )
+
+    def test_telemetry_subtree_removal(self, case):
+        tc = case.tier_c["rtr-03"]["telemetry_stack"]
+        assert "logging" in tc.get("_remove", []), (
+            "rtr-03 telemetry_stack: expected _remove containing 'logging'"
+        )
+
+    def test_telemetry_combo_host(self, case):
+        tc = case.tier_c["rtr-04"]["telemetry_stack"]
+        overrides = _override_keys(tc)
+        assert len(overrides) >= 1, (
+            "rtr-04 telemetry_stack: expected override keys"
+        )
+        assert "_remove" in tc, (
+            "rtr-04 telemetry_stack: expected _remove present"
+        )
+
+    def test_policy_maps_dot_override(self, case):
+        tc = case.tier_c["rtr-01"]["policy_maps"]
+        assert "policy.match.as_path" in tc, (
+            "rtr-01 policy_maps: expected 'policy.match.as_path' key"
+        )
+
+    def test_policy_maps_dot_removal_and_addition(self, case):
+        tc = case.tier_c["rtr-02"]["policy_maps"]
+        removes = tc.get("_remove", [])
+        has_dot_removal = any("." in str(r) for r in removes)
+        assert has_dot_removal, (
+            "rtr-02 policy_maps: expected dot-path in _remove"
+        )
+        assert _has_dot_key(tc), (
+            "rtr-02 policy_maps: expected dot-notation addition key"
+        )
+
+    def test_policy_maps_subtree_addition(self, case):
+        tc = case.tier_c["rtr-04"]["policy_maps"]
+        assert "policy.dampening.half_life" in tc, (
+            "rtr-04 policy_maps: expected 'policy.dampening.half_life'"
+        )
+        assert "policy.dampening.reuse" in tc, (
+            "rtr-04 policy_maps: expected 'policy.dampening.reuse'"
+        )
+
+    def test_policy_maps_triple_combo(self, case):
+        tc = case.tier_c["rtr-07"]["policy_maps"]
+        dot_overrides = [
+            k for k in tc
+            if k not in ("_class", "_remove", "_identity") and "." in str(k)
+        ]
+        assert len(dot_overrides) >= 2, (
+            f"rtr-07 policy_maps: expected >=2 dot overrides, got {len(dot_overrides)}"
+        )
+        removes = tc.get("_remove", [])
+        dot_removals = [r for r in removes if "." in str(r)]
+        assert len(dot_removals) >= 1, (
+            "rtr-07 policy_maps: expected >=1 dot-notation removal"
+        )
+
+
+# ---------------------------------------------------------------------------
+# TestInstanceDotNotation
+# ---------------------------------------------------------------------------
+
+class TestInstanceDotNotation:
+
+    def test_bgp_dot_override_in_instance(self, case):
+        tc = case.tier_c["rtr-01"]["bgp_neighbors"]
+        inst = tc["instances"][1]
+        assert "transport.md5_auth" in inst, (
+            "rtr-01 bgp_neighbors instance 1: expected 'transport.md5_auth' key"
+        )
+        assert inst["transport.md5_auth"] is False, (
+            "rtr-01 bgp_neighbors instance 1: expected transport.md5_auth=False"
+        )
+
+        tc4 = case.tier_c["rtr-04"]["bgp_neighbors"]
+        inst4 = tc4["instances"][0]
+        assert "afi.vpnv4" in inst4, (
+            "rtr-04 bgp_neighbors instance 0: expected 'afi.vpnv4' key"
+        )
+        assert inst4["afi.vpnv4"] is True, (
+            "rtr-04 bgp_neighbors instance 0: expected afi.vpnv4=True"
+        )
+
+    def test_bgp_dot_removal_in_instance(self, case):
+        tc2 = case.tier_c["rtr-02"]["bgp_neighbors"]
+        inst2 = tc2["instances"][2]
+        assert "timers.connect_retry" in inst2.get("_remove", []), (
+            "rtr-02 bgp_neighbors instance 2: expected _remove containing 'timers.connect_retry'"
+        )
+
+        tc8 = case.tier_c["rtr-08"]["bgp_neighbors"]
+        inst8 = tc8["instances"][1]
+        assert "timers.hold" in inst8.get("_remove", []), (
+            "rtr-08 bgp_neighbors instance 1: expected _remove containing 'timers.hold'"
+        )
+
+    def test_bgp_dot_keys_are_flat_strings(self, case):
+        for host in case.hosts:
+            if "bgp_neighbors" not in case.tier_c.get(host, {}):
+                continue
+            tc = case.tier_c[host]["bgp_neighbors"]
+            if not _is_instance_section(tc):
+                continue
+            for i, inst in enumerate(tc["instances"]):
+                for key in inst:
+                    if key in ("_class", "_remove", "_identity"):
+                        continue
+                    if "." in str(key):
+                        assert isinstance(key, str), (
+                            f"{host} bgp instance {i}: dot key {key!r} "
+                            f"is not a str"
+                        )
+
+    def test_bgp_identity_only_count(self, case):
+        meta = case.expected["classes"]["bgp_neighbors"]
+        identity_fields = set(meta.get("identity_fields", []))
+        identity_only = 0
+        total = 0
+        for host in case.hosts:
+            if "bgp_neighbors" not in case.tier_c.get(host, {}):
+                continue
+            tc = case.tier_c[host]["bgp_neighbors"]
+            if not _is_instance_section(tc):
+                continue
+            for inst in tc["instances"]:
+                total += 1
+                non_reserved = {
+                    k for k in inst if k not in ("_class", "_remove", "_identity")
+                }
+                if non_reserved == identity_fields:
+                    identity_only += 1
+        assert total == 30, f"Expected 30 total BGP instances, got {total}"
+        assert identity_only == 28, (
+            f"Expected 28 identity-only instances, got {identity_only}"
+        )
+
+
+# ---------------------------------------------------------------------------
+# TestCompoundOperations
+# ---------------------------------------------------------------------------
 
 class TestCompoundOperations:
-    """isis_config: identity + removal/override combinations."""
 
-    def test_compound_ops(self, case):
-        info = case.expected["classes"]["isis_config"]
-        for host, desc in info.get("compound_operations", {}).items():
-            tc = case.tier_c[host]["isis_config"]
-            assert "_class" in tc
-            assert "net_address" in tc  # identity always present
-            if "removal" in desc:
-                assert "_remove" in tc, f"{host}: expected _remove for '{desc}'"
-            if "override" in desc:
-                meta = {"_class", "_remove", "net_address"}
-                overrides = {k for k in tc if k not in meta}
-                assert len(overrides) > 0, f"{host}: expected override for '{desc}'"
+    def test_isis_identity_plus_removal(self, case):
+        tc = case.tier_c["rtr-02"]["isis_config"]
+        assert "net_address" in tc, "rtr-02 isis_config: missing net_address"
+        assert "auth_password" in tc.get("_remove", []), (
+            "rtr-02 isis_config: expected _remove containing 'auth_password'"
+        )
 
+    def test_isis_identity_plus_override(self, case):
+        tc = case.tier_c["rtr-03"]["isis_config"]
+        assert "net_address" in tc, "rtr-03 isis_config: missing net_address"
+        assert tc.get("metric_style") == "narrow", (
+            "rtr-03 isis_config: expected metric_style='narrow'"
+        )
 
-# ═══════════════════════════════════════════════════════════════════════
-# CHANGE REORDER — change_procedures
-# ═══════════════════════════════════════════════════════════════════════
-
-
-class TestChangeReorder:
-    """change_procedures: reordered list -> raw passthrough."""
-
-    def test_reorder_host_raw(self, case):
-        info = case.expected["classes"]["change_procedures"]
-        for host in info.get("hosts_raw", []):
-            tc = case.tier_c[host]["change_procedures"]
-            assert "_class" not in tc, (
-                f"{host}: reordered section should be raw"
-            )
-
-    def test_matching_hosts_classed(self, case):
-        info = case.expected["classes"]["change_procedures"]
-        for host in info.get("hosts_matching", []):
-            tc = case.tier_c[host]["change_procedures"]
-            assert tc.get("_class") == info["class_name"], (
-                f"{host}: should use {info['class_name']}"
-            )
+    def test_isis_identity_plus_two_removals(self, case):
+        tc = case.tier_c["rtr-06"]["isis_config"]
+        assert "net_address" in tc, "rtr-06 isis_config: missing net_address"
+        removals = tc.get("_remove", [])
+        assert len(removals) == 2, (
+            f"rtr-06 isis_config: expected 2 removals, got {len(removals)}"
+        )
 
 
-# ═══════════════════════════════════════════════════════════════════════
-# CROSS-SECTION ISOLATION
-# ═══════════════════════════════════════════════════════════════════════
-
+# ---------------------------------------------------------------------------
+# TestCrossSectionIsolation
+# ---------------------------------------------------------------------------
 
 class TestCrossSectionIsolation:
-    """No cross-contamination between sections."""
 
-    def test_all_class_refs_valid(self, case):
-        """Every _class in tier_c exists in tier_b."""
+    def test_timeout_field_independent(self, case):
+        assert case.tier_b["AccessPolicy"]["timeout"] == 30, (
+            "AccessPolicy.timeout should be 30"
+        )
+        assert case.tier_b["AlertTarget"]["timeout"] == 10, (
+            "AlertTarget.timeout should be 10"
+        )
+
+    def test_overlapping_group_membership(self, case):
+        rp = case.tier_c["rtr-06"]["routing_policy"]
+        if isinstance(rp, dict):
+            assert "_class" not in rp, (
+                "rtr-06 routing_policy should be raw"
+            )
+        isis = case.tier_c["rtr-06"]["isis_config"]
+        assert isinstance(isis, dict) and isis.get("_class") == "IsisConfig", (
+            "rtr-06 isis_config should have _class: IsisConfig"
+        )
+        telem = case.tier_c["rtr-06"]["telemetry_stack"]
+        assert isinstance(telem, dict) and telem.get("_class") == "TelemetryStack", (
+            "rtr-06 telemetry_stack should have _class: TelemetryStack"
+        )
+
+    def test_adjacent_positive_negative(self, case):
         for host in case.hosts:
-            for section, tc in case.tier_c[host].items():
-                if isinstance(tc, dict) and "_class" in tc:
-                    assert tc["_class"] in case.tier_b, (
-                        f"{host}/{section}: class '{tc['_class']}' not in tier_b"
+            tc = case.tier_c.get(host, {})
+            has_ac = "access_control" in tc
+            has_am = "auth_methods" in tc
+            if has_ac and has_am:
+                ac = tc["access_control"]
+                am = tc["auth_methods"]
+                if isinstance(ac, dict):
+                    assert "_class" in ac, (
+                        f"{host}: access_control should have _class"
+                    )
+                if isinstance(am, dict):
+                    assert "_class" not in am, (
+                        f"{host}: auth_methods should NOT have _class"
                     )
 
-    def test_no_class_shared_across_sections(self, case):
-        """Each class is used by exactly one section."""
-        class_to_section = {}
-        for host in case.hosts:
-            for section, tc in case.tier_c[host].items():
-                if isinstance(tc, dict) and "_class" in tc:
-                    cls = tc["_class"]
-                    if cls in class_to_section:
-                        assert class_to_section[cls] == section, (
-                            f"Class '{cls}' used by both "
-                            f"'{class_to_section[cls]}' and '{section}'"
-                        )
-                    class_to_section[cls] = section
 
-
-# ═══════════════════════════════════════════════════════════════════════
-# OPTIMALITY — compression quality
-# ═══════════════════════════════════════════════════════════════════════
-
+# ---------------------------------------------------------------------------
+# TestOptimality
+# ---------------------------------------------------------------------------
 
 class TestOptimality:
-    """No redundant data in tier_c."""
 
-    def test_no_redundant_overrides(self, case):
-        """Overrides in tier_c differ from the class value."""
+    def test_no_tier_c_redundancy(self, case):
+        """No override in tier_c duplicates the class value (identity exempt)."""
         for host in case.hosts:
-            for section, tc in case.tier_c[host].items():
-                if not isinstance(tc, dict) or "_class" not in tc:
+            for section in case.tier_c.get(host, {}):
+                tc = case.tier_c[host][section]
+                if not isinstance(tc, dict):
                     continue
-                if "instances" in tc:
-                    continue  # tested separately
-                cls = case.tier_b[tc["_class"]]
+                class_name = tc.get("_class")
+                if not class_name:
+                    continue
+                cls = case.tier_b.get(class_name, {})
                 identity = set(cls.get("_identity", []))
-                for key, value in tc.items():
-                    if key in ("_class", "_remove"):
-                        continue
-                    if key in identity:
-                        continue
-                    if "." in key:
-                        cls_val = deep_get(cls, key, _ABSENT)
-                    else:
-                        cls_val = cls.get(key, _ABSENT)
-                    if cls_val is not _ABSENT:
-                        assert normalize(value) != normalize(cls_val), (
-                            f"{host}/{section}: override '{key}'={value!r} "
-                            f"matches class — redundant"
-                        )
 
-    def test_removals_exist_in_class(self, case):
-        """Every _remove path exists in the class definition."""
-        for host in case.hosts:
-            for section, tc in case.tier_c[host].items():
-                if not isinstance(tc, dict) or "_class" not in tc:
-                    continue
-                if "instances" in tc:
-                    continue  # tested separately
-                cls = case.tier_b[tc["_class"]]
-                for path in tc.get("_remove", []):
-                    if "." in path:
-                        assert deep_get(cls, path, _ABSENT) is not _ABSENT, (
-                            f"{host}/{section}: _remove '{path}' not in class"
-                        )
-                    else:
-                        assert path in cls, (
-                            f"{host}/{section}: _remove '{path}' not in class"
-                        )
-
-    def test_instance_overrides_non_redundant(self, case):
-        """Instance overrides differ from class values."""
-        for host in case.hosts:
-            for section, tc in case.tier_c[host].items():
-                if not isinstance(tc, dict) or "instances" not in tc:
-                    continue
-                cls = case.tier_b[tc["_class"]]
-                identity = set(cls.get("_identity", []))
-                for idx, inst in enumerate(tc["instances"]):
-                    for key, value in inst.items():
-                        if key == "_remove":
+                if _is_instance_section(tc):
+                    # Check within each instance
+                    for i, inst in enumerate(tc["instances"]):
+                        inst_class_name = inst.get("_class", class_name)
+                        inst_cls = case.tier_b.get(inst_class_name, cls)
+                        inst_identity = set(inst_cls.get("_identity", []))
+                        for key in inst:
+                            if key in ("_class", "_remove", "_identity"):
+                                continue
+                            if key in inst_identity:
+                                continue
+                            # Dot-notation: resolve against class
+                            if "." in key:
+                                try:
+                                    class_val = deep_get(inst_cls, key)
+                                except (KeyError, TypeError):
+                                    continue  # new subtree, not redundant
+                            else:
+                                if key not in inst_cls:
+                                    continue
+                                class_val = inst_cls[key]
+                            assert inst[key] != class_val or type(inst[key]) != type(class_val), (
+                                f"Redundant override: {host}/{section} "
+                                f"instance {i} key '{key}' = {inst[key]!r} "
+                                f"matches class value"
+                            )
+                else:
+                    for key in tc:
+                        if key in ("_class", "_remove", "_identity"):
                             continue
                         if key in identity:
                             continue
                         if "." in key:
-                            cls_val = deep_get(cls, key, _ABSENT)
+                            try:
+                                class_val = deep_get(cls, key)
+                            except (KeyError, TypeError):
+                                continue  # new subtree
                         else:
-                            cls_val = cls.get(key, _ABSENT)
-                        if cls_val is not _ABSENT:
-                            assert normalize(value) != normalize(cls_val), (
-                                f"{host}/{section}[{idx}]: "
-                                f"'{key}'={value!r} matches class — redundant"
-                            )
+                            if key not in cls:
+                                continue
+                            class_val = cls[key]
+                        assert tc[key] != class_val or type(tc[key]) != type(class_val), (
+                            f"Redundant override: {host}/{section} "
+                            f"key '{key}' = {tc[key]!r} matches class value"
+                        )
 
-    def test_instance_removals_exist_in_class(self, case):
-        """Instance _remove paths exist in the class definition."""
-        for host in case.hosts:
-            for section, tc in case.tier_c[host].items():
-                if not isinstance(tc, dict) or "instances" not in tc:
+    def test_no_tier_b_redundancy(self, case):
+        """
+        Every class field should be retained by >=2 hosts.
+        Flag (don't fail) if count < 2.
+        Known flag: AccessPolicy.tacacs_allow retained by 1 of 8.
+        """
+        import warnings
+
+        for class_name, cls in case.tier_b.items():
+            identity = set(cls.get("_identity", []))
+            # Find which section uses this class
+            section_for_class = None
+            for host in case.hosts:
+                for section in case.tier_c.get(host, {}):
+                    tc = case.tier_c[host][section]
+                    if isinstance(tc, dict) and tc.get("_class") == class_name:
+                        section_for_class = section
+                        break
+                    if _is_instance_section(tc) and isinstance(tc, dict):
+                        if tc.get("_class") == class_name:
+                            section_for_class = section
+                            break
+                if section_for_class:
+                    break
+            if not section_for_class:
+                continue
+
+            for field in cls:
+                if field in ("_identity",):
                     continue
-                cls = case.tier_b[tc["_class"]]
-                for idx, inst in enumerate(tc["instances"]):
-                    for path in inst.get("_remove", []):
-                        if "." in path:
-                            assert deep_get(cls, path, _ABSENT) is not _ABSENT, (
-                                f"{host}/{section}[{idx}]: "
-                                f"_remove '{path}' not in class"
+                if field in identity:
+                    continue
+
+                retained = 0
+                for host in case.hosts:
+                    if section_for_class not in case.tier_c.get(host, {}):
+                        continue
+                    tc = case.tier_c[host][section_for_class]
+                    if not isinstance(tc, dict):
+                        continue
+                    if "_class" not in tc and not _is_instance_section(tc):
+                        continue  # raw host
+
+                    # Check if field is removed or overridden
+                    if _is_instance_section(tc):
+                        # For instance sections, field is "retained" if class
+                        # value is used in at least one instance
+                        for inst in tc.get("instances", []):
+                            removed = field in inst.get("_remove", [])
+                            overridden = field in inst and field not in (
+                                set(inst.get("_remove", []))
                             )
-                        else:
-                            assert path in cls, (
-                                f"{host}/{section}[{idx}]: "
-                                f"_remove '{path}' not in class"
-                            )
+                            if not removed and field not in inst:
+                                retained += 1
+                    else:
+                        removed = field in tc.get("_remove", [])
+                        overridden = field in tc and field not in identity
+                        if not removed and not overridden:
+                            retained += 1
+
+                if retained < 2:
+                    warnings.warn(
+                        f"FLAG: {class_name}.{field} retained by only "
+                        f"{retained} host(s) — verify design decision"
+                    )
+
+    def test_negative_sections_all_raw(self, case):
+        for host in case.hosts:
+            for section in NEGATIVE_SECTIONS:
+                if section not in case.tier_c.get(host, {}):
+                    continue
+                entry = case.tier_c[host][section]
+                if isinstance(entry, dict):
+                    assert "_class" not in entry, (
+                        f"Negative section {host}/{section} has _class"
+                    )

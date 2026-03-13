@@ -12,18 +12,21 @@ from ruamel.yaml import YAML
 from ruamel.yaml.comments import CommentedMap, CommentedSeq
 
 _INI_EXTENSIONS = {".ini", ".conf", ".cfg", ".cnf", ".properties"}
+_XML_EXTENSIONS = {".xml", ".xsl", ".xslt", ".plist", ".xhtml"}
 
 
 def detect_format(path: Path) -> str:
     """Detect input format from file extension.
 
-    Returns 'json' for .json files, 'ini' for INI/config files, 'yaml' for everything else.
+    Returns 'json', 'ini', 'xml', or 'yaml' (default).
     """
     suffix = path.suffix.lower()
     if suffix == ".json":
         return "json"
     if suffix in _INI_EXTENSIONS:
         return "ini"
+    if suffix in _XML_EXTENSIONS:
+        return "xml"
     return "yaml"
 
 
@@ -114,6 +117,78 @@ def _parse_flat_keyvalue(text: str) -> CommentedMap:
     return cm
 
 
+def _strip_ns(tag: str) -> str:
+    """Strip XML namespace prefix: ``{http://...}tag`` -> ``tag``."""
+    if tag.startswith("{"):
+        return tag.split("}", 1)[1]
+    return tag
+
+
+def xml_to_commented_map(text: str) -> CommentedMap:
+    """Convert XML text to a CommentedMap.
+
+    Rules:
+    - Namespace prefixes stripped: ``{http://ns}tag`` -> ``tag``
+    - Attributes -> ``@attr_name`` keys (sorted, before child keys)
+    - Repeated same-name children -> CommentedSeq
+    - Text-only elements (no children, no attributes) -> scalar value
+    - Mixed content (text + children) -> ``_text`` key alongside child keys
+    """
+    import defusedxml.ElementTree as DefusedET
+
+    root = DefusedET.fromstring(text)
+    cm = CommentedMap()
+    root_tag = _strip_ns(root.tag)
+    cm[root_tag] = _xml_element_to_value(root)
+    return cm
+
+
+def _xml_element_to_value(elem: Any) -> Any:
+    """Convert a single XML element to CommentedMap, CommentedSeq, or scalar."""
+    children = list(elem)
+    has_attrs = len(elem.attrib) > 0
+    has_children = len(children) > 0
+    text = (elem.text or "").strip()
+
+    # Text-only leaf element (no children, no attributes)
+    if not has_children and not has_attrs:
+        return text if text else ""
+
+    cm = CommentedMap()
+
+    # Attributes -> @name keys (sorted)
+    if has_attrs:
+        for attr_name in sorted(elem.attrib):
+            cm[f"@{_strip_ns(attr_name)}"] = elem.attrib[attr_name]
+
+    # Mixed content: text alongside children
+    if text and has_children:
+        cm["_text"] = text
+
+    # Children — detect repeated names for CommentedSeq
+    if has_children:
+        child_order: list[str] = []
+        child_groups: dict[str, list[Any]] = {}
+        for child in children:
+            tag = _strip_ns(child.tag)
+            if tag not in child_groups:
+                child_order.append(tag)
+                child_groups[tag] = []
+            child_groups[tag].append(child)
+
+        for tag in child_order:
+            group = child_groups[tag]
+            if len(group) == 1:
+                cm[tag] = _xml_element_to_value(group[0])
+            else:
+                cs = CommentedSeq()
+                for child in group:
+                    cs.append(_xml_element_to_value(child))
+                cm[tag] = cs
+
+    return cm
+
+
 def detect_platform(doc: Any) -> str | None:
     """Detect the platform from document content.
 
@@ -176,6 +251,8 @@ def load_input(path: Path) -> tuple[Any, str]:
         doc = json_to_commented_map(data)
     elif fmt == "ini":
         doc = ini_to_commented_map(raw)
+    elif fmt == "xml":
+        doc = xml_to_commented_map(raw)
     else:
         yaml = YAML(typ="rt")
         doc = yaml.load(raw)

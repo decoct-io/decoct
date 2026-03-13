@@ -1,0 +1,1479 @@
+meta:
+  entity_type: unknown-0
+  tier_b_ref: unknown-0_classes.yaml
+  total_instances: 16
+class_assignments:
+  _base_only:
+    instances:
+    - p-rdg-1
+  sensor_group:
+    instances:
+    - p-bas-1..p-bas-2
+    - p-rdg-2
+    - pe-ald
+    - pe-and
+    - pe-brk
+    - pe-cmb
+    - pe-est
+    - pe-fnh
+    - pe-nby
+    - pe-win
+    - srr-bas
+    - srr-rdg
+    - trr-bas
+    - trr-rdg
+instance_data:
+  schema:
+  - data.host-names.host-name
+  - data.hostname.system-network-name
+  - data.snmp-server.location
+  - data.snmp.system.location
+  records:
+    p-bas-1:
+    - p-bas-1
+    - p-bas-1
+    - p-bas-1 — Basingstoke DC
+    - p-bas-1 — Basingstoke DC
+    p-bas-2:
+    - p-bas-2
+    - p-bas-2
+    - p-bas-2 — Basingstoke DC
+    - p-bas-2 — Basingstoke DC
+    p-rdg-1:
+    - p-rdg-1
+    - p-rdg-1
+    - p-rdg-1 — Reading DC
+    - p-rdg-1 — Reading DC
+    p-rdg-2:
+    - p-rdg-2
+    - p-rdg-2
+    - p-rdg-2 — Reading DC
+    - p-rdg-2 — Reading DC
+    pe-ald:
+    - pe-ald
+    - pe-ald
+    - pe-ald — Aldershot
+    - pe-ald — Aldershot
+    pe-and:
+    - pe-and
+    - pe-and
+    - pe-and — Andover
+    - pe-and — Andover
+    pe-brk:
+    - pe-brk
+    - pe-brk
+    - pe-brk — Bracknell
+    - pe-brk — Bracknell
+    pe-cmb:
+    - pe-cmb
+    - pe-cmb
+    - pe-cmb — Camberley
+    - pe-cmb — Camberley
+    pe-est:
+    - pe-est
+    - pe-est
+    - pe-est — Eastleigh
+    - pe-est — Eastleigh
+    pe-fnh:
+    - pe-fnh
+    - pe-fnh
+    - pe-fnh — Farnham
+    - pe-fnh — Farnham
+    pe-nby:
+    - pe-nby
+    - pe-nby
+    - pe-nby — Newbury
+    - pe-nby — Newbury
+    pe-win:
+    - pe-win
+    - pe-win
+    - pe-win — Winchester
+    - pe-win — Winchester
+    srr-bas:
+    - srr-bas
+    - srr-bas
+    - srr-bas — Basingstoke DC
+    - srr-bas — Basingstoke DC
+    srr-rdg:
+    - srr-rdg
+    - srr-rdg
+    - srr-rdg — Reading DC
+    - srr-rdg — Reading DC
+    trr-bas:
+    - trr-bas
+    - trr-bas
+    - trr-bas — Basingstoke DC
+    - trr-bas — Basingstoke DC
+    trr-rdg:
+    - trr-rdg
+    - trr-rdg
+    - trr-rdg — Reading DC
+    - trr-rdg — Reading DC
+instance_attrs:
+  p-bas-1:
+    data.banners:
+    - banner.0.banner-name: motd
+      banner.0.banner-text: '#Authorized access only. All activity may be monitored.#'
+      banner.1.banner-name: login
+      banner.1.banner-text: '#p-bas-1 — Basingstoke DC#'
+    - banner.0.banner-type: motd
+      banner.0.line: '#Authorized access only. All activity may be monitored.#'
+      banner.1.banner-type: login
+      banner.1.line: '#p-bas-1 — Basingstoke DC#'
+    data.interface-configurations.interface-configuration:
+    - active: act
+      interface-name: Null0
+      ipv4-network.icmp-unreach-disable: ''
+    - active: act
+      interface-name: Loopback0
+      interface-virtual: ''
+      description: Loopback
+      ipv4-network.addresses.primary: "{'address': '10.0.0.3', 'netmask': '255.255.255.255'}"
+      ipv6-network.addresses.regular-addresses: "{'regular-address': {'address': 'fc00:0:3::1',
+        'prefix-length': '128', 'zone': '0'}}"
+    - active: act
+      interface-name: MgmtEth0/RP0/CPU0/0
+      ipv4-network.addresses.primary: "{'address': '198.18.1.103', 'netmask': '255.255.255.0'}"
+    - active: act
+      interface-name: GigabitEthernet0/0/0/0
+      description: to p-rdg-1
+      ipv4-network.addresses.primary: "{'address': '10.1.0.3', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    - active: act
+      interface-name: GigabitEthernet0/0/0/1
+      description: to p-rdg-2
+      ipv4-network.addresses.primary: "{'address': '10.1.0.7', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    - active: act
+      interface-name: GigabitEthernet0/0/0/2
+      description: to p-bas-2
+      ipv4-network.addresses.primary: "{'address': '10.1.0.10', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    - active: act
+      interface-name: GigabitEthernet0/0/0/3
+      description: to trr-bas
+      ipv4-network.addresses.primary: "{'address': '10.1.0.17', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    - active: act
+      interface-name: GigabitEthernet0/0/0/4
+      description: to srr-bas
+      ipv4-network.addresses.primary: "{'address': '10.1.0.25', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    - active: act
+      interface-name: GigabitEthernet0/0/0/5
+      description: to pe-est
+      ipv4-network.addresses.primary: "{'address': '10.1.0.37', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    data.interfaces.interface:
+    - interface-name: Null0
+      ipv4.icmp.unreachables: "{'disable': ''}"
+    - interface-name: Loopback0
+      description: Loopback
+      ipv4.addresses.address: "{'address': '10.0.0.3', 'netmask': '255.255.255.255'}"
+      ipv6.addresses.ipv6-address: "{'address': 'fc00:0:3::1', 'prefix-length': '128',
+        'zone': '0'}"
+    - interface-name: MgmtEth0/RP0/CPU0/0
+      ipv4.addresses.address: "{'address': '198.18.1.103', 'netmask': '255.255.255.0'}"
+    - interface-name: GigabitEthernet0/0/0/0
+      description: to p-rdg-1
+      ipv4.addresses.address: "{'address': '10.1.0.3', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+    - interface-name: GigabitEthernet0/0/0/1
+      description: to p-rdg-2
+      ipv4.addresses.address: "{'address': '10.1.0.7', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+    - interface-name: GigabitEthernet0/0/0/2
+      description: to p-bas-2
+      ipv4.addresses.address: "{'address': '10.1.0.10', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+    - interface-name: GigabitEthernet0/0/0/3
+      description: to trr-bas
+      ipv4.addresses.address: "{'address': '10.1.0.17', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+    - interface-name: GigabitEthernet0/0/0/4
+      description: to srr-bas
+      ipv4.addresses.address: "{'address': '10.1.0.25', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+    - interface-name: GigabitEthernet0/0/0/5
+      description: to pe-est
+      ipv4.addresses.address: "{'address': '10.1.0.37', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+  p-bas-2:
+    data.banners:
+    - banner.0.banner-name: motd
+      banner.0.banner-text: '#Authorized access only. All activity may be monitored.#'
+      banner.1.banner-name: login
+      banner.1.banner-text: '#p-bas-2 — Basingstoke DC#'
+    - banner.0.banner-type: motd
+      banner.0.line: '#Authorized access only. All activity may be monitored.#'
+      banner.1.banner-type: login
+      banner.1.line: '#p-bas-2 — Basingstoke DC#'
+    data.interface-configurations.interface-configuration:
+    - active: act
+      interface-name: Null0
+      ipv4-network.icmp-unreach-disable: ''
+    - active: act
+      interface-name: Loopback0
+      interface-virtual: ''
+      description: Loopback
+      ipv4-network.addresses.primary: "{'address': '10.0.0.4', 'netmask': '255.255.255.255'}"
+      ipv6-network.addresses.regular-addresses: "{'regular-address': {'address': 'fc00:0:4::1',
+        'prefix-length': '128', 'zone': '0'}}"
+    - active: act
+      interface-name: MgmtEth0/RP0/CPU0/0
+      ipv4-network.addresses.primary: "{'address': '198.18.1.104', 'netmask': '255.255.255.0'}"
+    - active: act
+      interface-name: GigabitEthernet0/0/0/0
+      description: to p-rdg-1
+      ipv4-network.addresses.primary: "{'address': '10.1.0.5', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    - active: act
+      interface-name: GigabitEthernet0/0/0/1
+      description: to p-rdg-2
+      ipv4-network.addresses.primary: "{'address': '10.1.0.9', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    - active: act
+      interface-name: GigabitEthernet0/0/0/2
+      description: to p-bas-1
+      ipv4-network.addresses.primary: "{'address': '10.1.0.11', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    - active: act
+      interface-name: GigabitEthernet0/0/0/3
+      description: to trr-bas
+      ipv4-network.addresses.primary: "{'address': '10.1.0.19', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    - active: act
+      interface-name: GigabitEthernet0/0/0/4
+      description: to srr-bas
+      ipv4-network.addresses.primary: "{'address': '10.1.0.27', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    - active: act
+      interface-name: GigabitEthernet0/0/0/5
+      description: to pe-ald
+      ipv4-network.addresses.primary: "{'address': '10.1.0.47', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    data.interfaces.interface:
+    - interface-name: Null0
+      ipv4.icmp.unreachables: "{'disable': ''}"
+    - interface-name: Loopback0
+      description: Loopback
+      ipv4.addresses.address: "{'address': '10.0.0.4', 'netmask': '255.255.255.255'}"
+      ipv6.addresses.ipv6-address: "{'address': 'fc00:0:4::1', 'prefix-length': '128',
+        'zone': '0'}"
+    - interface-name: MgmtEth0/RP0/CPU0/0
+      ipv4.addresses.address: "{'address': '198.18.1.104', 'netmask': '255.255.255.0'}"
+    - interface-name: GigabitEthernet0/0/0/0
+      description: to p-rdg-1
+      ipv4.addresses.address: "{'address': '10.1.0.5', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+    - interface-name: GigabitEthernet0/0/0/1
+      description: to p-rdg-2
+      ipv4.addresses.address: "{'address': '10.1.0.9', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+    - interface-name: GigabitEthernet0/0/0/2
+      description: to p-bas-1
+      ipv4.addresses.address: "{'address': '10.1.0.11', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+    - interface-name: GigabitEthernet0/0/0/3
+      description: to trr-bas
+      ipv4.addresses.address: "{'address': '10.1.0.19', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+    - interface-name: GigabitEthernet0/0/0/4
+      description: to srr-bas
+      ipv4.addresses.address: "{'address': '10.1.0.27', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+    - interface-name: GigabitEthernet0/0/0/5
+      description: to pe-ald
+      ipv4.addresses.address: "{'address': '10.1.0.47', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+  p-rdg-1:
+    data.banners:
+    - banner.0.banner-name: motd
+      banner.0.banner-text: '#Authorized access only. All activity may be monitored.#'
+      banner.1.banner-name: login
+      banner.1.banner-text: '#p-rdg-1 — Reading DC#'
+    - banner.0.banner-type: motd
+      banner.0.line: '#Authorized access only. All activity may be monitored.#'
+      banner.1.banner-type: login
+      banner.1.line: '#p-rdg-1 — Reading DC#'
+    data.interface-configurations.interface-configuration:
+    - active: act
+      interface-name: Null0
+      ipv4-network.icmp-unreach-disable: ''
+    - active: act
+      interface-name: Loopback0
+      interface-virtual: ''
+      description: Loopback
+      ipv4-network.addresses.primary: "{'address': '10.0.0.1', 'netmask': '255.255.255.255'}"
+      ipv6-network.addresses.regular-addresses: "{'regular-address': {'address': 'fc00:0:1::1',
+        'prefix-length': '128', 'zone': '0'}}"
+    - active: act
+      interface-name: MgmtEth0/RP0/CPU0/0
+      ipv4-network.addresses.primary: "{'address': '198.18.1.101', 'netmask': '255.255.255.0'}"
+    - active: act
+      interface-name: GigabitEthernet0/0/0/0
+      description: to p-rdg-2
+      ipv4-network.addresses.primary: "{'address': '10.1.0.0', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    - active: act
+      interface-name: GigabitEthernet0/0/0/1
+      description: to p-bas-1
+      ipv4-network.addresses.primary: "{'address': '10.1.0.2', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    - active: act
+      interface-name: GigabitEthernet0/0/0/2
+      description: to p-bas-2
+      ipv4-network.addresses.primary: "{'address': '10.1.0.4', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    - active: act
+      interface-name: GigabitEthernet0/0/0/3
+      description: to trr-rdg
+      ipv4-network.addresses.primary: "{'address': '10.1.0.13', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    - active: act
+      interface-name: GigabitEthernet0/0/0/4
+      description: to srr-rdg
+      ipv4-network.addresses.primary: "{'address': '10.1.0.21', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    - active: act
+      interface-name: GigabitEthernet0/0/0/5
+      description: to pe-nby
+      ipv4-network.addresses.primary: "{'address': '10.1.0.28', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    data.interfaces.interface:
+    - interface-name: Null0
+      ipv4.icmp.unreachables: "{'disable': ''}"
+    - interface-name: Loopback0
+      description: Loopback
+      ipv4.addresses.address: "{'address': '10.0.0.1', 'netmask': '255.255.255.255'}"
+      ipv6.addresses.ipv6-address: "{'address': 'fc00:0:1::1', 'prefix-length': '128',
+        'zone': '0'}"
+    - interface-name: MgmtEth0/RP0/CPU0/0
+      ipv4.addresses.address: "{'address': '198.18.1.101', 'netmask': '255.255.255.0'}"
+    - interface-name: GigabitEthernet0/0/0/0
+      description: to p-rdg-2
+      ipv4.addresses.address: "{'address': '10.1.0.0', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+    - interface-name: GigabitEthernet0/0/0/1
+      description: to p-bas-1
+      ipv4.addresses.address: "{'address': '10.1.0.2', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+    - interface-name: GigabitEthernet0/0/0/2
+      description: to p-bas-2
+      ipv4.addresses.address: "{'address': '10.1.0.4', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+    - interface-name: GigabitEthernet0/0/0/3
+      description: to trr-rdg
+      ipv4.addresses.address: "{'address': '10.1.0.13', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+    - interface-name: GigabitEthernet0/0/0/4
+      description: to srr-rdg
+      ipv4.addresses.address: "{'address': '10.1.0.21', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+    - interface-name: GigabitEthernet0/0/0/5
+      description: to pe-nby
+      ipv4.addresses.address: "{'address': '10.1.0.28', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+  p-rdg-2:
+    data.banners:
+    - banner.0.banner-name: motd
+      banner.0.banner-text: '#Authorized access only. All activity may be monitored.#'
+      banner.1.banner-name: login
+      banner.1.banner-text: '#p-rdg-2 — Reading DC#'
+    - banner.0.banner-type: motd
+      banner.0.line: '#Authorized access only. All activity may be monitored.#'
+      banner.1.banner-type: login
+      banner.1.line: '#p-rdg-2 — Reading DC#'
+    data.interface-configurations.interface-configuration:
+    - active: act
+      interface-name: Null0
+      ipv4-network.icmp-unreach-disable: ''
+    - active: act
+      interface-name: Loopback0
+      interface-virtual: ''
+      description: Loopback
+      ipv4-network.addresses.primary: "{'address': '10.0.0.2', 'netmask': '255.255.255.255'}"
+      ipv6-network.addresses.regular-addresses: "{'regular-address': {'address': 'fc00:0:2::1',
+        'prefix-length': '128', 'zone': '0'}}"
+    - active: act
+      interface-name: MgmtEth0/RP0/CPU0/0
+      ipv4-network.addresses.primary: "{'address': '198.18.1.102', 'netmask': '255.255.255.0'}"
+    - active: act
+      interface-name: GigabitEthernet0/0/0/0
+      description: to p-rdg-1
+      ipv4-network.addresses.primary: "{'address': '10.1.0.1', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    - active: act
+      interface-name: GigabitEthernet0/0/0/1
+      description: to p-bas-1
+      ipv4-network.addresses.primary: "{'address': '10.1.0.6', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    - active: act
+      interface-name: GigabitEthernet0/0/0/2
+      description: to p-bas-2
+      ipv4-network.addresses.primary: "{'address': '10.1.0.8', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    - active: act
+      interface-name: GigabitEthernet0/0/0/3
+      description: to trr-rdg
+      ipv4-network.addresses.primary: "{'address': '10.1.0.15', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    - active: act
+      interface-name: GigabitEthernet0/0/0/4
+      description: to srr-rdg
+      ipv4-network.addresses.primary: "{'address': '10.1.0.23', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    - active: act
+      interface-name: GigabitEthernet0/0/0/5
+      description: to pe-brk
+      ipv4-network.addresses.primary: "{'address': '10.1.0.38', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    data.interfaces.interface:
+    - interface-name: Null0
+      ipv4.icmp.unreachables: "{'disable': ''}"
+    - interface-name: Loopback0
+      description: Loopback
+      ipv4.addresses.address: "{'address': '10.0.0.2', 'netmask': '255.255.255.255'}"
+      ipv6.addresses.ipv6-address: "{'address': 'fc00:0:2::1', 'prefix-length': '128',
+        'zone': '0'}"
+    - interface-name: MgmtEth0/RP0/CPU0/0
+      ipv4.addresses.address: "{'address': '198.18.1.102', 'netmask': '255.255.255.0'}"
+    - interface-name: GigabitEthernet0/0/0/0
+      description: to p-rdg-1
+      ipv4.addresses.address: "{'address': '10.1.0.1', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+    - interface-name: GigabitEthernet0/0/0/1
+      description: to p-bas-1
+      ipv4.addresses.address: "{'address': '10.1.0.6', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+    - interface-name: GigabitEthernet0/0/0/2
+      description: to p-bas-2
+      ipv4.addresses.address: "{'address': '10.1.0.8', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+    - interface-name: GigabitEthernet0/0/0/3
+      description: to trr-rdg
+      ipv4.addresses.address: "{'address': '10.1.0.15', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+    - interface-name: GigabitEthernet0/0/0/4
+      description: to srr-rdg
+      ipv4.addresses.address: "{'address': '10.1.0.23', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+    - interface-name: GigabitEthernet0/0/0/5
+      description: to pe-brk
+      ipv4.addresses.address: "{'address': '10.1.0.38', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+  pe-ald:
+    data.banners:
+    - banner.0.banner-name: motd
+      banner.0.banner-text: '#Authorized access only. All activity may be monitored.#'
+      banner.1.banner-name: login
+      banner.1.banner-text: '#pe-ald — Aldershot#'
+    - banner.0.banner-type: motd
+      banner.0.line: '#Authorized access only. All activity may be monitored.#'
+      banner.1.banner-type: login
+      banner.1.line: '#pe-ald — Aldershot#'
+    data.interface-configurations.interface-configuration:
+    - active: act
+      interface-name: Null0
+      ipv4-network.icmp-unreach-disable: ''
+    - active: act
+      interface-name: Loopback0
+      interface-virtual: ''
+      description: Loopback
+      ipv4-network.addresses.primary: "{'address': '10.0.0.24', 'netmask': '255.255.255.255'}"
+      ipv6-network.addresses.regular-addresses: "{'regular-address': {'address': 'fc00:0:18::1',
+        'prefix-length': '128', 'zone': '0'}}"
+    - active: act
+      interface-name: MgmtEth0/RP0/CPU0/0
+      ipv4-network.addresses.primary: "{'address': '198.18.1.124', 'netmask': '255.255.255.0'}"
+    - active: act
+      interface-name: GigabitEthernet0/0/0/0
+      description: to pe-fnh
+      ipv4-network.addresses.primary: "{'address': '10.1.0.45', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    - active: act
+      interface-name: GigabitEthernet0/0/0/1
+      description: to p-bas-2
+      ipv4-network.addresses.primary: "{'address': '10.1.0.46', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    data.interfaces.interface:
+    - interface-name: Null0
+      ipv4.icmp.unreachables: "{'disable': ''}"
+    - interface-name: Loopback0
+      description: Loopback
+      ipv4.addresses.address: "{'address': '10.0.0.24', 'netmask': '255.255.255.255'}"
+      ipv6.addresses.ipv6-address: "{'address': 'fc00:0:18::1', 'prefix-length': '128',
+        'zone': '0'}"
+    - interface-name: MgmtEth0/RP0/CPU0/0
+      ipv4.addresses.address: "{'address': '198.18.1.124', 'netmask': '255.255.255.0'}"
+    - interface-name: GigabitEthernet0/0/0/0
+      description: to pe-fnh
+      ipv4.addresses.address: "{'address': '10.1.0.45', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+    - interface-name: GigabitEthernet0/0/0/1
+      description: to p-bas-2
+      ipv4.addresses.address: "{'address': '10.1.0.46', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+  pe-and:
+    data.banners:
+    - banner.0.banner-name: motd
+      banner.0.banner-text: '#Authorized access only. All activity may be monitored.#'
+      banner.1.banner-name: login
+      banner.1.banner-text: '#pe-and — Andover#'
+    - banner.0.banner-type: motd
+      banner.0.line: '#Authorized access only. All activity may be monitored.#'
+      banner.1.banner-type: login
+      banner.1.line: '#pe-and — Andover#'
+    data.interface-configurations.interface-configuration:
+    - active: act
+      interface-name: Null0
+      ipv4-network.icmp-unreach-disable: ''
+    - active: act
+      interface-name: Loopback0
+      interface-virtual: ''
+      description: Loopback
+      ipv4-network.addresses.primary: "{'address': '10.0.0.12', 'netmask': '255.255.255.255'}"
+      ipv6-network.addresses.regular-addresses: "{'regular-address': {'address': 'fc00:0:c::1',
+        'prefix-length': '128', 'zone': '0'}}"
+    - active: act
+      interface-name: MgmtEth0/RP0/CPU0/0
+      ipv4-network.addresses.primary: "{'address': '198.18.1.112', 'netmask': '255.255.255.0'}"
+    - active: act
+      interface-name: GigabitEthernet0/0/0/0
+      description: to pe-nby
+      ipv4-network.addresses.primary: "{'address': '10.1.0.31', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    - active: act
+      interface-name: GigabitEthernet0/0/0/1
+      description: to pe-win
+      ipv4-network.addresses.primary: "{'address': '10.1.0.32', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    data.interfaces.interface:
+    - interface-name: Null0
+      ipv4.icmp.unreachables: "{'disable': ''}"
+    - interface-name: Loopback0
+      description: Loopback
+      ipv4.addresses.address: "{'address': '10.0.0.12', 'netmask': '255.255.255.255'}"
+      ipv6.addresses.ipv6-address: "{'address': 'fc00:0:c::1', 'prefix-length': '128',
+        'zone': '0'}"
+    - interface-name: MgmtEth0/RP0/CPU0/0
+      ipv4.addresses.address: "{'address': '198.18.1.112', 'netmask': '255.255.255.0'}"
+    - interface-name: GigabitEthernet0/0/0/0
+      description: to pe-nby
+      ipv4.addresses.address: "{'address': '10.1.0.31', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+    - interface-name: GigabitEthernet0/0/0/1
+      description: to pe-win
+      ipv4.addresses.address: "{'address': '10.1.0.32', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+  pe-brk:
+    data.banners:
+    - banner.0.banner-name: motd
+      banner.0.banner-text: '#Authorized access only. All activity may be monitored.#'
+      banner.1.banner-name: login
+      banner.1.banner-text: '#pe-brk — Bracknell#'
+    - banner.0.banner-type: motd
+      banner.0.line: '#Authorized access only. All activity may be monitored.#'
+      banner.1.banner-type: login
+      banner.1.line: '#pe-brk — Bracknell#'
+    data.interface-configurations.interface-configuration:
+    - active: act
+      interface-name: Null0
+      ipv4-network.icmp-unreach-disable: ''
+    - active: act
+      interface-name: Loopback0
+      interface-virtual: ''
+      description: Loopback
+      ipv4-network.addresses.primary: "{'address': '10.0.0.21', 'netmask': '255.255.255.255'}"
+      ipv6-network.addresses.regular-addresses: "{'regular-address': {'address': 'fc00:0:15::1',
+        'prefix-length': '128', 'zone': '0'}}"
+    - active: act
+      interface-name: MgmtEth0/RP0/CPU0/0
+      ipv4-network.addresses.primary: "{'address': '198.18.1.121', 'netmask': '255.255.255.0'}"
+    - active: act
+      interface-name: GigabitEthernet0/0/0/0
+      description: to p-rdg-2
+      ipv4-network.addresses.primary: "{'address': '10.1.0.39', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    - active: act
+      interface-name: GigabitEthernet0/0/0/1
+      description: to pe-cmb
+      ipv4-network.addresses.primary: "{'address': '10.1.0.40', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    data.interfaces.interface:
+    - interface-name: Null0
+      ipv4.icmp.unreachables: "{'disable': ''}"
+    - interface-name: Loopback0
+      description: Loopback
+      ipv4.addresses.address: "{'address': '10.0.0.21', 'netmask': '255.255.255.255'}"
+      ipv6.addresses.ipv6-address: "{'address': 'fc00:0:15::1', 'prefix-length': '128',
+        'zone': '0'}"
+    - interface-name: MgmtEth0/RP0/CPU0/0
+      ipv4.addresses.address: "{'address': '198.18.1.121', 'netmask': '255.255.255.0'}"
+    - interface-name: GigabitEthernet0/0/0/0
+      description: to p-rdg-2
+      ipv4.addresses.address: "{'address': '10.1.0.39', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+    - interface-name: GigabitEthernet0/0/0/1
+      description: to pe-cmb
+      ipv4.addresses.address: "{'address': '10.1.0.40', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+  pe-cmb:
+    data.banners:
+    - banner.0.banner-name: motd
+      banner.0.banner-text: '#Authorized access only. All activity may be monitored.#'
+      banner.1.banner-name: login
+      banner.1.banner-text: '#pe-cmb — Camberley#'
+    - banner.0.banner-type: motd
+      banner.0.line: '#Authorized access only. All activity may be monitored.#'
+      banner.1.banner-type: login
+      banner.1.line: '#pe-cmb — Camberley#'
+    data.interface-configurations.interface-configuration:
+    - active: act
+      interface-name: Null0
+      ipv4-network.icmp-unreach-disable: ''
+    - active: act
+      interface-name: Loopback0
+      interface-virtual: ''
+      description: Loopback
+      ipv4-network.addresses.primary: "{'address': '10.0.0.22', 'netmask': '255.255.255.255'}"
+      ipv6-network.addresses.regular-addresses: "{'regular-address': {'address': 'fc00:0:16::1',
+        'prefix-length': '128', 'zone': '0'}}"
+    - active: act
+      interface-name: MgmtEth0/RP0/CPU0/0
+      ipv4-network.addresses.primary: "{'address': '198.18.1.122', 'netmask': '255.255.255.0'}"
+    - active: act
+      interface-name: GigabitEthernet0/0/0/0
+      description: to pe-brk
+      ipv4-network.addresses.primary: "{'address': '10.1.0.41', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    - active: act
+      interface-name: GigabitEthernet0/0/0/1
+      description: to pe-fnh
+      ipv4-network.addresses.primary: "{'address': '10.1.0.42', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    data.interfaces.interface:
+    - interface-name: Null0
+      ipv4.icmp.unreachables: "{'disable': ''}"
+    - interface-name: Loopback0
+      description: Loopback
+      ipv4.addresses.address: "{'address': '10.0.0.22', 'netmask': '255.255.255.255'}"
+      ipv6.addresses.ipv6-address: "{'address': 'fc00:0:16::1', 'prefix-length': '128',
+        'zone': '0'}"
+    - interface-name: MgmtEth0/RP0/CPU0/0
+      ipv4.addresses.address: "{'address': '198.18.1.122', 'netmask': '255.255.255.0'}"
+    - interface-name: GigabitEthernet0/0/0/0
+      description: to pe-brk
+      ipv4.addresses.address: "{'address': '10.1.0.41', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+    - interface-name: GigabitEthernet0/0/0/1
+      description: to pe-fnh
+      ipv4.addresses.address: "{'address': '10.1.0.42', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+  pe-est:
+    data.banners:
+    - banner.0.banner-name: motd
+      banner.0.banner-text: '#Authorized access only. All activity may be monitored.#'
+      banner.1.banner-name: login
+      banner.1.banner-text: '#pe-est — Eastleigh#'
+    - banner.0.banner-type: motd
+      banner.0.line: '#Authorized access only. All activity may be monitored.#'
+      banner.1.banner-type: login
+      banner.1.line: '#pe-est — Eastleigh#'
+    data.interface-configurations.interface-configuration:
+    - active: act
+      interface-name: Null0
+      ipv4-network.icmp-unreach-disable: ''
+    - active: act
+      interface-name: Loopback0
+      interface-virtual: ''
+      description: Loopback
+      ipv4-network.addresses.primary: "{'address': '10.0.0.14', 'netmask': '255.255.255.255'}"
+      ipv6-network.addresses.regular-addresses: "{'regular-address': {'address': 'fc00:0:e::1',
+        'prefix-length': '128', 'zone': '0'}}"
+    - active: act
+      interface-name: MgmtEth0/RP0/CPU0/0
+      ipv4-network.addresses.primary: "{'address': '198.18.1.114', 'netmask': '255.255.255.0'}"
+    - active: act
+      interface-name: GigabitEthernet0/0/0/0
+      description: to pe-win
+      ipv4-network.addresses.primary: "{'address': '10.1.0.35', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    - active: act
+      interface-name: GigabitEthernet0/0/0/1
+      description: to p-bas-1
+      ipv4-network.addresses.primary: "{'address': '10.1.0.36', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    data.interfaces.interface:
+    - interface-name: Null0
+      ipv4.icmp.unreachables: "{'disable': ''}"
+    - interface-name: Loopback0
+      description: Loopback
+      ipv4.addresses.address: "{'address': '10.0.0.14', 'netmask': '255.255.255.255'}"
+      ipv6.addresses.ipv6-address: "{'address': 'fc00:0:e::1', 'prefix-length': '128',
+        'zone': '0'}"
+    - interface-name: MgmtEth0/RP0/CPU0/0
+      ipv4.addresses.address: "{'address': '198.18.1.114', 'netmask': '255.255.255.0'}"
+    - interface-name: GigabitEthernet0/0/0/0
+      description: to pe-win
+      ipv4.addresses.address: "{'address': '10.1.0.35', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+    - interface-name: GigabitEthernet0/0/0/1
+      description: to p-bas-1
+      ipv4.addresses.address: "{'address': '10.1.0.36', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+  pe-fnh:
+    data.banners:
+    - banner.0.banner-name: motd
+      banner.0.banner-text: '#Authorized access only. All activity may be monitored.#'
+      banner.1.banner-name: login
+      banner.1.banner-text: '#pe-fnh — Farnham#'
+    - banner.0.banner-type: motd
+      banner.0.line: '#Authorized access only. All activity may be monitored.#'
+      banner.1.banner-type: login
+      banner.1.line: '#pe-fnh — Farnham#'
+    data.interface-configurations.interface-configuration:
+    - active: act
+      interface-name: Null0
+      ipv4-network.icmp-unreach-disable: ''
+    - active: act
+      interface-name: Loopback0
+      interface-virtual: ''
+      description: Loopback
+      ipv4-network.addresses.primary: "{'address': '10.0.0.23', 'netmask': '255.255.255.255'}"
+      ipv6-network.addresses.regular-addresses: "{'regular-address': {'address': 'fc00:0:17::1',
+        'prefix-length': '128', 'zone': '0'}}"
+    - active: act
+      interface-name: MgmtEth0/RP0/CPU0/0
+      ipv4-network.addresses.primary: "{'address': '198.18.1.123', 'netmask': '255.255.255.0'}"
+    - active: act
+      interface-name: GigabitEthernet0/0/0/0
+      description: to pe-cmb
+      ipv4-network.addresses.primary: "{'address': '10.1.0.43', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    - active: act
+      interface-name: GigabitEthernet0/0/0/1
+      description: to pe-ald
+      ipv4-network.addresses.primary: "{'address': '10.1.0.44', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    data.interfaces.interface:
+    - interface-name: Null0
+      ipv4.icmp.unreachables: "{'disable': ''}"
+    - interface-name: Loopback0
+      description: Loopback
+      ipv4.addresses.address: "{'address': '10.0.0.23', 'netmask': '255.255.255.255'}"
+      ipv6.addresses.ipv6-address: "{'address': 'fc00:0:17::1', 'prefix-length': '128',
+        'zone': '0'}"
+    - interface-name: MgmtEth0/RP0/CPU0/0
+      ipv4.addresses.address: "{'address': '198.18.1.123', 'netmask': '255.255.255.0'}"
+    - interface-name: GigabitEthernet0/0/0/0
+      description: to pe-cmb
+      ipv4.addresses.address: "{'address': '10.1.0.43', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+    - interface-name: GigabitEthernet0/0/0/1
+      description: to pe-ald
+      ipv4.addresses.address: "{'address': '10.1.0.44', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+  pe-nby:
+    data.banners:
+    - banner.0.banner-name: motd
+      banner.0.banner-text: '#Authorized access only. All activity may be monitored.#'
+      banner.1.banner-name: login
+      banner.1.banner-text: '#pe-nby — Newbury#'
+    - banner.0.banner-type: motd
+      banner.0.line: '#Authorized access only. All activity may be monitored.#'
+      banner.1.banner-type: login
+      banner.1.line: '#pe-nby — Newbury#'
+    data.interface-configurations.interface-configuration:
+    - active: act
+      interface-name: Null0
+      ipv4-network.icmp-unreach-disable: ''
+    - active: act
+      interface-name: Loopback0
+      interface-virtual: ''
+      description: Loopback
+      ipv4-network.addresses.primary: "{'address': '10.0.0.11', 'netmask': '255.255.255.255'}"
+      ipv6-network.addresses.regular-addresses: "{'regular-address': {'address': 'fc00:0:b::1',
+        'prefix-length': '128', 'zone': '0'}}"
+    - active: act
+      interface-name: MgmtEth0/RP0/CPU0/0
+      ipv4-network.addresses.primary: "{'address': '198.18.1.111', 'netmask': '255.255.255.0'}"
+    - active: act
+      interface-name: GigabitEthernet0/0/0/0
+      description: to p-rdg-1
+      ipv4-network.addresses.primary: "{'address': '10.1.0.29', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    - active: act
+      interface-name: GigabitEthernet0/0/0/1
+      description: to pe-and
+      ipv4-network.addresses.primary: "{'address': '10.1.0.30', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    data.interfaces.interface:
+    - interface-name: Null0
+      ipv4.icmp.unreachables: "{'disable': ''}"
+    - interface-name: Loopback0
+      description: Loopback
+      ipv4.addresses.address: "{'address': '10.0.0.11', 'netmask': '255.255.255.255'}"
+      ipv6.addresses.ipv6-address: "{'address': 'fc00:0:b::1', 'prefix-length': '128',
+        'zone': '0'}"
+    - interface-name: MgmtEth0/RP0/CPU0/0
+      ipv4.addresses.address: "{'address': '198.18.1.111', 'netmask': '255.255.255.0'}"
+    - interface-name: GigabitEthernet0/0/0/0
+      description: to p-rdg-1
+      ipv4.addresses.address: "{'address': '10.1.0.29', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+    - interface-name: GigabitEthernet0/0/0/1
+      description: to pe-and
+      ipv4.addresses.address: "{'address': '10.1.0.30', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+  pe-win:
+    data.banners:
+    - banner.0.banner-name: motd
+      banner.0.banner-text: '#Authorized access only. All activity may be monitored.#'
+      banner.1.banner-name: login
+      banner.1.banner-text: '#pe-win — Winchester#'
+    - banner.0.banner-type: motd
+      banner.0.line: '#Authorized access only. All activity may be monitored.#'
+      banner.1.banner-type: login
+      banner.1.line: '#pe-win — Winchester#'
+    data.interface-configurations.interface-configuration:
+    - active: act
+      interface-name: Null0
+      ipv4-network.icmp-unreach-disable: ''
+    - active: act
+      interface-name: Loopback0
+      interface-virtual: ''
+      description: Loopback
+      ipv4-network.addresses.primary: "{'address': '10.0.0.13', 'netmask': '255.255.255.255'}"
+      ipv6-network.addresses.regular-addresses: "{'regular-address': {'address': 'fc00:0:d::1',
+        'prefix-length': '128', 'zone': '0'}}"
+    - active: act
+      interface-name: MgmtEth0/RP0/CPU0/0
+      ipv4-network.addresses.primary: "{'address': '198.18.1.113', 'netmask': '255.255.255.0'}"
+    - active: act
+      interface-name: GigabitEthernet0/0/0/0
+      description: to pe-and
+      ipv4-network.addresses.primary: "{'address': '10.1.0.33', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    - active: act
+      interface-name: GigabitEthernet0/0/0/1
+      description: to pe-est
+      ipv4-network.addresses.primary: "{'address': '10.1.0.34', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    data.interfaces.interface:
+    - interface-name: Null0
+      ipv4.icmp.unreachables: "{'disable': ''}"
+    - interface-name: Loopback0
+      description: Loopback
+      ipv4.addresses.address: "{'address': '10.0.0.13', 'netmask': '255.255.255.255'}"
+      ipv6.addresses.ipv6-address: "{'address': 'fc00:0:d::1', 'prefix-length': '128',
+        'zone': '0'}"
+    - interface-name: MgmtEth0/RP0/CPU0/0
+      ipv4.addresses.address: "{'address': '198.18.1.113', 'netmask': '255.255.255.0'}"
+    - interface-name: GigabitEthernet0/0/0/0
+      description: to pe-and
+      ipv4.addresses.address: "{'address': '10.1.0.33', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+    - interface-name: GigabitEthernet0/0/0/1
+      description: to pe-est
+      ipv4.addresses.address: "{'address': '10.1.0.34', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+  srr-bas:
+    data.banners:
+    - banner.0.banner-name: motd
+      banner.0.banner-text: '#Authorized access only. All activity may be monitored.#'
+      banner.1.banner-name: login
+      banner.1.banner-text: '#srr-bas — Basingstoke DC#'
+    - banner.0.banner-type: motd
+      banner.0.line: '#Authorized access only. All activity may be monitored.#'
+      banner.1.banner-type: login
+      banner.1.line: '#srr-bas — Basingstoke DC#'
+    data.interface-configurations.interface-configuration:
+    - active: act
+      interface-name: Null0
+      ipv4-network.icmp-unreach-disable: ''
+    - active: act
+      interface-name: Loopback0
+      interface-virtual: ''
+      description: Loopback
+      ipv4-network.addresses.primary: "{'address': '10.0.0.8', 'netmask': '255.255.255.255'}"
+      ipv6-network.addresses.regular-addresses: "{'regular-address': {'address': 'fc00:0:8::1',
+        'prefix-length': '128', 'zone': '0'}}"
+    - active: act
+      interface-name: MgmtEth0/RP0/CPU0/0
+      ipv4-network.addresses.primary: "{'address': '198.18.1.108', 'netmask': '255.255.255.0'}"
+    - active: act
+      interface-name: GigabitEthernet0/0/0/0
+      description: to p-bas-1
+      ipv4-network.addresses.primary: "{'address': '10.1.0.24', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    - active: act
+      interface-name: GigabitEthernet0/0/0/1
+      description: to p-bas-2
+      ipv4-network.addresses.primary: "{'address': '10.1.0.26', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    data.interfaces.interface:
+    - interface-name: Null0
+      ipv4.icmp.unreachables: "{'disable': ''}"
+    - interface-name: Loopback0
+      description: Loopback
+      ipv4.addresses.address: "{'address': '10.0.0.8', 'netmask': '255.255.255.255'}"
+      ipv6.addresses.ipv6-address: "{'address': 'fc00:0:8::1', 'prefix-length': '128',
+        'zone': '0'}"
+    - interface-name: MgmtEth0/RP0/CPU0/0
+      ipv4.addresses.address: "{'address': '198.18.1.108', 'netmask': '255.255.255.0'}"
+    - interface-name: GigabitEthernet0/0/0/0
+      description: to p-bas-1
+      ipv4.addresses.address: "{'address': '10.1.0.24', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+    - interface-name: GigabitEthernet0/0/0/1
+      description: to p-bas-2
+      ipv4.addresses.address: "{'address': '10.1.0.26', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+  srr-rdg:
+    data.banners:
+    - banner.0.banner-name: motd
+      banner.0.banner-text: '#Authorized access only. All activity may be monitored.#'
+      banner.1.banner-name: login
+      banner.1.banner-text: '#srr-rdg — Reading DC#'
+    - banner.0.banner-type: motd
+      banner.0.line: '#Authorized access only. All activity may be monitored.#'
+      banner.1.banner-type: login
+      banner.1.line: '#srr-rdg — Reading DC#'
+    data.interface-configurations.interface-configuration:
+    - active: act
+      interface-name: Null0
+      ipv4-network.icmp-unreach-disable: ''
+    - active: act
+      interface-name: Loopback0
+      interface-virtual: ''
+      description: Loopback
+      ipv4-network.addresses.primary: "{'address': '10.0.0.7', 'netmask': '255.255.255.255'}"
+      ipv6-network.addresses.regular-addresses: "{'regular-address': {'address': 'fc00:0:7::1',
+        'prefix-length': '128', 'zone': '0'}}"
+    - active: act
+      interface-name: MgmtEth0/RP0/CPU0/0
+      ipv4-network.addresses.primary: "{'address': '198.18.1.107', 'netmask': '255.255.255.0'}"
+    - active: act
+      interface-name: GigabitEthernet0/0/0/0
+      description: to p-rdg-1
+      ipv4-network.addresses.primary: "{'address': '10.1.0.20', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    - active: act
+      interface-name: GigabitEthernet0/0/0/1
+      description: to p-rdg-2
+      ipv4-network.addresses.primary: "{'address': '10.1.0.22', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    data.interfaces.interface:
+    - interface-name: Null0
+      ipv4.icmp.unreachables: "{'disable': ''}"
+    - interface-name: Loopback0
+      description: Loopback
+      ipv4.addresses.address: "{'address': '10.0.0.7', 'netmask': '255.255.255.255'}"
+      ipv6.addresses.ipv6-address: "{'address': 'fc00:0:7::1', 'prefix-length': '128',
+        'zone': '0'}"
+    - interface-name: MgmtEth0/RP0/CPU0/0
+      ipv4.addresses.address: "{'address': '198.18.1.107', 'netmask': '255.255.255.0'}"
+    - interface-name: GigabitEthernet0/0/0/0
+      description: to p-rdg-1
+      ipv4.addresses.address: "{'address': '10.1.0.20', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+    - interface-name: GigabitEthernet0/0/0/1
+      description: to p-rdg-2
+      ipv4.addresses.address: "{'address': '10.1.0.22', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+  trr-bas:
+    data.banners:
+    - banner.0.banner-name: motd
+      banner.0.banner-text: '#Authorized access only. All activity may be monitored.#'
+      banner.1.banner-name: login
+      banner.1.banner-text: '#trr-bas — Basingstoke DC#'
+    - banner.0.banner-type: motd
+      banner.0.line: '#Authorized access only. All activity may be monitored.#'
+      banner.1.banner-type: login
+      banner.1.line: '#trr-bas — Basingstoke DC#'
+    data.interface-configurations.interface-configuration:
+    - active: act
+      interface-name: Null0
+      ipv4-network.icmp-unreach-disable: ''
+    - active: act
+      interface-name: Loopback0
+      interface-virtual: ''
+      description: Loopback
+      ipv4-network.addresses.primary: "{'address': '10.0.0.6', 'netmask': '255.255.255.255'}"
+      ipv6-network.addresses.regular-addresses: "{'regular-address': {'address': 'fc00:0:6::1',
+        'prefix-length': '128', 'zone': '0'}}"
+    - active: act
+      interface-name: MgmtEth0/RP0/CPU0/0
+      ipv4-network.addresses.primary: "{'address': '198.18.1.106', 'netmask': '255.255.255.0'}"
+    - active: act
+      interface-name: GigabitEthernet0/0/0/0
+      description: to p-bas-1
+      ipv4-network.addresses.primary: "{'address': '10.1.0.16', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    - active: act
+      interface-name: GigabitEthernet0/0/0/1
+      description: to p-bas-2
+      ipv4-network.addresses.primary: "{'address': '10.1.0.18', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    data.interfaces.interface:
+    - interface-name: Null0
+      ipv4.icmp.unreachables: "{'disable': ''}"
+    - interface-name: Loopback0
+      description: Loopback
+      ipv4.addresses.address: "{'address': '10.0.0.6', 'netmask': '255.255.255.255'}"
+      ipv6.addresses.ipv6-address: "{'address': 'fc00:0:6::1', 'prefix-length': '128',
+        'zone': '0'}"
+    - interface-name: MgmtEth0/RP0/CPU0/0
+      ipv4.addresses.address: "{'address': '198.18.1.106', 'netmask': '255.255.255.0'}"
+    - interface-name: GigabitEthernet0/0/0/0
+      description: to p-bas-1
+      ipv4.addresses.address: "{'address': '10.1.0.16', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+    - interface-name: GigabitEthernet0/0/0/1
+      description: to p-bas-2
+      ipv4.addresses.address: "{'address': '10.1.0.18', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+  trr-rdg:
+    data.banners:
+    - banner.0.banner-name: motd
+      banner.0.banner-text: '#Authorized access only. All activity may be monitored.#'
+      banner.1.banner-name: login
+      banner.1.banner-text: '#trr-rdg — Reading DC#'
+    - banner.0.banner-type: motd
+      banner.0.line: '#Authorized access only. All activity may be monitored.#'
+      banner.1.banner-type: login
+      banner.1.line: '#trr-rdg — Reading DC#'
+    data.interface-configurations.interface-configuration:
+    - active: act
+      interface-name: Null0
+      ipv4-network.icmp-unreach-disable: ''
+    - active: act
+      interface-name: Loopback0
+      interface-virtual: ''
+      description: Loopback
+      ipv4-network.addresses.primary: "{'address': '10.0.0.5', 'netmask': '255.255.255.255'}"
+      ipv6-network.addresses.regular-addresses: "{'regular-address': {'address': 'fc00:0:5::1',
+        'prefix-length': '128', 'zone': '0'}}"
+    - active: act
+      interface-name: MgmtEth0/RP0/CPU0/0
+      ipv4-network.addresses.primary: "{'address': '198.18.1.105', 'netmask': '255.255.255.0'}"
+    - active: act
+      interface-name: GigabitEthernet0/0/0/0
+      description: to p-rdg-1
+      ipv4-network.addresses.primary: "{'address': '10.1.0.12', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    - active: act
+      interface-name: GigabitEthernet0/0/0/1
+      description: to p-rdg-2
+      ipv4-network.addresses.primary: "{'address': '10.1.0.14', 'netmask': '255.255.255.254'}"
+      ipv6-network.addresses.auto-configuration: "{'enable': ''}"
+      ipv6-network.unnumbered: Loopback0
+    data.interfaces.interface:
+    - interface-name: Null0
+      ipv4.icmp.unreachables: "{'disable': ''}"
+    - interface-name: Loopback0
+      description: Loopback
+      ipv4.addresses.address: "{'address': '10.0.0.5', 'netmask': '255.255.255.255'}"
+      ipv6.addresses.ipv6-address: "{'address': 'fc00:0:5::1', 'prefix-length': '128',
+        'zone': '0'}"
+    - interface-name: MgmtEth0/RP0/CPU0/0
+      ipv4.addresses.address: "{'address': '198.18.1.105', 'netmask': '255.255.255.0'}"
+    - interface-name: GigabitEthernet0/0/0/0
+      description: to p-rdg-1
+      ipv4.addresses.address: "{'address': '10.1.0.12', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+    - interface-name: GigabitEthernet0/0/0/1
+      description: to p-rdg-2
+      ipv4.addresses.address: "{'address': '10.1.0.14', 'netmask': '255.255.255.254'}"
+      ipv6.enable: ''
+overrides:
+  p-rdg-1:
+    owner: _base_only
+    delta:
+      data.telemetry-model-driven.sensor-groups.sensor-group:
+      - sensor-group-identifier: SG-TEST
+        sensor-paths.sensor-path.telemetry-sensor-path: 
+          Cisco-IOS-XR-infra-statsd-oper:infra-statistics/interfaces/interface/latest/generic-counters
+      - sensor-group-identifier: SG-BGP-NEIGHBORS
+        sensor-paths.sensor-path.telemetry-sensor-path: 
+          Cisco-IOS-XR-ipv4-bgp-oper:bgp/instances/instance/instance-active/default-vrf/neighbors/neighbor
+      - sensor-group-identifier: SG-INTF-COUNTERS
+        sensor-paths.sensor-path.telemetry-sensor-path: 
+          Cisco-IOS-XR-infra-statsd-oper:infra-statistics/interfaces/interface/latest/generic-counters
+      - sensor-group-identifier: SG-ISIS-NEIGHBORS
+        sensor-paths.sensor-path.telemetry-sensor-path: 
+          Cisco-IOS-XR-clns-isis-oper:isis/instances/instance/neighbors/neighbor
+b_composite_deltas:
+  p-bas-1:
+    data.isis.instances:
+      delta:
+        instance:
+          interfaces.interface: "[{'interface-name': 'Loopback0', 'running': '', 'state':
+            'passive', 'interface-afs': {'interface-af': [{'af-name': 'ipv4', 'saf-name':
+            'unicast', 'interface-af-data': {'running': ''}}, {'af-name': 'ipv6',
+            'saf-name': 'unicast', 'interface-af-data': {'running': ''}}]}}, {'interface-name':
+            'GigabitEthernet0/0/0/0', 'running': '', 'point-to-point': '', 'interface-afs':
+            {'interface-af': [{'af-name': 'ipv4', 'saf-name': 'unicast', 'interface-af-data':
+            {'running': ''}}, {'af-name': 'ipv6', 'saf-name': 'unicast', 'interface-af-data':
+            {'running': ''}}]}}, {'interface-name': 'GigabitEthernet0/0/0/1', 'running':
+            '', 'point-to-point': '', 'interface-afs': {'interface-af': [{'af-name':
+            'ipv4', 'saf-name': 'unicast', 'interface-af-data': {'running': ''}},
+            {'af-name': 'ipv6', 'saf-name': 'unicast', 'interface-af-data': {'running':
+            ''}}]}}, {'interface-name': 'GigabitEthernet0/0/0/2', 'running': '', 'point-to-point':
+            '', 'interface-afs': {'interface-af': [{'af-name': 'ipv4', 'saf-name':
+            'unicast', 'interface-af-data': {'running': ''}}, {'af-name': 'ipv6',
+            'saf-name': 'unicast', 'interface-af-data': {'running': ''}}]}}, {'interface-name':
+            'GigabitEthernet0/0/0/3', 'running': '', 'point-to-point': '', 'interface-afs':
+            {'interface-af': [{'af-name': 'ipv4', 'saf-name': 'unicast', 'interface-af-data':
+            {'running': ''}}, {'af-name': 'ipv6', 'saf-name': 'unicast', 'interface-af-data':
+            {'running': ''}}]}}, {'interface-name': 'GigabitEthernet0/0/0/4', 'running':
+            '', 'point-to-point': '', 'interface-afs': {'interface-af': [{'af-name':
+            'ipv4', 'saf-name': 'unicast', 'interface-af-data': {'running': ''}},
+            {'af-name': 'ipv6', 'saf-name': 'unicast', 'interface-af-data': {'running':
+            ''}}]}}, {'interface-name': 'GigabitEthernet0/0/0/5', 'running': '', 'point-to-point':
+            '', 'interface-afs': {'interface-af': [{'af-name': 'ipv4', 'saf-name':
+            'unicast', 'interface-af-data': {'running': ''}}, {'af-name': 'ipv6',
+            'saf-name': 'unicast', 'interface-af-data': {'running': ''}}]}}]"
+    data.segment-routing:
+      delta:
+        srv6: {}
+    data.sr:
+      delta:
+        srv6: {}
+  p-bas-2:
+    data.isis.instances:
+      delta:
+        instance:
+          nets.net.net-name: 49.0001.0100.0000.0004.00
+          interfaces.interface: "[{'interface-name': 'Loopback0', 'running': '', 'state':
+            'passive', 'interface-afs': {'interface-af': [{'af-name': 'ipv4', 'saf-name':
+            'unicast', 'interface-af-data': {'running': ''}}, {'af-name': 'ipv6',
+            'saf-name': 'unicast', 'interface-af-data': {'running': ''}}]}}, {'interface-name':
+            'GigabitEthernet0/0/0/0', 'running': '', 'point-to-point': '', 'interface-afs':
+            {'interface-af': [{'af-name': 'ipv4', 'saf-name': 'unicast', 'interface-af-data':
+            {'running': ''}}, {'af-name': 'ipv6', 'saf-name': 'unicast', 'interface-af-data':
+            {'running': ''}}]}}, {'interface-name': 'GigabitEthernet0/0/0/1', 'running':
+            '', 'point-to-point': '', 'interface-afs': {'interface-af': [{'af-name':
+            'ipv4', 'saf-name': 'unicast', 'interface-af-data': {'running': ''}},
+            {'af-name': 'ipv6', 'saf-name': 'unicast', 'interface-af-data': {'running':
+            ''}}]}}, {'interface-name': 'GigabitEthernet0/0/0/2', 'running': '', 'point-to-point':
+            '', 'interface-afs': {'interface-af': [{'af-name': 'ipv4', 'saf-name':
+            'unicast', 'interface-af-data': {'running': ''}}, {'af-name': 'ipv6',
+            'saf-name': 'unicast', 'interface-af-data': {'running': ''}}]}}, {'interface-name':
+            'GigabitEthernet0/0/0/3', 'running': '', 'point-to-point': '', 'interface-afs':
+            {'interface-af': [{'af-name': 'ipv4', 'saf-name': 'unicast', 'interface-af-data':
+            {'running': ''}}, {'af-name': 'ipv6', 'saf-name': 'unicast', 'interface-af-data':
+            {'running': ''}}]}}, {'interface-name': 'GigabitEthernet0/0/0/4', 'running':
+            '', 'point-to-point': '', 'interface-afs': {'interface-af': [{'af-name':
+            'ipv4', 'saf-name': 'unicast', 'interface-af-data': {'running': ''}},
+            {'af-name': 'ipv6', 'saf-name': 'unicast', 'interface-af-data': {'running':
+            ''}}]}}, {'interface-name': 'GigabitEthernet0/0/0/5', 'running': '', 'point-to-point':
+            '', 'interface-afs': {'interface-af': [{'af-name': 'ipv4', 'saf-name':
+            'unicast', 'interface-af-data': {'running': ''}}, {'af-name': 'ipv6',
+            'saf-name': 'unicast', 'interface-af-data': {'running': ''}}]}}]"
+    data.segment-routing:
+      delta:
+        srv6:
+          encapsulation.source-address: fc00:0:4::1
+          locators.locator.prefix: "{'address': 'fc00:0:4::', 'length': '48'}"
+    data.sr:
+      delta:
+        srv6:
+          encapsulation.source-address: fc00:0:4::1
+  p-rdg-1:
+    data.isis.instances:
+      delta:
+        instance:
+          nets.net.net-name: 49.0001.0100.0000.0001.00
+          interfaces.interface: "[{'interface-name': 'Loopback0', 'running': '', 'state':
+            'passive', 'interface-afs': {'interface-af': [{'af-name': 'ipv4', 'saf-name':
+            'unicast', 'interface-af-data': {'running': ''}}, {'af-name': 'ipv6',
+            'saf-name': 'unicast', 'interface-af-data': {'running': ''}}]}}, {'interface-name':
+            'GigabitEthernet0/0/0/0', 'running': '', 'point-to-point': '', 'interface-afs':
+            {'interface-af': [{'af-name': 'ipv4', 'saf-name': 'unicast', 'interface-af-data':
+            {'running': ''}}, {'af-name': 'ipv6', 'saf-name': 'unicast', 'interface-af-data':
+            {'running': ''}}]}}, {'interface-name': 'GigabitEthernet0/0/0/1', 'running':
+            '', 'point-to-point': '', 'interface-afs': {'interface-af': [{'af-name':
+            'ipv4', 'saf-name': 'unicast', 'interface-af-data': {'running': ''}},
+            {'af-name': 'ipv6', 'saf-name': 'unicast', 'interface-af-data': {'running':
+            ''}}]}}, {'interface-name': 'GigabitEthernet0/0/0/2', 'running': '', 'point-to-point':
+            '', 'interface-afs': {'interface-af': [{'af-name': 'ipv4', 'saf-name':
+            'unicast', 'interface-af-data': {'running': ''}}, {'af-name': 'ipv6',
+            'saf-name': 'unicast', 'interface-af-data': {'running': ''}}]}}, {'interface-name':
+            'GigabitEthernet0/0/0/3', 'running': '', 'point-to-point': '', 'interface-afs':
+            {'interface-af': [{'af-name': 'ipv4', 'saf-name': 'unicast', 'interface-af-data':
+            {'running': ''}}, {'af-name': 'ipv6', 'saf-name': 'unicast', 'interface-af-data':
+            {'running': ''}}]}}, {'interface-name': 'GigabitEthernet0/0/0/4', 'running':
+            '', 'point-to-point': '', 'interface-afs': {'interface-af': [{'af-name':
+            'ipv4', 'saf-name': 'unicast', 'interface-af-data': {'running': ''}},
+            {'af-name': 'ipv6', 'saf-name': 'unicast', 'interface-af-data': {'running':
+            ''}}]}}, {'interface-name': 'GigabitEthernet0/0/0/5', 'running': '', 'point-to-point':
+            '', 'interface-afs': {'interface-af': [{'af-name': 'ipv4', 'saf-name':
+            'unicast', 'interface-af-data': {'running': ''}}, {'af-name': 'ipv6',
+            'saf-name': 'unicast', 'interface-af-data': {'running': ''}}]}}]"
+    data.segment-routing:
+      delta:
+        srv6:
+          encapsulation.source-address: fc00:0:1::1
+          locators.locator.prefix: "{'address': 'fc00:0:1::', 'length': '48'}"
+    data.sr:
+      delta:
+        srv6:
+          encapsulation.source-address: fc00:0:1::1
+  p-rdg-2:
+    data.isis.instances:
+      delta:
+        instance:
+          nets.net.net-name: 49.0001.0100.0000.0002.00
+          interfaces.interface: "[{'interface-name': 'Loopback0', 'running': '', 'state':
+            'passive', 'interface-afs': {'interface-af': [{'af-name': 'ipv4', 'saf-name':
+            'unicast', 'interface-af-data': {'running': ''}}, {'af-name': 'ipv6',
+            'saf-name': 'unicast', 'interface-af-data': {'running': ''}}]}}, {'interface-name':
+            'GigabitEthernet0/0/0/0', 'running': '', 'point-to-point': '', 'interface-afs':
+            {'interface-af': [{'af-name': 'ipv4', 'saf-name': 'unicast', 'interface-af-data':
+            {'running': ''}}, {'af-name': 'ipv6', 'saf-name': 'unicast', 'interface-af-data':
+            {'running': ''}}]}}, {'interface-name': 'GigabitEthernet0/0/0/1', 'running':
+            '', 'point-to-point': '', 'interface-afs': {'interface-af': [{'af-name':
+            'ipv4', 'saf-name': 'unicast', 'interface-af-data': {'running': ''}},
+            {'af-name': 'ipv6', 'saf-name': 'unicast', 'interface-af-data': {'running':
+            ''}}]}}, {'interface-name': 'GigabitEthernet0/0/0/2', 'running': '', 'point-to-point':
+            '', 'interface-afs': {'interface-af': [{'af-name': 'ipv4', 'saf-name':
+            'unicast', 'interface-af-data': {'running': ''}}, {'af-name': 'ipv6',
+            'saf-name': 'unicast', 'interface-af-data': {'running': ''}}]}}, {'interface-name':
+            'GigabitEthernet0/0/0/3', 'running': '', 'point-to-point': '', 'interface-afs':
+            {'interface-af': [{'af-name': 'ipv4', 'saf-name': 'unicast', 'interface-af-data':
+            {'running': ''}}, {'af-name': 'ipv6', 'saf-name': 'unicast', 'interface-af-data':
+            {'running': ''}}]}}, {'interface-name': 'GigabitEthernet0/0/0/4', 'running':
+            '', 'point-to-point': '', 'interface-afs': {'interface-af': [{'af-name':
+            'ipv4', 'saf-name': 'unicast', 'interface-af-data': {'running': ''}},
+            {'af-name': 'ipv6', 'saf-name': 'unicast', 'interface-af-data': {'running':
+            ''}}]}}, {'interface-name': 'GigabitEthernet0/0/0/5', 'running': '', 'point-to-point':
+            '', 'interface-afs': {'interface-af': [{'af-name': 'ipv4', 'saf-name':
+            'unicast', 'interface-af-data': {'running': ''}}, {'af-name': 'ipv6',
+            'saf-name': 'unicast', 'interface-af-data': {'running': ''}}]}}]"
+    data.segment-routing:
+      delta:
+        srv6:
+          encapsulation.source-address: fc00:0:2::1
+          locators.locator.prefix: "{'address': 'fc00:0:2::', 'length': '48'}"
+    data.sr:
+      delta:
+        srv6:
+          encapsulation.source-address: fc00:0:2::1
+  pe-ald:
+    data.isis.instances:
+      delta:
+        instance:
+          nets.net.net-name: 49.0001.0100.0000.0024.00
+    data.segment-routing:
+      delta:
+        srv6:
+          encapsulation.source-address: fc00:0:18::1
+          locators.locator.prefix: "{'address': 'fc00:0:18::', 'length': '48'}"
+    data.sr:
+      delta:
+        srv6:
+          encapsulation.source-address: fc00:0:18::1
+  pe-and:
+    data.isis.instances:
+      delta:
+        instance:
+          nets.net.net-name: 49.0001.0100.0000.0012.00
+    data.segment-routing:
+      delta:
+        srv6:
+          encapsulation.source-address: fc00:0:c::1
+          locators.locator.prefix: "{'address': 'fc00:0:c::', 'length': '48'}"
+    data.sr:
+      delta:
+        srv6:
+          encapsulation.source-address: fc00:0:c::1
+  pe-brk:
+    data.isis.instances:
+      delta:
+        instance:
+          nets.net.net-name: 49.0001.0100.0000.0021.00
+    data.segment-routing:
+      delta:
+        srv6:
+          encapsulation.source-address: fc00:0:15::1
+          locators.locator.prefix: "{'address': 'fc00:0:15::', 'length': '48'}"
+    data.sr:
+      delta:
+        srv6:
+          encapsulation.source-address: fc00:0:15::1
+  pe-cmb:
+    data.isis.instances:
+      delta:
+        instance:
+          nets.net.net-name: 49.0001.0100.0000.0022.00
+    data.segment-routing:
+      delta:
+        srv6:
+          encapsulation.source-address: fc00:0:16::1
+          locators.locator.prefix: "{'address': 'fc00:0:16::', 'length': '48'}"
+    data.sr:
+      delta:
+        srv6:
+          encapsulation.source-address: fc00:0:16::1
+  pe-est:
+    data.isis.instances:
+      delta:
+        instance:
+          nets.net.net-name: 49.0001.0100.0000.0014.00
+    data.segment-routing:
+      delta:
+        srv6:
+          encapsulation.source-address: fc00:0:e::1
+          locators.locator.prefix: "{'address': 'fc00:0:e::', 'length': '48'}"
+    data.sr:
+      delta:
+        srv6:
+          encapsulation.source-address: fc00:0:e::1
+  pe-fnh:
+    data.isis.instances:
+      delta:
+        instance:
+          nets.net.net-name: 49.0001.0100.0000.0023.00
+    data.segment-routing:
+      delta:
+        srv6:
+          encapsulation.source-address: fc00:0:17::1
+          locators.locator.prefix: "{'address': 'fc00:0:17::', 'length': '48'}"
+    data.sr:
+      delta:
+        srv6:
+          encapsulation.source-address: fc00:0:17::1
+  pe-nby:
+    data.isis.instances:
+      delta:
+        instance:
+          nets.net.net-name: 49.0001.0100.0000.0011.00
+    data.segment-routing:
+      delta:
+        srv6:
+          encapsulation.source-address: fc00:0:b::1
+          locators.locator.prefix: "{'address': 'fc00:0:b::', 'length': '48'}"
+    data.sr:
+      delta:
+        srv6:
+          encapsulation.source-address: fc00:0:b::1
+  pe-win:
+    data.isis.instances:
+      delta:
+        instance:
+          nets.net.net-name: 49.0001.0100.0000.0013.00
+    data.segment-routing:
+      delta:
+        srv6:
+          encapsulation.source-address: fc00:0:d::1
+          locators.locator.prefix: "{'address': 'fc00:0:d::', 'length': '48'}"
+    data.sr:
+      delta:
+        srv6:
+          encapsulation.source-address: fc00:0:d::1
+  srr-bas:
+    data.isis.instances:
+      delta:
+        instance:
+          nets.net.net-name: 49.0001.0100.0000.0008.00
+    data.segment-routing:
+      delta:
+        srv6:
+          encapsulation.source-address: fc00:0:8::1
+          locators.locator.prefix: "{'address': 'fc00:0:8::', 'length': '48'}"
+    data.sr:
+      delta:
+        srv6:
+          encapsulation.source-address: fc00:0:8::1
+  srr-rdg:
+    data.isis.instances:
+      delta:
+        instance:
+          nets.net.net-name: 49.0001.0100.0000.0007.00
+    data.segment-routing:
+      delta:
+        srv6:
+          encapsulation.source-address: fc00:0:7::1
+          locators.locator.prefix: "{'address': 'fc00:0:7::', 'length': '48'}"
+    data.sr:
+      delta:
+        srv6:
+          encapsulation.source-address: fc00:0:7::1
+  trr-bas:
+    data.isis.instances:
+      delta:
+        instance:
+          nets.net.net-name: 49.0001.0100.0000.0006.00
+    data.segment-routing:
+      delta:
+        srv6:
+          encapsulation.source-address: fc00:0:6::1
+          locators.locator.prefix: "{'address': 'fc00:0:6::', 'length': '48'}"
+    data.sr:
+      delta:
+        srv6:
+          encapsulation.source-address: fc00:0:6::1
+  trr-rdg:
+    data.isis.instances:
+      delta:
+        instance:
+          nets.net.net-name: 49.0001.0100.0000.0005.00
+    data.segment-routing:
+      delta:
+        srv6:
+          encapsulation.source-address: fc00:0:5::1
+          locators.locator.prefix: "{'address': 'fc00:0:5::', 'length': '48'}"
+    data.sr:
+      delta:
+        srv6:
+          encapsulation.source-address: fc00:0:5::1
+foreign_keys: {}

@@ -37,9 +37,9 @@ def load_ingestion_spec(path: str | Path) -> IngestionSpec:
         msg = f"Unsupported ingestion spec version: {version!r} (expected 1)"
         raise ValueError(msg)
 
-    adapter = raw.get("adapter")
-    if not adapter or not isinstance(adapter, str):
-        msg = "Ingestion spec must have a non-empty 'adapter' string"
+    adapter = raw.get("adapter", "standard")
+    if not isinstance(adapter, str):
+        msg = "Ingestion spec 'adapter' must be a string"
         raise ValueError(msg)
 
     generated_by = raw.get("generated_by", "claude-code")

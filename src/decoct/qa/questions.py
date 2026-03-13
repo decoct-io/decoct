@@ -126,7 +126,8 @@ def _count_matching_paths(entity_attrs: dict[str, Any], prefix: str) -> int:
 
 _NAME_CANDIDATES = ["name", "job_name", "title", "id", "label"]
 
-_HYBRID_INFRA_EXTENSIONS = {"*.yaml", "*.yml", "*.json", "*.conf", "*.cnf"}
+_STANDARD_EXTENSIONS = {"*.yaml", "*.yml", "*.json", "*.conf", "*.cnf", "*.xml"}
+_HYBRID_INFRA_EXTENSIONS = _STANDARD_EXTENSIONS
 
 
 def _find_name_field(items: list[dict[str, Any]]) -> str | None:
@@ -187,9 +188,10 @@ def generate_question_bank(
     graph = EntityGraph()
 
     # Discover files based on adapter type
-    if adapter.source_type() == "hybrid-infra":
+    source_type = adapter.source_type()
+    if source_type in ("standard", "hybrid-infra"):
         all_files: list[Path] = []
-        for pattern in sorted(_HYBRID_INFRA_EXTENSIONS):
+        for pattern in sorted(_STANDARD_EXTENSIONS):
             all_files.extend(config_dir.glob(pattern))
         source_files = sorted(set(all_files))
     else:

@@ -1,0 +1,552 @@
+Cisco-ios-xr-aaa-lib-cfg:aaa:
+  authentications:
+    authentication:
+      listname: default
+      method1: local
+      type: login
+  usernames:
+    username:
+      name: lab
+      ordering-index: '0'
+      secret:
+        secret10: $6$Y0vmA/kiAH9n2A/.$QUYxHxt8oK62AtJTyt16nTGPvgbZ3OunOQWP4FIY1X6aUxN.RzI0QRFoDxu./S2at/H2y0VEZyNKB/J1N8B3x/
+        type: type10
+      usergroup-under-usernames:
+        usergroup-under-username:
+        - name: root-lr
+        - name: cisco-support
+Cisco-ios-xr-call-home-cfg:call-home:
+  active: ''
+  contact-smart-licensing: 'true'
+  profiles:
+    profile:
+      active: ''
+      methods:
+        method:
+        - enable: 'false'
+          method: email
+        - enable: 'true'
+          method: http
+      profile-name: CiscoTAC-1
+Cisco-ios-xr-clns-isis-cfg:isis:
+  _identity:
+  - instances.instance.nets.net.net-name
+  instances:
+    instance:
+      afs:
+        af:
+        - af-data:
+            metric-styles:
+              metric-style:
+                level: not-set
+                style: new-metric-style
+          af-name: ipv4
+          saf-name: unicast
+        - af-data:
+            segment-routing:
+              srv6:
+                running: ''
+                srv6-locators:
+                  srv6-locator:
+                    locator-name: MAIN
+                    running: ''
+          af-name: ipv6
+          saf-name: unicast
+      instance-name: core
+      interfaces:
+        interface:
+        - interface-afs:
+            interface-af:
+            - af-name: ipv4
+              interface-af-data:
+                running: ''
+              saf-name: unicast
+            - af-name: ipv6
+              interface-af-data:
+                running: ''
+              saf-name: unicast
+          interface-name: Loopback0
+          running: ''
+          state: passive
+        - interface-afs:
+            interface-af:
+            - af-name: ipv4
+              interface-af-data:
+                running: ''
+              saf-name: unicast
+            - af-name: ipv6
+              interface-af-data:
+                running: ''
+              saf-name: unicast
+          interface-name: GigabitEthernet0/0/0/0
+          point-to-point: ''
+          running: ''
+        - interface-afs:
+            interface-af:
+            - af-name: ipv4
+              interface-af-data:
+                running: ''
+              saf-name: unicast
+            - af-name: ipv6
+              interface-af-data:
+                running: ''
+              saf-name: unicast
+          interface-name: GigabitEthernet0/0/0/1
+          point-to-point: ''
+          running: ''
+      is-type: level2
+      running: ''
+Cisco-ios-xr-crypto-ssh-cfg:ssh:
+  server:
+    netconf-vrf-table:
+      vrf:
+        enable: ''
+        vrf-name: default
+    v2: ''
+    vrf-table:
+      vrf:
+        enable: ''
+        vrf-name: default
+Cisco-ios-xr-crypto-ssh-cfg:ssh[1]:
+  server:
+    netconf-vrf-table:
+      vrf:
+        enable: ''
+        vrf-name: default
+    vrf-table:
+      vrf:
+        enable: ''
+        vrf-name: default
+Cisco-ios-xr-ethernet-lldp-cfg:lldp:
+  enable: 'true'
+  holdtime: '120'
+  timer: '30'
+Cisco-ios-xr-infra-syslog-cfg:syslog:
+  buffered-logging:
+    buffer-size: '10000000'
+    logging-level: info
+  console-logging:
+    logging-level: warning
+  host-server:
+    vrfs:
+      vrf:
+        ipv4s:
+          ipv4:
+            address: 198.18.1.1
+            ipv4-severity-port:
+              severity: informational
+        vrf-name: default
+  monitor-logging:
+    logging-level: info
+  trap-logging:
+    logging-level: info
+Cisco-ios-xr-ip-domain-cfg:ip-domain:
+  vrfs:
+    vrf:
+      name: lab.local
+      servers:
+        server:
+          order: '0'
+          server-address: 198.18.1.1
+      vrf-name: default
+Cisco-ios-xr-ip-static-cfg:router-static:
+  default-vrf:
+    address-family:
+      vrfipv4:
+        vrf-unicast:
+          vrf-prefixes:
+            vrf-prefix:
+              prefix: 0.0.0.0
+              prefix-length: '0'
+              vrf-route:
+                vrf-next-hop-table:
+                  vrf-next-hop-next-hop-address:
+                    next-hop-address: 198.18.1.1
+Cisco-ios-xr-ipv4-acl-cfg:ipv4-acl-and-prefix-list:
+  accesses:
+    access:
+      access-list-entries:
+        access-list-entry:
+        - remark: Permit management subnet
+          sequence-number: '10'
+          sequence-str: '10'
+        - grant: permit
+          sequence-number: '20'
+          sequence-str: '20'
+          source-network:
+            source-address: 198.18.1.0
+            source-wild-card-bits: 0.0.0.255
+        - remark: Permit loopback subnet
+          sequence-number: '30'
+          sequence-str: '30'
+        - grant: permit
+          sequence-number: '40'
+          sequence-str: '40'
+          source-network:
+            source-address: 10.0.0.0
+            source-wild-card-bits: 0.0.0.255
+        - remark: Deny all other traffic
+          sequence-number: '50'
+          sequence-str: '50'
+        - grant: deny
+          log-option: log
+          sequence-number: '60'
+          sequence-str: '60'
+          source-network:
+            source-address: 0.0.0.0
+            source-wild-card-bits: 255.255.255.255
+      access-list-name: ACL-MGMT-IN
+Cisco-ios-xr-man-ems-cfg:grpc:
+  enable: ''
+  no-tls: ''
+  port: '57400'
+  vrf: default
+Cisco-ios-xr-man-netconf-cfg:netconf-yang:
+  agent:
+    ssh:
+      enable: ''
+Cisco-ios-xr-segment-routing-ms-cfg:sr:
+  _identity:
+  - srv6.encapsulation.source-address
+  - srv6.locators.locators.locator.prefix.prefix
+  srv6:
+    enable: ''
+    locators:
+      locators:
+        locator:
+          locator-enable: ''
+          micro-segment:
+            behavior: unode-psp-usd
+          name: MAIN
+          prefix:
+            prefix-length: '48'
+Cisco-ios-xr-snmp-agent-cfg:snmp:
+  _identity:
+  - system.location
+  administration:
+    default-communities:
+      default-community:
+        community-name: lab-ro
+        priviledge: read-only
+  system:
+    contact: lab-noc@lab.local
+Cisco-ios-xr-telemetry-model-driven-cfg:telemetry-model-driven:
+  destination-groups:
+    destination-group:
+      destination-id: DG-COLLECTOR
+      ipv4-destinations:
+        ipv4-destination:
+          destination-port: '57500'
+          encoding: self-describing-gpb
+          ipv4-address: 198.18.1.1
+          protocol:
+            no-tls: ''
+            protocol: grpc
+  sensor-groups:
+    sensor-group:
+    - sensor-group-identifier: SG-BGP-NEIGHBORS
+      sensor-paths:
+        sensor-path:
+          telemetry-sensor-path: Cisco-IOS-XR-ipv4-bgp-oper:bgp/instances/instance/instance-active/default-vrf/neighbors/neighbor
+    - sensor-group-identifier: SG-INTF-COUNTERS
+      sensor-paths:
+        sensor-path:
+          telemetry-sensor-path: Cisco-IOS-XR-infra-statsd-oper:infra-statistics/interfaces/interface/latest/generic-counters
+    - sensor-group-identifier: SG-ISIS-NEIGHBORS
+      sensor-paths:
+        sensor-path:
+          telemetry-sensor-path: Cisco-IOS-XR-clns-isis-oper:isis/instances/instance/neighbors/neighbor
+  subscriptions:
+    subscription:
+    - destination-profiles:
+        destination-profile:
+          destination-id: DG-COLLECTOR
+      sensor-profiles:
+        sensor-profile:
+          sample-interval: '60000'
+          sensorgroupid: SG-BGP-NEIGHBORS
+      subscription-identifier: SUB-BGP-NEIGHBORS
+    - destination-profiles:
+        destination-profile:
+          destination-id: DG-COLLECTOR
+      sensor-profiles:
+        sensor-profile:
+          sample-interval: '30000'
+          sensorgroupid: SG-INTF-COUNTERS
+      subscription-identifier: SUB-INTF-COUNTERS
+    - destination-profiles:
+        destination-profile:
+          destination-id: DG-COLLECTOR
+      sensor-profiles:
+        sensor-profile:
+          sample-interval: '60000'
+          sensorgroupid: SG-ISIS-NEIGHBORS
+      subscription-identifier: SUB-ISIS-NEIGHBORS
+Cisco-ios-xr-tty-server-cfg:tty:
+  tty-lines:
+    tty-line:
+      connection:
+        acl-in: ACL-MGMT-IN
+      exec:
+        timeout:
+          minutes: '240'
+          seconds: '0'
+      name: default
+Cisco-ios-xr-um-aaa-cfg:aaa:
+  authentication:
+    login:
+      authentication-list:
+        list-name: default
+        local: ''
+  usernames:
+    username:
+      group:
+        cisco-support: ''
+        root-lr: ''
+      name: lab
+      ordering-index: '0'
+      secret:
+        ten: $6$Y0vmA/kiAH9n2A/.$QUYxHxt8oK62AtJTyt16nTGPvgbZ3OunOQWP4FIY1X6aUxN.RzI0QRFoDxu./S2at/H2y0VEZyNKB/J1N8B3x/
+Cisco-ios-xr-um-call-home-cfg:call-home:
+  contact:
+    smart-licensing: ''
+  profiles:
+    profile:
+      active: ''
+      destination:
+        transport-method:
+          email:
+            disable: ''
+          http: ''
+      profile-name: CiscoTAC-1
+  service:
+    active: ''
+Cisco-ios-xr-um-domain-cfg:domain:
+  name: lab.local
+  name-servers:
+    name-server:
+      address: 198.18.1.1
+      order: '0'
+Cisco-ios-xr-um-grpc-cfg:grpc:
+  no-tls: ''
+  port: '57400'
+  vrf: default
+Cisco-ios-xr-um-ipv4-access-list-cfg:ipv4:
+  access-lists:
+    access-list:
+      access-list-name: ACL-MGMT-IN
+      sequences:
+        sequence:
+        - remark: Permit management subnet
+          sequence-number: '10'
+        - permit:
+            destination:
+              any: ''
+            protocol: ipv4
+            source:
+              address: 198.18.1.0
+              wildcard-mask: 0.0.0.255
+          sequence-number: '20'
+        - remark: Permit loopback subnet
+          sequence-number: '30'
+        - permit:
+            destination:
+              any: ''
+            protocol: ipv4
+            source:
+              address: 10.0.0.0
+              wildcard-mask: 0.0.0.255
+          sequence-number: '40'
+        - remark: Deny all other traffic
+          sequence-number: '50'
+        - deny:
+            destination:
+              any: ''
+            log: ''
+            protocol: ipv4
+            source:
+              any: ''
+          sequence-number: '60'
+Cisco-ios-xr-um-line-cfg:line:
+  default:
+    access-class:
+      ingress: ACL-MGMT-IN
+    exec-timeout:
+      timeout-in-minutes: '240'
+      timeout-in-seconds: '0'
+Cisco-ios-xr-um-lldp-cfg:lldp:
+  holdtime: '120'
+  timer: '30'
+Cisco-ios-xr-um-logging-cfg:logging:
+  buffered:
+    level: informational
+    logging-buffer-size: '10000000'
+  console: warning
+  monitor: informational
+  trap: informational
+  vrfs:
+    vrf:
+      host-ipv4-addresses:
+        host-ipv4-address:
+          ipv4-address: 198.18.1.1
+          severity: info
+      vrf-name: default
+Cisco-ios-xr-um-netconf-yang-cfg:netconf-yang:
+  agent:
+    ssh: ''
+Cisco-ios-xr-um-router-isis-cfg:router:
+  _identity:
+  - isis.processes.process.nets.net.net-id
+  isis:
+    processes:
+      process:
+        address-families:
+          address-family:
+          - af-name: ipv4
+            metric-style:
+              wide: ''
+            saf-name: unicast
+          - af-name: ipv6
+            saf-name: unicast
+            segment-routing:
+              srv6:
+                locators:
+                  locator:
+                    locator-name: MAIN
+        interfaces:
+          interface:
+          - address-families:
+              address-family:
+              - af-name: ipv4
+                saf-name: unicast
+              - af-name: ipv6
+                saf-name: unicast
+            interface-name: Loopback0
+            passive: ''
+          - address-families:
+              address-family:
+              - af-name: ipv4
+                saf-name: unicast
+              - af-name: ipv6
+                saf-name: unicast
+            interface-name: GigabitEthernet0/0/0/0
+            point-to-point: ''
+          - address-families:
+              address-family:
+              - af-name: ipv4
+                saf-name: unicast
+              - af-name: ipv6
+                saf-name: unicast
+            interface-name: GigabitEthernet0/0/0/1
+            point-to-point: ''
+        is-type: level-2-only
+        process-id: core
+Cisco-ios-xr-um-router-static-cfg:router:
+  static:
+    address-family:
+      ipv4:
+        unicast:
+          prefixes:
+            prefix:
+              nexthop-addresses:
+                nexthop-address:
+                  address: 198.18.1.1
+              prefix-address: 0.0.0.0
+              prefix-length: '0'
+Cisco-ios-xr-um-segment-routing-cfg:segment-routing:
+  _identity:
+  - srv6.encapsulation.source-address
+  - srv6.locators.locator.prefix.address
+  srv6:
+    locators:
+      locator:
+        locator-name: MAIN
+        micro-segment:
+          behavior:
+            unode:
+              psp-usd: ''
+        prefix:
+          length: '48'
+Cisco-ios-xr-um-snmp-server-cfg:snmp-server:
+  _identity:
+  - location
+  community:
+    unencrypted:
+      unencrypted-string:
+        community-string: lab-ro
+        ro: ''
+  contact: lab-noc@lab.local
+Cisco-ios-xr-um-ssh-cfg:ssh:
+  server:
+    netconf:
+      vrfs:
+        vrf:
+          vrf-name: default
+    v2: ''
+    vrfs:
+      vrf:
+        vrf-name: default
+Cisco-ios-xr-um-ssh-cfg:ssh[1]:
+  server:
+    netconf:
+      vrfs:
+        vrf:
+          vrf-name: default
+    vrfs:
+      vrf:
+        vrf-name: default
+Cisco-ios-xr-um-telemetry-model-driven-cfg:telemetry:
+  model-driven:
+    destination-groups:
+      destination-group:
+        address-family:
+          ipv4:
+            address:
+              address: 198.18.1.1
+              encoding:
+                self-describing-gpb: ''
+              port-number: '57500'
+              protocol:
+                grpc:
+                  no-tls: ''
+        destination-group-id: DG-COLLECTOR
+    sensor-groups:
+      sensor-group:
+      - sensor-group-id: SG-BGP-NEIGHBORS
+        sensor-paths:
+          sensor-path:
+            sensor-path-id: Cisco-IOS-XR-ipv4-bgp-oper:bgp/instances/instance/instance-active/default-vrf/neighbors/neighbor
+      - sensor-group-id: SG-INTF-COUNTERS
+        sensor-paths:
+          sensor-path:
+            sensor-path-id: Cisco-IOS-XR-infra-statsd-oper:infra-statistics/interfaces/interface/latest/generic-counters
+      - sensor-group-id: SG-ISIS-NEIGHBORS
+        sensor-paths:
+          sensor-path:
+            sensor-path-id: Cisco-IOS-XR-clns-isis-oper:isis/instances/instance/neighbors/neighbor
+    subscriptions:
+      subscription:
+      - destinations:
+          destination:
+            destination-id: DG-COLLECTOR
+        sensor-groups:
+          sensor-group:
+            sample-interval: '60000'
+            sensor-group-id: SG-BGP-NEIGHBORS
+        subscription-id: SUB-BGP-NEIGHBORS
+      - destinations:
+          destination:
+            destination-id: DG-COLLECTOR
+        sensor-groups:
+          sensor-group:
+            sample-interval: '30000'
+            sensor-group-id: SG-INTF-COUNTERS
+        subscription-id: SUB-INTF-COUNTERS
+      - destinations:
+          destination:
+            destination-id: DG-COLLECTOR
+        sensor-groups:
+          sensor-group:
+            sample-interval: '60000'
+            sensor-group-id: SG-ISIS-NEIGHBORS
+        subscription-id: SUB-ISIS-NEIGHBORS

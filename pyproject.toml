@@ -31,6 +31,7 @@ dependencies = [
     "click>=8.0",
     "fastapi>=0.115",
     "uvicorn[standard]>=0.30",
+    "defusedxml>=0.7",
 ]
 
 [project.optional-dependencies]

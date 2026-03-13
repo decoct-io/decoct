@@ -277,7 +277,7 @@ def _build_entry(entity_ids: list[str], llm_result: dict[str, Any]) -> Ingestion
 
 def infer_ingestion_spec(
     input_dir: Path,
-    adapter_name: str = "hybrid-infra",
+    adapter_name: str = "standard",
     model: str = "google/gemini-2.5-flash-lite",
     base_url: str = _DEFAULT_BASE_URL,
     api_key_env: str = _DEFAULT_API_KEY_ENV,
@@ -288,7 +288,7 @@ def infer_ingestion_spec(
     ``on_progress`` callback for status messages. Skips cluster on LLM error
     with warning.
     """
-    from decoct.adapters.hybrid_infra import HybridInfraAdapter
+    from decoct.adapters.base import BaseAdapter
     from decoct.core.config import EntityGraphConfig
     from decoct.core.entity_graph import EntityGraph
     from decoct.discovery.type_seeding import seed_types_from_hints
@@ -299,7 +299,7 @@ def infer_ingestion_spec(
 
     # Step 1: Canonicalise
     _progress("Canonicalising input files...")
-    adapter = HybridInfraAdapter()
+    adapter = BaseAdapter()
     graph = EntityGraph()
     input_path = Path(input_dir)
 

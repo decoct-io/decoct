@@ -1,0 +1,221 @@
+meta:
+  entity_type: unknown-0
+  total_instances: 16
+  max_inheritance_depth: 2
+  tier_c_ref: unknown-0_instances.yaml
+base_class:
+  data.aaa:
+  - usernames.username.ordering-index: '0'
+    usernames.username.name: lab
+    usernames.username.usergroup-under-usernames: "{'usergroup-under-username': [{'name':
+      'root-lr'}, {'name': 'cisco-support'}]}"
+    usernames.username.secret: '[REDACTED]'
+    authentications.authentication.type: login
+    authentications.authentication.listname: default
+    authentications.authentication.method1: local
+  - usernames.username.ordering-index: '0'
+    usernames.username.name: lab
+    usernames.username.group: "{'root-lr': '', 'cisco-support': ''}"
+    usernames.username.secret: '[REDACTED]'
+    authentication.login.authentication-list: "{'list-name': 'default', 'local': ''}"
+  data.call-home:
+  - active: ''
+    contact-smart-licensing: 'true'
+    profiles.profile.profile-name: CiscoTAC-1
+    profiles.profile.active: ''
+    profiles.profile.methods: "{'method': [{'method': 'email', 'enable': 'false'},
+      {'method': 'http', 'enable': 'true'}]}"
+  - service.active: ''
+    contact.smart-licensing: ''
+    profiles.profile.profile-name: CiscoTAC-1
+    profiles.profile.active: ''
+    profiles.profile.destination: "{'transport-method': {'email': {'disable': ''},
+      'http': ''}}"
+  data.domain.name: lab.local
+  data.domain.name-servers:
+    name-server:
+      order: '0'
+      address: 198.18.1.1
+  data.grpc:
+  - vrf: default
+    port: '57400'
+    no-tls: ''
+    enable: ''
+  - vrf: default
+    port: '57400'
+    no-tls: ''
+  data.ip-domain.vrfs:
+    vrf:
+      vrf-name: default
+      name: lab.local
+      servers.server.order: '0'
+      servers.server.server-address: 198.18.1.1
+  data.ipv4-acl-and-prefix-list.accesses:
+    access:
+      access-list-name: ACL-MGMT-IN
+      access-list-entries.access-list-entry: '[REDACTED]'
+  data.ipv4.access-lists:
+    access-list:
+      access-list-name: ACL-MGMT-IN
+      sequences.sequence: '[REDACTED]'
+  data.isis.instances: unknown-0.data.isis.instances.T0
+  data.line:
+    default:
+      exec-timeout.timeout-in-minutes: '240'
+      exec-timeout.timeout-in-seconds: '0'
+      access-class.ingress: ACL-MGMT-IN
+  data.lldp:
+  - timer: '30'
+    enable: 'true'
+    holdtime: '120'
+  - timer: '30'
+    holdtime: '120'
+  data.logging.buffered.level: informational
+  data.logging.buffered.logging-buffer-size: '10000000'
+  data.logging.console: warning
+  data.logging.monitor: informational
+  data.logging.trap: informational
+  data.logging.vrfs:
+    vrf:
+      vrf-name: default
+      host-ipv4-addresses.host-ipv4-address.ipv4-address: 198.18.1.1
+      host-ipv4-addresses.host-ipv4-address.severity: info
+  data.netconf-yang:
+  - agent.ssh.enable: ''
+  - agent.ssh: ''
+  data.router:
+  - static.address-family.ipv4: "{'unicast': {'prefixes': {'prefix': {'prefix-address':
+      '0.0.0.0', 'prefix-length': '0', 'nexthop-addresses': {'nexthop-address': {'address':
+      '198.18.1.1'}}}}}}"
+  - isis.processes.process: '[REDACTED]'
+  data.router-static.default-vrf.address-family.vrfipv4.vrf-unicast.vrf-prefixes:
+    vrf-prefix:
+      prefix: 0.0.0.0
+      prefix-length: '0'
+      vrf-route.vrf-next-hop-table.vrf-next-hop-next-hop-address: "{'next-hop-address':
+        '198.18.1.1'}"
+  data.segment-routing: unknown-0.data.segment-routing.T0
+  data.snmp-server.community.unencrypted:
+    unencrypted-string:
+      community-string: lab-ro
+      ro: ''
+  data.snmp-server.contact: lab-noc@lab.local
+  data.snmp.administration.default-communities:
+    default-community:
+      community-name: lab-ro
+      priviledge: read-only
+  data.snmp.system.contact: lab-noc@lab.local
+  data.sr: unknown-0.data.sr.T0
+  data.ssh:
+  - server.v2: ''
+    server.vrf-table.vrf: "{'vrf-name': 'default', 'enable': ''}"
+    server.netconf-vrf-table.vrf: "{'vrf-name': 'default', 'enable': ''}"
+  - server.vrf-table.vrf: "{'vrf-name': 'default', 'enable': ''}"
+    server.netconf-vrf-table.vrf: "{'vrf-name': 'default', 'enable': ''}"
+  - server.v2: ''
+    server.vrfs.vrf: "{'vrf-name': 'default'}"
+    server.netconf.vrfs: "{'vrf': {'vrf-name': 'default'}}"
+  - server.vrfs.vrf: "{'vrf-name': 'default'}"
+    server.netconf.vrfs: "{'vrf': {'vrf-name': 'default'}}"
+  data.syslog.buffered-logging.buffer-size: '10000000'
+  data.syslog.buffered-logging.logging-level: info
+  data.syslog.console-logging.logging-level: warning
+  data.syslog.host-server.vrfs:
+    vrf:
+      vrf-name: default
+      ipv4s.ipv4.address: 198.18.1.1
+      ipv4s.ipv4.ipv4-severity-port: "{'severity': 'informational'}"
+  data.syslog.monitor-logging.logging-level: info
+  data.syslog.trap-logging.logging-level: info
+  data.telemetry:
+    model-driven:
+      destination-groups.destination-group.destination-group-id: DG-COLLECTOR
+      destination-groups.destination-group.address-family: '[REDACTED]'
+      sensor-groups.sensor-group: '[REDACTED]'
+      subscriptions.subscription: '[REDACTED]'
+  data.telemetry-model-driven.destination-groups:
+    destination-group:
+      destination-id: DG-COLLECTOR
+      ipv4-destinations.ipv4-destination.ipv4-address: 198.18.1.1
+      ipv4-destinations.ipv4-destination.destination-port: '57500'
+      ipv4-destinations.ipv4-destination.encoding: self-describing-gpb
+      ipv4-destinations.ipv4-destination.protocol: "{'protocol': 'grpc', 'no-tls':
+        ''}"
+  data.telemetry-model-driven.subscriptions.subscription:
+  - subscription-identifier: SUB-BGP-NEIGHBORS
+    sensor-profiles.sensor-profile.sensorgroupid: SG-BGP-NEIGHBORS
+    sensor-profiles.sensor-profile.sample-interval: '60000'
+    destination-profiles.destination-profile.destination-id: DG-COLLECTOR
+  - subscription-identifier: SUB-INTF-COUNTERS
+    sensor-profiles.sensor-profile.sensorgroupid: SG-INTF-COUNTERS
+    sensor-profiles.sensor-profile.sample-interval: '30000'
+    destination-profiles.destination-profile.destination-id: DG-COLLECTOR
+  - subscription-identifier: SUB-ISIS-NEIGHBORS
+    sensor-profiles.sensor-profile.sensorgroupid: SG-ISIS-NEIGHBORS
+    sensor-profiles.sensor-profile.sample-interval: '60000'
+    destination-profiles.destination-profile.destination-id: DG-COLLECTOR
+  data.tty.tty-lines:
+    tty-line:
+      name: default
+      exec.timeout.minutes: '240'
+      exec.timeout.seconds: '0'
+      connection.acl-in: ACL-MGMT-IN
+classes:
+  _base_only:
+    inherits: base
+    own_attrs: {}
+    instance_count_inclusive: 1
+  sensor_group:
+    inherits: base
+    own_attrs:
+      data.telemetry-model-driven.sensor-groups.sensor-group:
+      - sensor-group-identifier: SG-BGP-NEIGHBORS
+        sensor-paths.sensor-path.telemetry-sensor-path: 
+          Cisco-IOS-XR-ipv4-bgp-oper:bgp/instances/instance/instance-active/default-vrf/neighbors/neighbor
+      - sensor-group-identifier: SG-INTF-COUNTERS
+        sensor-paths.sensor-path.telemetry-sensor-path: 
+          Cisco-IOS-XR-infra-statsd-oper:infra-statistics/interfaces/interface/latest/generic-counters
+      - sensor-group-identifier: SG-ISIS-NEIGHBORS
+        sensor-paths.sensor-path.telemetry-sensor-path: 
+          Cisco-IOS-XR-clns-isis-oper:isis/instances/instance/neighbors/neighbor
+    instance_count_inclusive: 15
+subclasses: {}
+composite_templates:
+  data.isis.instances:
+    unknown-0.data.isis.instances.T0:
+      elements:
+        afs.af: "[{'af-name': 'ipv4', 'saf-name': 'unicast', 'af-data': {'metric-styles':
+          {'metric-style': {'level': 'not-set', 'style': 'new-metric-style'}}}}, {'af-name':
+          'ipv6', 'saf-name': 'unicast', 'af-data': {'segment-routing': {'srv6': {'running':
+          '', 'srv6-locators': {'srv6-locator': {'locator-name': 'MAIN', 'running':
+          ''}}}}}}]"
+        instance-name: core
+        interfaces.interface: "[{'interface-name': 'Loopback0', 'running': '', 'state':
+          'passive', 'interface-afs': {'interface-af': [{'af-name': 'ipv4', 'saf-name':
+          'unicast', 'interface-af-data': {'running': ''}}, {'af-name': 'ipv6', 'saf-name':
+          'unicast', 'interface-af-data': {'running': ''}}]}}, {'interface-name':
+          'GigabitEthernet0/0/0/0', 'running': '', 'point-to-point': '', 'interface-afs':
+          {'interface-af': [{'af-name': 'ipv4', 'saf-name': 'unicast', 'interface-af-data':
+          {'running': ''}}, {'af-name': 'ipv6', 'saf-name': 'unicast', 'interface-af-data':
+          {'running': ''}}]}}, {'interface-name': 'GigabitEthernet0/0/0/1', 'running':
+          '', 'point-to-point': '', 'interface-afs': {'interface-af': [{'af-name':
+          'ipv4', 'saf-name': 'unicast', 'interface-af-data': {'running': ''}}, {'af-name':
+          'ipv6', 'saf-name': 'unicast', 'interface-af-data': {'running': ''}}]}}]"
+        is-type: level2
+        nets.net.net-name: 49.0001.0100.0000.0003.00
+        running: ''
+  data.segment-routing:
+    unknown-0.data.segment-routing.T0:
+      elements:
+        encapsulation.source-address: fc00:0:3::1
+        locators.locator.locator-name: MAIN
+        locators.locator.micro-segment: "{'behavior': {'unode': {'psp-usd': ''}}}"
+        locators.locator.prefix: "{'address': 'fc00:0:3::', 'length': '48'}"
+  data.sr:
+    unknown-0.data.sr.T0:
+      elements:
+        enable: ''
+        encapsulation.source-address: fc00:0:3::1
+        locators.locators.locator: '[REDACTED]'
+assertions:
+  base_only_ratio: 0.0625

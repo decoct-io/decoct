@@ -1,0 +1,2472 @@
+{
+  "data": {
+    "@xmlns": "urn:ietf:params:xml:ns:netconf:base:1.0",
+    "ssh": [
+      {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-crypto-ssh-cfg",
+        "server": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-crypto-ssh-cfg",
+          "v2": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-crypto-ssh-cfg"
+          },
+          "vrf-table": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-crypto-ssh-cfg",
+            "vrf": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-crypto-ssh-cfg",
+              "vrf-name": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-crypto-ssh-cfg",
+                "#text": "default"
+              },
+              "enable": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-crypto-ssh-cfg"
+              }
+            }
+          },
+          "netconf-vrf-table": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-crypto-ssh-cfg",
+            "vrf": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-crypto-ssh-cfg",
+              "vrf-name": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-crypto-ssh-cfg",
+                "#text": "default"
+              },
+              "enable": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-crypto-ssh-cfg"
+              }
+            }
+          }
+        }
+      },
+      {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-crypto-ssh-cfg",
+        "server": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-crypto-ssh-cfg",
+          "vrf-table": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-crypto-ssh-cfg",
+            "vrf": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-crypto-ssh-cfg",
+              "vrf-name": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-crypto-ssh-cfg",
+                "#text": "default"
+              },
+              "enable": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-crypto-ssh-cfg"
+              }
+            }
+          },
+          "netconf-vrf-table": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-crypto-ssh-cfg",
+            "vrf": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-crypto-ssh-cfg",
+              "vrf-name": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-crypto-ssh-cfg",
+                "#text": "default"
+              },
+              "enable": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-crypto-ssh-cfg"
+              }
+            }
+          }
+        }
+      },
+      {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ssh-cfg",
+        "server": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ssh-cfg",
+          "v2": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ssh-cfg"
+          },
+          "vrfs": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ssh-cfg",
+            "vrf": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ssh-cfg",
+              "vrf-name": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ssh-cfg",
+                "#text": "default"
+              }
+            }
+          },
+          "netconf": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ssh-cfg",
+            "vrfs": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ssh-cfg",
+              "vrf": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ssh-cfg",
+                "vrf-name": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ssh-cfg",
+                  "#text": "default"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ssh-cfg",
+        "server": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ssh-cfg",
+          "vrfs": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ssh-cfg",
+            "vrf": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ssh-cfg",
+              "vrf-name": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ssh-cfg",
+                "#text": "default"
+              }
+            }
+          },
+          "netconf": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ssh-cfg",
+            "vrfs": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ssh-cfg",
+              "vrf": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ssh-cfg",
+                "vrf-name": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ssh-cfg",
+                  "#text": "default"
+                }
+              }
+            }
+          }
+        }
+      }
+    ],
+    "snmp": {
+      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-snmp-agent-cfg",
+      "administration": {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-snmp-agent-cfg",
+        "default-communities": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-snmp-agent-cfg",
+          "default-community": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-snmp-agent-cfg",
+            "community-name": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-snmp-agent-cfg",
+              "#text": "lab-ro"
+            },
+            "priviledge": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-snmp-agent-cfg",
+              "#text": "read-only"
+            }
+          }
+        }
+      },
+      "system": {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-snmp-agent-cfg",
+        "contact": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-snmp-agent-cfg",
+          "#text": "lab-noc@lab.local"
+        },
+        "location": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-snmp-agent-cfg",
+          "#text": "srr-bas \u2014 Basingstoke DC"
+        }
+      }
+    },
+    "isis": {
+      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+      "instances": {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+        "instance": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+          "instance-name": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+            "#text": "core"
+          },
+          "running": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg"
+          },
+          "is-type": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+            "#text": "level2"
+          },
+          "nets": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+            "net": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+              "net-name": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                "#text": "49.0001.0100.0000.0008.00"
+              }
+            }
+          },
+          "afs": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+            "af": [
+              {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                "af-name": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                  "#text": "ipv4"
+                },
+                "saf-name": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                  "#text": "unicast"
+                },
+                "af-data": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                  "metric-styles": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                    "metric-style": {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                      "level": {
+                        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                        "#text": "not-set"
+                      },
+                      "style": {
+                        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                        "#text": "new-metric-style"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                "af-name": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                  "#text": "ipv6"
+                },
+                "saf-name": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                  "#text": "unicast"
+                },
+                "af-data": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                  "segment-routing": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                    "srv6": {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                      "running": {
+                        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg"
+                      },
+                      "srv6-locators": {
+                        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                        "srv6-locator": {
+                          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                          "locator-name": {
+                            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                            "#text": "MAIN"
+                          },
+                          "running": {
+                            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "interfaces": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+            "interface": [
+              {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                "interface-name": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                  "#text": "Loopback0"
+                },
+                "running": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg"
+                },
+                "state": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                  "#text": "passive"
+                },
+                "interface-afs": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                  "interface-af": [
+                    {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                      "af-name": {
+                        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                        "#text": "ipv4"
+                      },
+                      "saf-name": {
+                        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                        "#text": "unicast"
+                      },
+                      "interface-af-data": {
+                        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                        "running": {
+                          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg"
+                        }
+                      }
+                    },
+                    {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                      "af-name": {
+                        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                        "#text": "ipv6"
+                      },
+                      "saf-name": {
+                        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                        "#text": "unicast"
+                      },
+                      "interface-af-data": {
+                        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                        "running": {
+                          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg"
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                "interface-name": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                  "#text": "GigabitEthernet0/0/0/0"
+                },
+                "running": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg"
+                },
+                "point-to-point": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg"
+                },
+                "interface-afs": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                  "interface-af": [
+                    {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                      "af-name": {
+                        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                        "#text": "ipv4"
+                      },
+                      "saf-name": {
+                        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                        "#text": "unicast"
+                      },
+                      "interface-af-data": {
+                        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                        "running": {
+                          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg"
+                        }
+                      }
+                    },
+                    {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                      "af-name": {
+                        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                        "#text": "ipv6"
+                      },
+                      "saf-name": {
+                        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                        "#text": "unicast"
+                      },
+                      "interface-af-data": {
+                        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                        "running": {
+                          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg"
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                "interface-name": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                  "#text": "GigabitEthernet0/0/0/1"
+                },
+                "running": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg"
+                },
+                "point-to-point": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg"
+                },
+                "interface-afs": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                  "interface-af": [
+                    {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                      "af-name": {
+                        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                        "#text": "ipv4"
+                      },
+                      "saf-name": {
+                        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                        "#text": "unicast"
+                      },
+                      "interface-af-data": {
+                        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                        "running": {
+                          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg"
+                        }
+                      }
+                    },
+                    {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                      "af-name": {
+                        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                        "#text": "ipv6"
+                      },
+                      "saf-name": {
+                        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                        "#text": "unicast"
+                      },
+                      "interface-af-data": {
+                        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg",
+                        "running": {
+                          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-clns-isis-cfg"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    "netconf-yang": [
+      {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-man-netconf-cfg",
+        "agent": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-man-netconf-cfg",
+          "ssh": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-man-netconf-cfg",
+            "enable": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-man-netconf-cfg"
+            }
+          }
+        }
+      },
+      {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-netconf-yang-cfg",
+        "agent": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-netconf-yang-cfg",
+          "ssh": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-netconf-yang-cfg"
+          }
+        }
+      }
+    ],
+    "call-home": [
+      {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-call-home-cfg",
+        "active": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-call-home-cfg"
+        },
+        "contact-smart-licensing": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-call-home-cfg",
+          "#text": "true"
+        },
+        "profiles": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-call-home-cfg",
+          "profile": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-call-home-cfg",
+            "profile-name": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-call-home-cfg",
+              "#text": "CiscoTAC-1"
+            },
+            "active": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-call-home-cfg"
+            },
+            "methods": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-call-home-cfg",
+              "method": [
+                {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-call-home-cfg",
+                  "method": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-call-home-cfg",
+                    "#text": "email"
+                  },
+                  "enable": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-call-home-cfg",
+                    "#text": "false"
+                  }
+                },
+                {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-call-home-cfg",
+                  "method": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-call-home-cfg",
+                    "#text": "http"
+                  },
+                  "enable": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-call-home-cfg",
+                    "#text": "true"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-call-home-cfg",
+        "service": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-call-home-cfg",
+          "active": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-call-home-cfg"
+          }
+        },
+        "contact": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-call-home-cfg",
+          "smart-licensing": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-call-home-cfg"
+          }
+        },
+        "profiles": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-call-home-cfg",
+          "profile": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-call-home-cfg",
+            "profile-name": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-call-home-cfg",
+              "#text": "CiscoTAC-1"
+            },
+            "active": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-call-home-cfg"
+            },
+            "destination": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-call-home-cfg",
+              "transport-method": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-call-home-cfg",
+                "email": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-call-home-cfg",
+                  "disable": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-call-home-cfg"
+                  }
+                },
+                "http": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-call-home-cfg"
+                }
+              }
+            }
+          }
+        }
+      }
+    ],
+    "lldp": [
+      {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ethernet-lldp-cfg",
+        "timer": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ethernet-lldp-cfg",
+          "#text": "30"
+        },
+        "enable": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ethernet-lldp-cfg",
+          "#text": "true"
+        },
+        "holdtime": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ethernet-lldp-cfg",
+          "#text": "120"
+        }
+      },
+      {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-lldp-cfg",
+        "timer": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-lldp-cfg",
+          "#text": "30"
+        },
+        "holdtime": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-lldp-cfg",
+          "#text": "120"
+        }
+      }
+    ],
+    "ip-domain": {
+      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ip-domain-cfg",
+      "vrfs": {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ip-domain-cfg",
+        "vrf": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ip-domain-cfg",
+          "vrf-name": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ip-domain-cfg",
+            "#text": "default"
+          },
+          "name": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ip-domain-cfg",
+            "#text": "lab.local"
+          },
+          "servers": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ip-domain-cfg",
+            "server": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ip-domain-cfg",
+              "order": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ip-domain-cfg",
+                "#text": "0"
+              },
+              "server-address": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ip-domain-cfg",
+                "#text": "198.18.1.1"
+              }
+            }
+          }
+        }
+      }
+    },
+    "aaa": [
+      {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-aaa-lib-cfg",
+        "usernames": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-aaa-locald-cfg",
+          "username": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-aaa-locald-cfg",
+            "ordering-index": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-aaa-locald-cfg",
+              "#text": "0"
+            },
+            "name": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-aaa-locald-cfg",
+              "#text": "lab"
+            },
+            "usergroup-under-usernames": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-aaa-locald-cfg",
+              "usergroup-under-username": [
+                {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-aaa-locald-cfg",
+                  "name": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-aaa-locald-cfg",
+                    "#text": "root-lr"
+                  }
+                },
+                {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-aaa-locald-cfg",
+                  "name": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-aaa-locald-cfg",
+                    "#text": "cisco-support"
+                  }
+                }
+              ]
+            },
+            "secret": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-aaa-locald-cfg",
+              "type": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-aaa-locald-cfg",
+                "#text": "type10"
+              },
+              "secret10": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-aaa-locald-cfg",
+                "#text": "$6$Y0vmA/kiAH9n2A/.$QUYxHxt8oK62AtJTyt16nTGPvgbZ3OunOQWP4FIY1X6aUxN.RzI0QRFoDxu./S2at/H2y0VEZyNKB/J1N8B3x/"
+              }
+            }
+          }
+        },
+        "authentications": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-aaa-lib-cfg",
+          "authentication": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-aaa-lib-cfg",
+            "type": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-aaa-lib-cfg",
+              "#text": "login"
+            },
+            "listname": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-aaa-lib-cfg",
+              "#text": "default"
+            },
+            "method1": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-aaa-lib-cfg",
+              "#text": "local"
+            }
+          }
+        }
+      },
+      {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-aaa-cfg",
+        "usernames": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-aaa-task-user-cfg",
+          "username": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-aaa-task-user-cfg",
+            "ordering-index": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-aaa-task-user-cfg",
+              "#text": "0"
+            },
+            "name": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-aaa-task-user-cfg",
+              "#text": "lab"
+            },
+            "group": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-aaa-task-user-cfg",
+              "root-lr": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-aaa-task-user-cfg"
+              },
+              "cisco-support": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-aaa-task-user-cfg"
+              }
+            },
+            "secret": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-aaa-task-user-cfg",
+              "ten": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-aaa-task-user-cfg",
+                "#text": "$6$Y0vmA/kiAH9n2A/.$QUYxHxt8oK62AtJTyt16nTGPvgbZ3OunOQWP4FIY1X6aUxN.RzI0QRFoDxu./S2at/H2y0VEZyNKB/J1N8B3x/"
+              }
+            }
+          }
+        },
+        "authentication": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-aaa-cfg",
+          "login": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-aaa-cfg",
+            "authentication-list": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-aaa-cfg",
+              "list-name": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-aaa-cfg",
+                "#text": "default"
+              },
+              "local": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-aaa-cfg"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "telemetry-model-driven": {
+      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+      "destination-groups": {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+        "destination-group": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+          "destination-id": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+            "#text": "DG-COLLECTOR"
+          },
+          "ipv4-destinations": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+            "ipv4-destination": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+              "ipv4-address": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+                "#text": "198.18.1.1"
+              },
+              "destination-port": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+                "#text": "57500"
+              },
+              "encoding": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+                "#text": "self-describing-gpb"
+              },
+              "protocol": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+                "protocol": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+                  "#text": "grpc"
+                },
+                "no-tls": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg"
+                }
+              }
+            }
+          }
+        }
+      },
+      "sensor-groups": {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+        "sensor-group": [
+          {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+            "sensor-group-identifier": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+              "#text": "SG-BGP-NEIGHBORS"
+            },
+            "sensor-paths": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+              "sensor-path": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+                "telemetry-sensor-path": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+                  "#text": "Cisco-IOS-XR-ipv4-bgp-oper:bgp/instances/instance/instance-active/default-vrf/neighbors/neighbor"
+                }
+              }
+            }
+          },
+          {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+            "sensor-group-identifier": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+              "#text": "SG-INTF-COUNTERS"
+            },
+            "sensor-paths": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+              "sensor-path": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+                "telemetry-sensor-path": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+                  "#text": "Cisco-IOS-XR-infra-statsd-oper:infra-statistics/interfaces/interface/latest/generic-counters"
+                }
+              }
+            }
+          },
+          {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+            "sensor-group-identifier": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+              "#text": "SG-ISIS-NEIGHBORS"
+            },
+            "sensor-paths": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+              "sensor-path": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+                "telemetry-sensor-path": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+                  "#text": "Cisco-IOS-XR-clns-isis-oper:isis/instances/instance/neighbors/neighbor"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "subscriptions": {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+        "subscription": [
+          {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+            "subscription-identifier": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+              "#text": "SUB-BGP-NEIGHBORS"
+            },
+            "sensor-profiles": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+              "sensor-profile": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+                "sensorgroupid": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+                  "#text": "SG-BGP-NEIGHBORS"
+                },
+                "sample-interval": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+                  "#text": "60000"
+                }
+              }
+            },
+            "destination-profiles": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+              "destination-profile": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+                "destination-id": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+                  "#text": "DG-COLLECTOR"
+                }
+              }
+            }
+          },
+          {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+            "subscription-identifier": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+              "#text": "SUB-INTF-COUNTERS"
+            },
+            "sensor-profiles": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+              "sensor-profile": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+                "sensorgroupid": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+                  "#text": "SG-INTF-COUNTERS"
+                },
+                "sample-interval": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+                  "#text": "30000"
+                }
+              }
+            },
+            "destination-profiles": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+              "destination-profile": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+                "destination-id": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+                  "#text": "DG-COLLECTOR"
+                }
+              }
+            }
+          },
+          {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+            "subscription-identifier": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+              "#text": "SUB-ISIS-NEIGHBORS"
+            },
+            "sensor-profiles": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+              "sensor-profile": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+                "sensorgroupid": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+                  "#text": "SG-ISIS-NEIGHBORS"
+                },
+                "sample-interval": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+                  "#text": "60000"
+                }
+              }
+            },
+            "destination-profiles": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+              "destination-profile": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+                "destination-id": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg",
+                  "#text": "DG-COLLECTOR"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "grpc": [
+      {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-man-ems-cfg",
+        "vrf": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-man-ems-cfg",
+          "#text": "default"
+        },
+        "port": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-man-ems-cfg",
+          "#text": "57400"
+        },
+        "no-tls": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-man-ems-cfg"
+        },
+        "enable": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-man-ems-cfg"
+        }
+      },
+      {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-grpc-cfg",
+        "vrf": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-grpc-cfg",
+          "#text": "default"
+        },
+        "port": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-grpc-cfg",
+          "#text": "57400"
+        },
+        "no-tls": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-grpc-cfg"
+        }
+      }
+    ],
+    "tty": {
+      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-tty-server-cfg",
+      "tty-lines": {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-tty-server-cfg",
+        "tty-line": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-tty-server-cfg",
+          "name": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-tty-server-cfg",
+            "#text": "default"
+          },
+          "exec": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-tty-server-cfg",
+            "timeout": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-tty-server-cfg",
+              "minutes": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-tty-server-cfg",
+                "#text": "240"
+              },
+              "seconds": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-tty-server-cfg",
+                "#text": "0"
+              }
+            }
+          },
+          "connection": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-tty-management-cfg",
+            "acl-in": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-tty-management-cfg",
+              "#text": "ACL-MGMT-IN"
+            }
+          }
+        }
+      }
+    },
+    "router-static": {
+      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ip-static-cfg",
+      "default-vrf": {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ip-static-cfg",
+        "address-family": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ip-static-cfg",
+          "vrfipv4": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ip-static-cfg",
+            "vrf-unicast": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ip-static-cfg",
+              "vrf-prefixes": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ip-static-cfg",
+                "vrf-prefix": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ip-static-cfg",
+                  "prefix": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ip-static-cfg",
+                    "#text": "0.0.0.0"
+                  },
+                  "prefix-length": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ip-static-cfg",
+                    "#text": "0"
+                  },
+                  "vrf-route": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ip-static-cfg",
+                    "vrf-next-hop-table": {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ip-static-cfg",
+                      "vrf-next-hop-next-hop-address": {
+                        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ip-static-cfg",
+                        "next-hop-address": {
+                          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ip-static-cfg",
+                          "#text": "198.18.1.1"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "syslog": {
+      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-infra-syslog-cfg",
+      "trap-logging": {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-infra-syslog-cfg",
+        "logging-level": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-infra-syslog-cfg",
+          "#text": "info"
+        }
+      },
+      "console-logging": {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-infra-syslog-cfg",
+        "logging-level": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-infra-syslog-cfg",
+          "#text": "warning"
+        }
+      },
+      "monitor-logging": {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-infra-syslog-cfg",
+        "logging-level": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-infra-syslog-cfg",
+          "#text": "info"
+        }
+      },
+      "buffered-logging": {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-infra-syslog-cfg",
+        "buffer-size": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-infra-syslog-cfg",
+          "#text": "10000000"
+        },
+        "logging-level": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-infra-syslog-cfg",
+          "#text": "info"
+        }
+      },
+      "host-server": {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-infra-syslog-cfg",
+        "vrfs": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-infra-syslog-cfg",
+          "vrf": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-infra-syslog-cfg",
+            "vrf-name": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-infra-syslog-cfg",
+              "#text": "default"
+            },
+            "ipv4s": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-infra-syslog-cfg",
+              "ipv4": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-infra-syslog-cfg",
+                "address": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-infra-syslog-cfg",
+                  "#text": "198.18.1.1"
+                },
+                "ipv4-severity-port": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-infra-syslog-cfg",
+                  "severity": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-infra-syslog-cfg",
+                    "#text": "informational"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "host-names": {
+      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-shellutil-cfg",
+      "host-name": {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-shellutil-cfg",
+        "#text": "srr-bas"
+      }
+    },
+    "banners": [
+      {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-infra-infra-cfg",
+        "banner": [
+          {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-infra-infra-cfg",
+            "banner-name": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-infra-infra-cfg",
+              "#text": "motd"
+            },
+            "banner-text": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-infra-infra-cfg",
+              "#text": "#Authorized access only. All activity may be monitored.#"
+            }
+          },
+          {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-infra-infra-cfg",
+            "banner-name": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-infra-infra-cfg",
+              "#text": "login"
+            },
+            "banner-text": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-infra-infra-cfg",
+              "#text": "#srr-bas \u2014 Basingstoke DC#"
+            }
+          }
+        ]
+      },
+      {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-banner-cfg",
+        "banner": [
+          {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-banner-cfg",
+            "banner-type": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-banner-cfg",
+              "#text": "motd"
+            },
+            "line": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-banner-cfg",
+              "#text": "#Authorized access only. All activity may be monitored.#"
+            }
+          },
+          {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-banner-cfg",
+            "banner-type": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-banner-cfg",
+              "#text": "login"
+            },
+            "line": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-banner-cfg",
+              "#text": "#srr-bas \u2014 Basingstoke DC#"
+            }
+          }
+        ]
+      }
+    ],
+    "sr": {
+      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-segment-routing-ms-cfg",
+      "srv6": {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-segment-routing-srv6-cfg",
+        "enable": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-segment-routing-srv6-cfg"
+        },
+        "encapsulation": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-segment-routing-srv6-cfg",
+          "source-address": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-segment-routing-srv6-cfg",
+            "#text": "fc00:0:8::1"
+          }
+        },
+        "locators": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-segment-routing-srv6-cfg",
+          "locators": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-segment-routing-srv6-cfg",
+            "locator": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-segment-routing-srv6-cfg",
+              "name": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-segment-routing-srv6-cfg",
+                "#text": "MAIN"
+              },
+              "locator-enable": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-segment-routing-srv6-cfg"
+              },
+              "micro-segment": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-segment-routing-srv6-cfg",
+                "behavior": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-segment-routing-srv6-cfg",
+                  "#text": "unode-psp-usd"
+                }
+              },
+              "prefix": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-segment-routing-srv6-cfg",
+                "prefix": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-segment-routing-srv6-cfg",
+                  "#text": "fc00:0:8::"
+                },
+                "prefix-length": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-segment-routing-srv6-cfg",
+                  "#text": "48"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "ipv4-acl-and-prefix-list": {
+      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+      "accesses": {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+        "access": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+          "access-list-name": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+            "#text": "ACL-MGMT-IN"
+          },
+          "access-list-entries": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+            "access-list-entry": [
+              {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+                "sequence-number": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+                  "#text": "10"
+                },
+                "remark": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+                  "#text": "Permit management subnet"
+                },
+                "sequence-str": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+                  "#text": "10"
+                }
+              },
+              {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+                "sequence-number": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+                  "#text": "20"
+                },
+                "grant": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+                  "#text": "permit"
+                },
+                "source-network": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+                  "source-address": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+                    "#text": "198.18.1.0"
+                  },
+                  "source-wild-card-bits": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+                    "#text": "0.0.0.255"
+                  }
+                },
+                "sequence-str": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+                  "#text": "20"
+                }
+              },
+              {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+                "sequence-number": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+                  "#text": "30"
+                },
+                "remark": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+                  "#text": "Permit loopback subnet"
+                },
+                "sequence-str": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+                  "#text": "30"
+                }
+              },
+              {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+                "sequence-number": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+                  "#text": "40"
+                },
+                "grant": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+                  "#text": "permit"
+                },
+                "source-network": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+                  "source-address": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+                    "#text": "10.0.0.0"
+                  },
+                  "source-wild-card-bits": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+                    "#text": "0.0.0.255"
+                  }
+                },
+                "sequence-str": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+                  "#text": "40"
+                }
+              },
+              {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+                "sequence-number": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+                  "#text": "50"
+                },
+                "remark": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+                  "#text": "Deny all other traffic"
+                },
+                "sequence-str": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+                  "#text": "50"
+                }
+              },
+              {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+                "sequence-number": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+                  "#text": "60"
+                },
+                "grant": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+                  "#text": "deny"
+                },
+                "source-network": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+                  "source-address": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+                    "#text": "0.0.0.0"
+                  },
+                  "source-wild-card-bits": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+                    "#text": "255.255.255.255"
+                  }
+                },
+                "log-option": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+                  "#text": "log"
+                },
+                "sequence-str": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-acl-cfg",
+                  "#text": "60"
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    "interface-configurations": {
+      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg",
+      "interface-configuration": [
+        {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg",
+          "active": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg",
+            "#text": "act"
+          },
+          "interface-name": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg",
+            "#text": "Null0"
+          },
+          "ipv4-network": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-io-cfg",
+            "icmp-unreach-disable": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-io-cfg"
+            }
+          }
+        },
+        {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg",
+          "active": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg",
+            "#text": "act"
+          },
+          "interface-name": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg",
+            "#text": "Loopback0"
+          },
+          "interface-virtual": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg"
+          },
+          "description": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg",
+            "#text": "Loopback"
+          },
+          "ipv4-network": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-io-cfg",
+            "addresses": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-io-cfg",
+              "primary": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-io-cfg",
+                "address": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-io-cfg",
+                  "#text": "10.0.0.8"
+                },
+                "netmask": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-io-cfg",
+                  "#text": "255.255.255.255"
+                }
+              }
+            }
+          },
+          "ipv6-network": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv6-ma-cfg",
+            "addresses": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv6-ma-cfg",
+              "regular-addresses": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv6-ma-cfg",
+                "regular-address": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv6-ma-cfg",
+                  "address": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv6-ma-cfg",
+                    "#text": "fc00:0:8::1"
+                  },
+                  "prefix-length": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv6-ma-cfg",
+                    "#text": "128"
+                  },
+                  "zone": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv6-ma-cfg",
+                    "#text": "0"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg",
+          "active": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg",
+            "#text": "act"
+          },
+          "interface-name": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg",
+            "#text": "MgmtEth0/RP0/CPU0/0"
+          },
+          "ipv4-network": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-io-cfg",
+            "addresses": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-io-cfg",
+              "primary": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-io-cfg",
+                "address": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-io-cfg",
+                  "#text": "198.18.1.108"
+                },
+                "netmask": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-io-cfg",
+                  "#text": "255.255.255.0"
+                }
+              }
+            }
+          }
+        },
+        {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg",
+          "active": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg",
+            "#text": "act"
+          },
+          "interface-name": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg",
+            "#text": "GigabitEthernet0/0/0/0"
+          },
+          "description": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg",
+            "#text": "to p-bas-1"
+          },
+          "ipv4-network": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-io-cfg",
+            "addresses": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-io-cfg",
+              "primary": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-io-cfg",
+                "address": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-io-cfg",
+                  "#text": "10.1.0.24"
+                },
+                "netmask": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-io-cfg",
+                  "#text": "255.255.255.254"
+                }
+              }
+            }
+          },
+          "ipv6-network": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv6-ma-cfg",
+            "addresses": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv6-ma-cfg",
+              "auto-configuration": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv6-ma-cfg",
+                "enable": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv6-ma-cfg"
+                }
+              }
+            },
+            "unnumbered": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv6-ma-cfg",
+              "#text": "Loopback0"
+            }
+          }
+        },
+        {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg",
+          "active": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg",
+            "#text": "act"
+          },
+          "interface-name": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg",
+            "#text": "GigabitEthernet0/0/0/1"
+          },
+          "description": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg",
+            "#text": "to p-bas-2"
+          },
+          "ipv4-network": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-io-cfg",
+            "addresses": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-io-cfg",
+              "primary": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-io-cfg",
+                "address": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-io-cfg",
+                  "#text": "10.1.0.26"
+                },
+                "netmask": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-io-cfg",
+                  "#text": "255.255.255.254"
+                }
+              }
+            }
+          },
+          "ipv6-network": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv6-ma-cfg",
+            "addresses": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv6-ma-cfg",
+              "auto-configuration": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv6-ma-cfg",
+                "enable": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv6-ma-cfg"
+                }
+              }
+            },
+            "unnumbered": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ipv6-ma-cfg",
+              "#text": "Loopback0"
+            }
+          }
+        }
+      ]
+    },
+    "segment-routing": {
+      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-segment-routing-cfg",
+      "srv6": {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-segment-routing-srv6-cfg",
+        "encapsulation": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-segment-routing-srv6-cfg",
+          "source-address": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-segment-routing-srv6-cfg",
+            "#text": "fc00:0:8::1"
+          }
+        },
+        "locators": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-segment-routing-srv6-cfg",
+          "locator": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-segment-routing-srv6-cfg",
+            "locator-name": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-segment-routing-srv6-cfg",
+              "#text": "MAIN"
+            },
+            "micro-segment": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-segment-routing-srv6-cfg",
+              "behavior": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-segment-routing-srv6-cfg",
+                "unode": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-segment-routing-srv6-cfg",
+                  "psp-usd": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-segment-routing-srv6-cfg"
+                  }
+                }
+              }
+            },
+            "prefix": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-segment-routing-srv6-cfg",
+              "address": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-segment-routing-srv6-cfg",
+                "#text": "fc00:0:8::"
+              },
+              "length": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-segment-routing-srv6-cfg",
+                "#text": "48"
+              }
+            }
+          }
+        }
+      }
+    },
+    "domain": {
+      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-domain-cfg",
+      "name": {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-domain-cfg",
+        "#text": "lab.local"
+      },
+      "name-servers": {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-domain-cfg",
+        "name-server": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-domain-cfg",
+          "order": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-domain-cfg",
+            "#text": "0"
+          },
+          "address": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-domain-cfg",
+            "#text": "198.18.1.1"
+          }
+        }
+      }
+    },
+    "router": [
+      {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-static-cfg",
+        "static": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-static-cfg",
+          "address-family": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-static-cfg",
+            "ipv4": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-static-cfg",
+              "unicast": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-static-cfg",
+                "prefixes": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-static-cfg",
+                  "prefix": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-static-cfg",
+                    "prefix-address": {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-static-cfg",
+                      "#text": "0.0.0.0"
+                    },
+                    "prefix-length": {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-static-cfg",
+                      "#text": "0"
+                    },
+                    "nexthop-addresses": {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-static-cfg",
+                      "nexthop-address": {
+                        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-static-cfg",
+                        "address": {
+                          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-static-cfg",
+                          "#text": "198.18.1.1"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+        "isis": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+          "processes": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+            "process": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+              "process-id": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                "#text": "core"
+              },
+              "is-type": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                "#text": "level-2-only"
+              },
+              "nets": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                "net": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                  "net-id": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                    "#text": "49.0001.0100.0000.0008.00"
+                  }
+                }
+              },
+              "address-families": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                "address-family": [
+                  {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                    "af-name": {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                      "#text": "ipv4"
+                    },
+                    "saf-name": {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                      "#text": "unicast"
+                    },
+                    "metric-style": {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                      "wide": {
+                        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg"
+                      }
+                    }
+                  },
+                  {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                    "af-name": {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                      "#text": "ipv6"
+                    },
+                    "saf-name": {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                      "#text": "unicast"
+                    },
+                    "segment-routing": {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                      "srv6": {
+                        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                        "locators": {
+                          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                          "locator": {
+                            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                            "locator-name": {
+                              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                              "#text": "MAIN"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "interfaces": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                "interface": [
+                  {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                    "interface-name": {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                      "#text": "Loopback0"
+                    },
+                    "passive": {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg"
+                    },
+                    "address-families": {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                      "address-family": [
+                        {
+                          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                          "af-name": {
+                            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                            "#text": "ipv4"
+                          },
+                          "saf-name": {
+                            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                            "#text": "unicast"
+                          }
+                        },
+                        {
+                          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                          "af-name": {
+                            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                            "#text": "ipv6"
+                          },
+                          "saf-name": {
+                            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                            "#text": "unicast"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                    "interface-name": {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                      "#text": "GigabitEthernet0/0/0/0"
+                    },
+                    "point-to-point": {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg"
+                    },
+                    "address-families": {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                      "address-family": [
+                        {
+                          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                          "af-name": {
+                            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                            "#text": "ipv4"
+                          },
+                          "saf-name": {
+                            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                            "#text": "unicast"
+                          }
+                        },
+                        {
+                          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                          "af-name": {
+                            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                            "#text": "ipv6"
+                          },
+                          "saf-name": {
+                            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                            "#text": "unicast"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                    "interface-name": {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                      "#text": "GigabitEthernet0/0/0/1"
+                    },
+                    "point-to-point": {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg"
+                    },
+                    "address-families": {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                      "address-family": [
+                        {
+                          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                          "af-name": {
+                            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                            "#text": "ipv4"
+                          },
+                          "saf-name": {
+                            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                            "#text": "unicast"
+                          }
+                        },
+                        {
+                          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                          "af-name": {
+                            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                            "#text": "ipv6"
+                          },
+                          "saf-name": {
+                            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg",
+                            "#text": "unicast"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    ],
+    "hostname": {
+      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-hostname-cfg",
+      "system-network-name": {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-hostname-cfg",
+        "#text": "srr-bas"
+      }
+    },
+    "interfaces": {
+      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-interface-cfg",
+      "interface": [
+        {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-interface-cfg",
+          "interface-name": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-interface-cfg",
+            "#text": "Null0"
+          },
+          "ipv4": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-interface-cfg",
+            "icmp": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ipv4-cfg",
+              "unreachables": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ipv4-cfg",
+                "disable": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ipv4-cfg"
+                }
+              }
+            }
+          }
+        },
+        {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-interface-cfg",
+          "interface-name": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-interface-cfg",
+            "#text": "Loopback0"
+          },
+          "description": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-interface-cfg",
+            "#text": "Loopback"
+          },
+          "ipv4": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-interface-cfg",
+            "addresses": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ip-address-cfg",
+              "address": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ip-address-cfg",
+                "address": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ip-address-cfg",
+                  "#text": "10.0.0.8"
+                },
+                "netmask": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ip-address-cfg",
+                  "#text": "255.255.255.255"
+                }
+              }
+            }
+          },
+          "ipv6": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-interface-cfg",
+            "addresses": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ip-address-cfg",
+              "ipv6-address": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ip-address-cfg",
+                "address": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ip-address-cfg",
+                  "#text": "fc00:0:8::1"
+                },
+                "prefix-length": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ip-address-cfg",
+                  "#text": "128"
+                },
+                "zone": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ip-address-cfg",
+                  "#text": "0"
+                }
+              }
+            }
+          }
+        },
+        {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-interface-cfg",
+          "interface-name": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-interface-cfg",
+            "#text": "MgmtEth0/RP0/CPU0/0"
+          },
+          "ipv4": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-interface-cfg",
+            "addresses": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ip-address-cfg",
+              "address": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ip-address-cfg",
+                "address": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ip-address-cfg",
+                  "#text": "198.18.1.108"
+                },
+                "netmask": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ip-address-cfg",
+                  "#text": "255.255.255.0"
+                }
+              }
+            }
+          }
+        },
+        {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-interface-cfg",
+          "interface-name": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-interface-cfg",
+            "#text": "GigabitEthernet0/0/0/0"
+          },
+          "description": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-interface-cfg",
+            "#text": "to p-bas-1"
+          },
+          "ipv4": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-interface-cfg",
+            "addresses": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ip-address-cfg",
+              "address": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ip-address-cfg",
+                "address": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ip-address-cfg",
+                  "#text": "10.1.0.24"
+                },
+                "netmask": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ip-address-cfg",
+                  "#text": "255.255.255.254"
+                }
+              }
+            }
+          },
+          "ipv6": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-interface-cfg",
+            "enable": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ip-address-cfg"
+            }
+          }
+        },
+        {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-interface-cfg",
+          "interface-name": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-interface-cfg",
+            "#text": "GigabitEthernet0/0/0/1"
+          },
+          "description": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-interface-cfg",
+            "#text": "to p-bas-2"
+          },
+          "ipv4": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-interface-cfg",
+            "addresses": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ip-address-cfg",
+              "address": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ip-address-cfg",
+                "address": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ip-address-cfg",
+                  "#text": "10.1.0.26"
+                },
+                "netmask": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ip-address-cfg",
+                  "#text": "255.255.255.254"
+                }
+              }
+            }
+          },
+          "ipv6": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-interface-cfg",
+            "enable": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ip-address-cfg"
+            }
+          }
+        }
+      ]
+    },
+    "line": {
+      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-line-cfg",
+      "default": {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-line-cfg",
+        "exec-timeout": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-line-exec-timeout-cfg",
+          "timeout-in-minutes": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-line-exec-timeout-cfg",
+            "#text": "240"
+          },
+          "timeout-in-seconds": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-line-exec-timeout-cfg",
+            "#text": "0"
+          }
+        },
+        "access-class": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-line-cfg",
+          "ingress": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-line-cfg",
+            "#text": "ACL-MGMT-IN"
+          }
+        }
+      }
+    },
+    "logging": {
+      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-logging-cfg",
+      "trap": {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-logging-cfg",
+        "#text": "informational"
+      },
+      "console": {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-logging-cfg",
+        "#text": "warning"
+      },
+      "monitor": {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-logging-cfg",
+        "#text": "informational"
+      },
+      "buffered": {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-logging-cfg",
+        "logging-buffer-size": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-logging-cfg",
+          "#text": "10000000"
+        },
+        "level": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-logging-cfg",
+          "#text": "informational"
+        }
+      },
+      "vrfs": {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-logging-cfg",
+        "vrf": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-logging-cfg",
+          "vrf-name": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-logging-cfg",
+            "#text": "default"
+          },
+          "host-ipv4-addresses": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-logging-cfg",
+            "host-ipv4-address": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-logging-cfg",
+              "ipv4-address": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-logging-cfg",
+                "#text": "198.18.1.1"
+              },
+              "severity": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-logging-cfg",
+                "#text": "info"
+              }
+            }
+          }
+        }
+      }
+    },
+    "snmp-server": {
+      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-snmp-server-cfg",
+      "community": {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-snmp-server-cfg",
+        "unencrypted": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-snmp-server-cfg",
+          "unencrypted-string": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-snmp-server-cfg",
+            "community-string": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-snmp-server-cfg",
+              "#text": "lab-ro"
+            },
+            "ro": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-snmp-server-cfg"
+            }
+          }
+        }
+      },
+      "contact": {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-snmp-server-cfg",
+        "#text": "lab-noc@lab.local"
+      },
+      "location": {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-snmp-server-cfg",
+        "#text": "srr-bas \u2014 Basingstoke DC"
+      }
+    },
+    "telemetry": {
+      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+      "model-driven": {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+        "destination-groups": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+          "destination-group": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+            "destination-group-id": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+              "#text": "DG-COLLECTOR"
+            },
+            "address-family": {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+              "ipv4": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                "address": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                  "address": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                    "#text": "198.18.1.1"
+                  },
+                  "port-number": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                    "#text": "57500"
+                  },
+                  "encoding": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                    "self-describing-gpb": {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg"
+                    }
+                  },
+                  "protocol": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                    "grpc": {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                      "no-tls": {
+                        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "sensor-groups": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+          "sensor-group": [
+            {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+              "sensor-group-id": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                "#text": "SG-BGP-NEIGHBORS"
+              },
+              "sensor-paths": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                "sensor-path": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                  "sensor-path-id": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                    "#text": "Cisco-IOS-XR-ipv4-bgp-oper:bgp/instances/instance/instance-active/default-vrf/neighbors/neighbor"
+                  }
+                }
+              }
+            },
+            {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+              "sensor-group-id": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                "#text": "SG-INTF-COUNTERS"
+              },
+              "sensor-paths": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                "sensor-path": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                  "sensor-path-id": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                    "#text": "Cisco-IOS-XR-infra-statsd-oper:infra-statistics/interfaces/interface/latest/generic-counters"
+                  }
+                }
+              }
+            },
+            {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+              "sensor-group-id": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                "#text": "SG-ISIS-NEIGHBORS"
+              },
+              "sensor-paths": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                "sensor-path": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                  "sensor-path-id": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                    "#text": "Cisco-IOS-XR-clns-isis-oper:isis/instances/instance/neighbors/neighbor"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "subscriptions": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+          "subscription": [
+            {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+              "subscription-id": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                "#text": "SUB-BGP-NEIGHBORS"
+              },
+              "sensor-groups": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                "sensor-group": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                  "sensor-group-id": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                    "#text": "SG-BGP-NEIGHBORS"
+                  },
+                  "sample-interval": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                    "#text": "60000"
+                  }
+                }
+              },
+              "destinations": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                "destination": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                  "destination-id": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                    "#text": "DG-COLLECTOR"
+                  }
+                }
+              }
+            },
+            {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+              "subscription-id": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                "#text": "SUB-INTF-COUNTERS"
+              },
+              "sensor-groups": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                "sensor-group": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                  "sensor-group-id": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                    "#text": "SG-INTF-COUNTERS"
+                  },
+                  "sample-interval": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                    "#text": "30000"
+                  }
+                }
+              },
+              "destinations": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                "destination": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                  "destination-id": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                    "#text": "DG-COLLECTOR"
+                  }
+                }
+              }
+            },
+            {
+              "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+              "subscription-id": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                "#text": "SUB-ISIS-NEIGHBORS"
+              },
+              "sensor-groups": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                "sensor-group": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                  "sensor-group-id": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                    "#text": "SG-ISIS-NEIGHBORS"
+                  },
+                  "sample-interval": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                    "#text": "60000"
+                  }
+                }
+              },
+              "destinations": {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                "destination": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                  "destination-id": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-telemetry-model-driven-cfg",
+                    "#text": "DG-COLLECTOR"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "ipv4": {
+      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg",
+      "access-lists": {
+        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg",
+        "access-list": {
+          "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg",
+          "access-list-name": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg",
+            "#text": "ACL-MGMT-IN"
+          },
+          "sequences": {
+            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg",
+            "sequence": [
+              {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg",
+                "sequence-number": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg",
+                  "#text": "10"
+                },
+                "remark": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg",
+                  "#text": "Permit management subnet"
+                }
+              },
+              {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg",
+                "sequence-number": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg",
+                  "#text": "20"
+                },
+                "permit": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg",
+                  "protocol": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg",
+                    "#text": "ipv4"
+                  },
+                  "source": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg",
+                    "address": {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg",
+                      "#text": "198.18.1.0"
+                    },
+                    "wildcard-mask": {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg",
+                      "#text": "0.0.0.255"
+                    }
+                  },
+                  "destination": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg",
+                    "any": {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg"
+                    }
+                  }
+                }
+              },
+              {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg",
+                "sequence-number": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg",
+                  "#text": "30"
+                },
+                "remark": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg",
+                  "#text": "Permit loopback subnet"
+                }
+              },
+              {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg",
+                "sequence-number": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg",
+                  "#text": "40"
+                },
+                "permit": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg",
+                  "protocol": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg",
+                    "#text": "ipv4"
+                  },
+                  "source": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg",
+                    "address": {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg",
+                      "#text": "10.0.0.0"
+                    },
+                    "wildcard-mask": {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg",
+                      "#text": "0.0.0.255"
+                    }
+                  },
+                  "destination": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg",
+                    "any": {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg"
+                    }
+                  }
+                }
+              },
+              {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg",
+                "sequence-number": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg",
+                  "#text": "50"
+                },
+                "remark": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg",
+                  "#text": "Deny all other traffic"
+                }
+              },
+              {
+                "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg",
+                "sequence-number": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg",
+                  "#text": "60"
+                },
+                "deny": {
+                  "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg",
+                  "protocol": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg",
+                    "#text": "ipv4"
+                  },
+                  "source": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg",
+                    "any": {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg"
+                    }
+                  },
+                  "destination": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg",
+                    "any": {
+                      "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg"
+                    }
+                  },
+                  "log": {
+                    "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

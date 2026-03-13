@@ -12,7 +12,7 @@ from ruamel.yaml import YAML
 
 from decoct.tokens import count_tokens
 
-_INPUT_EXTENSIONS = {".yaml", ".yml", ".json", ".ini", ".conf", ".cfg", ".cnf", ".properties"}
+_INPUT_EXTENSIONS = {".yaml", ".yml", ".json", ".ini", ".conf", ".cfg", ".cnf", ".properties", ".xml", ".xsl", ".xslt", ".plist", ".xhtml"}
 
 
 @dataclass

@@ -1,0 +1,12 @@
+types:
+  unknown-0:
+    count: 16
+    classes: 2
+    subclasses: 0
+    tier_b_ref: unknown-0_classes.yaml
+    tier_c_ref: unknown-0_instances.yaml
+assertions:
+  unknown-0:
+    base_only_ratio: 0.0625
+    max_inheritance_depth: 2
+topology: {}

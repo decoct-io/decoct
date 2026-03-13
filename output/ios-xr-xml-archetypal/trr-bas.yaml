@@ -1,0 +1,187 @@
+Cisco-IOS-XR-aaa-lib-cfg:aaa:
+  _class: Cisco-ios-xr-aaa-lib-cfg:aaa
+Cisco-IOS-XR-call-home-cfg:call-home:
+  _class: Cisco-ios-xr-call-home-cfg:call-home
+Cisco-IOS-XR-clns-isis-cfg:isis:
+  _class: Cisco-ios-xr-clns-isis-cfg:isis
+  instances.instance.nets.net.net-name: 49.0001.0100.0000.0006.00
+Cisco-IOS-XR-crypto-ssh-cfg:ssh:
+  _class: Cisco-ios-xr-crypto-ssh-cfg:ssh
+Cisco-IOS-XR-crypto-ssh-cfg:ssh[1]:
+  _class: Cisco-ios-xr-crypto-ssh-cfg:ssh[1]
+Cisco-IOS-XR-ethernet-lldp-cfg:lldp:
+  _class: Cisco-ios-xr-ethernet-lldp-cfg:lldp
+Cisco-IOS-XR-ifmgr-cfg:interface-configurations:
+  interface-configuration:
+  - active: act
+    interface-name: Null0
+    ipv4-network:
+      icmp-unreach-disable: ''
+  - active: act
+    description: Loopback
+    interface-name: Loopback0
+    interface-virtual: ''
+    ipv4-network:
+      addresses:
+        primary:
+          address: 10.0.0.6
+          netmask: 255.255.255.255
+    ipv6-network:
+      addresses:
+        regular-addresses:
+          regular-address:
+            address: fc00:0:6::1
+            prefix-length: '128'
+            zone: '0'
+  - active: act
+    interface-name: MgmtEth0/RP0/CPU0/0
+    ipv4-network:
+      addresses:
+        primary:
+          address: 198.18.1.106
+          netmask: 255.255.255.0
+  - active: act
+    description: to p-bas-1
+    interface-name: GigabitEthernet0/0/0/0
+    ipv4-network:
+      addresses:
+        primary:
+          address: 10.1.0.16
+          netmask: 255.255.255.254
+    ipv6-network:
+      addresses:
+        auto-configuration:
+          enable: ''
+      unnumbered: Loopback0
+  - active: act
+    description: to p-bas-2
+    interface-name: GigabitEthernet0/0/0/1
+    ipv4-network:
+      addresses:
+        primary:
+          address: 10.1.0.18
+          netmask: 255.255.255.254
+    ipv6-network:
+      addresses:
+        auto-configuration:
+          enable: ''
+      unnumbered: Loopback0
+Cisco-IOS-XR-infra-infra-cfg:banners:
+  banner:
+  - banner-name: motd
+    banner-text: '#Authorized access only. All activity may be monitored.#'
+  - banner-name: login
+    banner-text: '#trr-bas — Basingstoke DC#'
+Cisco-IOS-XR-infra-syslog-cfg:syslog:
+  _class: Cisco-ios-xr-infra-syslog-cfg:syslog
+Cisco-IOS-XR-ip-domain-cfg:ip-domain:
+  _class: Cisco-ios-xr-ip-domain-cfg:ip-domain
+Cisco-IOS-XR-ip-static-cfg:router-static:
+  _class: Cisco-ios-xr-ip-static-cfg:router-static
+Cisco-IOS-XR-ipv4-acl-cfg:ipv4-acl-and-prefix-list:
+  _class: Cisco-ios-xr-ipv4-acl-cfg:ipv4-acl-and-prefix-list
+Cisco-IOS-XR-man-ems-cfg:grpc:
+  _class: Cisco-ios-xr-man-ems-cfg:grpc
+Cisco-IOS-XR-man-netconf-cfg:netconf-yang:
+  _class: Cisco-ios-xr-man-netconf-cfg:netconf-yang
+Cisco-IOS-XR-segment-routing-ms-cfg:sr:
+  _class: Cisco-ios-xr-segment-routing-ms-cfg:sr
+  srv6.encapsulation.source-address: fc00:0:6::1
+  srv6.locators.locators.locator.prefix.prefix: 'fc00:0:6::'
+Cisco-IOS-XR-shellutil-cfg:host-names:
+  host-name: trr-bas
+Cisco-IOS-XR-snmp-agent-cfg:snmp:
+  _class: Cisco-ios-xr-snmp-agent-cfg:snmp
+  system.location: trr-bas — Basingstoke DC
+Cisco-IOS-XR-telemetry-model-driven-cfg:telemetry-model-driven:
+  _class: Cisco-ios-xr-telemetry-model-driven-cfg:telemetry-model-driven
+Cisco-IOS-XR-tty-server-cfg:tty:
+  _class: Cisco-ios-xr-tty-server-cfg:tty
+Cisco-IOS-XR-um-aaa-cfg:aaa:
+  _class: Cisco-ios-xr-um-aaa-cfg:aaa
+Cisco-IOS-XR-um-banner-cfg:banners:
+  banner:
+  - banner-type: motd
+    line: '#Authorized access only. All activity may be monitored.#'
+  - banner-type: login
+    line: '#trr-bas — Basingstoke DC#'
+Cisco-IOS-XR-um-call-home-cfg:call-home:
+  _class: Cisco-ios-xr-um-call-home-cfg:call-home
+Cisco-IOS-XR-um-domain-cfg:domain:
+  _class: Cisco-ios-xr-um-domain-cfg:domain
+Cisco-IOS-XR-um-grpc-cfg:grpc:
+  _class: Cisco-ios-xr-um-grpc-cfg:grpc
+Cisco-IOS-XR-um-hostname-cfg:hostname:
+  system-network-name: trr-bas
+Cisco-IOS-XR-um-interface-cfg:interfaces:
+  interface:
+  - interface-name: Null0
+    ipv4:
+      icmp:
+        unreachables:
+          disable: ''
+  - description: Loopback
+    interface-name: Loopback0
+    ipv4:
+      addresses:
+        address:
+          address: 10.0.0.6
+          netmask: 255.255.255.255
+    ipv6:
+      addresses:
+        ipv6-address:
+          address: fc00:0:6::1
+          prefix-length: '128'
+          zone: '0'
+  - interface-name: MgmtEth0/RP0/CPU0/0
+    ipv4:
+      addresses:
+        address:
+          address: 198.18.1.106
+          netmask: 255.255.255.0
+  - description: to p-bas-1
+    interface-name: GigabitEthernet0/0/0/0
+    ipv4:
+      addresses:
+        address:
+          address: 10.1.0.16
+          netmask: 255.255.255.254
+    ipv6:
+      enable: ''
+  - description: to p-bas-2
+    interface-name: GigabitEthernet0/0/0/1
+    ipv4:
+      addresses:
+        address:
+          address: 10.1.0.18
+          netmask: 255.255.255.254
+    ipv6:
+      enable: ''
+Cisco-IOS-XR-um-ipv4-access-list-cfg:ipv4:
+  _class: Cisco-ios-xr-um-ipv4-access-list-cfg:ipv4
+Cisco-IOS-XR-um-line-cfg:line:
+  _class: Cisco-ios-xr-um-line-cfg:line
+Cisco-IOS-XR-um-lldp-cfg:lldp:
+  _class: Cisco-ios-xr-um-lldp-cfg:lldp
+Cisco-IOS-XR-um-logging-cfg:logging:
+  _class: Cisco-ios-xr-um-logging-cfg:logging
+Cisco-IOS-XR-um-netconf-yang-cfg:netconf-yang:
+  _class: Cisco-ios-xr-um-netconf-yang-cfg:netconf-yang
+Cisco-IOS-XR-um-router-isis-cfg:router:
+  _class: Cisco-ios-xr-um-router-isis-cfg:router
+  isis.processes.process.nets.net.net-id: 49.0001.0100.0000.0006.00
+Cisco-IOS-XR-um-router-static-cfg:router:
+  _class: Cisco-ios-xr-um-router-static-cfg:router
+Cisco-IOS-XR-um-segment-routing-cfg:segment-routing:
+  _class: Cisco-ios-xr-um-segment-routing-cfg:segment-routing
+  srv6.encapsulation.source-address: fc00:0:6::1
+  srv6.locators.locator.prefix.address: 'fc00:0:6::'
+Cisco-IOS-XR-um-snmp-server-cfg:snmp-server:
+  _class: Cisco-ios-xr-um-snmp-server-cfg:snmp-server
+  location: trr-bas — Basingstoke DC
+Cisco-IOS-XR-um-ssh-cfg:ssh:
+  _class: Cisco-ios-xr-um-ssh-cfg:ssh
+Cisco-IOS-XR-um-ssh-cfg:ssh[1]:
+  _class: Cisco-ios-xr-um-ssh-cfg:ssh[1]
+Cisco-IOS-XR-um-telemetry-model-driven-cfg:telemetry:
+  _class: Cisco-ios-xr-um-telemetry-model-driven-cfg:telemetry

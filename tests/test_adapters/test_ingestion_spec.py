@@ -110,13 +110,13 @@ class TestLoadIngestionSpec:
         with pytest.raises(ValueError, match="kind must be 'map' or 'list'"):
             load_ingestion_spec(p)
 
-    def test_load_missing_adapter(self, tmp_path: Path) -> None:
+    def test_load_missing_adapter_defaults_to_standard(self, tmp_path: Path) -> None:
         p = _write_spec(tmp_path, """\
             version: 1
             entries: []
         """)
-        with pytest.raises(ValueError, match="non-empty 'adapter'"):
-            load_ingestion_spec(p)
+        spec = load_ingestion_spec(p)
+        assert spec.adapter == "standard"
 
 
 class TestMatchEntry:

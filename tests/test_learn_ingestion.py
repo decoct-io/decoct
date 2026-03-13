@@ -265,7 +265,7 @@ class TestInferIngestionSpec:
 
         # Check spec structure
         assert spec.version == 1
-        assert spec.adapter == "hybrid-infra"
+        assert spec.adapter == "standard"
         assert len(spec.entries) >= 1
 
         # Find the custom-app entry

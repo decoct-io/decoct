@@ -81,8 +81,8 @@ def stats(
 @click.option("--max-questions", default=200, show_default=True, help="Maximum questions to generate.")
 @click.option("--seed", default=42, show_default=True, help="Random seed for reproducibility.")
 @click.option(
-    "--adapter", "adapter_name", type=click.Choice(["iosxr", "hybrid-infra"]),
-    default="iosxr", show_default=True, help="Adapter for parsing config files.",
+    "--adapter", "adapter_name", type=click.Choice(["standard", "iosxr", "hybrid-infra"]),
+    default="standard", show_default=True, help="Adapter for parsing config files.",
 )
 def generate_questions(
     config_dir: str,
@@ -95,7 +95,10 @@ def generate_questions(
     from decoct.qa.questions import generate_question_bank, save_question_bank
 
     adapter_instance = None
-    if adapter_name == "hybrid-infra":
+    if adapter_name == "standard":
+        from decoct.adapters.base import BaseAdapter
+        adapter_instance = BaseAdapter()
+    elif adapter_name == "hybrid-infra":
         from decoct.adapters.hybrid_infra import HybridInfraAdapter
         adapter_instance = HybridInfraAdapter()
 
@@ -199,8 +202,8 @@ def evaluate(
 @click.option("--input-dir", "-i", required=True, type=click.Path(exists=True),
               help="Directory of raw config files.")
 @click.option("--adapter", "adapter_name",
-              type=click.Choice(["hybrid-infra", "entra-intune"]),
-              default="hybrid-infra", show_default=True)
+              type=click.Choice(["standard", "hybrid-infra", "entra-intune"]),
+              default="standard", show_default=True)
 @click.option("--model", default="google/gemini-2.5-flash-lite", show_default=True,
               help="LLM model name (as expected by provider).")
 @click.option("--base-url", default="https://openrouter.ai/api/v1", show_default=True,
@@ -471,7 +474,7 @@ def enhance_tier_a(
 @click.option("--config-dir", "-c", required=True, type=click.Path(exists=True),
               help="Directory of raw config files.")
 @click.option("--source", "-s", required=True,
-              type=click.Choice(["iosxr", "hybrid-infra", "entra-intune"]),
+              type=click.Choice(["standard", "iosxr", "hybrid-infra", "entra-intune"]),
               help="Source corpus label.")
 @click.option("--output", "-o", required=True, type=click.Path(),
               help="Output YAML path for candidate question bank.")

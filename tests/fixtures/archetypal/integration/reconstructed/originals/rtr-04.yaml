@@ -1,0 +1,235 @@
+access_control:
+  bgp_allow: true
+  default_action: deny
+  icmp_allow: true
+  log_denied: true
+  ntp_allow: true
+  policy_name: BASELINE-FW
+  rate_limit: 1000pps
+  snmp_allow: true
+  ssh_allow: true
+  timeout: 30
+alert_targets:
+  correlation_id: auto
+  escalation_group: tier2
+  polling_interval: 300
+  retries: 3
+  suppress_flap: true
+  threshold_crit: 95
+  threshold_info: 50
+  threshold_warn: 75
+  timeout: 10
+auth_methods:
+  max_retries: 3
+  method: RADIUS
+  mfa_enabled: true
+  timeout: 30
+bgp_neighbors:
+- afi:
+    ipv4_unicast: true
+    vpnv4: true
+  peer_address: 10.14.1.1
+  peer_name: PE-01
+  remote_as: 65001
+  timers:
+    connect_retry: 10
+    hold: 90
+    keepalive: 30
+  transport:
+    md5_auth: true
+    port: 179
+    protocol: tcp
+    ttl_security: 1
+- afi:
+    ipv4_unicast: true
+    vpnv4: false
+  peer_address: 10.14.1.2
+  peer_name: PE-02
+  remote_as: 65001
+  timers:
+    connect_retry: 10
+    hold: 90
+    keepalive: 30
+  transport:
+    md5_auth: true
+    port: 179
+    protocol: tcp
+    ttl_security: 1
+- afi:
+    ipv4_unicast: true
+    vpnv4: false
+  peer_address: 10.14.1.3
+  peer_name: PE-03
+  remote_as: 65001
+  timers:
+    connect_retry: 10
+    hold: 90
+    keepalive: 30
+  transport:
+    md5_auth: true
+    port: 179
+    protocol: tcp
+    ttl_security: 1
+change_procedures:
+  approval_required: true
+  max_duration_hours: 4
+  steps:
+  - drain_traffic
+  - snapshot_config
+  - backup_database
+  - health_check_pre
+  - apply_patches
+  - restart_services
+  - validate_routing
+  - run_smoke_tests
+  - restore_traffic
+  - health_check_post
+  - notify_stakeholders
+  - close_ticket
+fabric_interfaces:
+- admin_state: up
+  duplex: full
+  ipv4_address: 10.14.0.1
+  isis_metric: 10
+  mtu: 9216
+  name: HuGigE0/0/0/0
+  speed: 100g
+- admin_state: up
+  duplex: full
+  ipv4_address: 10.14.1.1
+  isis_metric: 10
+  mtu: 9216
+  name: HuGigE0/0/0/1
+  speed: 100g
+- admin_state: up
+  duplex: full
+  ipv4_address: 10.14.2.1
+  isis_metric: 10
+  mtu: 9216
+  name: HuGigE0/0/0/2
+  speed: 100g
+- admin_state: up
+  duplex: full
+  ipv4_address: 10.14.3.1
+  isis_metric: 10
+  mtu: 9216
+  name: HuGigE0/0/0/3
+  speed: 100g
+isis_config:
+  auth_password: ISIS_KEY_1
+  auth_type: md5
+  is_type: level-2-only
+  lsp_gen_interval: 5
+  lsp_lifetime: 1200
+  lsp_refresh: 900
+  max_lsp_lifetime: 65535
+  metric_style: wide
+  net_address: 49.0001.0100.0000.0004.00
+  net_area: '49.0001'
+  process_id: 1
+  spf_initial_wait: 50
+  spf_interval: 10
+loopback0:
+  admin_state: up
+  bfd_enabled: true
+  description: Router-ID
+  interface_type: Loopback
+  ipv4_address: 10.255.0.4
+  isis_metric: 10
+  isis_passive: true
+  mpls_ldp: true
+  mpls_te: false
+  mtu: 1500
+  vrf: default
+path_export:
+  export_policy:
+    streaming_export:
+      encoding: gpb
+      interval: 30
+      protocol: grpc
+policy_maps:
+  policy:
+    dampening:
+      half_life: 15
+      reuse: 750
+    default_action: deny
+    match:
+      as_path: CORE-ASPATH
+      community: CORE-COMM
+      prefix_list: EDGE-PREFIXES
+    name: CORE-RM
+    set:
+      community: 65000:100
+      local_pref: 200
+      med: 100
+routing_policy:
+  address_family: vpnv4-unicast
+  asn: 65000
+  bestpath: compare-routerid
+  confederation_id: 100
+  confederation_peers:
+  - 65001
+  - 65002
+  graceful_restart: false
+  max_paths_ebgp: 2
+  router_id_source: loopback0
+  soo_enabled: true
+system_base:
+  aaa_enable: LOCAL
+  aaa_login: RADIUS_AUTH
+  log_buffer: 1048576
+  log_facility: local6
+  log_host: 10.100.2.1
+  log_port: 514
+  log_protocol: tcp
+  log_severity: informational
+  ntp_auth_algo: md5
+  ntp_auth_enabled: true
+  ntp_auth_key_id: 42
+  ntp_primary: 10.100.1.1
+  ntp_secondary: 10.100.1.2
+  ntp_source: Loopback0
+  radius_host_1: 10.100.3.1
+  snmp_community: INTEG_RO
+  snmp_location: site-04
+telemetry_stack:
+  collectors:
+  - 10.200.0.9
+  global_interval: 60
+  logging:
+    facility: local7
+    interval: 60
+    severity: warning
+  retry: 3
+  transport:
+    port: 50051
+    protocol: grpc
+    tls:
+      enabled: true
+vendor_extensions:
+  community: TRAP_RO
+  host: 10.100.10.5
+  port: 162
+  timeout: 5
+  version: 2c
+vrf_routing:
+- export_policy: VRF-EXPORT
+  import_policy: VRF-IMPORT
+  rd_format: type0
+  rd_value: 65000:500
+  route_limit: 10000
+  route_warning_pct: 80
+  vrf_name: CUST-A
+- export_policy: VRF-EXPORT
+  import_policy: VRF-IMPORT
+  rd_format: type0
+  rd_value: 65000:600
+  route_limit: 10000
+  route_warning_pct: 80
+  vrf_name: CUST-B
+- export_policy: VRF-EXPORT
+  import_policy: VRF-IMPORT
+  rd_format: type0
+  rd_value: 65000:700
+  route_limit: 10000
+  vrf_name: MGMT

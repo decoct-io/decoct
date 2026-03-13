@@ -39,6 +39,6 @@ class IngestionSpec:
     """Top-level ingestion spec loaded from YAML."""
 
     version: int  # must be 1
-    adapter: str  # e.g. "hybrid-infra"
+    adapter: str = "standard"  # e.g. "standard", "hybrid-infra"
     generated_by: str = "claude-code"
     entries: list[IngestionEntry] = field(default_factory=list)

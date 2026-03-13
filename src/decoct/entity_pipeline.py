@@ -18,7 +18,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from decoct.adapters.base import BaseAdapter
+from decoct.adapters.base import BaseAdapter, ParseResult
 from decoct.adapters.iosxr import IosxrConfigTree
 from decoct.assembly.tier_builder import build_tier_a, build_tier_b, build_tier_c_yaml
 from decoct.compression import get_engine
@@ -132,10 +132,21 @@ def run_entity_graph_pipeline(
             raw_text = Path(source).read_text(encoding="utf-8")
             validate_parser_structure(raw_text, parsed, source, config.source_fidelity_mode)
 
-        # Phase 0a: Pre-flatten document masking (hybrid-infra, entra-intune)
+        # Phase 0a: Pre-flatten document masking (standard/hybrid-infra, entra-intune)
         # IOS-XR returns IosxrConfigTree (not a dict) — skip pre-flatten
-        if isinstance(parsed, tuple):
-            # hybrid-infra: (doc, path) tuple
+        if isinstance(parsed, ParseResult):
+            # BaseAdapter / HybridInfraAdapter: ParseResult with .doc
+            doc = parsed.doc
+            if isinstance(doc, dict):
+                all_audit.extend(mask_document(
+                    doc,
+                    secret_paths=secret_paths,
+                    entropy_threshold_b64=config.secrets_entropy_threshold_b64,
+                    entropy_threshold_hex=config.secrets_entropy_threshold_hex,
+                    min_entropy_length=config.secrets_min_entropy_length,
+                ))
+        elif isinstance(parsed, tuple):
+            # Legacy tuple form (backward compat)
             doc = parsed[0]
             if isinstance(doc, dict):
                 all_audit.extend(mask_document(
