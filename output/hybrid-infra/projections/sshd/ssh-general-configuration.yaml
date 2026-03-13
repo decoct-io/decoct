@@ -1,0 +1,37 @@
+meta:
+  subject: ssh-general-configuration
+  description: General SSH daemon settings including port, address family, and 
+    compression.
+  source_type: sshd
+  total_instances: 4
+base_class:
+  FingerprintHash: sha256
+  GatewayPorts: 'false'
+classes:
+  AddressFamily_any_ClientAliveCountMax_3:
+    inherits: base
+    own_attrs:
+      AddressFamily: any
+      Port: '22'
+    instance_count_inclusive: 3
+class_assignments:
+  AddressFamily_any_ClientAliveCountMax_3:
+    instances:
+    - sshd-dev
+    - sshd-prod
+    - sshd-staging
+  _base_only:
+    instances:
+    - sshd-bastion
+instance_data:
+  schema:
+  - Compression
+  records:
+    sshd-bastion:
+    - 'false'
+    sshd-dev:
+    - 'true'
+    sshd-prod:
+    - 'false'
+    sshd-staging:
+    - 'true'

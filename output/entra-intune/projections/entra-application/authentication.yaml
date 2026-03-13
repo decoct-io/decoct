@@ -1,0 +1,60 @@
+meta:
+  subject: authentication
+  description: Sign-in audience, device auth support, and authentication 
+    settings
+  source_type: entra-application
+  total_instances: 12
+base_class:
+  nativeAuthenticationApisEnabled: none
+classes:
+  isDeviceOnlyAuthSupported_false_signInAudience_Azu:
+    inherits: base
+    own_attrs:
+      isDeviceOnlyAuthSupported: 'false'
+      signInAudience: AzureADMyOrg
+    instance_count_inclusive: 9
+class_assignments:
+  isDeviceOnlyAuthSupported_false_signInAudience_Azu:
+    instances:
+    - App-API-Backend
+    - App-Daemon-Service
+    - App-DevTest-Sandbox
+    - App-Mobile-Android
+    - App-Mobile-iOS
+    - App-Portal-SPA
+    - App-Portal-Web
+    - App-PowerBI-Embedded
+    - App-Teams-Bot
+  _base_only:
+    instances:
+    - App-API-Gateway
+    - App-B2C-Customer-Portal
+    - App-Legacy-WinApp
+instance_data:
+  schema:
+  - isFallbackPublicClient
+  records:
+    App-API-Backend:
+    - 'false'
+    App-API-Gateway:
+    - 'false'
+    App-B2C-Customer-Portal:
+    - 'false'
+    App-Daemon-Service:
+    - 'false'
+    App-DevTest-Sandbox:
+    - 'false'
+    App-Legacy-WinApp:
+    - 'true'
+    App-Mobile-Android:
+    - 'true'
+    App-Mobile-iOS:
+    - 'true'
+    App-Portal-SPA:
+    - 'false'
+    App-Portal-Web:
+    - 'false'
+    App-PowerBI-Embedded:
+    - 'false'
+    App-Teams-Bot:
+    - 'false'

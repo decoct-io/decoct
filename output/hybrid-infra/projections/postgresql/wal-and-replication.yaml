@@ -1,0 +1,60 @@
+meta:
+  subject: wal-and-replication
+  description: Write-Ahead Log (WAL) and replication specific configurations.
+  source_type: postgresql
+  total_instances: 6
+base_class:
+  hot_standby_feedback: 'false'
+  max_logical_replication_workers: '4'
+  max_parallel_apply_workers_per_subscription: '2'
+  max_slot_wal_keep_size: '-1'
+  max_standby_archive_delay: 30s
+  max_standby_streaming_delay: 30s
+  max_sync_workers_per_subscription: '2'
+  recovery_min_apply_delay: '0'
+  recovery_prefetch: try
+  recovery_target_action: pause
+  recovery_target_inclusive: 'true'
+  recovery_target_timeline: latest
+  summarize_wal: 'false'
+  sync_replication_slots: 'false'
+  track_commit_timestamp: 'false'
+  wal_compression: 'false'
+  wal_decode_buffer_size: 512kB
+  wal_init_zero: 'true'
+  wal_level: replica
+  wal_log_hints: 'false'
+  wal_receiver_create_temp_slot: 'false'
+  wal_receiver_status_interval: 10s
+  wal_receiver_timeout: 60s
+  wal_recycle: 'true'
+  wal_retrieve_retry_interval: 5s
+  wal_sender_timeout: 60s
+  wal_skip_threshold: 2MB
+  wal_writer_delay: 200ms
+  wal_writer_flush_after: 1MB
+class_assignments:
+  _base_only:
+    instances:
+    - pg-dev
+    - pg-migration
+    - pg-prod-analytics
+    - pg-prod-primary
+    - pg-prod-replica
+    - pg-staging
+instance_data:
+  schema:
+  - wal_keep_size
+  records:
+    pg-dev:
+    - '0'
+    pg-migration:
+    - '0'
+    pg-prod-analytics:
+    - 1GB
+    pg-prod-primary:
+    - 1GB
+    pg-prod-replica:
+    - '0'
+    pg-staging:
+    - '0'

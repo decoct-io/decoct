@@ -1,0 +1,32 @@
+meta:
+  subject: security-and-hardening
+  description: Security controls including strict modes, user environment, 
+    banners, and key settings
+  source_type: sshd
+  total_instances: 4
+base_class:
+  ExposeAuthInfo: 'false'
+  FingerprintHash: sha256
+  IgnoreRhosts: 'true'
+  IgnoreUserKnownHosts: 'false'
+  PermitUserEnvironment: 'false'
+  StrictModes: 'true'
+class_assignments:
+  _base_only:
+    instances:
+    - sshd-bastion
+    - sshd-dev
+    - sshd-prod
+    - sshd-staging
+instance_data:
+  schema:
+  - PermitUserRC
+  records:
+    sshd-bastion:
+    - 'false'
+    sshd-dev:
+    - 'true'
+    sshd-prod:
+    - 'false'
+    sshd-staging:
+    - 'true'

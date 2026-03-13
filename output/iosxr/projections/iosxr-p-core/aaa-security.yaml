@@ -1,0 +1,37 @@
+meta:
+  subject: aaa-security
+  description: Authentication, Authorization, and Accounting settings.
+  source_type: iosxr-p-core
+  total_instances: 6
+base_class:
+  aaa.accounting.commands: 15 default start-stop group tacacs+
+  aaa.accounting.exec: default start-stop group tacacs+
+  aaa.authentication: login default group tacacs+ local
+  aaa.authorization.commands: 15 default group tacacs+ local
+  aaa.authorization.exec: default group tacacs+ local
+  ssh.server.logging: 'true'
+  ssh.server.rate-limit: '60'
+  ssh.server.v2: 'true'
+  ssh.timeout: '30'
+  tacacs-server: host T4c4csK3y!2024 port 49
+  tacacs-server.key: 7 T4c4csK3y!2024
+class_assignments:
+  _base_only:
+    instances:
+    - P-CORE-01..P-CORE-06
+instance_data:
+  schema:
+  - hostname
+  records:
+    P-CORE-01:
+    - P-CORE-01
+    P-CORE-02:
+    - P-CORE-02
+    P-CORE-03:
+    - P-CORE-03
+    P-CORE-04:
+    - P-CORE-04
+    P-CORE-05:
+    - P-CORE-05
+    P-CORE-06:
+    - P-CORE-06

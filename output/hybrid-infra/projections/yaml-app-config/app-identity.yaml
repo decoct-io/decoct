@@ -1,0 +1,25 @@
+meta:
+  subject: app-identity
+  description: Core application identification and versioning.
+  source_type: yaml-app-config
+  total_instances: 3
+base_class:
+  app.debug: 'false'
+  app.env: prod
+  app.name: ridgeline-platform
+class_assignments:
+  _base_only:
+    instances:
+    - yaml-app-feature-flags
+    - yaml-app-logging-config
+    - yaml-app-service-mesh
+instance_data:
+  schema:
+  - app.version
+  records:
+    yaml-app-feature-flags:
+    - v2
+    yaml-app-logging-config:
+    - v2
+    yaml-app-service-mesh:
+    - v1

@@ -1,0 +1,168 @@
+meta:
+  subject: handlers
+  description: Handler definitions triggered by task notifications
+  source_type: ansible-playbook
+  total_instances: 16
+class_assignments:
+  _base_only:
+    instances:
+    - ansible-base-server
+    - ansible-deploy-auth-service
+    - ansible-deploy-billing-api
+    - ansible-deploy-core-api
+    - ansible-deploy-web-app
+    - ansible-emergency-rollback
+    - ansible-harden-ssh
+    - ansible-setup-backup
+    - ansible-setup-cloud-init
+    - ansible-setup-grafana
+    - ansible-setup-mariadb
+    - ansible-setup-monitoring-agent
+    - ansible-setup-postgresql
+    - ansible-setup-prometheus
+    - ansible-setup-traefik
+    - ansible-update-packages
+instance_data:
+  schema:
+  - name
+  records:
+    ansible-base-server:
+    - Base Server Provisioning
+    ansible-deploy-auth-service:
+    - Deploy Auth Service
+    ansible-deploy-billing-api:
+    - Deploy Billing API
+    ansible-deploy-core-api:
+    - Deploy Core API
+    ansible-deploy-web-app:
+    - Deploy Web App
+    ansible-emergency-rollback:
+    - Emergency Rollback
+    ansible-harden-ssh:
+    - Harden SSH Configuration
+    ansible-setup-backup:
+    - Setup Backup System
+    ansible-setup-cloud-init:
+    - Setup Cloud-Init Configs
+    ansible-setup-grafana:
+    - Setup Grafana
+    ansible-setup-mariadb:
+    - Setup MariaDB
+    ansible-setup-monitoring-agent:
+    - Setup Monitoring Agent
+    ansible-setup-postgresql:
+    - Setup PostgreSQL
+    ansible-setup-prometheus:
+    - Setup Prometheus
+    ansible-setup-traefik:
+    - Setup Traefik
+    ansible-update-packages:
+    - Update System Packages
+instance_attrs:
+  ansible-base-server:
+    handlers:
+      template: ansible-playbook.handlers.T0
+  ansible-deploy-auth-service:
+    handlers:
+    - name: restart_auth_service
+      ansible.builtin.systemd.name: "{{ service_name | default('ridgeline') }}"
+      ansible.builtin.systemd.state: restarted
+      ansible.builtin.systemd.daemon_reload: 'false'
+      ansible.builtin.systemd.daemon_reexec: 'false'
+      ansible.builtin.systemd.no_block: 'false'
+      ansible.builtin.systemd.scope: system
+  ansible-deploy-billing-api:
+    handlers:
+    - name: restart_billing_api
+      ansible.builtin.systemd.name: "{{ service_name | default('ridgeline') }}"
+      ansible.builtin.systemd.state: restarted
+      ansible.builtin.systemd.daemon_reload: 'false'
+      ansible.builtin.systemd.daemon_reexec: 'false'
+      ansible.builtin.systemd.no_block: 'false'
+      ansible.builtin.systemd.scope: system
+  ansible-deploy-core-api:
+    handlers:
+    - name: restart_core_api
+      ansible.builtin.systemd.name: "{{ service_name | default('ridgeline') }}"
+      ansible.builtin.systemd.state: restarted
+      ansible.builtin.systemd.daemon_reload: 'false'
+      ansible.builtin.systemd.daemon_reexec: 'false'
+      ansible.builtin.systemd.no_block: 'false'
+      ansible.builtin.systemd.scope: system
+  ansible-deploy-web-app:
+    handlers:
+    - name: restart_web_app
+      ansible.builtin.systemd.name: "{{ service_name | default('ridgeline') }}"
+      ansible.builtin.systemd.state: restarted
+      ansible.builtin.systemd.daemon_reload: 'false'
+      ansible.builtin.systemd.daemon_reexec: 'false'
+      ansible.builtin.systemd.no_block: 'false'
+      ansible.builtin.systemd.scope: system
+  ansible-harden-ssh:
+    handlers:
+      template: ansible-playbook.handlers.T0
+  ansible-setup-grafana:
+    handlers:
+    - name: restart_grafana
+      ansible.builtin.systemd.name: "{{ service_name | default('ridgeline') }}"
+      ansible.builtin.systemd.state: restarted
+      ansible.builtin.systemd.daemon_reload: 'false'
+      ansible.builtin.systemd.daemon_reexec: 'false'
+      ansible.builtin.systemd.no_block: 'false'
+      ansible.builtin.systemd.scope: system
+  ansible-setup-mariadb:
+    handlers:
+    - name: restart_mariadb
+      ansible.builtin.systemd.name: "{{ service_name | default('ridgeline') }}"
+      ansible.builtin.systemd.state: restarted
+      ansible.builtin.systemd.daemon_reload: 'false'
+      ansible.builtin.systemd.daemon_reexec: 'false'
+      ansible.builtin.systemd.no_block: 'false'
+      ansible.builtin.systemd.scope: system
+  ansible-setup-monitoring-agent:
+    handlers:
+    - name: restart_node_exporter
+      ansible.builtin.systemd.name: "{{ service_name | default('ridgeline') }}"
+      ansible.builtin.systemd.state: restarted
+      ansible.builtin.systemd.daemon_reload: 'false'
+      ansible.builtin.systemd.daemon_reexec: 'false'
+      ansible.builtin.systemd.no_block: 'false'
+      ansible.builtin.systemd.scope: system
+  ansible-setup-postgresql:
+    handlers:
+    - name: restart_postgresql
+      ansible.builtin.systemd.name: "{{ service_name | default('ridgeline') }}"
+      ansible.builtin.systemd.state: restarted
+      ansible.builtin.systemd.daemon_reload: 'false'
+      ansible.builtin.systemd.daemon_reexec: 'false'
+      ansible.builtin.systemd.no_block: 'false'
+      ansible.builtin.systemd.scope: system
+  ansible-setup-prometheus:
+    handlers:
+    - name: restart_prometheus
+      ansible.builtin.systemd.name: "{{ service_name | default('ridgeline') }}"
+      ansible.builtin.systemd.state: restarted
+      ansible.builtin.systemd.daemon_reload: 'false'
+      ansible.builtin.systemd.daemon_reexec: 'false'
+      ansible.builtin.systemd.no_block: 'false'
+      ansible.builtin.systemd.scope: system
+  ansible-setup-traefik:
+    handlers:
+    - name: restart_traefik
+      ansible.builtin.systemd.name: "{{ service_name | default('ridgeline') }}"
+      ansible.builtin.systemd.state: restarted
+      ansible.builtin.systemd.daemon_reload: 'false'
+      ansible.builtin.systemd.daemon_reexec: 'false'
+      ansible.builtin.systemd.no_block: 'false'
+      ansible.builtin.systemd.scope: system
+composite_templates:
+  handlers:
+    ansible-playbook.handlers.T0:
+      elements:
+      - name: restart_sshd
+        ansible.builtin.systemd.name: "{{ service_name | default('ridgeline') }}"
+        ansible.builtin.systemd.state: restarted
+        ansible.builtin.systemd.daemon_reload: 'false'
+        ansible.builtin.systemd.daemon_reexec: 'false'
+        ansible.builtin.systemd.no_block: 'false'
+        ansible.builtin.systemd.scope: system

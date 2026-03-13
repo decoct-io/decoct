@@ -1,0 +1,43 @@
+meta:
+  subject: identity-and-workspace
+  description: Core identifiers and workspace details for each tfvars instance.
+  source_type: tfvars
+  total_instances: 5
+base_class:
+  tags.managed_by: opentofu
+  tags.project: ridgeline
+  tags.team: platform
+class_assignments:
+  _base_only:
+    instances:
+    - tfvars-dev
+    - tfvars-dr
+    - tfvars-edge
+    - tfvars-prod
+    - tfvars-staging
+instance_data:
+  schema:
+  - environment
+  - tags.environment
+  - workspace
+  records:
+    tfvars-dev:
+    - dev
+    - dev
+    - development
+    tfvars-dr:
+    - dr
+    - dr
+    - disaster-recovery
+    tfvars-edge:
+    - prod
+    - prod
+    - edge-network
+    tfvars-prod:
+    - prod
+    - prod
+    - production
+    tfvars-staging:
+    - staging
+    - staging
+    - staging

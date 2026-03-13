@@ -1,0 +1,33 @@
+meta:
+  subject: server-transport-security
+  description: Secure transport settings for backend servers, including TLS and 
+    timeouts.
+  source_type: traefik
+  total_instances: 4
+base_class:
+  serversTransport.disableHTTP2: 'false'
+  serversTransport.forwardingTimeouts.dialTimeout: 30s
+  serversTransport.forwardingTimeouts.idleConnTimeout: 90s
+  serversTransport.forwardingTimeouts.pingTimeout: 15s
+  serversTransport.forwardingTimeouts.readIdleTimeout: 0s
+  serversTransport.forwardingTimeouts.responseHeaderTimeout: 0s
+  serversTransport.maxIdleConnsPerHost: '200'
+class_assignments:
+  _base_only:
+    instances:
+    - traefik-dev
+    - traefik-prod-dynamic
+    - traefik-prod-static
+    - traefik-staging
+instance_data:
+  schema:
+  - serversTransport.insecureSkipVerify
+  records:
+    traefik-dev:
+    - 'true'
+    traefik-prod-dynamic:
+    - 'false'
+    traefik-prod-static:
+    - 'false'
+    traefik-staging:
+    - 'true'

@@ -1,41 +1,156 @@
 version: 1
 source_type: iosxr-access-pe
-generated_by: claude-code
+generated_by: decoct-infer
 subjects:
-- name: bgp
-  description: BGP routing configuration including AS numbers, address families, and timers
+- name: device-identity
+  description: Core device identification and contact information.
   include_paths:
-  - "router.bgp.**"
-  related_paths:
-  - path: hostname
-    reason: Device identity for BGP neighbor correlation
-  example_questions:
-  - "What BGP AS number is used across the fleet?"
-  - "Which devices have BGP graceful-restart enabled?"
-  - "What are the BGP timer settings per class?"
-
-- name: interfaces
-  description: Interface configuration including IP addressing, MTU, and descriptions
-  include_paths:
-  - "interface.**"
+  - hostname
+  - domain.name
+  - domain.lookup
+  - snmp-server.contact
+  - snmp-server.location
   related_paths:
   - path: hostname
     reason: Device identity
   example_questions:
-  - "What is the Loopback0 IP address for each device?"
-  - "What MTU is configured on TenGigE interfaces?"
-  - "Which BVI interfaces are configured?"
-
-- name: evpn
-  description: EVPN and L2VPN configuration
+  - What are the domain names configured across the fleet?
+  - Which devices have a specific SNMP contact email?
+  - What are the physical locations of all devices?
+- name: aaa-security
+  description: Authentication, Authorization, and Accounting (AAA) and SSH 
+    settings.
   include_paths:
-  - "evpn.**"
-  - "l2vpn.**"
+  - aaa.accounting.**
+  - aaa.authentication
+  - aaa.authorization.**
+  - tacacs-server**
+  - ssh.**
   related_paths:
   - path: hostname
     reason: Device identity
-  - path: "interface.Bundle-Ether*"
-    reason: Bundle-Ether sub-interfaces carry L2 transport
   example_questions:
-  - "Is EVPN enabled across the fleet?"
-  - "What encapsulation is used on Bundle-Ether sub-interfaces?"
+  - Which devices use TACACS+ for authentication?
+  - Are there any variations in SSH server logging settings?
+  - What are the configured TACACS+ server keys and ports?
+- name: ntp-settings
+  description: Network Time Protocol (NTP) server and source configurations.
+  include_paths:
+  - ntp.**
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the primary NTP servers configured on each device?
+  - Which interface is used as the NTP source across the fleet?
+  - Are there any devices not updating their calendar via NTP?
+- name: logging-configuration
+  description: System logging settings including servers, levels, and source.
+  include_paths:
+  - logging.**
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Where are the logging messages being sent?
+  - What is the configured logging buffer size?
+  - Are there any devices with different logging source interfaces?
+- name: global-interface-parameters
+  description: Common parameters for various interface types.
+  include_paths:
+  - interface.BVI*.ipv4
+  - interface.BVI*.shutdown
+  - interface.Bundle-Ether*.**
+  - interface.Loopback0.shutdown
+  - interface.TenGigE0/0/0/0.**
+  - interface.TenGigE0/0/0/1.**
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which interfaces have CDP enabled?
+  - What are the configured MTU values for TenGigE interfaces?
+  - Are there any BVI interfaces unexpectedly shut down?
+- name: interface-identity
+  description: Descriptions and IP addresses for key interfaces.
+  include_paths:
+  - interface.BVI*.description
+  - interface.Loopback0.description
+  - interface.Loopback0.ipv4
+  - interface.MgmtEth0/RP0/CPU0/0.**
+  - interface.TenGigE0/0/0/0.description
+  - interface.TenGigE0/0/0/0.ipv4
+  - interface.TenGigE0/0/0/1.description
+  - interface.TenGigE0/0/0/1.ipv4
+  - interface.Bundle-Ether*.description
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the IP addresses assigned to Loopback0 interfaces?
+  - Show all interface descriptions for management interfaces.
+  - List the IPv4 addresses and descriptions for all TenGigE interfaces.
+- name: isis-core-routing
+  description: ISIS configuration for the CORE process including adjacencies and
+    SR.
+  include_paths:
+  - router.isis.CORE.**
+  - mpls.router-id
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which devices have different ISIS NETs configured?
+  - What are the prefix-SIDs assigned to Loopback0 in ISIS?
+  - Compare ISIS interface metrics for TenGigE interfaces.
+- name: bgp-global-and-neighbors
+  description: Global BGP settings and neighbor configurations, including 
+    overrides.
+  include_paths:
+  - router.bgp.*.address-family.ipv4-unicast.maximum-paths.**
+  - router.bgp.*.neighbors.**
+  - router.bgp.*.bgp.confederation.**
+  - router.bgp.*.address-family.l2vpn-evpn
+  - router.bgp.*.address-family.vpnv4-unicast
+  - router.bgp.*.bgp.log
+  - router.bgp.*.distance
+  - router.bgp.*.graceful-restart
+  - router.bgp.*.nsr
+  - router.bgp.*.timers
+  - router.bgp.*.bgp.router-id
+  - router.bgp.*.address-family.ipv4-unicast.network
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the BGP router IDs for each device?
+  - Compare the confederation peers across different BGP instances.
+  - Which devices have BGP graceful-restart enabled or disabled?
+  - What BGP networks are advertised by each instance?
+- name: mpls-segment-routing
+  description: General MPLS settings and Segment Routing block definitions.
+  include_paths:
+  - mpls.**
+  - segment-routing.**
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the MPLS LDP hello and hold timers?
+  - Are Segment Routing Global Block ranges consistent across devices?
+  - Which devices have MPLS graceful-restart enabled?
+- name: control-plane-access
+  description: Control Plane policing and access configurations.
+  include_paths:
+  - control-plane.management-plane.**
+  - router.static.address-family.ipv4-unicast.**
+  - evpn.evis
+  - l2vpn.bridge-groups
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which interfaces allow SSH and SNMP inband access?
+  - What are the configured default static routes?
+  - How do the EVPN EVI configurations vary per device?
+  - What bridge-groups are defined per entity?

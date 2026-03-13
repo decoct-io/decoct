@@ -1,0 +1,124 @@
+version: 1
+source_type: cloud-init
+generated_by: decoct-infer
+subjects:
+- name: system-identity
+  description: Core identification and basic system settings.
+  include_paths:
+  - hostname
+  - preserve_hostname
+  - timezone
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which devices have a specific timezone configured?
+  - Are there any devices where hostname preservation is disabled?
+  - What is the full hostname for each device?
+- name: ntp-configuration
+  description: Network Time Protocol synchronization settings.
+  include_paths:
+  - ntp.enabled
+  - ntp.ntp_client
+  - ntp.servers
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which devices use custom NTP servers instead of the default pool?
+  - Are there any devices with NTP disabled?
+  - What NTP client is configured on each machine?
+- name: package-management
+  description: Settings related to package installation, updates, and reboots.
+  include_paths:
+  - packages
+  - package_reboot_if_required
+  - package_update
+  - package_upgrade
+  - apt.preserve_sources_list
+  - apt_pipelining
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which packages are configured to be installed on each device?
+  - Are there any devices that prevent automatic package reboots?
+  - Which devices are configured for package updates or upgrades?
+- name: ssh-security
+  description: SSH key management and related security settings.
+  include_paths:
+  - allow_public_ssh_keys
+  - ssh.emit_keys_to_console
+  - ssh_deletekeys
+  - ssh_quiet_keygen
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which devices allow public SSH keys?
+  - Are SSH keys being emitted to the console on any machines?
+  - Are keys regenerated quietly or with verbose output?
+- name: user-management
+  description: User account related settings, particularly the root user.
+  include_paths:
+  - users
+  - disable_root
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Are there any devices where the root user is disabled?
+  - What are the default user configurations across the fleet?
+  - Which devices might have overridden user settings?
+- name: file-and-host-management
+  description: Management of `/etc/hosts` and custom file creation.
+  include_paths:
+  - manage_etc_hosts
+  - write_files
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which devices have custom files written by cloud-init?
+  - Is '/etc/hosts' managed by cloud-init on all devices?
+  - Are there any devices with specific custom file content?
+- name: runtime-commands-and-metadata
+  description: Commands to run on first boot and metadata service settings.
+  include_paths:
+  - runcmd
+  - disable_ec2_metadata
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What custom commands are executed at boot time on each instance?
+  - Are any devices configured to disable EC2 metadata service access?
+  - Identify devices with specific startup commands.
+- name: system-power-and-disk-settings
+  description: Power state conditions and disk partitioning settings.
+  include_paths:
+  - power_state.condition
+  - power_state.delay
+  - power_state.timeout
+  - growpart.ignore_growroot_disabled
+  - growpart.mode
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Are there any devices with specific power state conditions or delays 
+    configured?
+  - Which devices have growpart configured to ignore disabled root growing?
+  - What is the growpart mode set to for each device?
+- name: ca-certificates-resolution
+  description: Certificate authority settings and DNS resolution management.
+  include_paths:
+  - ca_certs.remove_defaults
+  - manage_resolv_conf
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Are default CA certificates being removed on any devices?
+  - Which devices have cloud-init managing their resolv.conf file?
+  - Identify any devices with custom CA certificate handling.

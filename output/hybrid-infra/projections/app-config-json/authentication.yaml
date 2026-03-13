@@ -1,0 +1,40 @@
+meta:
+  subject: authentication
+  description: Authentication and JWT configuration including secrets and expiry
+    settings
+  source_type: app-config-json
+  total_instances: 3
+base_class:
+  auth.api_key: '[REDACTED]'
+class_assignments:
+  _base_only:
+    instances:
+    - app-config-auth-jwt
+    - app-config-billing
+    - app-config-search
+instance_data:
+  schema:
+  - auth.jwt_expiry_seconds
+  - auth.jwt_issuer
+  - auth.jwt_refresh_expiry_seconds
+  - auth.jwt_secret
+  - name
+  records:
+    app-config-auth-jwt:
+    - '3600'
+    - ridgeline.io
+    - '86400'
+    - '[REDACTED]'
+    - Auth Service JWT Config
+    app-config-billing:
+    - '7200'
+    - billing.ridgeline.io
+    - '172800'
+    - B1lling_JWT_S3cret!
+    - Billing API Config
+    app-config-search:
+    - '3600'
+    - ridgeline.io
+    - '86400'
+    - search_JWT_t0ken!
+    - Search Service Config

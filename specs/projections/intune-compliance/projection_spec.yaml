@@ -1,0 +1,140 @@
+version: 1
+source_type: intune-compliance
+generated_by: decoct-infer
+subjects:
+- name: identity-metadata
+  description: Core identity and descriptive metadata for compliance policies.
+  include_paths:
+  - _uuid
+  - displayName
+  - description
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the display names and descriptions for each compliance policy?
+  - Can I get a list of all compliance policy UUIDs?
+- name: device-threat-protection
+  description: Settings related to device threat protection and security levels.
+  include_paths:
+  - deviceThreatProtectionEnabled
+  - deviceThreatProtectionRequiredSecurityLevel
+  - defenderEnabled
+  - antivirusRequired
+  - rtpEnabled
+  - signatureOutOfDate
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which policies have device threat protection enabled?
+  - What are the required security levels for devices, and which policies have 
+    out-of-date antivirus signatures?
+  - Compare real-time protection (RTP) and antivirus requirements across 
+    policies.
+- name: security-configuration
+  description: General security settings including USB debugging, app 
+    installation sources, and integrity checks.
+  include_paths:
+  - securityDisableUsbDebugging
+  - securityPreventInstallAppsFromUnknownSources
+  - securityRequireCompanyPortalAppIntegrity
+  - securityRequireGooglePlayServices
+  - securityRequireSafetyNetAttestationBasicIntegrity
+  - securityRequireSafetyNetAttestationCertifiedDevice
+  - securityRequireUpToDateSecurityProviders
+  - securityRequireVerifyApps
+  - securityBlockJailbrokenDevices
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which policies prevent app installation from unknown sources?
+  - Compare the requirements for Google Play Services and SafetyNet attestation 
+    across policies.
+  - Identify policies that block jailbroken devices and require Company Portal 
+    app integrity.
+- name: firewall-settings
+  description: Configuration related to firewall behavior.
+  include_paths:
+  - firewallEnableStealthMode
+  - firewallBlockAllIncoming
+  - firewallEnabled
+  - activeFirewallRequired
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which policies enforce stealth mode for the firewall?
+  - Are there any policies that block all incoming firewall connections?
+  - Identify policies that require an active firewall and those where the 
+    firewall is explicitly enabled.
+- name: password-passcode-requirements
+  description: Settings for device password and passcode complexity and 
+    necessity.
+  include_paths:
+  - passcodeMinimumLength
+  - passwordMinimumLength
+  - passwordRequired
+  - passwordRequiredType
+  - passcodeRequired
+  - passcodeRequiredType
+  - passwordBlockSimple
+  - passcodeBlockSimple
+  - passwordRequiredToUnlockFromIdle
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the minimum password lengths required by different policies?
+  - Which policies require a passcode, and what are their types (e.g., 
+    alphanumeric)?
+  - Compare policies that block simple passwords versus those that don't, and 
+    which require a password to unlock from idle.
+- name: system-integrity-encryption
+  description: Device integrity checks including TPM, BitLocker, secure boot, 
+    and storage encryption.
+  include_paths:
+  - tpmRequired
+  - bitLockerEnabled
+  - codeIntegrityEnabled
+  - secureBootEnabled
+  - storageRequireEncryption
+  - systemIntegrityProtectionEnabled
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which policies mandate TPM or BitLocker encryption?
+  - Compare policies requiring secure boot and system integrity protection.
+  - Identify policies that enforce storage encryption for devices.
+- name: compliance-misc-settings
+  description: Miscellaneous compliance settings including Configuration 
+    Manager, anti-spyware, and device reports.
+  include_paths:
+  - configurationManagerComplianceRequired
+  - earlyLaunchAntiMalwareDriverEnabled
+  - antiSpywareRequired
+  - requireHealthyDeviceReport
+  - managedEmailProfileRequired
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which policies have Configuration Manager compliance required?
+  - Are there policies that require anti-spyware or early launch anti-malware 
+    drivers?
+  - Identify policies that mandate a healthy device report or a managed email 
+    profile.
+- name: assignments
+  description: Assignment details for compliance policies, indicating target 
+    groups.
+  include_paths:
+  - assignments.**
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which groups are different compliance policies assigned to?
+  - List all assignment targets for each policy.
+  - Are there any policies without explicit assignments?

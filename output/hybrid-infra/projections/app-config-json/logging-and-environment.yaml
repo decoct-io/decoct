@@ -1,0 +1,29 @@
+meta:
+  subject: logging-and-environment
+  description: Logging configuration and runtime environment settings
+  source_type: app-config-json
+  total_instances: 3
+base_class:
+  environment: prod
+  logging.format: json
+  logging.output: stdout
+class_assignments:
+  _base_only:
+    instances:
+    - app-config-auth-jwt
+    - app-config-billing
+    - app-config-search
+instance_data:
+  schema:
+  - logging.level
+  - name
+  records:
+    app-config-auth-jwt:
+    - info
+    - Auth Service JWT Config
+    app-config-billing:
+    - info
+    - Billing API Config
+    app-config-search:
+    - warning
+    - Search Service Config

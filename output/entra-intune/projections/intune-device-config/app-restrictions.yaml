@@ -1,0 +1,30 @@
+meta:
+  subject: app-restrictions
+  description: Application restrictions including clipboard, copy-paste, 
+    YouTube, and compliant app list
+  source_type: intune-device-config
+  total_instances: 8
+base_class:
+  appsBlockClipboardSharing: 'false'
+  appsBlockCopyPaste: 'false'
+  appsBlockYouTube: 'false'
+  googlePlayStoreBlocked: 'false'
+classes:
+  compliantAppListType_none_wiFiBlocked_false:
+    inherits: base
+    own_attrs:
+      compliantAppListType: none
+    instance_count_inclusive: 6
+class_assignments:
+  compliantAppListType_none_wiFiBlocked_false:
+    instances:
+    - DC-Android-BYOD
+    - DC-Android-Contractor
+    - DC-Android-Executive
+    - DC-Android-Field-Workers
+    - DC-Android-Lab-Devices
+    - DC-Android-Standard
+  _base_only:
+    instances:
+    - DC-Android-Corporate-Lockdown
+    - DC-Android-Kiosk

@@ -1,0 +1,55 @@
+meta:
+  subject: app-scope
+  description: Protected apps list and managed browser settings
+  source_type: intune-app-protection
+  total_instances: 4
+base_class:
+  managedBrowser: notConfigured
+class_assignments:
+  _base_only:
+    instances:
+    - AP-Android-Standard
+    - AP-Android-Strict
+    - AP-iOS-Standard
+    - AP-iOS-Strict
+instance_data:
+  schema:
+  - managedBrowserToOpenLinksRequired
+  records:
+    AP-Android-Standard:
+    - 'false'
+    AP-Android-Strict:
+    - 'true'
+    AP-iOS-Standard:
+    - 'false'
+    AP-iOS-Strict:
+    - 'true'
+instance_attrs:
+  AP-Android-Standard:
+    apps:
+    - mobileAppIdentifier.packageId: com.microsoft.office.outlook
+    - mobileAppIdentifier.packageId: com.microsoft.office.word
+    - mobileAppIdentifier.packageId: com.microsoft.office.excel
+    - mobileAppIdentifier.packageId: com.microsoft.teams
+  AP-Android-Strict:
+    apps:
+    - mobileAppIdentifier.packageId: com.microsoft.office.outlook
+    - mobileAppIdentifier.packageId: com.microsoft.office.word
+    - mobileAppIdentifier.packageId: com.microsoft.office.excel
+    - mobileAppIdentifier.packageId: com.microsoft.teams
+    - mobileAppIdentifier.packageId: com.microsoft.office.powerpoint
+    - mobileAppIdentifier.packageId: com.microsoft.sharepoint
+  AP-iOS-Standard:
+    apps:
+    - mobileAppIdentifier.bundleId: com.microsoft.Office.Outlook
+    - mobileAppIdentifier.bundleId: com.microsoft.Office.Word
+    - mobileAppIdentifier.bundleId: com.microsoft.Office.Excel
+    - mobileAppIdentifier.bundleId: com.microsoft.teams
+  AP-iOS-Strict:
+    apps:
+    - mobileAppIdentifier.bundleId: com.microsoft.Office.Outlook
+    - mobileAppIdentifier.bundleId: com.microsoft.Office.Word
+    - mobileAppIdentifier.bundleId: com.microsoft.Office.Excel
+    - mobileAppIdentifier.bundleId: com.microsoft.teams
+    - mobileAppIdentifier.bundleId: com.microsoft.Office.PowerPoint
+    - mobileAppIdentifier.bundleId: com.microsoft.sharepoint

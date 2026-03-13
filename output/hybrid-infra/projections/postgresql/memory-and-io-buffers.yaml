@@ -1,0 +1,40 @@
+meta:
+  subject: memory-and-io-buffers
+  description: Critical memory and I/O buffer configurations.
+  source_type: postgresql
+  total_instances: 6
+base_class:
+  logical_decoding_work_mem: 64MB
+  vacuum_buffer_usage_limit: 2MB
+class_assignments:
+  _base_only:
+    instances:
+    - pg-dev
+    - pg-migration
+    - pg-prod-analytics
+    - pg-prod-primary
+    - pg-prod-replica
+    - pg-staging
+instance_data:
+  schema:
+  - maintenance_work_mem
+  - shared_buffers
+  records:
+    pg-dev:
+    - 64MB
+    - 128MB
+    pg-migration:
+    - 1GB
+    - 128MB
+    pg-prod-analytics:
+    - 2GB
+    - 16GB
+    pg-prod-primary:
+    - 512MB
+    - 2GB
+    pg-prod-replica:
+    - 64MB
+    - 256MB
+    pg-staging:
+    - 128MB
+    - 512MB

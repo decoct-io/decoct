@@ -1,0 +1,49 @@
+meta:
+  subject: ssh-connection-settings
+  description: Settings related to SSH connection handling and keepalives.
+  source_type: sshd
+  total_instances: 4
+base_class:
+  TCPKeepAlive: 'true'
+classes:
+  AddressFamily_any_ClientAliveCountMax_3:
+    inherits: base
+    own_attrs:
+      ClientAliveCountMax: '3'
+    instance_count_inclusive: 3
+class_assignments:
+  AddressFamily_any_ClientAliveCountMax_3:
+    instances:
+    - sshd-dev
+    - sshd-prod
+    - sshd-staging
+  _base_only:
+    instances:
+    - sshd-bastion
+instance_data:
+  schema:
+  - ClientAliveInterval
+  - LoginGraceTime
+  - MaxAuthTries
+  - MaxSessions
+  records:
+    sshd-bastion:
+    - '120'
+    - '30'
+    - '3'
+    - '1'
+    sshd-dev:
+    - '0'
+    - '120'
+    - '6'
+    - '10'
+    sshd-prod:
+    - '300'
+    - '60'
+    - '3'
+    - '2'
+    sshd-staging:
+    - '0'
+    - '120'
+    - '6'
+    - '10'

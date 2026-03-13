@@ -1,0 +1,81 @@
+meta:
+  subject: subscriber-management
+  description: BNG subscriber management including AAA subscriber profiles, 
+    RADIUS, PPPoE sessions, and dynamic templates
+  source_type: iosxr-bng
+  total_instances: 8
+base_class:
+  aaa.accounting.subscriber: default start-stop group RADIUS-GROUP
+  aaa.authentication.subscriber: default group RADIUS-GROUP
+  aaa.authorization.subscriber: default group RADIUS-GROUP
+  aaa.group: server radius RADIUS-GROUP
+  dynamic-template.type.accounting: aaa list default type session 
+    periodic-interval 15
+  dynamic-template.type.ipv4: unnumbered Loopback0
+  dynamic-template.type.ppp.authentication: chap
+  pppoe.sessions.max: limit 32000
+  pppoe.sessions.per-mac.limit: '4'
+  pppoe.sessions.per-mac.throttle: 10 10 10
+  radius-server.key: 7 R4d1usK3y!s3cure
+  radius-server.retransmit: '3'
+  radius-server.timeout: '5'
+class_assignments:
+  _base_only:
+    instances:
+    - BNG-01..BNG-08
+instance_data:
+  schema:
+  - dynamic-template.type
+  - dynamic-template.type.ppp.ipcp
+  - hostname
+  - pppoe
+  - radius-server
+  records:
+    BNG-01:
+    - ppp DT-PPPoE-RESIDENTIAL
+    - peer-address pool POOL-RESIDENTIAL-1
+    - BNG-01
+    - bba-group BBA-RESIDENTIAL
+    - host 10.255.3.1 auth-port 1812 acct-port 1813
+    BNG-02:
+    - ppp DT-PPPoE-RESIDENTIAL
+    - peer-address pool POOL-RESIDENTIAL-2
+    - BNG-02
+    - bba-group BBA-RESIDENTIAL
+    - host 10.255.3.1 auth-port 1812 acct-port 1813
+    BNG-03:
+    - ppp DT-PPPoE-BUSINESS
+    - peer-address pool POOL-BUSINESS-1
+    - BNG-03
+    - bba-group BBA-BUSINESS
+    - host 10.255.3.2 auth-port 1812 acct-port 1813
+    BNG-04:
+    - ppp DT-PPPoE-BUSINESS
+    - peer-address pool POOL-BUSINESS-2
+    - BNG-04
+    - bba-group BBA-BUSINESS
+    - host 10.255.3.2 auth-port 1812 acct-port 1813
+    BNG-05:
+    - ppp DT-PPPoE-WHOLESALE
+    - peer-address pool POOL-WHOLESALE-1
+    - BNG-05
+    - bba-group BBA-WHOLESALE
+    - host 10.255.3.3 auth-port 1812 acct-port 1813
+    BNG-06:
+    - ppp DT-PPPoE-WHOLESALE
+    - peer-address pool POOL-WHOLESALE-2
+    - BNG-06
+    - bba-group BBA-WHOLESALE
+    - host 10.255.3.3 auth-port 1812 acct-port 1813
+    BNG-07:
+    - ppp DT-PPPoE-RESIDENTIAL
+    - peer-address pool POOL-RESIDENTIAL-3
+    - BNG-07
+    - bba-group BBA-RESIDENTIAL
+    - host 10.255.3.1 auth-port 1812 acct-port 1813
+    BNG-08:
+    - ppp DT-PPPoE-RESIDENTIAL
+    - peer-address pool POOL-RESIDENTIAL-4
+    - BNG-08
+    - bba-group BBA-RESIDENTIAL
+    - host 10.255.3.1 auth-port 1812 acct-port 1813

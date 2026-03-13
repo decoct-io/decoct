@@ -1,0 +1,13 @@
+meta:
+  subject: identity
+  description: Basic identification and user information for Ansible inventory.
+  source_type: ansible-inventory
+  total_instances: 3
+base_class:
+  all.vars.ansible_user: deploy
+class_assignments:
+  _base_only:
+    instances:
+    - ansible-inventory-dev
+    - ansible-inventory-prod
+    - ansible-inventory-staging

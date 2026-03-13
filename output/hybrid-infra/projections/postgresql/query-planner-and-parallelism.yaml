@@ -1,0 +1,90 @@
+meta:
+  subject: query-planner-and-parallelism
+  description: Query planner cost parameters, GEQO, and parallel query settings
+  source_type: postgresql
+  total_instances: 6
+base_class:
+  constraint_exclusion: partition
+  cpu_index_tuple_cost: '0.005'
+  cpu_operator_cost: '0.0025'
+  cpu_tuple_cost: '0.01'
+  cursor_tuple_fraction: '0.1'
+  enable_partitionwise_aggregate: 'false'
+  enable_partitionwise_join: 'false'
+  from_collapse_limit: '8'
+  geqo: 'true'
+  geqo_effort: '5'
+  geqo_generations: '0'
+  geqo_pool_size: '0'
+  geqo_seed: '0'
+  geqo_selection_bias: '2.0'
+  geqo_threshold: '12'
+  jit_above_cost: '100000'
+  jit_inline_above_cost: '500000'
+  jit_optimize_above_cost: '500000'
+  join_collapse_limit: '8'
+  max_parallel_apply_workers_per_subscription: '2'
+  min_parallel_index_scan_size: 512kB
+  min_parallel_table_scan_size: 8MB
+  parallel_leader_participation: 'true'
+  parallel_setup_cost: '1000'
+  parallel_tuple_cost: '0.1'
+  plan_cache_mode: auto
+  recursive_worktable_factor: '10.0'
+  seq_page_cost: '1.0'
+classes:
+  hash_mem_multiplier_2_0_max_parallel_workers_8:
+    inherits: base
+    own_attrs:
+      max_parallel_workers: '8'
+      max_worker_processes: '8'
+    instance_count_inclusive: 5
+subclasses:
+  hash_mem_multiplier_2_0_max_parallel_workers_8_checkpoint_timeout_5min_defaul:
+    parent: hash_mem_multiplier_2_0_max_parallel_workers_8
+    own_attrs:
+      default_statistics_target: '100'
+      max_parallel_workers_per_gather: '2'
+    instance_count: 4
+class_assignments:
+  hash_mem_multiplier_2_0_max_parallel_workers_8:
+    instances:
+    - pg-dev
+    - pg-migration
+    - pg-prod-primary
+    - pg-prod-replica
+    - pg-staging
+  _base_only:
+    instances:
+    - pg-prod-analytics
+subclass_assignments:
+  hash_mem_multiplier_2_0_max_parallel_workers_8_checkpoint_timeout_5min_defaul:
+    parent: hash_mem_multiplier_2_0_max_parallel_workers_8
+    instances:
+    - pg-dev
+    - pg-migration
+    - pg-prod-replica
+    - pg-staging
+instance_data:
+  schema:
+  - max_parallel_maintenance_workers
+  - random_page_cost
+  records:
+    pg-dev:
+    - '2'
+    - '4.0'
+    pg-migration:
+    - '2'
+    - '4.0'
+    pg-prod-analytics:
+    - '4'
+    - '1.1'
+    pg-prod-primary:
+    - '4'
+    - '1.1'
+    pg-prod-replica:
+    - '2'
+    - '4.0'
+    pg-staging:
+    - '2'
+    - '4.0'

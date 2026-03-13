@@ -1,0 +1,16 @@
+meta:
+  subject: global-settings
+  description: Global Traefik settings like new version checks and anonymous 
+    usage.
+  source_type: traefik
+  total_instances: 4
+base_class:
+  global.checkNewVersion: 'true'
+  global.sendAnonymousUsage: 'false'
+class_assignments:
+  _base_only:
+    instances:
+    - traefik-dev
+    - traefik-prod-dynamic
+    - traefik-prod-static
+    - traefik-staging

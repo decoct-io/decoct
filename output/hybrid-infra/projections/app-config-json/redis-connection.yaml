@@ -1,0 +1,24 @@
+meta:
+  subject: redis-connection
+  description: Redis connection and pool configuration.
+  source_type: app-config-json
+  total_instances: 3
+base_class:
+  redis.pool_size: '5'
+  redis.timeout: '5'
+class_assignments:
+  _base_only:
+    instances:
+    - app-config-auth-jwt
+    - app-config-billing
+    - app-config-search
+instance_data:
+  schema:
+  - redis.url
+  records:
+    app-config-auth-jwt:
+    - redis://:R3disP@ss!@redis:6379/0
+    app-config-billing:
+    - redis://:R3disP@ss!@redis:6379/1
+    app-config-search:
+    - redis://:R3disP@ss!@redis:6379/2

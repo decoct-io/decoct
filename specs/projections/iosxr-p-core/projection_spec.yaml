@@ -1,0 +1,180 @@
+version: 1
+source_type: iosxr-p-core
+generated_by: decoct-infer
+subjects:
+- name: device-identity
+  description: Core identification and location details.
+  include_paths:
+  - hostname
+  - domain.name
+  - domain.lookup
+  - snmp-server.location
+  - snmp-server.contact
+  - router.isis.CORE.net
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What is the domain name and SNMP contact for each device?
+  - Which devices have a specific ISIS NET ID configured?
+  - Where is each device physically located?
+- name: network-services
+  description: Core network services like DNS, NTP, and logging.
+  include_paths:
+  - domain.name-server.**
+  - ntp.server.**
+  - ntp.source
+  - ntp.update-calendar
+  - logging.**
+  - service.timestamps.**
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What NTP servers are configured on each device?
+  - Which devices are logging to a specific server?
+  - What are the timestamp formats for logging and debugging?
+- name: aaa-security
+  description: Authentication, Authorization, and Accounting settings.
+  include_paths:
+  - aaa.**
+  - tacacs-server.**
+  - ssh.server.**
+  - ssh.timeout
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What AAA authentication methods are used?
+  - Which TACACS+ server is being used for authentication?
+  - What are the SSH server settings, such as rate limit and logging?
+- name: management-interfaces
+  description: Configuration specific to management interfaces.
+  include_paths:
+  - interface.MgmtEth0/RP0/CPU0/0.description
+  - interface.MgmtEth0/RP0/CPU0/0.ipv4
+  - interface.MgmtEth0/RP0/CPU0/0.shutdown
+  - router.static.address-family.ipv4-unicast.0.0.0.0/0
+  - control-plane.management-plane.inband.interface.all.allow.SNMP
+  - control-plane.management-plane.inband.interface.all.allow.SSH
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What is the IP address and description of the management interface?
+  - Which devices have SSH access enabled on the management interface?
+  - What is the static default route configured for the management plane?
+- name: loopback-interfaces
+  description: Loopback interface configuration and related ISIS/MPLS settings.
+  include_paths:
+  - interface.Loopback0.description
+  - interface.Loopback0.ipv4
+  - interface.Loopback0.shutdown
+  - router.isis.CORE.interface.Loopback0.address-family.ipv4-unicast.prefix-sid
+  - router.isis.CORE.interface.Loopback0.address-family
+  - router.isis.CORE.interface.Loopback0.passive
+  - mpls.ldp.router-id
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the IPv4 address and description for the loopback interface?
+  - Which devices have a specific prefix-SID configured on their loopback for 
+    ISIS?
+  - How is the loopback interface configured for MPLS LDP?
+- name: physical-interfaces
+  description: Common settings and descriptions for physical interfaces.
+  include_paths:
+  - interface.*GigE0/0/1/0.*
+  - interface.*GigE0/0/1/1.*
+  - interface.TenGigE0/0/0/0.*
+  - interface.TenGigE0/0/0/1.*
+  - interface.TenGigE0/0/0/2.*
+  - interface.TenGigE0/0/0/3.*
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the MTU and bandwidth settings for all physical interfaces?
+  - Which interfaces have CDP enabled?
+  - Are there any physical interfaces that are administratively shut down?
+- name: isis-core-protocol
+  description: Global ISIS configuration parameters for the CORE instance.
+  include_paths:
+  - router.isis.CORE.address-family.**
+  - router.isis.CORE.is-type
+  - router.isis.CORE.log
+  - router.isis.CORE.lsp-lifetime
+  - router.isis.CORE.lsp-mtu
+  - router.isis.CORE.lsp-refresh-interval
+  - router.isis.CORE.set-overload-bit
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What is the ISIS router-ID for the IPv4 unicast address family?
+  - Which devices have ISIS segment routing enabled for IPv6?
+  - What are the LSP lifetime and refresh interval settings?
+- name: isis-interface-config
+  description: ISIS configuration per interface, including metrics and hello 
+    timers.
+  include_paths:
+  - router.isis.CORE.interface.*GigE0/0/1/0.**
+  - router.isis.CORE.interface.*GigE0/0/1/1.**
+  - router.isis.CORE.interface.TenGigE0/0/0/0.**
+  - router.isis.CORE.interface.TenGigE0/0/0/1.**
+  - router.isis.CORE.interface.TenGigE0/0/0/2.**
+  - router.isis.CORE.interface.TenGigE0/0/0/3.**
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the IPv4 unicast metrics for ISIS on each TenGigE interface?
+  - Which interfaces are configured as point-to-point for ISIS?
+  - What are the ISIS hello intervals across different physical interfaces?
+- name: bgp-core-protocol
+  description: Global BGP configuration parameters for AS 65001.
+  include_paths:
+  - router.bgp.65001.address-family.ipv4-unicast.maximum-paths.**
+  - router.bgp.65001.bgp.confederation.**
+  - router.bgp.65001.bgp.log
+  - router.bgp.65001.distance
+  - router.bgp.65001.graceful-restart
+  - router.bgp.65001.nsr
+  - router.bgp.65001.timers
+  - router.bgp.65001.bgp.router-id
+  - router.bgp.65001.address-family.ipv4-unicast.network
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the eBGP and iBGP maximum paths configured?
+  - Which devices are configured with BGP confederations and their peer ASNs?
+  - What is the BGP router ID and network statement configured for IPv4 unicast?
+- name: mpls-traffic-engineering
+  description: MPLS LDP and Traffic Engineering configurations.
+  include_paths:
+  - mpls.ldp.**
+  - mpls.traffic-eng.**
+  - segment-routing.**
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the MPLS LDP hello and hold timers?
+  - Which interfaces have MPLS Traffic Engineering enabled?
+  - What are the global and local segment routing blocks configured?
+- name: snmp-settings
+  description: SNMP community strings and trap configurations.
+  include_paths:
+  - snmp-server.community.**
+  - snmp-server.enable.traps.**
+  - snmp-server.host
+  - snmp-server.trap-source
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the SNMP community strings configured on each device?
+  - Which SNMP traps are enabled (e.g., BGP, ISIS, link status)?
+  - What is the destination host for SNMP traps and the trap source interface?

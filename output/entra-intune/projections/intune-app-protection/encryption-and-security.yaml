@@ -1,0 +1,13 @@
+meta:
+  subject: encryption-and-security
+  description: App encryption, screen capture, and platform-specific security 
+    settings
+  source_type: intune-app-protection
+  total_instances: 4
+class_assignments:
+  _base_only:
+    instances:
+    - AP-Android-Standard
+    - AP-Android-Strict
+    - AP-iOS-Standard
+    - AP-iOS-Strict

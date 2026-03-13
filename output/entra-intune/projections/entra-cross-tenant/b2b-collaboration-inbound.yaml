@@ -1,0 +1,21 @@
+meta:
+  subject: b2b-collaboration-inbound
+  description: Settings for inbound B2B collaboration, including application and
+    user access.
+  source_type: entra-cross-tenant
+  total_instances: 3
+base_class:
+  b2bCollaborationInbound.applications.accessType: allowed
+  b2bCollaborationInbound.applications.targets:
+  - target: AllApplications
+    targetType: application
+  b2bCollaborationInbound.usersAndGroups.accessType: allowed
+  b2bCollaborationInbound.usersAndGroups.targets:
+  - target: AllUsers
+    targetType: user
+class_assignments:
+  _base_only:
+    instances:
+    - CTA-Default-Settings
+    - CTA-Partner-Contoso
+    - CTA-Partner-Fabrikam

@@ -1,0 +1,16 @@
+meta:
+  subject: policy-scope-and-version
+  description: Scope tags, versioning, and credential requirements for policies.
+  source_type: intune-app-protection
+  total_instances: 4
+base_class:
+  organizationalCredentialsRequired: 'false'
+  roleScopeTagIds: '0'
+  version: '1'
+class_assignments:
+  _base_only:
+    instances:
+    - AP-Android-Standard
+    - AP-Android-Strict
+    - AP-iOS-Standard
+    - AP-iOS-Strict

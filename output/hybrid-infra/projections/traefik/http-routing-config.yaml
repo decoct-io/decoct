@@ -1,0 +1,12 @@
+meta:
+  subject: http-routing-config
+  description: Configuration for HTTP routers and middlewares.
+  source_type: traefik
+  total_instances: 4
+class_assignments:
+  _base_only:
+    instances:
+    - traefik-dev
+    - traefik-prod-dynamic
+    - traefik-prod-static
+    - traefik-staging

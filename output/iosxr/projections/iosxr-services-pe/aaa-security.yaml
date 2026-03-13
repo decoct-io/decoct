@@ -1,0 +1,58 @@
+meta:
+  subject: aaa-security
+  description: AAA, TACACS+, SSH, and SNMP security configuration
+  source_type: iosxr-services-pe
+  total_instances: 8
+base_class:
+  aaa.accounting.commands: 15 default start-stop group tacacs+
+  aaa.accounting.exec: default start-stop group tacacs+
+  aaa.authentication: login default group tacacs+ local
+  aaa.authorization.commands: 15 default group tacacs+ local
+  aaa.authorization.exec: default group tacacs+ local
+  snmp-server.community.S3cr3tRO_c0mmunity: RO
+  snmp-server.community.S3cr3tRW_c0mmunity: RW
+  snmp-server.contact: noc@example.com
+  snmp-server.enable.traps.bgp: 'true'
+  snmp-server.enable.traps.isis: 'true'
+  snmp-server.enable.traps.snmp: linkdown linkup
+  snmp-server.host: '[REDACTED]'
+  snmp-server.trap-source: Loopback0
+  ssh.server.logging: 'true'
+  ssh.server.rate-limit: '60'
+  ssh.server.v2: 'true'
+  ssh.timeout: '30'
+  tacacs-server: host T4c4csK3y!2024 port 49
+  tacacs-server.key: 7 T4c4csK3y!2024
+class_assignments:
+  _base_only:
+    instances:
+    - SVC-PE-01..SVC-PE-08
+instance_data:
+  schema:
+  - hostname
+  - snmp-server.location
+  records:
+    SVC-PE-01:
+    - SVC-PE-01
+    - SVC-PE-01-RACK
+    SVC-PE-02:
+    - SVC-PE-02
+    - SVC-PE-02-RACK
+    SVC-PE-03:
+    - SVC-PE-03
+    - SVC-PE-03-RACK
+    SVC-PE-04:
+    - SVC-PE-04
+    - SVC-PE-04-RACK
+    SVC-PE-05:
+    - SVC-PE-05
+    - SVC-PE-05-RACK
+    SVC-PE-06:
+    - SVC-PE-06
+    - SVC-PE-06-RACK
+    SVC-PE-07:
+    - SVC-PE-07
+    - SVC-PE-07-RACK
+    SVC-PE-08:
+    - SVC-PE-08
+    - SVC-PE-08-RACK

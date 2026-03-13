@@ -1,0 +1,129 @@
+version: 1
+source_type: intune-device-config
+generated_by: decoct-infer
+subjects:
+- name: device-identity
+  description: Core identification and descriptive attributes for Intune device 
+    configurations.
+  include_paths:
+  - description
+  - displayName
+  - _uuid
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the display names and descriptions for all device configurations?
+  - Can I get the UUID for a specific device configuration by its display name?
+- name: fundamental-security-settings
+  description: Essential security settings related to device access and data 
+    protection.
+  include_paths:
+  - passwordBlockFingerprintUnlock
+  - passwordBlockTrustAgents
+  - passwordRequired
+  - passwordRequiredType
+  - passwordMinimumLength
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which device configurations require a password and what type?
+  - What is the minimum password length enforced across different 
+    configurations?
+  - How are fingerprint unlock and trust agents configured for password access?
+- name: feature-restriction-general
+  description: General feature restrictions applied to devices, including basic 
+    functionalities.
+  include_paths:
+  - bluetoothBlocked
+  - cameraBlocked
+  - nfcBlocked
+  - locationServicesBlocked
+  - screenCaptureBlocked
+  - factoryResetBlocked
+  - powerOffBlocked
+  - voiceAssistantBlocked
+  - voiceDialingBlocked
+  - kioskModeBlockSleepButton
+  - kioskModeBlockVolumeButtons
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which devices have Bluetooth or camera functionality blocked?
+  - Are there any configurations that block factory reset or screen capture?
+  - What are the kiosk mode restrictions for sleep and volume buttons?
+- name: storage-data-protection
+  description: Configuration settings related to device storage, data backup, 
+    and encryption.
+  include_paths:
+  - storageBlockGoogleBackup
+  - storageBlockRemovableStorage
+  - storageRequireRemovableStorageEncryption
+  - storageRequireDeviceEncryption
+  - diagnosticDataBlockSubmission
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Do all devices require removable storage encryption and device encryption?
+  - Which configurations block Google backup or removable storage?
+  - Are diagnostic data submissions blocked for any device configurations?
+- name: application-web-browsing-controls
+  description: Controls for applications, clipboard sharing, and web browser 
+    behavior.
+  include_paths:
+  - appsBlockClipboardSharing
+  - appsBlockCopyPaste
+  - appsBlockYouTube
+  - googlePlayStoreBlocked
+  - webBrowserBlocked
+  - webBrowserBlockAutofill
+  - webBrowserBlockJavaScript
+  - webBrowserBlockPopups
+  - webBrowserCookieSettings
+  - securityRequireVerifyApps
+  - compliantAppListType
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - How are copy-paste and YouTube access restricted across applications?
+  - What are the web browser settings for autofill, JavaScript, and cookie 
+    handling?
+  - Which configurations enforce requiring verification for installed apps?
+- name: cellular-wifi-connectivity
+  description: Settings governing cellular and Wi-Fi network connectivity and 
+    roaming.
+  include_paths:
+  - cellularBlockDataRoaming
+  - cellularBlockMessaging
+  - cellularBlockVoiceRoaming
+  - cellularBlockWiFiTethering
+  - wiFiBlocked
+  - _networkConfig.securityType
+  - _networkConfig.ssid
+  - _networkConfig.wiFiPsk
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which configurations block cellular data roaming or Wi-Fi tethering?
+  - What are the Wi-Fi settings, including SSID, security type, and PSK, for 
+    devices with overrides?
+  - Are there any device configurations with Wi-Fi functionality completely 
+    blocked?
+- name: device-sharing-and-enrollment
+  description: Settings related to device sharing and multi-user configurations.
+  include_paths:
+  - deviceSharingAllowed
+  - googleAccountBlockAutoSync
+  - roleScopeTagIds
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which device configurations allow device sharing?
+  - Are Google account auto-syncs blocked for any configurations?
+  - What are the role scope tag IDs assigned to each configuration?

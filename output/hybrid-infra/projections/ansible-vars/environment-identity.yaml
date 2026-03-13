@@ -1,0 +1,25 @@
+meta:
+  subject: environment-identity
+  description: Environment name and non-secret variable definitions
+  source_type: ansible-vars
+  total_instances: 3
+class_assignments:
+  _base_only:
+    instances:
+    - ansible-vars-dev
+    - ansible-vars-prod
+    - ansible-vars-staging
+instance_data:
+  schema:
+  - env
+  - grafana_admin_password
+  records:
+    ansible-vars-dev:
+    - dev
+    - devgrafana
+    ansible-vars-prod:
+    - prod
+    - Gr@fanaAdm1n!
+    ansible-vars-staging:
+    - staging
+    - StagingGr@fana

@@ -1,0 +1,84 @@
+version: 1
+source_type: systemd-unit
+generated_by: decoct-infer
+subjects:
+- name: unit-identity
+  description: Basic identification and dependencies of systemd units.
+  include_paths:
+  - Unit.description
+  - Unit.after
+  - Unit.wants
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What is the description for this systemd unit?
+  - Which units does this unit start after?
+  - Which units does this unit want to start?
+- name: install-settings
+  description: Settings related to how the systemd unit is installed and 
+    managed.
+  include_paths:
+  - Install.wantedby
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - To which targets is this unit wanted by?
+  - Are there any units wanted by different targets?
+- name: service-runtime
+  description: Core runtime and execution parameters for service units.
+  include_paths:
+  - Service.execstart
+  - Service.type
+  - Service.workingdirectory
+  - Service.environment
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What is the primary command executed by this service?
+  - What is the working directory for this service?
+  - Are there any services with non-standard environment variables?
+- name: service-resource-limits
+  description: Resource limitations and user/group settings for service units.
+  include_paths:
+  - Service.limitnofile
+  - Service.limitnproc
+  - Service.group
+  - Service.user
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What is the file descriptor limit for this service?
+  - Which user and group does this service run under?
+  - Are there any services exceeding specific thread limits?
+- name: service-restart-policy
+  description: Configuration for service restart behavior and timeouts.
+  include_paths:
+  - Service.restart
+  - Service.restartsec
+  - Service.timeoutstartsec
+  - Service.timeoutstopsec
+  - Service.remainafterexit
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What is the restart policy for this service?
+  - How long does systemd wait before restarting the service?
+  - Are there any services that remain active after exiting?
+- name: timer-settings
+  description: Configuration specific to systemd timer units.
+  include_paths:
+  - Timer.oncalendar
+  - Timer.persistent
+  - Timer.unit
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - When is this timer scheduled to activate?
+  - Does this timer persist its last run state?
+  - Which service unit does this timer activate?

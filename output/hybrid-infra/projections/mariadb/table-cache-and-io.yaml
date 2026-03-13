@@ -1,0 +1,16 @@
+meta:
+  subject: table-cache-and-io
+  description: Table open cache, definition cache, and I/O thread configuration
+  source_type: mariadb
+  total_instances: 5
+base_class:
+  mysqld.innodb_open_files: '4000'
+  mysqld.innodb_purge_threads: '4'
+class_assignments:
+  _base_only:
+    instances:
+    - maria-dev
+    - maria-galera-node
+    - maria-legacy-billing
+    - maria-legacy-main
+    - maria-staging

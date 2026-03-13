@@ -1,0 +1,23 @@
+meta:
+  subject: query-optimizer-and-tables
+  description: Configuration for the query optimizer, table caching, and 
+    temporary table settings.
+  source_type: mariadb
+  total_instances: 5
+base_class:
+  mysqld.big_tables: 'false'
+  mysqld.default_storage_engine: InnoDB
+  mysqld.default_tmp_storage_engine: InnoDB
+  mysqld.eq_range_index_dive_limit: '200'
+  mysqld.group_concat_max_len: '1024'
+  mysqld.optimizer_prune_level: '1'
+  mysqld.optimizer_search_depth: '62'
+  mysqld.sql_require_primary_key: 'false'
+class_assignments:
+  _base_only:
+    instances:
+    - maria-dev
+    - maria-galera-node
+    - maria-legacy-billing
+    - maria-legacy-main
+    - maria-staging

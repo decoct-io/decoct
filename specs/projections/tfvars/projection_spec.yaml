@@ -1,0 +1,81 @@
+version: 1
+source_type: tfvars
+generated_by: decoct-infer
+subjects:
+- name: identity-and-workspace
+  description: Core identifiers and workspace details for each tfvars instance.
+  include_paths:
+  - environment
+  - workspace
+  - tags.project
+  - tags.team
+  - tags.environment
+  - tags.managed_by
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What is the workspace and environment for each tfvars instance?
+  - Which team owns tfvars instances in the 'ridgeline' project?
+  - How are tfvars instances tagged for environment and management?
+- name: compute-resources
+  description: Compute instance types and counts for applications and edge 
+    devices.
+  include_paths:
+  - compute.app_instance_count
+  - compute.app_instance_type
+  - compute.db_instance_count
+  - compute.db_instance_type
+  - compute.edge_instance_type
+  - region
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the instance types and counts for application and database servers 
+    across instances?
+  - Which tfvars instances use 't3.medium' for edge compute?
+  - Which region is each tfvars instance deployed in?
+- name: networking-details
+  description: Network configuration details such as domain, VPC, and subnet 
+    CIDRs.
+  include_paths:
+  - networking.domain
+  - networking.subnet_cidrs
+  - networking.vpc_cidr
+  - networking.ssl_cert_arn
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What is the VPC CIDR and domain name for each tfvars instance?
+  - Are there any tfvars instances using a specific SSL certificate ARN?
+  - What are the assigned subnet CIDRs for each instance's network?
+- name: feature-flags
+  description: Configuration for various features like monitoring and backups.
+  include_paths:
+  - features.enable_monitoring
+  - features.enable_backups
+  - features.backup_retention_days
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which tfvars instances have monitoring enabled?
+  - What is the backup retention period for instances with backups enabled?
+  - Are there any instances where backups are enabled but retention days are not
+    specified?
+- name: secrets-and-sensitive-data
+  description: Details on sensitive configuration items like API secrets, 
+    database passwords, and SSH keys.
+  include_paths:
+  - database.password
+  - secrets.api_secret
+  - secrets.ssh_private_key
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which tfvars instances have an overridden SSH private key?
+  - Are there any instances where the API secret is not redacted?
+  - How are database passwords managed across the fleet?

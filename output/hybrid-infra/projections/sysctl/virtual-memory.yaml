@@ -1,0 +1,47 @@
+meta:
+  subject: virtual-memory
+  description: VM subsystem tuning including swappiness, dirty ratios, 
+    overcommit, and huge pages
+  source_type: sysctl
+  total_instances: 6
+classes:
+  dirty_ratio_20_overcommit_memory_0:
+    inherits: base
+    own_attrs:
+      vm.dirty_ratio: '20'
+      vm.overcommit_memory: '0'
+    instance_count_inclusive: 4
+class_assignments:
+  dirty_ratio_20_overcommit_memory_0:
+    instances:
+    - sysctl-app-server
+    - sysctl-dev
+    - sysctl-edge
+    - sysctl-monitoring
+  _base_only:
+    instances:
+    - sysctl-db-tuned
+    - sysctl-hardened
+instance_data:
+  schema:
+  - vm.dirty_background_ratio
+  - vm.swappiness
+  records:
+    sysctl-app-server:
+    - '10'
+    - '60'
+    sysctl-db-tuned:
+    - '10'
+    - '10'
+    sysctl-dev:
+    - '10'
+    - '60'
+    sysctl-edge:
+    - '5'
+    - '30'
+    sysctl-hardened:
+    - '5'
+    - '10'
+    sysctl-monitoring:
+    - '10'
+    - '60'

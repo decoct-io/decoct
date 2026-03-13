@@ -1,0 +1,69 @@
+meta:
+  subject: scripts
+  description: NPM script definitions for dev, build, start, test, and lint
+  source_type: package-json
+  total_instances: 4
+class_assignments:
+  _base_only:
+    instances:
+    - package-json-admin-panel
+    - package-json-notification-svc
+    - package-json-search-svc
+    - package-json-web-app
+instance_data:
+  schema:
+  - name
+  records:
+    package-json-admin-panel:
+    - '@ridgeline/admin-panel'
+    package-json-notification-svc:
+    - '@ridgeline/notification-svc'
+    package-json-search-svc:
+    - '@ridgeline/search-svc'
+    package-json-web-app:
+    - '@ridgeline/web-app'
+instance_attrs:
+  package-json-admin-panel:
+    scripts:
+      dev:
+        _value: next dev --port 8005
+      build:
+        _value: next build
+      start:
+        _value: next start
+      lint:
+        _value: eslint .
+      test:
+        _value: jest
+  package-json-notification-svc:
+    scripts:
+      dev:
+        _value: ts-node src/index.ts
+      build:
+        _value: tsc
+      start:
+        _value: node dist/index.js
+      test:
+        _value: jest
+  package-json-search-svc:
+    scripts:
+      dev:
+        _value: ts-node src/index.ts
+      build:
+        _value: tsc
+      start:
+        _value: node dist/index.js
+      test:
+        _value: jest
+  package-json-web-app:
+    scripts:
+      dev:
+        _value: next dev
+      build:
+        _value: next build
+      start:
+        _value: next start
+      lint:
+        _value: eslint .
+      test:
+        _value: jest --coverage

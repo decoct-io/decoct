@@ -1,0 +1,189 @@
+meta:
+  subject: interfaces
+  description: Physical interface configuration including HundredGigE, TenGigE, 
+    Loopback, and management interfaces
+  source_type: iosxr-p-core
+  total_instances: 6
+base_class:
+  interface.HundredGigE0/0/1/0.arp: timeout 14400
+  interface.HundredGigE0/0/1/0.bandwidth: '100000'
+  interface.HundredGigE0/0/1/0.carrier-delay.down: '0'
+  interface.HundredGigE0/0/1/0.carrier-delay.up: '0'
+  interface.HundredGigE0/0/1/0.cdp: 'true'
+  interface.HundredGigE0/0/1/0.load-interval: '300'
+  interface.HundredGigE0/0/1/0.mtu: '9216'
+  interface.HundredGigE0/0/1/0.shutdown: 'false'
+  interface.HundredGigE0/0/1/1.arp: timeout 14400
+  interface.HundredGigE0/0/1/1.bandwidth: '100000'
+  interface.HundredGigE0/0/1/1.carrier-delay.down: '0'
+  interface.HundredGigE0/0/1/1.carrier-delay.up: '0'
+  interface.HundredGigE0/0/1/1.cdp: 'true'
+  interface.HundredGigE0/0/1/1.load-interval: '300'
+  interface.HundredGigE0/0/1/1.mtu: '9216'
+  interface.HundredGigE0/0/1/1.shutdown: 'false'
+  interface.Loopback0.shutdown: 'false'
+  interface.MgmtEth0/RP0/CPU0/0.shutdown: 'false'
+  interface.TenGigE0/0/0/0.arp: timeout 14400
+  interface.TenGigE0/0/0/0.bandwidth: '100000'
+  interface.TenGigE0/0/0/0.carrier-delay.down: '0'
+  interface.TenGigE0/0/0/0.carrier-delay.up: '0'
+  interface.TenGigE0/0/0/0.cdp: 'true'
+  interface.TenGigE0/0/0/0.load-interval: '300'
+  interface.TenGigE0/0/0/0.mtu: '9216'
+  interface.TenGigE0/0/0/0.shutdown: 'false'
+  interface.TenGigE0/0/0/1.arp: timeout 14400
+  interface.TenGigE0/0/0/1.bandwidth: '100000'
+  interface.TenGigE0/0/0/1.carrier-delay.down: '0'
+  interface.TenGigE0/0/0/1.carrier-delay.up: '0'
+  interface.TenGigE0/0/0/1.cdp: 'true'
+  interface.TenGigE0/0/0/1.load-interval: '300'
+  interface.TenGigE0/0/0/1.mtu: '9216'
+  interface.TenGigE0/0/0/1.shutdown: 'false'
+  interface.TenGigE0/0/0/2.arp: timeout 14400
+  interface.TenGigE0/0/0/2.bandwidth: '100000'
+  interface.TenGigE0/0/0/2.carrier-delay.down: '0'
+  interface.TenGigE0/0/0/2.carrier-delay.up: '0'
+  interface.TenGigE0/0/0/2.cdp: 'true'
+  interface.TenGigE0/0/0/2.load-interval: '300'
+  interface.TenGigE0/0/0/2.mtu: '9216'
+  interface.TenGigE0/0/0/2.shutdown: 'false'
+  interface.TenGigE0/0/0/3.arp: timeout 14400
+  interface.TenGigE0/0/0/3.bandwidth: '100000'
+  interface.TenGigE0/0/0/3.carrier-delay.down: '0'
+  interface.TenGigE0/0/0/3.carrier-delay.up: '0'
+  interface.TenGigE0/0/0/3.cdp: 'true'
+  interface.TenGigE0/0/0/3.load-interval: '300'
+  interface.TenGigE0/0/0/3.mtu: '9216'
+  interface.TenGigE0/0/0/3.shutdown: 'false'
+class_assignments:
+  _base_only:
+    instances:
+    - P-CORE-01..P-CORE-06
+instance_data:
+  schema:
+  - hostname
+  - interface.HundredGigE0/0/1/0.description
+  - interface.HundredGigE0/0/1/0.ipv4
+  - interface.HundredGigE0/0/1/1.description
+  - interface.HundredGigE0/0/1/1.ipv4
+  - interface.Loopback0.description
+  - interface.Loopback0.ipv4
+  - interface.MgmtEth0/RP0/CPU0/0.description
+  - interface.MgmtEth0/RP0/CPU0/0.ipv4
+  - interface.TenGigE0/0/0/0.description
+  - interface.TenGigE0/0/0/0.ipv4
+  - interface.TenGigE0/0/0/1.description
+  - interface.TenGigE0/0/0/1.ipv4
+  - interface.TenGigE0/0/0/2.description
+  - interface.TenGigE0/0/0/2.ipv4
+  - interface.TenGigE0/0/0/3.description
+  - interface.TenGigE0/0/0/3.ipv4
+  records:
+    P-CORE-01:
+    - P-CORE-01
+    - TO-P-CORE-04
+    - address 10.10.1.0 255.255.255.254
+    - TO-P-CORE-05
+    - address 10.10.1.2 255.255.255.254
+    - P-CORE-01 Router-ID
+    - address 10.0.0.1 255.255.255.255
+    - MGMT-P-CORE-01
+    - address 192.168.100.1 255.255.255.0
+    - TO-P-CORE-02
+    - address 10.10.0.0 255.255.255.254
+    - TO-P-CORE-03
+    - address 10.10.0.2 255.255.255.254
+    - TO-RR-01
+    - address 10.10.0.4 255.255.255.254
+    - TO-RR-02
+    - address 10.10.0.6 255.255.255.254
+    P-CORE-02:
+    - P-CORE-02
+    - TO-P-CORE-05
+    - address 10.10.1.4 255.255.255.254
+    - TO-P-CORE-06
+    - address 10.10.1.6 255.255.255.254
+    - P-CORE-02 Router-ID
+    - address 10.0.0.2 255.255.255.255
+    - MGMT-P-CORE-02
+    - address 192.168.100.2 255.255.255.0
+    - TO-P-CORE-01
+    - address 10.10.0.1 255.255.255.254
+    - TO-P-CORE-03
+    - address 10.10.0.8 255.255.255.254
+    - TO-RR-03
+    - address 10.10.0.10 255.255.255.254
+    - TO-RR-04
+    - address 10.10.0.12 255.255.255.254
+    P-CORE-03:
+    - P-CORE-03
+    - TO-P-CORE-06
+    - address 10.10.1.8 255.255.255.254
+    - TO-P-CORE-04
+    - address 10.10.1.10 255.255.255.254
+    - P-CORE-03 Router-ID
+    - address 10.0.0.3 255.255.255.255
+    - MGMT-P-CORE-03
+    - address 192.168.100.3 255.255.255.0
+    - TO-P-CORE-01
+    - address 10.10.0.3 255.255.255.254
+    - TO-P-CORE-02
+    - address 10.10.0.9 255.255.255.254
+    - TO-RR-01
+    - address 10.10.0.14 255.255.255.254
+    - TO-RR-02
+    - address 10.10.0.16 255.255.255.254
+    P-CORE-04:
+    - P-CORE-04
+    - TO-P-CORE-01
+    - address 10.10.1.1 255.255.255.254
+    - TO-P-CORE-03
+    - address 10.10.1.11 255.255.255.254
+    - P-CORE-04 Router-ID
+    - address 10.0.0.4 255.255.255.255
+    - MGMT-P-CORE-04
+    - address 192.168.100.4 255.255.255.0
+    - TO-P-CORE-05
+    - address 10.10.0.18 255.255.255.254
+    - TO-P-CORE-06
+    - address 10.10.0.20 255.255.255.254
+    - TO-RR-03
+    - address 10.10.0.22 255.255.255.254
+    - TO-RR-04
+    - address 10.10.0.24 255.255.255.254
+    P-CORE-05:
+    - P-CORE-05
+    - TO-P-CORE-02
+    - address 10.10.1.5 255.255.255.254
+    - TO-P-CORE-01
+    - address 10.10.1.12 255.255.255.254
+    - P-CORE-05 Router-ID
+    - address 10.0.0.5 255.255.255.255
+    - MGMT-P-CORE-05
+    - address 192.168.100.5 255.255.255.0
+    - TO-P-CORE-04
+    - address 10.10.0.19 255.255.255.254
+    - TO-P-CORE-06
+    - address 10.10.0.26 255.255.255.254
+    - TO-RR-01
+    - address 10.10.0.28 255.255.255.254
+    - TO-RR-02
+    - address 10.10.0.30 255.255.255.254
+    P-CORE-06:
+    - P-CORE-06
+    - TO-P-CORE-03
+    - address 10.10.1.9 255.255.255.254
+    - TO-P-CORE-02
+    - address 10.10.1.14 255.255.255.254
+    - P-CORE-06 Router-ID
+    - address 10.0.0.6 255.255.255.255
+    - MGMT-P-CORE-06
+    - address 192.168.100.6 255.255.255.0
+    - TO-P-CORE-04
+    - address 10.10.0.21 255.255.255.254
+    - TO-P-CORE-05
+    - address 10.10.0.27 255.255.255.254
+    - TO-RR-03
+    - address 10.10.0.32 255.255.255.254
+    - TO-RR-04
+    - address 10.10.0.34 255.255.255.254

@@ -1,0 +1,37 @@
+meta:
+  subject: package-identity
+  description: Core identification and versioning details of the package.
+  source_type: package-json
+  total_instances: 4
+base_class:
+  license: UNLICENSED
+  private: 'true'
+class_assignments:
+  _base_only:
+    instances:
+    - package-json-admin-panel
+    - package-json-notification-svc
+    - package-json-search-svc
+    - package-json-web-app
+instance_data:
+  schema:
+  - description
+  - name
+  - version
+  records:
+    package-json-admin-panel:
+    - Ridgeline Admin Panel
+    - '@ridgeline/admin-panel'
+    - 1.0.0
+    package-json-notification-svc:
+    - Ridgeline Notification Service
+    - '@ridgeline/notification-svc'
+    - 1.2.0
+    package-json-search-svc:
+    - Ridgeline Search Service (Fastify)
+    - '@ridgeline/search-svc'
+    - 0.9.0
+    package-json-web-app:
+    - Ridgeline Web Application (React SSR)
+    - '@ridgeline/web-app'
+    - 3.0.0

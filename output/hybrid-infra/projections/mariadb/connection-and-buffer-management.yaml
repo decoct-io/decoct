@@ -1,0 +1,40 @@
+meta:
+  subject: connection-and-buffer-management
+  description: Settings controlling client connections, various buffer sizes, 
+    and timeout parameters.
+  source_type: mariadb
+  total_instances: 5
+base_class:
+  mysqld.back_log: '-1'
+  mysqld.bulk_insert_buffer_size: '8388608'
+  mysqld.connect_timeout: '10'
+  mysqld.interactive_timeout: '28800'
+  mysqld.key_buffer_size: '8388608'
+  mysqld.max_allowed_packet: '67108864'
+  mysqld.net_read_timeout: '30'
+  mysqld.net_write_timeout: '60'
+  mysqld.replica_net_timeout: '60'
+  mysqld.thread_cache_size: '-1'
+  mysqld.wait_timeout: '28800'
+class_assignments:
+  _base_only:
+    instances:
+    - maria-dev
+    - maria-galera-node
+    - maria-legacy-billing
+    - maria-legacy-main
+    - maria-staging
+instance_data:
+  schema:
+  - mysqld.max_connections
+  records:
+    maria-dev:
+    - '50'
+    maria-galera-node:
+    - '300'
+    maria-legacy-billing:
+    - '200'
+    maria-legacy-main:
+    - '151'
+    maria-staging:
+    - '100'

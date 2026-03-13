@@ -1,0 +1,20 @@
+meta:
+  subject: device-sharing-and-enrollment
+  description: Settings related to device sharing and multi-user configurations.
+  source_type: intune-device-config
+  total_instances: 8
+base_class:
+  deviceSharingAllowed: 'false'
+  googleAccountBlockAutoSync: 'false'
+  roleScopeTagIds: '0'
+class_assignments:
+  _base_only:
+    instances:
+    - DC-Android-BYOD
+    - DC-Android-Contractor
+    - DC-Android-Corporate-Lockdown
+    - DC-Android-Executive
+    - DC-Android-Field-Workers
+    - DC-Android-Kiosk
+    - DC-Android-Lab-Devices
+    - DC-Android-Standard

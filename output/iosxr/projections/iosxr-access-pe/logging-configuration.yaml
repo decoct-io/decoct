@@ -1,0 +1,143 @@
+meta:
+  subject: logging-configuration
+  description: System logging settings including servers, levels, and source.
+  source_type: iosxr-access-pe
+  total_instances: 60
+base_class:
+  logging.10.255.1.1: vrf default severity info port default
+  logging.buffered: 307200 debugging
+  logging.console: informational
+  logging.events: link-status
+  logging.monitor: debugging
+  logging.source-interface: Loopback0
+  logging.trap: informational
+class_assignments:
+  _base_only:
+    instances:
+    - APE-R1-01..APE-R1-20
+    - APE-R2-01..APE-R2-20
+    - APE-R3-01..APE-R3-20
+instance_data:
+  schema:
+  - hostname
+  records:
+    APE-R1-01:
+    - APE-R1-01
+    APE-R1-02:
+    - APE-R1-02
+    APE-R1-03:
+    - APE-R1-03
+    APE-R1-04:
+    - APE-R1-04
+    APE-R1-05:
+    - APE-R1-05
+    APE-R1-06:
+    - APE-R1-06
+    APE-R1-07:
+    - APE-R1-07
+    APE-R1-08:
+    - APE-R1-08
+    APE-R1-09:
+    - APE-R1-09
+    APE-R1-10:
+    - APE-R1-10
+    APE-R1-11:
+    - APE-R1-11
+    APE-R1-12:
+    - APE-R1-12
+    APE-R1-13:
+    - APE-R1-13
+    APE-R1-14:
+    - APE-R1-14
+    APE-R1-15:
+    - APE-R1-15
+    APE-R1-16:
+    - APE-R1-16
+    APE-R1-17:
+    - APE-R1-17
+    APE-R1-18:
+    - APE-R1-18
+    APE-R1-19:
+    - APE-R1-19
+    APE-R1-20:
+    - APE-R1-20
+    APE-R2-01:
+    - APE-R2-01
+    APE-R2-02:
+    - APE-R2-02
+    APE-R2-03:
+    - APE-R2-03
+    APE-R2-04:
+    - APE-R2-04
+    APE-R2-05:
+    - APE-R2-05
+    APE-R2-06:
+    - APE-R2-06
+    APE-R2-07:
+    - APE-R2-07
+    APE-R2-08:
+    - APE-R2-08
+    APE-R2-09:
+    - APE-R2-09
+    APE-R2-10:
+    - APE-R2-10
+    APE-R2-11:
+    - APE-R2-11
+    APE-R2-12:
+    - APE-R2-12
+    APE-R2-13:
+    - APE-R2-13
+    APE-R2-14:
+    - APE-R2-14
+    APE-R2-15:
+    - APE-R2-15
+    APE-R2-16:
+    - APE-R2-16
+    APE-R2-17:
+    - APE-R2-17
+    APE-R2-18:
+    - APE-R2-18
+    APE-R2-19:
+    - APE-R2-19
+    APE-R2-20:
+    - APE-R2-20
+    APE-R3-01:
+    - APE-R3-01
+    APE-R3-02:
+    - APE-R3-02
+    APE-R3-03:
+    - APE-R3-03
+    APE-R3-04:
+    - APE-R3-04
+    APE-R3-05:
+    - APE-R3-05
+    APE-R3-06:
+    - APE-R3-06
+    APE-R3-07:
+    - APE-R3-07
+    APE-R3-08:
+    - APE-R3-08
+    APE-R3-09:
+    - APE-R3-09
+    APE-R3-10:
+    - APE-R3-10
+    APE-R3-11:
+    - APE-R3-11
+    APE-R3-12:
+    - APE-R3-12
+    APE-R3-13:
+    - APE-R3-13
+    APE-R3-14:
+    - APE-R3-14
+    APE-R3-15:
+    - APE-R3-15
+    APE-R3-16:
+    - APE-R3-16
+    APE-R3-17:
+    - APE-R3-17
+    APE-R3-18:
+    - APE-R3-18
+    APE-R3-19:
+    - APE-R3-19
+    APE-R3-20:
+    - APE-R3-20

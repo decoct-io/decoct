@@ -1,0 +1,58 @@
+meta:
+  subject: identity
+  description: Device configuration profile identity including display name, 
+    description, and version
+  source_type: intune-device-config
+  total_instances: 8
+base_class:
+  roleScopeTagIds: '0'
+  version: '1'
+class_assignments:
+  _base_only:
+    instances:
+    - DC-Android-BYOD
+    - DC-Android-Contractor
+    - DC-Android-Corporate-Lockdown
+    - DC-Android-Executive
+    - DC-Android-Field-Workers
+    - DC-Android-Kiosk
+    - DC-Android-Lab-Devices
+    - DC-Android-Standard
+instance_data:
+  schema:
+  - _uuid
+  - description
+  - displayName
+  records:
+    DC-Android-BYOD:
+    - f73053d5-f2f5-5992-9c46-90fdcb0bf8a4
+    - Minimal restrictions for personal Android devices
+    - DC-Android-BYOD
+    DC-Android-Contractor:
+    - f9567356-d3fb-5b0c-be00-76d1bc8d490b
+    - Contractor Android device restrictions
+    - DC-Android-Contractor
+    DC-Android-Corporate-Lockdown:
+    - 5ccdf1bb-8c13-5344-bbe8-cdaa5b839ef3
+    - Strict lockdown for corporate Android devices
+    - DC-Android-Corporate-Lockdown
+    DC-Android-Executive:
+    - df1fa9ad-af15-522e-9cb1-b27796cbeb1d
+    - Executive Android device configuration
+    - DC-Android-Executive
+    DC-Android-Field-Workers:
+    - 5ca4fc4a-0bf2-54d5-a2b2-4ca0fe283b9b
+    - Field worker Android device with WiFi PSK
+    - DC-Android-Field-Workers
+    DC-Android-Kiosk:
+    - ffb07857-1b25-5c06-ba61-31fa806f5075
+    - Kiosk mode configuration for shared devices
+    - DC-Android-Kiosk
+    DC-Android-Lab-Devices:
+    - 15b44472-fe4e-51c0-94f4-e5755a2f5b64
+    - Lab and testing Android device configuration
+    - DC-Android-Lab-Devices
+    DC-Android-Standard:
+    - 9799c46b-5a48-50ed-ae3d-878aac7a7678
+    - Standard configuration for Android devices
+    - DC-Android-Standard

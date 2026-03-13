@@ -1,0 +1,21 @@
+meta:
+  subject: bgp-neighbors
+  description: Specific configurations for BGP neighbors (complex attribute).
+  source_type: iosxr-rr
+  total_instances: 4
+class_assignments:
+  _base_only:
+    instances:
+    - RR-01..RR-04
+instance_data:
+  schema:
+  - hostname
+  records:
+    RR-01:
+    - RR-01
+    RR-02:
+    - RR-02
+    RR-03:
+    - RR-03
+    RR-04:
+    - RR-04

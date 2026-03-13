@@ -1,0 +1,88 @@
+meta:
+  subject: isis-core-routing
+  description: Core IS-IS configuration parameters and interface settings.
+  source_type: iosxr-services-pe
+  total_instances: 8
+base_class:
+  router.isis.CORE.address-family.ipv4-unicast.metric-style: wide
+  router.isis.CORE.address-family.ipv4-unicast.mpls.traffic-eng.level-2-only: 'true'
+  router.isis.CORE.address-family.ipv4-unicast.mpls.traffic-eng.router-id: 
+    Loopback0
+  router.isis.CORE.address-family.ipv4-unicast.router-id: Loopback0
+  router.isis.CORE.address-family.ipv4-unicast.segment-routing: mpls sr-prefer
+  router.isis.CORE.address-family.ipv6-unicast.metric-style: wide
+  router.isis.CORE.address-family.ipv6-unicast.segment-routing: mpls sr-prefer
+  router.isis.CORE.interface.Loopback0.address-family: ipv6 unicast
+  router.isis.CORE.interface.Loopback0.passive: 'true'
+  router.isis.CORE.interface.TenGigE0/0/0/0.address-family.ipv4-unicast.metric: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/0.address-family.ipv6-unicast.metric: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/0.csnp-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/0.hello-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/0.hello-multiplier: '3'
+  router.isis.CORE.interface.TenGigE0/0/0/0.point-to-point: 'true'
+  router.isis.CORE.interface.TenGigE0/0/0/0.retransmit-interval: '5'
+  router.isis.CORE.interface.TenGigE0/0/0/1.address-family.ipv4-unicast.metric: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/1.address-family.ipv6-unicast.metric: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/1.csnp-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/1.hello-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/1.hello-multiplier: '3'
+  router.isis.CORE.interface.TenGigE0/0/0/1.point-to-point: 'true'
+  router.isis.CORE.interface.TenGigE0/0/0/1.retransmit-interval: '5'
+  router.isis.CORE.is-type: level-2-only
+  router.isis.CORE.log: adjacency changes
+  router.isis.CORE.lsp-lifetime: '1200'
+  router.isis.CORE.lsp-mtu: '1497'
+  router.isis.CORE.lsp-refresh-interval: '900'
+  segment-routing.global-block: 16000 23999
+  segment-routing.local-block: 15000 15999
+class_assignments:
+  _base_only:
+    instances:
+    - SVC-PE-01..SVC-PE-08
+instance_data:
+  schema:
+  - hostname
+  - mpls.router-id
+  - router.isis.CORE.interface.Loopback0.address-family.ipv4-unicast.prefix-sid
+  - router.isis.CORE.net
+  records:
+    SVC-PE-01:
+    - SVC-PE-01
+    - 10.0.3.1
+    - index 16301
+    - 49.0001.0100.0003.0001.00
+    SVC-PE-02:
+    - SVC-PE-02
+    - 10.0.3.2
+    - index 16302
+    - 49.0001.0100.0003.0002.00
+    SVC-PE-03:
+    - SVC-PE-03
+    - 10.0.3.3
+    - index 16303
+    - 49.0001.0100.0003.0003.00
+    SVC-PE-04:
+    - SVC-PE-04
+    - 10.0.3.4
+    - index 16304
+    - 49.0001.0100.0003.0004.00
+    SVC-PE-05:
+    - SVC-PE-05
+    - 10.0.3.5
+    - index 16305
+    - 49.0001.0100.0003.0005.00
+    SVC-PE-06:
+    - SVC-PE-06
+    - 10.0.3.6
+    - index 16306
+    - 49.0001.0100.0003.0006.00
+    SVC-PE-07:
+    - SVC-PE-07
+    - 10.0.3.7
+    - index 16307
+    - 49.0001.0100.0003.0007.00
+    SVC-PE-08:
+    - SVC-PE-08
+    - 10.0.3.8
+    - index 16308
+    - 49.0001.0100.0003.0008.00

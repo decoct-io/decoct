@@ -1,0 +1,11 @@
+meta:
+  subject: rule-files
+  description: Locations of Prometheus recording and alerting rule files.
+  source_type: prometheus
+  total_instances: 3
+class_assignments:
+  _base_only:
+    instances:
+    - prometheus-dev
+    - prometheus-prod
+    - prometheus-staging

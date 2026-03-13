@@ -1,0 +1,11 @@
+meta:
+  subject: remote-write-settings
+  description: Configuration for remote write integrations.
+  source_type: prometheus
+  total_instances: 3
+class_assignments:
+  _base_only:
+    instances:
+    - prometheus-dev
+    - prometheus-prod
+    - prometheus-staging

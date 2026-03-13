@@ -1,0 +1,37 @@
+meta:
+  subject: tcp-memory-tuning
+  description: TCP receive and write memory buffer settings.
+  source_type: sysctl
+  total_instances: 6
+class_assignments:
+  _base_only:
+    instances:
+    - sysctl-app-server
+    - sysctl-db-tuned
+    - sysctl-dev
+    - sysctl-edge
+    - sysctl-hardened
+    - sysctl-monitoring
+instance_data:
+  schema:
+  - net.ipv4.tcp_rmem
+  - net.ipv4.tcp_wmem
+  records:
+    sysctl-app-server:
+    - 4096 87380 6291456
+    - 4096 16384 4194304
+    sysctl-db-tuned:
+    - 4096 87380 16777216
+    - 4096 65536 16777216
+    sysctl-dev:
+    - 4096 87380 6291456
+    - 4096 16384 4194304
+    sysctl-edge:
+    - 4096 87380 16777216
+    - 4096 65536 16777216
+    sysctl-hardened:
+    - 4096 87380 16777216
+    - 4096 65536 16777216
+    sysctl-monitoring:
+    - 4096 87380 6291456
+    - 4096 16384 4194304

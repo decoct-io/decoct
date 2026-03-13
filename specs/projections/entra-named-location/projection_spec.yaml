@@ -1,0 +1,44 @@
+version: 1
+source_type: entra-named-location
+generated_by: decoct-infer
+subjects:
+- name: identity-and-trust
+  description: Core identification and trust status of the named location.
+  include_paths:
+  - _uuid
+  - displayName
+  - isTrusted
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the display names and UUIDs for all named locations?
+  - Which named locations are marked as trusted?
+  - How do I find a named location by its UUID?
+- name: geo-context
+  description: Geographic details and country-based configurations for the named
+    location.
+  include_paths:
+  - countryLookupMethod
+  - countriesAndRegions
+  - includeUnknownCountriesAndRegions
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What is the country lookup method for each named location?
+  - Which countries and regions are explicitly included for each location?
+  - Are there any named locations that include unknown countries and regions 
+    implicitly?
+- name: ip-ranges
+  description: IP range configurations defining the network boundaries of the 
+    named location.
+  include_paths:
+  - ipRanges
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What IP ranges are defined for each named location?
+  - Are there any overlapping IP ranges across different named locations?
+  - How many IP ranges are configured for each named location?

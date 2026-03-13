@@ -1,0 +1,24 @@
+meta:
+  subject: package-engines
+  description: Specifies the compatible Node.js engine versions.
+  source_type: package-json
+  total_instances: 4
+class_assignments:
+  _base_only:
+    instances:
+    - package-json-admin-panel
+    - package-json-notification-svc
+    - package-json-search-svc
+    - package-json-web-app
+instance_data:
+  schema:
+  - engines.node
+  records:
+    package-json-admin-panel:
+    - '>=20.0.0'
+    package-json-notification-svc:
+    - '>=18.0.0'
+    package-json-search-svc:
+    - '>=18.0.0'
+    package-json-web-app:
+    - '>=20.0.0'

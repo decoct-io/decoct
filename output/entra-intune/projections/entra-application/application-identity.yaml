@@ -1,0 +1,87 @@
+meta:
+  subject: application-identity
+  description: Core identity and display attributes for Entra applications.
+  source_type: entra-application
+  total_instances: 12
+class_assignments:
+  _base_only:
+    instances:
+    - App-API-Backend
+    - App-API-Gateway
+    - App-B2C-Customer-Portal
+    - App-Daemon-Service
+    - App-DevTest-Sandbox
+    - App-Legacy-WinApp
+    - App-Mobile-Android
+    - App-Mobile-iOS
+    - App-Portal-SPA
+    - App-Portal-Web
+    - App-PowerBI-Embedded
+    - App-Teams-Bot
+instance_data:
+  schema:
+  - _uuid
+  - appId
+  - displayName
+  - isFallbackPublicClient
+  records:
+    App-API-Backend:
+    - 1183d2b2-0ed9-5f80-b7a4-5c7adfd8e296
+    - 328ff003-8ec4-52c5-827d-8bc270bb442f
+    - App-API-Backend
+    - 'false'
+    App-API-Gateway:
+    - e9d8598e-406a-51f9-8099-4afbb509babf
+    - 09bfc58f-4326-5719-a4dc-6af54ade2fb4
+    - App-API-Gateway
+    - 'false'
+    App-B2C-Customer-Portal:
+    - e1239019-09e3-5e47-b353-8ebc10e4ad47
+    - 2d1a241d-a476-5250-88f6-952e095d0f20
+    - App-B2C-Customer-Portal
+    - 'false'
+    App-Daemon-Service:
+    - 3130b034-f661-5e55-b7ce-4dd835b2282c
+    - 4b1d9df5-3023-5c7a-8fca-7e8828f67148
+    - App-Daemon-Service
+    - 'false'
+    App-DevTest-Sandbox:
+    - 4d94319d-9ea7-500c-a739-f6d1571e8edd
+    - 6ba96347-5146-5724-8b91-7eeab582af64
+    - App-DevTest-Sandbox
+    - 'false'
+    App-Legacy-WinApp:
+    - 1cfb4d16-0c4d-5313-9abb-995e6af8dc11
+    - 7ea7b940-e701-5fd5-9aa0-2dcc1aa4d7bc
+    - App-Legacy-WinApp
+    - 'true'
+    App-Mobile-Android:
+    - 9e14e568-8cca-5c92-8849-8c7fe2ea9c49
+    - 00cbc6f0-e1f9-520c-84dd-f0daf3581c1c
+    - App-Mobile-Android
+    - 'true'
+    App-Mobile-iOS:
+    - 5443454c-d8a1-5278-960b-b6c87bf105a0
+    - 0b2849f6-7e8e-5e52-98cc-c831ba6b1e79
+    - App-Mobile-iOS
+    - 'true'
+    App-Portal-SPA:
+    - bf260ba1-7b36-59ae-a911-fdca16509870
+    - 6e79e700-0998-53f8-8e10-27e83df0ce2e
+    - App-Portal-SPA
+    - 'false'
+    App-Portal-Web:
+    - e22d8220-1420-58cc-ac3b-d857933e4fdd
+    - 63b992d8-f6af-59e6-b300-1ed0792b20b5
+    - App-Portal-Web
+    - 'false'
+    App-PowerBI-Embedded:
+    - b1723d20-ab89-518b-aec8-4a3a39b51ab3
+    - ea15b55a-af7a-5adb-855b-7e9248809cbf
+    - App-PowerBI-Embedded
+    - 'false'
+    App-Teams-Bot:
+    - 80f4350c-276a-5c76-87f5-c81d569ef185
+    - 216b2594-611d-503f-ba62-25bdbc6a7c61
+    - App-Teams-Bot
+    - 'false'

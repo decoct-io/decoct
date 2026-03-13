@@ -1,0 +1,56 @@
+meta:
+  subject: restart-and-lifecycle
+  description: Restart policy, restart delay, timeout settings, and 
+    remaining-after-exit behavior
+  source_type: systemd-unit
+  total_instances: 10
+class_assignments:
+  _base_only:
+    instances:
+    - systemd-analytics-worker
+    - systemd-auth-service
+    - systemd-backup-svc
+    - systemd-backup-timer
+    - systemd-billing-api
+    - systemd-core-api
+    - systemd-legacy-dashboard
+    - systemd-report-gen-svc
+    - systemd-report-gen-timer
+    - systemd-web-app
+instance_attrs:
+  systemd-analytics-worker:
+    Service.restart: on-failure
+    Service.restartsec: '10'
+    Service.timeoutstartsec: '120'
+    Service.timeoutstopsec: '120'
+  systemd-auth-service:
+    Service.restart: always
+    Service.restartsec: '10'
+    Service.timeoutstartsec: '90'
+    Service.timeoutstopsec: '90'
+  systemd-backup-svc:
+    Service.timeoutstartsec: '600'
+    Service.timeoutstopsec: '120'
+  systemd-billing-api:
+    Service.restart: on-failure
+    Service.restartsec: '5'
+    Service.timeoutstartsec: '90'
+    Service.timeoutstopsec: '90'
+  systemd-core-api:
+    Service.restart: on-failure
+    Service.restartsec: '5'
+    Service.timeoutstartsec: '90'
+    Service.timeoutstopsec: '90'
+  systemd-legacy-dashboard:
+    Service.restart: always
+    Service.restartsec: '5'
+    Service.timeoutstartsec: '60'
+    Service.timeoutstopsec: '30'
+  systemd-report-gen-svc:
+    Service.timeoutstartsec: '300'
+    Service.timeoutstopsec: '60'
+  systemd-web-app:
+    Service.restart: on-failure
+    Service.restartsec: '5'
+    Service.timeoutstartsec: '30'
+    Service.timeoutstopsec: '30'

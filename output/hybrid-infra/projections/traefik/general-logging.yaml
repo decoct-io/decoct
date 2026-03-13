@@ -1,0 +1,39 @@
+meta:
+  subject: general-logging
+  description: General logging configuration like level, format, and rotation 
+    settings.
+  source_type: traefik
+  total_instances: 4
+base_class:
+  log.compress: 'false'
+  log.format: common
+  log.maxAge: '0'
+  log.maxBackups: '0'
+  log.maxSize: '100'
+classes:
+  addInternals_false_noColor_false:
+    inherits: base
+    own_attrs:
+      log.noColor: 'false'
+    instance_count_inclusive: 3
+class_assignments:
+  addInternals_false_noColor_false:
+    instances:
+    - traefik-prod-dynamic
+    - traefik-prod-static
+    - traefik-staging
+  _base_only:
+    instances:
+    - traefik-dev
+instance_data:
+  schema:
+  - log.level
+  records:
+    traefik-dev:
+    - DEBUG
+    traefik-prod-dynamic:
+    - ERROR
+    traefik-prod-static:
+    - ERROR
+    traefik-staging:
+    - DEBUG

@@ -1,0 +1,69 @@
+version: 1
+source_type: docker-daemon
+generated_by: decoct-infer
+subjects:
+- name: daemon-identity-and-debug
+  description: Core identification and debugging settings for the Docker daemon.
+  include_paths:
+  - debug
+  - experimental
+  - live-restore
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which daemons have experimental features enabled?
+  - Are there any daemons configured for live restore?
+  - What is the debugging status across the fleet?
+- name: daemon-logging-config
+  description: Configuration for Docker daemon logging.
+  include_paths:
+  - log-driver
+  - log-opts.max-file
+  - log-opts.max-size
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the log rotation settings (max-file, max-size) for each daemon?
+  - Are all daemons using the same log driver?
+  - Which daemons have custom log file size limits?
+- name: daemon-network-settings
+  description: Network-related configurations for the Docker daemon.
+  include_paths:
+  - ip-forward
+  - iptables
+  - userland-proxy
+  - dns
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Are there any daemons with custom DNS server configurations?
+  - Which daemons have userland proxy disabled?
+  - Are IP forwarding and iptables configured consistently across all daemons?
+- name: daemon-security-features
+  description: Security-related settings including insecure registries and 
+    storage driver.
+  include_paths:
+  - insecure-registries
+  - storage-driver
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which daemons are configured to use insecure registries?
+  - Are all daemons using the same storage driver (overlay2)?
+  - What are the storage driver configurations for each daemon?
+- name: daemon-metrics-and-limits
+  description: Configuration for exposing metrics and default ulimit settings.
+  include_paths:
+  - metrics-addr
+  - default-ulimits
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which daemons have a custom metrics address configured?
+  - How do the default ulimits vary across daemons?
+  - Are there any daemons with specific ulimit overrides?

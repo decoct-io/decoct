@@ -1,0 +1,25 @@
+meta:
+  subject: cors-configuration
+  description: Cross-Origin Resource Sharing (CORS) settings.
+  source_type: app-config-json
+  total_instances: 3
+base_class:
+  cors.allow_credentials: 'true'
+  cors.enabled: 'true'
+  cors.methods: GET,POST,PUT,DELETE
+class_assignments:
+  _base_only:
+    instances:
+    - app-config-auth-jwt
+    - app-config-billing
+    - app-config-search
+instance_data:
+  schema:
+  - cors.origins
+  records:
+    app-config-auth-jwt:
+    - https://app.ridgeline.io,https://admin.ridgeline.io
+    app-config-billing:
+    - https://app.ridgeline.io
+    app-config-search:
+    - https://app.ridgeline.io,https://admin.ridgeline.io

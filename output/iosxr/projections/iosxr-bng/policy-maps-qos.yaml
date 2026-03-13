@@ -1,0 +1,30 @@
+meta:
+  subject: policy-maps-qos
+  description: Detailed configuration of quality of service policy maps and 
+    their classes.
+  source_type: iosxr-bng
+  total_instances: 8
+class_assignments:
+  _base_only:
+    instances:
+    - BNG-01..BNG-08
+instance_data:
+  schema:
+  - hostname
+  records:
+    BNG-01:
+    - BNG-01
+    BNG-02:
+    - BNG-02
+    BNG-03:
+    - BNG-03
+    BNG-04:
+    - BNG-04
+    BNG-05:
+    - BNG-05
+    BNG-06:
+    - BNG-06
+    BNG-07:
+    - BNG-07
+    BNG-08:
+    - BNG-08

@@ -1,0 +1,50 @@
+meta:
+  subject: system-services
+  description: System services including NTP, DNS, logging, clock, and line 
+    console settings
+  source_type: iosxr-bng
+  total_instances: 8
+base_class:
+  clock: timezone UTC 0
+  domain.lookup: disable
+  domain.name: lab.example.com
+  domain.name-server.10.255.2.1: 'true'
+  domain.name-server.10.255.2.2: 'true'
+  line: default
+  logging.10.255.1.1: vrf default severity info port default
+  logging.buffered: 307200 debugging
+  logging.console: informational
+  logging.events: link-status
+  logging.monitor: debugging
+  logging.source-interface: Loopback0
+  logging.trap: informational
+  ntp.server.10.255.0.1: 'true'
+  ntp.server.10.255.0.2: 'true'
+  ntp.source: Loopback0
+  ntp.update-calendar: 'true'
+  service.timestamps.debug: datetime msec localtime show-timezone
+  service.timestamps.log: datetime msec localtime show-timezone
+class_assignments:
+  _base_only:
+    instances:
+    - BNG-01..BNG-08
+instance_data:
+  schema:
+  - hostname
+  records:
+    BNG-01:
+    - BNG-01
+    BNG-02:
+    - BNG-02
+    BNG-03:
+    - BNG-03
+    BNG-04:
+    - BNG-04
+    BNG-05:
+    - BNG-05
+    BNG-06:
+    - BNG-06
+    BNG-07:
+    - BNG-07
+    BNG-08:
+    - BNG-08

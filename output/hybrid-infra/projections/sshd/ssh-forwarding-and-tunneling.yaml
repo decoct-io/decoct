@@ -1,0 +1,28 @@
+meta:
+  subject: ssh-forwarding-and-tunneling
+  description: Settings for TCP, Agent, StreamLocal, and X11 forwarding.
+  source_type: sshd
+  total_instances: 4
+base_class:
+  PermitTunnel: 'false'
+  X11DisplayOffset: '10'
+  X11UseLocalhost: 'true'
+class_assignments:
+  _base_only:
+    instances:
+    - sshd-bastion
+    - sshd-dev
+    - sshd-prod
+    - sshd-staging
+instance_data:
+  schema:
+  - AllowStreamLocalForwarding
+  records:
+    sshd-bastion:
+    - 'false'
+    sshd-dev:
+    - 'true'
+    sshd-prod:
+    - 'false'
+    sshd-staging:
+    - 'true'

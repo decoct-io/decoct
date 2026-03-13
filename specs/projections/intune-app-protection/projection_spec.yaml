@@ -1,0 +1,131 @@
+version: 1
+source_type: intune-app-protection
+generated_by: decoct-infer
+subjects:
+- name: app-protection-identity
+  description: Core identity and descriptive information for app protection 
+    policies.
+  include_paths:
+  - _uuid
+  - displayName
+  - description
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the display names and descriptions of all app protection policies?
+  - Can I get the UUID and display name for a specific policy?
+- name: data-transfer-settings
+  description: Policies governing data transfer and clipboard sharing for apps.
+  include_paths:
+  - allowedInboundDataTransferSources
+  - allowedOutboundClipboardSharingLevel
+  - allowedOutboundDataTransferDestinations
+  - dataBackupBlocked
+  - saveAsBlocked
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which policies block data backup, and what are their outbound data transfer 
+    restrictions?
+  - Are there any policies that permit all apps for inbound data transfer?
+  - What are the clipboard sharing levels configured across policies?
+- name: security-pin-settings
+  description: Configuration related to PIN requirements and behavior for app 
+    access.
+  include_paths:
+  - pinRequired
+  - minimumPinLength
+  - periodBeforePinReset
+  - simplePinBlocked
+  - disableAppPinIfDevicePinIsSet
+  - fingerprintBlocked
+  - faceIdBlocked
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What is the minimum PIN length configured for app protection policies that 
+    require a PIN?
+  - Which policies block simple PINs or biometric authentication 
+    (fingerprint/Face ID)?
+  - How often are users required to reset their PINs?
+- name: device-compliance-and-encryption
+  description: Settings for device compliance, app encryption, and screen 
+    capture.
+  include_paths:
+  - deviceComplianceRequired
+  - encryptAppData
+  - disableAppEncryptionIfDeviceEncryptionIsEnabled
+  - screenCaptureBlocked
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which app protection policies require device compliance?
+  - Are there any policies that block screen capture or enforce app data 
+    encryption?
+  - In what cases is app encryption disabled if device encryption is enabled?
+- name: browser-and-contact-settings
+  description: Configuration for managed browsers, contact synchronization, and 
+    printing.
+  include_paths:
+  - managedBrowser
+  - managedBrowserToOpenLinksRequired
+  - contactSyncBlocked
+  - printBlocked
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which policies require a managed browser to open links?
+  - Are there any policies blocking contact synchronization or printing?
+  - What are the managed browser configurations across all policies?
+- name: access-check-intervals
+  description: Time intervals for offline access checks and wipe enforcement.
+  include_paths:
+  - periodOfflineBeforeAccessCheck
+  - periodOfflineBeforeWipeIsEnforced
+  - periodOnlineBeforeAccessCheck
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What is the maximum offline period before app access is checked?
+  - How long can an app be offline before a wipe is enforced by policy?
+  - What are the online access check intervals configured?
+- name: policy-scope-and-version
+  description: Scope tags, versioning, and credential requirements for policies.
+  include_paths:
+  - roleScopeTagIds
+  - version
+  - organizationalCredentialsRequired
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the role scope tag IDs associated with each policy?
+  - Which version of the app protection policy is being used?
+  - Are organizational credentials required for any of these policies?
+- name: assigned-applications
+  description: Details on applications included in the app protection policy.
+  include_paths:
+  - apps
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which applications are protected by each policy?
+  - What is the list of specific apps targeted by these policies?
+- name: policy-assignments
+  description: Information regarding user or group assignments for app 
+    protection policies.
+  include_paths:
+  - assignments
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which users or groups are assigned to each app protection policy?
+  - Can I see the assignment details for specific policies?

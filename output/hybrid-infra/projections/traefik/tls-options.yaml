@@ -1,0 +1,12 @@
+meta:
+  subject: tls-options
+  description: Global and default TLS options for Traefik.
+  source_type: traefik
+  total_instances: 4
+class_assignments:
+  _base_only:
+    instances:
+    - traefik-dev
+    - traefik-prod-dynamic
+    - traefik-prod-static
+    - traefik-staging

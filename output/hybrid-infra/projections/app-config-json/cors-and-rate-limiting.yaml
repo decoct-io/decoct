@@ -1,0 +1,31 @@
+meta:
+  subject: cors-and-rate-limiting
+  description: CORS policy and rate limiting configuration
+  source_type: app-config-json
+  total_instances: 3
+base_class:
+  cors.allow_credentials: 'true'
+  cors.enabled: 'true'
+  cors.methods: GET,POST,PUT,DELETE
+  rate_limiting.burst: '50'
+  rate_limiting.enabled: 'true'
+class_assignments:
+  _base_only:
+    instances:
+    - app-config-auth-jwt
+    - app-config-billing
+    - app-config-search
+instance_data:
+  schema:
+  - cors.origins
+  - rate_limiting.requests_per_minute
+  records:
+    app-config-auth-jwt:
+    - https://app.ridgeline.io,https://admin.ridgeline.io
+    - '1000'
+    app-config-billing:
+    - https://app.ridgeline.io
+    - '500'
+    app-config-search:
+    - https://app.ridgeline.io,https://admin.ridgeline.io
+    - '2000'

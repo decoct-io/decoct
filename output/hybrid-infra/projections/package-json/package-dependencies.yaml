@@ -1,0 +1,67 @@
+meta:
+  subject: package-dependencies
+  description: Lists runtime dependencies required by the package.
+  source_type: package-json
+  total_instances: 4
+class_assignments:
+  _base_only:
+    instances:
+    - package-json-admin-panel
+    - package-json-notification-svc
+    - package-json-search-svc
+    - package-json-web-app
+instance_attrs:
+  package-json-admin-panel:
+    dependencies:
+      next:
+        _value: ^14.1.0
+      react:
+        _value: ^18.2.0
+      react-dom:
+        _value: ^18.2.0
+      '@tanstack/react-table':
+        _value: ^8.11.0
+      recharts:
+        _value: ^2.10.3
+      axios:
+        _value: ^1.6.5
+  package-json-notification-svc:
+    dependencies:
+      express:
+        _value: ^4.18.2
+      nodemailer:
+        _value: ^6.9.8
+      twilio:
+        _value: ^4.23.0
+      ioredis:
+        _value: ^5.3.2
+      winston:
+        _value: ^3.11.0
+      dotenv:
+        _value: ^16.3.1
+  package-json-search-svc:
+    dependencies:
+      fastify:
+        _value: ^4.25.2
+      '@elastic/elasticsearch':
+        _value: ^8.12.0
+      pino:
+        _value: ^8.17.2
+      dotenv:
+        _value: ^16.3.1
+  package-json-web-app:
+    dependencies:
+      next:
+        _value: ^14.1.0
+      react:
+        _value: ^18.2.0
+      react-dom:
+        _value: ^18.2.0
+      axios:
+        _value: ^1.6.5
+      zustand:
+        _value: ^4.5.0
+      tailwindcss:
+        _value: ^3.4.1
+      '@tanstack/react-query':
+        _value: ^5.17.0

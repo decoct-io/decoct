@@ -1,0 +1,25 @@
+meta:
+  subject: network-services
+  description: DNS and NTP server configurations for devices.
+  source_type: ansible-inventory
+  total_instances: 3
+class_assignments:
+  _base_only:
+    instances:
+    - ansible-inventory-dev
+    - ansible-inventory-prod
+    - ansible-inventory-staging
+instance_data:
+  schema:
+  - all.vars.dns_servers
+  - all.vars.ntp_server
+  records:
+    ansible-inventory-dev:
+    - 1.1.1.1,8.8.8.8
+    - pool.ntp.org
+    ansible-inventory-prod:
+    - 8.8.8.8,8.8.4.4
+    - ntp.ubuntu.com
+    ansible-inventory-staging:
+    - 8.8.8.8,1.1.1.1
+    - ntp.ubuntu.com

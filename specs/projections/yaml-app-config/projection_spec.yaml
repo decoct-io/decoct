@@ -1,0 +1,118 @@
+version: 1
+source_type: yaml-app-config
+generated_by: decoct-infer
+subjects:
+- name: app-identity
+  description: Core application identification and versioning.
+  include_paths:
+  - app.name
+  - app.env
+  - app.debug
+  - app.version
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What is the application name and environment for each instance?
+  - Which application versions are deployed across the fleet?
+  - Are there any instances running in debug mode?
+- name: logging-configuration
+  description: Details about application logging settings.
+  include_paths:
+  - logging.file.**
+  - logging.format
+  - logging.handlers
+  - logging.level
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the log file paths and rotation policies for all instances?
+  - Which instances have verbose logging levels enabled?
+  - Are all instances using JSON logging format?
+- name: cache-settings
+  description: Configuration for caching mechanisms, including backend and TTL.
+  include_paths:
+  - cache.backend
+  - cache.enabled
+  - cache.redis_url
+  - cache.ttl
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which caching backends are in use across the fleet?
+  - Are there any instances with caching disabled?
+  - What are the TTL settings for the cache on different instances?
+- name: cors-policy
+  description: Cross-Origin Resource Sharing (CORS) configuration.
+  include_paths:
+  - cors.allow_credentials
+  - cors.enabled
+  - cors.methods
+  - cors.origins
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the allowed CORS origins for each service?
+  - Which instances have CORS enabled?
+  - Are credentials allowed for CORS requests on all instances?
+- name: database-connection
+  description: Database connection and pooling settings.
+  include_paths:
+  - database.echo
+  - database.pool_recycle
+  - database.pool_size
+  - database.pool_timeout
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the database connection pool sizes and timeouts?
+  - Are all instances configured with the same pool recycle time?
+  - Is database echoing enabled on any instances?
+- name: feature-flags
+  description: Status of various application features.
+  include_paths:
+  - features.admin_audit_log
+  - features.analytics_v2
+  - features.dark_mode
+  - features.legacy_compat
+  - features.new_billing
+  - features.notification_batching
+  - features.report_scheduling
+  - features.search_v2
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which instances have the 'new_billing' feature enabled?
+  - What is the status of the 'dark_mode' feature across the fleet?
+  - Are there any instances still using 'legacy_compat'?
+- name: rate-limiting
+  description: Configuration for API rate limiting.
+  include_paths:
+  - rate_limiting.burst
+  - rate_limiting.by
+  - rate_limiting.enabled
+  - rate_limiting.requests_per_minute
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the rate limiting settings for requests per minute and burst 
+    limits?
+  - Which instances have rate limiting enabled?
+  - How is rate limiting applied (e.g., by user, by IP)?
+- name: service-declarations
+  description: Declarations for configured services.
+  include_paths:
+  - services
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What services are declared for each application instance?
+  - Are there any discrepancies in service declarations across the fleet?
+  - Which instances have a specific service enabled or configured?

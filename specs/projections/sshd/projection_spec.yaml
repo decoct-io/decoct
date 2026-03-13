@@ -1,0 +1,99 @@
+version: 1
+source_type: sshd
+generated_by: decoct-infer
+subjects:
+- name: ssh-connection-settings
+  description: Settings related to SSH connection handling and keepalives.
+  include_paths:
+  - ClientAliveInterval
+  - ClientAliveCountMax
+  - LoginGraceTime
+  - TCPKeepAlive
+  - MaxSessions
+  - MaxAuthTries
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which devices have a short ClientAliveInterval causing frequent 
+    disconnections?
+  - What is the LoginGraceTime configured across the fleet and are there any 
+    outliers?
+  - Are there any devices with a high MaxSessions setting, potentially 
+    indicating unusual usage?
+- name: ssh-authentication-methods
+  description: Configuration for permitted authentication methods.
+  include_paths:
+  - PubkeyAuthentication
+  - PasswordAuthentication
+  - KbdInteractiveAuthentication
+  - HostbasedAuthentication
+  - KerberosAuthentication
+  - PermitEmptyPasswords
+  - StrictModes
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which devices still allow PasswordAuthentication or PermitEmptyPasswords?
+  - Is PubkeyAuthentication consistently enabled across all SSHD instances?
+  - Are there any instances where KerberosAuthentication is enabled but not 
+    expected?
+- name: ssh-forwarding-and-tunneling
+  description: Settings for TCP, Agent, StreamLocal, and X11 forwarding.
+  include_paths:
+  - AllowTcpForwarding
+  - AllowAgentForwarding
+  - AllowStreamLocalForwarding
+  - PermitTunnel
+  - X11Forwarding
+  - X11DisplayOffset
+  - X11UseLocalhost
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which sshd instances allow TCP forwarding or agent forwarding?
+  - Are there any devices with X11Forwarding enabled that should not have it?
+  - What is the variance in AllowStreamLocalForwarding across the fleet?
+- name: ssh-access-control-and-logging
+  description: Controls for user access, root login, banners, and logging.
+  include_paths:
+  - AllowUsers
+  - PermitRootLogin
+  - Banner
+  - PrintMotd
+  - PrintLastLog
+  - SyslogFacility
+  - LogLevel
+  - IgnoreRhosts
+  - IgnoreUserKnownHosts
+  - PermitUserRC
+  - PermitUserEnvironment
+  - ExposeAuthInfo
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which devices have specific AllowUsers configurations, and what are they?
+  - Are there any devices permitting root login, and why?
+  - What are the configured LogLevel settings across the fleet, and are they 
+    consistent?
+- name: ssh-general-configuration
+  description: General SSH daemon settings including port, address family, and 
+    compression.
+  include_paths:
+  - Port
+  - AddressFamily
+  - Compression
+  - FingerprintHash
+  - GatewayPorts
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Are all SSHD instances listening on the standard port, or are there 
+    exceptions?
+  - What Compression settings are in use, and are they aligned with performance 
+    goals?
+  - Which AddressFamily is configured for each instance?

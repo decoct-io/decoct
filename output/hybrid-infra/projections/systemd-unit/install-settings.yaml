@@ -1,0 +1,27 @@
+meta:
+  subject: install-settings
+  description: Settings related to how the systemd unit is installed and 
+    managed.
+  source_type: systemd-unit
+  total_instances: 10
+classes:
+  wantedby_multi_user_target_environment__REDACTED:
+    inherits: base
+    own_attrs:
+      Install.wantedby: multi-user.target
+    instance_count_inclusive: 7
+class_assignments:
+  wantedby_multi_user_target_environment__REDACTED:
+    instances:
+    - systemd-analytics-worker
+    - systemd-auth-service
+    - systemd-backup-svc
+    - systemd-billing-api
+    - systemd-core-api
+    - systemd-legacy-dashboard
+    - systemd-report-gen-svc
+  _base_only:
+    instances:
+    - systemd-backup-timer
+    - systemd-report-gen-timer
+    - systemd-web-app

@@ -1,0 +1,82 @@
+meta:
+  subject: network-tcp
+  description: TCP stack tuning including syncookies, buffers, timeouts, and 
+    connection recycling
+  source_type: sysctl
+  total_instances: 6
+base_class:
+  net.ipv4.tcp_syncookies: '1'
+class_assignments:
+  _base_only:
+    instances:
+    - sysctl-app-server
+    - sysctl-db-tuned
+    - sysctl-dev
+    - sysctl-edge
+    - sysctl-hardened
+    - sysctl-monitoring
+instance_data:
+  schema:
+  - net.ipv4.ip_local_port_range
+  - net.ipv4.tcp_fin_timeout
+  - net.ipv4.tcp_keepalive_time
+  - net.ipv4.tcp_max_syn_backlog
+  - net.ipv4.tcp_max_tw_buckets
+  - net.ipv4.tcp_rmem
+  - net.ipv4.tcp_tw_reuse
+  - net.ipv4.tcp_wmem
+  records:
+    sysctl-app-server:
+    - 32768 60999
+    - '60'
+    - '7200'
+    - '128'
+    - '32768'
+    - 4096 87380 6291456
+    - '0'
+    - 4096 16384 4194304
+    sysctl-db-tuned:
+    - 1024 65535
+    - '15'
+    - '600'
+    - '4096'
+    - '262144'
+    - 4096 87380 16777216
+    - '1'
+    - 4096 65536 16777216
+    sysctl-dev:
+    - 32768 60999
+    - '60'
+    - '7200'
+    - '128'
+    - '32768'
+    - 4096 87380 6291456
+    - '0'
+    - 4096 16384 4194304
+    sysctl-edge:
+    - 1024 65535
+    - '10'
+    - '600'
+    - '4096'
+    - '262144'
+    - 4096 87380 16777216
+    - '1'
+    - 4096 65536 16777216
+    sysctl-hardened:
+    - 1024 65535
+    - '10'
+    - '300'
+    - '4096'
+    - '262144'
+    - 4096 87380 16777216
+    - '1'
+    - 4096 65536 16777216
+    sysctl-monitoring:
+    - 32768 60999
+    - '60'
+    - '7200'
+    - '128'
+    - '32768'
+    - 4096 87380 6291456
+    - '0'
+    - 4096 16384 4194304

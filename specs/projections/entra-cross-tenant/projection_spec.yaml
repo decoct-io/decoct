@@ -1,0 +1,114 @@
+version: 1
+source_type: entra-cross-tenant
+generated_by: decoct-infer
+subjects:
+- name: identity-metadata
+  description: Core identification and default service settings for cross-tenant
+    access.
+  include_paths:
+  - _uuid
+  - displayName
+  - tenantId
+  - isServiceDefault
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What is the display name and tenant ID for each cross-tenant configuration?
+  - Which cross-tenant configurations are marked as service defaults?
+  - How do I map UUIDs to human-readable names for cross-tenant access?
+- name: b2b-collaboration-inbound
+  description: Settings for inbound B2B collaboration, including application and
+    user access.
+  include_paths:
+  - b2bCollaborationInbound.applications.accessType
+  - b2bCollaborationInbound.applications.targets
+  - b2bCollaborationInbound.usersAndGroups.accessType
+  - b2bCollaborationInbound.usersAndGroups.targets
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Are all applications and users allowed for inbound B2B collaboration?
+  - Which specific targets are defined for inbound B2B collaboration 
+    applications?
+  - What is the access type for users and groups in inbound B2B collaboration?
+- name: b2b-collaboration-outbound
+  description: Settings for outbound B2B collaboration, including application 
+    and user access.
+  include_paths:
+  - b2bCollaborationOutbound.applications.accessType
+  - b2bCollaborationOutbound.applications.targets
+  - b2bCollaborationOutbound.usersAndGroups.accessType
+  - b2bCollaborationOutbound.usersAndGroups.targets
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the outbound B2B collaboration settings for applications?
+  - Are there any specific user groups targeted for outbound B2B collaboration?
+  - How does the outbound collaboration access type for applications compare 
+    across tenants?
+- name: b2b-direct-connect-inbound
+  description: Inbound B2B Direct Connect access configurations for applications
+    and users, including varying access types.
+  include_paths:
+  - b2bDirectConnectInbound.applications.accessType
+  - b2bDirectConnectInbound.applications.targets
+  - b2bDirectConnectInbound.usersAndGroups.accessType
+  - b2bDirectConnectInbound.usersAndGroups.targets
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the exact access types for inbound B2B Direct Connect applications 
+    across entities?
+  - Are there any specific targets configured for inbound B2B Direct Connect 
+    users?
+  - Which cross-tenant configurations permit inbound B2B Direct Connect for 
+    `AllApplications`?
+- name: b2b-direct-connect-outbound
+  description: Outbound B2B Direct Connect access configurations for 
+    applications and users, including varying access types.
+  include_paths:
+  - b2bDirectConnectOutbound.applications.accessType
+  - b2bDirectConnectOutbound.applications.targets
+  - b2bDirectConnectOutbound.usersAndGroups.accessType
+  - b2bDirectConnectOutbound.usersAndGroups.targets
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What is the outbound B2B Direct Connect access type for applications in each
+    tenant?
+  - How are user groups targeted for outbound B2B Direct Connect?
+  - Are all applications allowed for outbound B2B Direct Connect across all 
+    entities?
+- name: inbound-trust-settings
+  description: Configurations related to accepting compliant, hybrid Azure AD 
+    joined, and MFA-enabled devices for inbound trust.
+  include_paths:
+  - inboundTrust.isCompliantDeviceAccepted
+  - inboundTrust.isHybridAzureADJoinedDeviceAccepted
+  - inboundTrust.isMfaAccepted
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which cross-tenant configurations accept compliant devices for inbound 
+    trust?
+  - What are the MFA acceptance settings for inbound trust across tenants?
+  - How do the `isHybridAzureADJoinedDeviceAccepted` settings vary across 
+    different entries?
+- name: service-provider-status
+  description: Indicates whether a cross-tenant configuration acts as a service 
+    provider.
+  include_paths:
+  - isServiceProvider
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which cross-tenant configurations are explicitly marked as service 
+    providers?
+  - Are there any instances where `isServiceProvider` is not 'false'?

@@ -1,0 +1,48 @@
+meta:
+  subject: networking
+  description: VPC CIDR ranges, subnets, domains, and SSL certificate ARNs
+  source_type: tfvars
+  total_instances: 5
+class_assignments:
+  _base_only:
+    instances:
+    - tfvars-dev
+    - tfvars-dr
+    - tfvars-edge
+    - tfvars-prod
+    - tfvars-staging
+instance_data:
+  schema:
+  - networking.domain
+  - networking.subnet_cidrs
+  - networking.vpc_cidr
+  records:
+    tfvars-dev:
+    - dev.ridgeline.internal
+    - 10.2.1.0/24
+    - 10.2.0.0/16
+    tfvars-dr:
+    - dr.ridgeline.io
+    - 10.3.1.0/24,10.3.2.0/24
+    - 10.3.0.0/16
+    tfvars-edge:
+    - ridgeline.io
+    - 10.0.10.0/24
+    - 10.0.0.0/16
+    tfvars-prod:
+    - ridgeline.io
+    - 10.0.1.0/24,10.0.2.0/24,10.0.3.0/24
+    - 10.0.0.0/16
+    tfvars-staging:
+    - staging.ridgeline.io
+    - 10.1.1.0/24
+    - 10.1.0.0/16
+instance_attrs:
+  tfvars-dr:
+    networking.ssl_cert_arn: arn:aws:acm:eu-west-1:123456789:certificate/def-456
+  tfvars-edge:
+    networking.ssl_cert_arn: 
+      arn:aws:acm:eu-central-1:123456789:certificate/abc-123
+  tfvars-prod:
+    networking.ssl_cert_arn: 
+      arn:aws:acm:eu-central-1:123456789:certificate/abc-123

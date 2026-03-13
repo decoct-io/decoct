@@ -1,0 +1,169 @@
+version: 1
+source_type: iosxr-services-pe
+generated_by: decoct-infer
+subjects:
+- name: device-identity-and-location
+  description: Core identification and physical location attributes of the 
+    device.
+  include_paths:
+  - hostname
+  - snmp-server.location
+  - interface.Loopback0.description
+  - interface.MgmtEth0/RP0/CPU0/0.description
+  - interface.Loopback1.description
+  - interface.Loopback2.description
+  - interface.Loopback3.description
+  - interface.TenGigE0/0/0/0.description
+  - interface.TenGigE0/0/0/1.description
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What is the physical location of each device?
+  - What is the description of Loopback0 on each device?
+  - Which hostnames correspond to specific SNMP locations?
+- name: interface-addressing
+  description: IP address configurations for various interfaces, including VRF 
+    assignments.
+  include_paths:
+  - interface.Loopback0.ipv4
+  - interface.Loopback1.ipv4
+  - interface.Loopback1.vrf
+  - interface.Loopback2.ipv4
+  - interface.Loopback2.vrf
+  - interface.Loopback3.ipv4
+  - interface.Loopback3.vrf
+  - interface.MgmtEth0/RP0/CPU0/0.ipv4
+  - interface.TenGigE0/0/0/0.ipv4
+  - interface.TenGigE0/0/0/1.ipv4
+  - interface.*.shutdown
+  - interface.*.mtu
+  - interface.*.bandwidth
+  - interface.*.carrier-delay.**
+  - interface.*.load-interval
+  - interface.*.cdp
+  - interface.*.arp
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the IP addresses assigned to Loopback interfaces across the fleet?
+  - Which VRF is associated with each Loopback1 IP address?
+  - Are there any interfaces with non-standard MTU or bandwidth settings?
+- name: isis-core-routing
+  description: Core IS-IS configuration parameters and interface settings.
+  include_paths:
+  - router.isis.CORE.**
+  - mpls.router-id
+  - segment-routing.**
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What is the IS-IS NET for each device?
+  - Which devices have segment routing MPLS SR-prefer enabled for IPv4 unicast?
+  - What are the ISIS interface metrics for TenGigE0/0/0/0?
+- name: bgp-core-and-vrf-summary
+  description: Global BGP configuration and summary of VRF-specific BGP 
+    settings.
+  include_paths:
+  - router.bgp.65006.bgp.*
+  - router.bgp.65006.address-family.ipv4-unicast.maximum-paths.*
+  - router.bgp.65006.distance
+  - router.bgp.65006.graceful-restart
+  - router.bgp.65006.nsr
+  - router.bgp.65006.timers
+  - router.bgp.65006.address-family.ipv4-unicast.network
+  - router.bgp.65006.bgp.router-id
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What is the BGP router ID for each PE router?
+  - Are there any differences in the BGP confederation peers across devices?
+  - What BGP timers are configured widely?
+- name: bgp-vrf-neighbors-redistribution
+  description: BGP neighbor and redistribution settings specific to each VRF.
+  include_paths:
+  - router.bgp.65006.vrf.*.neighbors
+  - router.bgp.65006.vrf.*.address-family.ipv4-unicast.redistribute.*
+  - router.bgp.65006.neighbors
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which BGP neighbors are configured for VRF-CLOUD-AWS on each device?
+  - How do devices redistribute connected routes into BGP for VRF-MGMT?
+  - Are there any BGP neighbors outside the dynamic VRF configurations?
+- name: vrf-configuration-and-route-targets
+  description: VRF definitions, including Route Distinguishers (RD) and Route 
+    Targets (import/export policies).
+  include_paths:
+  - router.bgp.65006.vrf.*.rd
+  - vrf.*.address-family.ipv4-unicast.export
+  - vrf.*.address-family.ipv4-unicast.import
+  - vrf.*.address-family.ipv4-unicast.export.*
+  - vrf.*.address-family.ipv4-unicast.import.*
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the export route targets for VRF-CDN on each device?
+  - Do all devices use the same RD for VRF-ENTERPRISE-A?
+  - Are there any VRFs with different import policies compared to their export 
+    policies?
+- name: route-policies
+  description: Definitions and body of various route policies.
+  include_paths:
+  - route-policy.*.body
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the specific actions defined in the RPL-EBGP-OUT route policy?
+  - How do devices modify MED values for outgoing EBGP routes?
+  - Are there any differences in the body of RPL-TRANSIT-IN across devices?
+- name: authentication-and-logging
+  description: AAA, TACACS+, SSH, and system logging configurations.
+  include_paths:
+  - aaa.**
+  - tacacs-server.**
+  - ssh.server.**
+  - ssh.timeout
+  - line.**
+  - logging.**
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the AAA authentication methods configured globally?
+  - Which TACACS+ servers are configured and with what key?
+  - What is the SSH server timeout and logging configuration on each device?
+- name: snmp-ntp-and-domain-services
+  description: SNMP, NTP, and domain-related services configuration.
+  include_paths:
+  - snmp-server.**
+  - ntp.**
+  - domain.**
+  - service.timestamps.**
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the SNMP communities configured on each device and their 
+    permissions?
+  - Which NTP servers are used and what is the NTP source interface?
+  - Are there any devices with domain lookup disabled?
+- name: control-plane-access
+  description: Control plane management access configurations for various 
+    protocols.
+  include_paths:
+  - control-plane.management-plane.**
+  - router.static.**
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which interfaces allow SNMP and SSH access in-band?
+  - What static IPv4 routes are configured on the devices?
+  - Are there any variations in management plane access across the fleet?

@@ -1,0 +1,133 @@
+version: 1
+source_type: ansible-playbook
+generated_by: decoct-infer
+subjects:
+- name: playbook-identity
+  description: Core identification and execution control for Ansible playbooks.
+  include_paths:
+  - name
+  - hosts
+  - check_mode
+  - no_log
+  - order
+  - run_once
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the names of all playbooks and the hosts they target?
+  - Which playbooks are configured to run in check mode?
+  - How do the 'order' and 'run_once' settings vary across playbooks?
+- name: error-handling
+  description: Configuration related to how Ansible playbooks handle errors and 
+    gather facts.
+  include_paths:
+  - any_errors_fatal
+  - gather_facts
+  - ignore_errors
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which playbooks are configured to fatally exit on any error?
+  - For which playbooks is fact gathering enabled?
+  - Are there any playbooks that explicitly ignore errors?
+- name: become-settings
+  description: Privilege escalation settings including user and method.
+  include_paths:
+  - become
+  - become_user
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which playbooks use privilege escalation ('become')?
+  - What are the different 'become_user' settings used across playbooks?
+  - Are there any playbooks that explicitly run without privilege escalation?
+- name: variable-management
+  description: Key variables used within Ansible playbooks that might override 
+    defaults.
+  include_paths:
+  - vars.**
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the `app_port` and `app_version` settings for different instances?
+  - Which playbooks define database credentials, and what are their settings?
+  - How do the `packages` and `update_cache` variables differ across playbooks?
+- name: handler-definitions
+  description: Definitions and actions of handlers that react to changes in 
+    Ansible tasks.
+  include_paths:
+  - handlers.**
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What systemd services are managed by handlers?
+  - Are there handlers configured to reload daemons?
+  - Describe the restart_sshd handler's configuration.
+- name: apt-package-management
+  description: Tasks related to installing and managing packages using the apt 
+    module.
+  include_paths:
+  - tasks.*.elements.*.ansible.builtin.apt.**
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which playbooks install packages using apt, and what are the common 
+    packages?
+  - Are there any apt installations configured to force-install or purge 
+    packages?
+  - What are the 'update_cache' settings for apt package tasks?
+- name: file-copy-management
+  description: Tasks related to copying files and setting permissions.
+  include_paths:
+  - tasks.*.elements.*.ansible.builtin.copy.**
+  - tasks.*.elements.*.ansible.builtin.file.**
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the source and destination paths for copied files?
+  - Which playbooks define file permissions for directories or files?
+  - Are there any copy tasks configured to decrypt files or handle unsafe 
+    writes?
+- name: template-deployment
+  description: Tasks involved in deploying templated configuration files.
+  include_paths:
+  - tasks.*.elements.*.ansible.builtin.template.**
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which templates are deployed to `/etc/ridgeline/`?
+  - What are the owner, group, and mode settings for templated files?
+  - Are there any template tasks with different `trim_blocks` or `lstrip_blocks`
+    settings?
+- name: systemd-service-management
+  description: Tasks for managing systemd services (start, stop, enable).
+  include_paths:
+  - tasks.*.elements.*.ansible.builtin.systemd.**
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which playbooks manage the 'ridgeline' service via systemd?
+  - Are any systemd services configured to be started and enabled?
+  - What are the `daemon_reload` or `no_block` settings for systemd tasks?
+- name: service-health-checks
+  description: Tasks for verifying service availability and health.
+  include_paths:
+  - tasks.*.elements.*.ansible.builtin.wait_for.**
+  - tasks.*.elements.*.ansible.builtin.uri.**
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What ports are playbooks waiting for to be ready?
+  - Which playbooks include URI health checks, and what URLs are they hitting?
+  - Are there any `wait_for` tasks with extended timeouts or specific connection
+    hosts?

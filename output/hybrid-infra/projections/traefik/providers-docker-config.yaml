@@ -1,0 +1,20 @@
+meta:
+  subject: providers-docker-config
+  description: Configuration for the Docker provider, including endpoint and 
+    service exposure.
+  source_type: traefik
+  total_instances: 4
+base_class:
+  providers.docker.allowEmptyServices: 'false'
+  providers.docker.endpoint: unix:///var/run/docker.sock
+  providers.docker.exposedByDefault: 'true'
+  providers.docker.useBindPortIP: 'false'
+  providers.docker.watch: 'true'
+  providers.providersThrottleDuration: 2s
+class_assignments:
+  _base_only:
+    instances:
+    - traefik-dev
+    - traefik-prod-dynamic
+    - traefik-prod-static
+    - traefik-staging

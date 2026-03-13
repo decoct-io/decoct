@@ -1,0 +1,81 @@
+version: 1
+source_type: sysctl
+generated_by: decoct-infer
+subjects:
+- name: fs-limits
+  description: File system related limits and settings.
+  include_paths:
+  - fs.file-max
+  - fs.inotify.max_user_watches
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What is the maximum number of open files allowed on each system?
+  - Are there any variations in inotify watch limits across the fleet?
+- name: kernel-limits
+  description: Core kernel limits and shared memory configurations.
+  include_paths:
+  - kernel.pid_max
+  - kernel.shmall
+  - kernel.shmmax
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What is the maximum process ID on each server?
+  - Which systems have custom values for shared memory segment size?
+- name: network-backlog
+  description: Network connection backlog and buffer settings.
+  include_paths:
+  - net.core.netdev_max_backlog
+  - net.core.somaxconn
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What is the maximum backlog for incoming network packets across the fleet?
+  - Do all systems have the same maximum number of pending connections?
+- name: tcp-memory-tuning
+  description: TCP receive and write memory buffer settings.
+  include_paths:
+  - net.ipv4.tcp_rmem
+  - net.ipv4.tcp_wmem
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - How do the TCP receive buffer sizes compare between different systems?
+  - Are there any custom TCP write buffer settings configured?
+- name: tcp-connection-management
+  description: TCP connection lifecycle and state management settings.
+  include_paths:
+  - net.ipv4.tcp_fin_timeout
+  - net.ipv4.tcp_keepalive_time
+  - net.ipv4.tcp_max_syn_backlog
+  - net.ipv4.tcp_max_tw_buckets
+  - net.ipv4.tcp_syncookies
+  - net.ipv4.tcp_tw_reuse
+  - net.ipv4.ip_local_port_range
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which systems have TCP syncookies disabled or enabled?
+  - Are there any differences in the local port range allocation?
+  - How are systems configured for TCP TIME_WAIT state reuse?
+- name: vm-memory-management
+  description: Virtual memory dirty page, swap, and hugepage settings.
+  include_paths:
+  - vm.dirty_ratio
+  - vm.dirty_background_ratio
+  - vm.nr_hugepages
+  - vm.overcommit_memory
+  - vm.swappiness
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which hosts have a 'dirty_ratio' override configured?
+  - What is the overcommit memory setting on each virtual machine?
+  - How does the 'swappiness' value vary across the fleet?

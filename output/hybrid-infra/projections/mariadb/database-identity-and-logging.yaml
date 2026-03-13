@@ -1,0 +1,44 @@
+meta:
+  subject: database-identity-and-logging
+  description: Core database identification and general logging settings, 
+    including slow query logging status and error verbosity.
+  source_type: mariadb
+  total_instances: 5
+base_class:
+  mysqld.log_output: FILE
+  mysqld.log_replica_updates: 'true'
+  mysqld.log_slow_admin_statements: 'false'
+class_assignments:
+  _base_only:
+    instances:
+    - maria-dev
+    - maria-galera-node
+    - maria-legacy-billing
+    - maria-legacy-main
+    - maria-staging
+instance_data:
+  schema:
+  - mysqld.long_query_time
+  - mysqld.server_id
+  - mysqld.slow_query_log
+  records:
+    maria-dev:
+    - '0'
+    - '20'
+    - 'true'
+    maria-galera-node:
+    - '1'
+    - '100'
+    - 'true'
+    maria-legacy-billing:
+    - '2'
+    - '2'
+    - 'true'
+    maria-legacy-main:
+    - '10'
+    - '1'
+    - 'false'
+    maria-staging:
+    - '10'
+    - '10'
+    - 'false'

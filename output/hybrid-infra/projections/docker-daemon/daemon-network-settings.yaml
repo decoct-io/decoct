@@ -1,0 +1,24 @@
+meta:
+  subject: daemon-network-settings
+  description: Network-related configurations for the Docker daemon.
+  source_type: docker-daemon
+  total_instances: 3
+base_class:
+  ip-forward: 'true'
+  iptables: 'true'
+class_assignments:
+  _base_only:
+    instances:
+    - docker-daemon-ci
+    - docker-daemon-dev
+    - docker-daemon-prod
+instance_data:
+  schema:
+  - userland-proxy
+  records:
+    docker-daemon-ci:
+    - 'false'
+    docker-daemon-dev:
+    - 'true'
+    docker-daemon-prod:
+    - 'false'

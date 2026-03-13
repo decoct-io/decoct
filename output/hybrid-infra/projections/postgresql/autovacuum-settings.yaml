@@ -1,7 +1,6 @@
 meta:
   subject: autovacuum-settings
-  description: Configuration parameters for the automatic vacuuming and 
-    analyzing processes.
+  description: Parameters controlling the autovacuum daemon and its behavior.
   source_type: postgresql
   total_instances: 6
 base_class:
@@ -17,7 +16,6 @@ base_class:
   autovacuum_vacuum_scale_factor: '0.2'
   autovacuum_vacuum_threshold: '50'
   autovacuum_work_mem: '-1'
-  log_autovacuum_min_duration: 10min
 class_assignments:
   _base_only:
     instances:
@@ -27,3 +25,19 @@ class_assignments:
     - pg-prod-primary
     - pg-prod-replica
     - pg-staging
+instance_data:
+  schema:
+  - autovacuum_max_workers
+  records:
+    pg-dev:
+    - '3'
+    pg-migration:
+    - '3'
+    pg-prod-analytics:
+    - '5'
+    pg-prod-primary:
+    - '5'
+    pg-prod-replica:
+    - '3'
+    pg-staging:
+    - '3'

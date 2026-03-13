@@ -1,0 +1,63 @@
+meta:
+  subject: aaa-security
+  description: AAA (Authentication, Authorization, Accounting) settings, 
+    including TACACS+ and RADIUS configurations.
+  source_type: iosxr-bng
+  total_instances: 8
+base_class:
+  aaa.accounting.commands: 15 default start-stop group tacacs+
+  aaa.accounting.exec: default start-stop group tacacs+
+  aaa.accounting.subscriber: default start-stop group RADIUS-GROUP
+  aaa.authentication.login: default group tacacs+ local
+  aaa.authentication.subscriber: default group RADIUS-GROUP
+  aaa.authorization.commands: 15 default group tacacs+ local
+  aaa.authorization.exec: default group tacacs+ local
+  aaa.authorization.subscriber: default group RADIUS-GROUP
+  aaa.group: server radius RADIUS-GROUP
+  radius-server.key: 7 R4d1usK3y!s3cure
+  radius-server.retransmit: '3'
+  radius-server.timeout: '5'
+  tacacs-server: host T4c4csK3y!2024 port 49
+  tacacs-server.key: 7 T4c4csK3y!2024
+class_assignments:
+  _base_only:
+    instances:
+    - BNG-01..BNG-08
+instance_data:
+  schema:
+  - aaa.group.server
+  - hostname
+  - radius-server
+  records:
+    BNG-01:
+    - 10.255.3.1 auth-port 1812 acct-port 1813
+    - BNG-01
+    - host 10.255.3.1 auth-port 1812 acct-port 1813
+    BNG-02:
+    - 10.255.3.1 auth-port 1812 acct-port 1813
+    - BNG-02
+    - host 10.255.3.1 auth-port 1812 acct-port 1813
+    BNG-03:
+    - 10.255.3.2 auth-port 1812 acct-port 1813
+    - BNG-03
+    - host 10.255.3.2 auth-port 1812 acct-port 1813
+    BNG-04:
+    - 10.255.3.2 auth-port 1812 acct-port 1813
+    - BNG-04
+    - host 10.255.3.2 auth-port 1812 acct-port 1813
+    BNG-05:
+    - 10.255.3.3 auth-port 1812 acct-port 1813
+    - BNG-05
+    - host 10.255.3.3 auth-port 1812 acct-port 1813
+    BNG-06:
+    - 10.255.3.3 auth-port 1812 acct-port 1813
+    - BNG-06
+    - host 10.255.3.3 auth-port 1812 acct-port 1813
+    BNG-07:
+    - 10.255.3.1 auth-port 1812 acct-port 1813
+    - BNG-07
+    - host 10.255.3.1 auth-port 1812 acct-port 1813
+    BNG-08:
+    - 10.255.3.1 auth-port 1812 acct-port 1813
+    - BNG-08
+    - host 10.255.3.1 auth-port 1812 acct-port 1813

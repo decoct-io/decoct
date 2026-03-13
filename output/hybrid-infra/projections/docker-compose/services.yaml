@@ -1,0 +1,584 @@
+meta:
+  subject: services
+  description: Service definitions including images, ports, resource limits, and
+    restart policies
+  source_type: docker-compose
+  total_instances: 16
+base_class:
+  services: docker-compose.services.T0
+class_assignments:
+  _base_only:
+    instances:
+    - compose-app-prod-01..compose-app-prod-03
+    - compose-billing-prod
+    - compose-ci
+    - compose-cron-prod
+    - compose-dev
+    - compose-dr
+    - compose-edge-prod
+    - compose-load-test
+    - compose-monitoring-prod
+    - compose-notification-prod
+    - compose-report-prod
+    - compose-search-prod
+    - compose-staging
+    - compose-worker-prod
+b_composite_deltas:
+  compose-app-prod-01:
+    services:
+      delta:
+        core-api:
+          image: ridgeline/core-api:2.1.0
+          restart: always
+          environment.DATABASE_URL: '[REDACTED]'
+          environment.API_KEY: '[REDACTED]'
+          environment.JWT_SECRET: '[REDACTED]'
+          environment.REDIS_URL: redis://:R3disP@ss!@redis:6379
+          volumes: 
+            /opt/ridgeline/core-api/data:/app/data,/opt/ridgeline/core-api/logs:/app/logs
+          depends_on.redis.condition: service_started
+          depends_on.redis.required: 'true'
+          depends_on.redis.restart: 'true'
+          labels.traefik.enable: 'true'
+          labels.traefik.http.routers.core-api.rule: Host(`api.ridgeline.io`)
+          networks: app-network,monitoring
+          healthcheck.test: "['CMD-SHELL', 'curl -f http://localhost:8000/health']"
+          healthcheck.start_period: 10s
+          deploy.replicas: '2'
+          mem_limit: 2g
+          cpus: '1.0'
+        auth-service:
+          image: ridgeline/auth-service:1.8.0
+          restart: always
+          ports: 8001:8001
+          environment.DATABASE_URL: '[REDACTED]'
+          environment.JWT_SECRET: '[REDACTED]'
+          environment.OAUTH_CLIENT_SECRET: ocs_Xm9pL7kR2vN4wQ8jT5
+          labels.traefik.enable: 'true'
+          labels.traefik.http.routers.auth.rule: Host(`auth.ridgeline.io`)
+          networks: app-network,monitoring
+          healthcheck.test: "['CMD-SHELL', 'curl -f http://localhost:8001/health']"
+          healthcheck.start_period: 10s
+          mem_limit: 1g
+          volumes:
+        redis:
+          restart: no
+          environment.REDIS_PASSWORD: R3disP@ss!
+          volumes: redis-data:/data
+          cpus: '0.25'
+          ports:
+  compose-app-prod-02:
+    services:
+      delta:
+        web-app:
+          image: ridgeline/web-app:3.0.0
+          restart: always
+          ports: 3000:3000
+          environment.NODE_ENV: production
+          environment.API_URL: http://core-api:8000
+          environment.SESSION_SECRET: sEssI0nS3cret!
+          labels.traefik.enable: 'true'
+          labels.traefik.http.routers.web.rule: Host(`app.ridgeline.io`)
+          networks: app-network,monitoring
+          healthcheck.test: "['CMD-SHELL', 'curl -f http://localhost:3000/health']"
+          healthcheck.start_period: 15s
+          deploy.replicas: '2'
+          mem_limit: 1g
+          volumes:
+        notification-svc:
+          image: ridgeline/notification-svc:1.2.0
+          ports: 8003:8003
+          environment.SMTP_PASSWORD: SmtpP@ss123
+          environment.API_KEY: sk_live_notif_key_abc123
+          healthcheck.test: "['CMD-SHELL', 'curl -f http://localhost:8003/health']"
+          cpus: '0.25'
+          volumes:
+        search-svc:
+          image: ridgeline/search-svc:0.9.0
+          ports: 8004:8004
+          environment.ELASTICSEARCH_PASSWORD: El@sticP@ss!
+          healthcheck.test: "['CMD-SHELL', 'curl -f http://localhost:8004/health']"
+          healthcheck.interval: 60s
+          healthcheck.retries: '5'
+          healthcheck.start_period: 30s
+          mem_limit: 1g
+  compose-app-prod-03:
+    services:
+      delta:
+        admin-panel:
+          image: ridgeline/admin-panel:1.0.0
+          restart: always
+          ports: 8005:8005
+          environment.DATABASE_URL: '[REDACTED]'
+          environment.ADMIN_SECRET: Adm1nS3cretK3y
+          labels.traefik.enable: 'true'
+          labels.traefik.http.routers.admin.rule: Host(`admin.ridgeline.io`)
+          healthcheck.test: "['CMD-SHELL', 'curl -f http://localhost:8005/health']"
+          cpus: '0.25'
+          volumes:
+        legacy-dashboard:
+          image: ridgeline/legacy-dashboard:latest
+          restart: always
+          ports: 5000:5000
+          environment.DATABASE_URL: '[REDACTED]'
+          environment.SECRET_KEY: flask-s3cret-k3y-d0nt-t3ll
+          healthcheck.test: "['CMD-SHELL', 'curl -f http://localhost:5000/health']"
+          mem_limit: 1g
+          volumes:
+  compose-billing-prod:
+    services:
+      delta:
+        billing-api:
+          image: ridgeline/billing-api:1.3.0
+          restart: always
+          ports: 8002:8002
+          environment.DATABASE_URL: '[REDACTED]'
+          environment.STRIPE_API_KEY: '[REDACTED]'
+          environment.ENCRYPTION_KEY: Enc4ypt10nK3y!
+          labels.traefik.enable: 'true'
+          labels.traefik.http.routers.billing.rule: Host(`billing.ridgeline.io`)
+          networks: app-network,monitoring
+          healthcheck.test: "['CMD-SHELL', 'curl -f http://localhost:8002/health']"
+          healthcheck.start_period: 10s
+          mem_limit: 1g
+          volumes:
+  compose-ci:
+    services:
+      delta:
+        core-api-test:
+          image: ridgeline/core-api:${CI_COMMIT_SHA}
+          restart: no
+          command: pytest --cov=core_api -v
+          environment.DATABASE_URL: '[REDACTED]'
+          environment.API_KEY: sk_test_ci_key
+          environment.JWT_SECRET: ci-jwt-secret
+          depends_on.postgres.condition: service_started
+          depends_on.postgres.required: 'true'
+          depends_on.postgres.restart: 'true'
+          networks: ci-network
+          mem_limit: 2g
+          cpus: '1.0'
+          healthcheck.test:
+          ports:
+          volumes:
+        postgres:
+          image: postgres:16-alpine
+          restart: no
+          environment.POSTGRES_PASSWORD: testpassword
+          environment.POSTGRES_DB: test_db
+          networks: ci-network
+          healthcheck.test: "['CMD-SHELL', 'pg_isready -U postgres']"
+          ports:
+          volumes:
+        mariadb:
+          image: mariadb:10.11
+          restart: no
+          environment.MARIADB_ROOT_PASSWORD: testpassword
+          networks: ci-network
+          healthcheck.test: "['CMD-SHELL', 'healthcheck.sh --connect --innodb_initialized']"
+          ports:
+          volumes:
+        redis:
+          restart: no
+          networks: ci-network
+          mem_limit: 128m
+          cpus: '0.1'
+          ports:
+          volumes:
+  compose-cron-prod:
+    services:
+      delta:
+        db-backup:
+          image: ridgeline/db-backup:1.0.0
+          restart: no
+          command: /scripts/backup-all.sh
+          environment.PGPASSWORD: Sup3rS3cretDB
+          environment.MYSQL_PWD: M@riaDBr00t!
+          environment.BACKUP_ENCRYPTION_KEY: Bkup3ncryptK3y!
+          volumes: /opt/ridgeline/backups:/backups
+          mem_limit: 2g
+          cpus: '1.0'
+          healthcheck.test:
+          ports:
+        log-rotator:
+          image: ridgeline/log-rotator:1.0.0
+          restart: no
+          command: /scripts/rotate-logs.sh
+          volumes: /var/log/ridgeline:/logs
+          mem_limit: 256m
+          cpus: '0.1'
+          healthcheck.test:
+          ports:
+  compose-dev:
+    services:
+      delta:
+        core-api:
+          image: ridgeline/core-api:dev
+          stdin_open: 'true'
+          tty: 'true'
+          environment.DATABASE_URL: '[REDACTED]'
+          environment.API_KEY: sk_test_dev_key
+          environment.JWT_SECRET: dev-jwt-secret
+          environment.DEBUG: 'true'
+          volumes: ./core-api:/app
+          depends_on.postgres.condition: service_started
+          depends_on.postgres.required: 'true'
+          depends_on.postgres.restart: 'true'
+          networks: dev-network
+          cpus:
+          healthcheck.test:
+          mem_limit:
+        web-app:
+          image: ridgeline/web-app:dev
+          stdin_open: 'true'
+          tty: 'true'
+          command: npm run dev
+          ports: 3000:3000
+          environment.NODE_ENV: development
+          environment.API_URL: http://core-api:8000
+          volumes: ./web-app:/app
+          networks: dev-network
+          cpus:
+          healthcheck.test:
+          mem_limit:
+        postgres:
+          image: postgres:16-alpine
+          restart: no
+          ports: 5432:5432
+          environment.POSTGRES_PASSWORD: devpassword
+          environment.POSTGRES_DB: core_dev
+          volumes: pg-dev-data:/var/lib/postgresql/data
+          networks: dev-network
+          healthcheck.test: "['CMD-SHELL', 'pg_isready -U postgres']"
+          cpus:
+          mem_limit:
+        mariadb:
+          image: mariadb:10.11
+          restart: no
+          ports: 3306:3306
+          environment.MARIADB_ROOT_PASSWORD: devpassword
+          volumes: maria-dev-data:/var/lib/mysql
+          networks: dev-network
+          healthcheck.test: "['CMD-SHELL', 'healthcheck.sh --connect --innodb_initialized']"
+          cpus:
+          mem_limit:
+        redis:
+          restart: no
+          ports: 6379:6379
+          networks: dev-network
+          cpus:
+          mem_limit:
+          volumes:
+  compose-dr:
+    services:
+      delta:
+        core-api:
+          image: ridgeline/core-api:2.1.0
+          restart: always
+          environment.DATABASE_URL: '[REDACTED]'
+          environment.API_KEY: sk_live_dr_key_failover
+          environment.JWT_SECRET: dr-jwt-secret-failover
+          networks: dr-network
+          healthcheck.test: "['CMD-SHELL', 'curl -f http://localhost:8000/health']"
+          healthcheck.start_period: 10s
+          mem_limit: 1g
+          volumes:
+        auth-service:
+          image: ridgeline/auth-service:1.8.0
+          restart: always
+          ports: 8001:8001
+          environment.DATABASE_URL: '[REDACTED]'
+          environment.JWT_SECRET: dr-jwt-secret-failover
+          networks: dr-network
+          healthcheck.test: "['CMD-SHELL', 'curl -f http://localhost:8001/health']"
+          healthcheck.start_period: 10s
+          cpus: '0.25'
+          volumes:
+  compose-edge-prod:
+    services:
+      delta:
+        traefik:
+          image: traefik:v3.0
+          restart: always
+          ports: 80:80,443:443,8080:8080
+          environment.TRAEFIK_API_KEY: Tr@efikAPI_K3y
+          volumes: 
+            /var/run/docker.sock:/var/run/docker.sock:ro,/opt/ridgeline/traefik:/etc/traefik,acme-data:/acme
+          networks: edge-network,app-network
+          healthcheck.test: "['CMD-SHELL', 'traefik healthcheck']"
+          healthcheck.start_period: 10s
+        docs-site:
+          image: ridgeline/docs-site:latest
+          restart: no
+          read_only: 'true'
+          ports: 8080:80
+          volumes: docs-html:/usr/share/nginx/html:ro
+          labels.traefik.enable: 'true'
+          labels.traefik.http.routers.docs.rule: Host(`docs.ridgeline.io`)
+          networks: edge-network
+          mem_limit: 128m
+          cpus: '0.1'
+          healthcheck.test:
+  compose-load-test:
+    services:
+      delta:
+        k6:
+          image: grafana/k6:latest
+          restart: no
+          command: run /scripts/stress-test.js
+          environment.K6_OUT: influxdb=http://influxdb:8086/k6
+          environment.TARGET_URL: https://api.ridgeline.io
+          environment.API_KEY: sk_test_loadtest_key
+          volumes: ./load-tests:/scripts
+          networks: test-network
+          mem_limit: 4g
+          cpus: '2.0'
+          healthcheck.test:
+          ports:
+        influxdb:
+          image: influxdb:2.7
+          restart: no
+          ports: 8086:8086
+          environment.DOCKER_INFLUXDB_INIT_PASSWORD: Influx_S3cret!
+          environment.DOCKER_INFLUXDB_INIT_ORG: ridgeline
+          environment.DOCKER_INFLUXDB_INIT_BUCKET: k6
+          volumes: influx-data:/var/lib/influxdb2
+          networks: test-network
+          healthcheck.test: "['CMD-SHELL', 'curl -f http://localhost:8086/health']"
+          healthcheck.start_period: 10s
+          mem_limit: 2g
+          cpus: '1.0'
+  compose-monitoring-prod:
+    services:
+      delta:
+        prometheus:
+          image: prom/prometheus:v2.51.0
+          ports: 9090:9090
+          volumes: 
+            /opt/ridgeline/prometheus:/etc/prometheus,prom-data:/prometheus
+          networks: monitoring
+          healthcheck.test: "['CMD-SHELL', 'curl -f http://localhost:9090/-/healthy']"
+          healthcheck.start_period: 15s
+          mem_limit: 2g
+          cpus: '1.0'
+        grafana:
+          image: grafana/grafana:10.4.0
+          ports: 3000:3000
+          environment.GF_SECURITY_ADMIN_PASSWORD: Gr@fanaAdm1n!
+          environment.GF_SERVER_ROOT_URL: https://grafana.ridgeline.io
+          volumes: grafana-data:/var/lib/grafana
+          labels.traefik.enable: 'true'
+          labels.traefik.http.routers.grafana.rule: Host(`grafana.ridgeline.io`)
+          networks: monitoring,edge-network
+          healthcheck.test: "['CMD-SHELL', 'curl -f http://localhost:3000/api/health']"
+          healthcheck.start_period: 15s
+          mem_limit: 1g
+        alertmanager:
+          image: prom/alertmanager:v0.27.0
+          ports: 9093:9093
+          environment.SLACK_WEBHOOK_URL: 
+            https://hooks.slack.com/services/T00000/B00000/xxxxxxxxxxxx
+          volumes: /opt/ridgeline/alertmanager:/etc/alertmanager
+          networks: monitoring
+          healthcheck.test: "['CMD-SHELL', 'curl -f http://localhost:9093/-/healthy']"
+          mem_limit: 256m
+          cpus: '0.25'
+  compose-notification-prod:
+    services:
+      delta:
+        notification-svc:
+          image: ridgeline/notification-svc:1.2.0
+          restart: always
+          ports: 8003:8003
+          environment.SMTP_HOST: smtp.sendgrid.net
+          environment.SMTP_PASSWORD: SmtpP@ss123
+          environment.SENDGRID_API_KEY: SG.xxxxxxxxxxxxxxxxx
+          environment.TWILIO_AUTH_TOKEN: tw_auth_t0ken_secret
+          depends_on.redis.condition: service_started
+          depends_on.redis.required: 'true'
+          depends_on.redis.restart: 'true'
+          labels.traefik.enable: 'true'
+          labels.traefik.http.routers.notif.rule: Host(`notify.ridgeline.io`)
+          networks: app-network,monitoring
+          healthcheck.test: "['CMD-SHELL', 'curl -f http://localhost:8003/health']"
+          healthcheck.start_period: 10s
+          deploy.replicas: '2'
+          volumes:
+        redis:
+          environment.REDIS_PASSWORD: R3disP@ss!
+          volumes: redis-notif-data:/data
+          mem_limit: 256m
+          cpus: '0.25'
+          ports:
+  compose-report-prod:
+    services:
+      delta:
+        report-generator:
+          image: ridgeline/report-generator:1.0.0
+          environment.DATABASE_URL: '[REDACTED]'
+          environment.SMTP_PASSWORD: SmtpP@ss123
+          volumes: /opt/ridgeline/reports:/app/output
+          mem_limit: 2g
+          cpus: '1.0'
+          healthcheck.test:
+          ports:
+  compose-search-prod:
+    services:
+      delta:
+        search-svc:
+          image: ridgeline/search-svc:0.9.0
+          restart: always
+          ports: 8004:8004
+          environment.ELASTICSEARCH_URL: http://elasticsearch:9200
+          environment.ELASTICSEARCH_PASSWORD: El@sticP@ss!
+          environment.API_KEY: sk_live_search_key_xyz
+          depends_on.elasticsearch.condition: service_started
+          depends_on.elasticsearch.required: 'true'
+          depends_on.elasticsearch.restart: 'true'
+          labels.traefik.enable: 'true'
+          labels.traefik.http.routers.search.rule: Host(`search.ridgeline.io`)
+          networks: app-network,monitoring
+          healthcheck.test: "['CMD-SHELL', 'curl -f http://localhost:8004/health']"
+          healthcheck.start_period: 15s
+          mem_limit: 1g
+        elasticsearch:
+          image: docker.elastic.co/elasticsearch/elasticsearch:8.13.0
+          ports: 9200:9200,9300:9300
+          environment.discovery.type: single-node
+          environment.ELASTIC_PASSWORD: El@sticP@ss!
+          environment.xpack.security.enabled: 'true'
+          volumes: es-data:/usr/share/elasticsearch/data
+          healthcheck.test: "['CMD-SHELL', 'curl -f http://localhost:9200/_cluster/health']"
+          healthcheck.interval: 60s
+          healthcheck.retries: '5'
+          healthcheck.start_period: 60s
+          mem_limit: 4g
+          cpus: '2.0'
+  compose-staging:
+    services:
+      delta:
+        core-api:
+          image: ridgeline/core-api:2.1.0-rc1
+          environment.DATABASE_URL: '[REDACTED]'
+          environment.API_KEY: sk_test_staging_key_123
+          environment.JWT_SECRET: staging-jwt-secret-not-secure
+          networks: staging-network
+          healthcheck.test: "['CMD-SHELL', 'curl -f http://localhost:8000/health']"
+          mem_limit: 1g
+          volumes:
+        auth-service:
+          image: ridgeline/auth-service:1.8.0-rc1
+          ports: 8001:8001
+          environment.DATABASE_URL: '[REDACTED]'
+          environment.JWT_SECRET: staging-jwt-secret-not-secure
+          networks: staging-network
+          healthcheck.test: "['CMD-SHELL', 'curl -f http://localhost:8001/health']"
+          cpus: '0.25'
+          volumes:
+        web-app:
+          image: ridgeline/web-app:3.0.0-rc1
+          ports: 3000:3000
+          environment.NODE_ENV: staging
+          environment.API_URL: http://core-api:8000
+          networks: staging-network
+          healthcheck.test: "['CMD-SHELL', 'curl -f http://localhost:3000/health']"
+          cpus: '0.25'
+          volumes:
+        legacy-dashboard:
+          image: ridgeline/legacy-dashboard:latest
+          ports: 5000:5000
+          environment.DATABASE_URL: '[REDACTED]'
+          environment.SECRET_KEY: staging-flask-secret
+          networks: staging-network
+          cpus: '0.25'
+          healthcheck.test:
+          volumes:
+        postgres:
+          image: postgres:16-alpine
+          ports: 5432:5432
+          environment.POSTGRES_PASSWORD: StagingDBp@ss
+          environment.POSTGRES_DB: core_staging
+          volumes: pg-staging-data:/var/lib/postgresql/data
+          networks: staging-network
+          healthcheck.test: "['CMD-SHELL', 'pg_isready -U postgres']"
+          healthcheck.start_period: 10s
+          mem_limit: 1g
+        mariadb:
+          image: mariadb:10.11
+          ports: 3306:3306
+          environment.MARIADB_ROOT_PASSWORD: StagingM@riaDBp@ss
+          volumes: maria-staging-data:/var/lib/mysql
+          networks: staging-network
+          healthcheck.test: "['CMD-SHELL', 'healthcheck.sh --connect --innodb_initialized']"
+          healthcheck.start_period: 30s
+  compose-worker-prod:
+    services:
+      delta:
+        analytics-worker:
+          image: ridgeline/analytics-worker:2.1.0
+          restart: always
+          command: celery -A analytics.tasks worker --loglevel=info 
+            --concurrency=4
+          environment.DATABASE_URL: '[REDACTED]'
+          environment.REDIS_PASSWORD: R3disP@ss!
+          environment.CELERY_BROKER_URL: redis://:R3disP@ss!@redis:6379/0
+          volumes: worker-data:/app/data
+          depends_on.redis.condition: service_started
+          depends_on.redis.required: 'true'
+          depends_on.redis.restart: 'true'
+          networks: app-network,monitoring
+          healthcheck.test: "['CMD-SHELL', 'celery inspect ping']"
+          healthcheck.interval: 60s
+          healthcheck.start_period: 30s
+          deploy.replicas: '4'
+          mem_limit: 4g
+          cpus: '2.0'
+          ports:
+        redis:
+          environment.REDIS_PASSWORD: R3disP@ss!
+          volumes: redis-worker-data:/data
+          mem_limit: 256m
+          cpus: '0.25'
+          ports:
+        flower:
+          image: mher/flower:2.0
+          ports: 5555:5555
+          environment.CELERY_BROKER_URL: redis://:R3disP@ss!@redis:6379/0
+          environment.FLOWER_BASIC_AUTH: admin:Fl0werP@ss!
+          depends_on.redis.condition: service_started
+          depends_on.redis.required: 'true'
+          depends_on.redis.restart: 'true'
+          mem_limit: 256m
+          cpus: '0.25'
+          healthcheck.test:
+          volumes:
+composite_templates:
+  services:
+    docker-compose.services.T0:
+      elements:
+        cpus: '0.5'
+        deploy.replicas: '1'
+        deploy.restart_policy.condition: any
+        deploy.restart_policy.max_attempts: '0'
+        deploy.rollback_config.order: stop-first
+        deploy.rollback_config.parallelism: '1'
+        deploy.update_config.order: stop-first
+        deploy.update_config.parallelism: '1'
+        healthcheck.interval: 30s
+        healthcheck.retries: '3'
+        healthcheck.start_interval: 5s
+        healthcheck.start_period: 0s
+        healthcheck.test: "['CMD-SHELL', 'redis-cli ping']"
+        healthcheck.timeout: 30s
+        image: redis:7-alpine
+        init: 'false'
+        logging.driver: json-file
+        mem_limit: 512m
+        networks: app-network
+        ports: 8000:8000
+        privileged: 'false'
+        read_only: 'false'
+        restart: unless-stopped
+        stdin_open: 'false'
+        tty: 'false'
+        volumes: search-data:/app/data

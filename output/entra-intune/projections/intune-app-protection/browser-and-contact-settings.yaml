@@ -1,0 +1,37 @@
+meta:
+  subject: browser-and-contact-settings
+  description: Configuration for managed browsers, contact synchronization, and 
+    printing.
+  source_type: intune-app-protection
+  total_instances: 4
+base_class:
+  managedBrowser: notConfigured
+class_assignments:
+  _base_only:
+    instances:
+    - AP-Android-Standard
+    - AP-Android-Strict
+    - AP-iOS-Standard
+    - AP-iOS-Strict
+instance_data:
+  schema:
+  - contactSyncBlocked
+  - managedBrowserToOpenLinksRequired
+  - printBlocked
+  records:
+    AP-Android-Standard:
+    - 'false'
+    - 'false'
+    - 'false'
+    AP-Android-Strict:
+    - 'true'
+    - 'true'
+    - 'true'
+    AP-iOS-Standard:
+    - 'false'
+    - 'false'
+    - 'false'
+    AP-iOS-Strict:
+    - 'true'
+    - 'true'
+    - 'true'

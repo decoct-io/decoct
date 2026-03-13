@@ -1,0 +1,14 @@
+meta:
+  subject: service-provider-status
+  description: Indicates whether a cross-tenant configuration acts as a service 
+    provider.
+  source_type: entra-cross-tenant
+  total_instances: 3
+base_class:
+  isServiceProvider: 'false'
+class_assignments:
+  _base_only:
+    instances:
+    - CTA-Default-Settings
+    - CTA-Partner-Contoso
+    - CTA-Partner-Fabrikam

@@ -1,0 +1,21 @@
+meta:
+  subject: country-locations
+  description: Country-based named locations with allowed/blocked country codes
+  source_type: entra-named-location
+  total_instances: 6
+class_assignments:
+  _base_only:
+    instances:
+    - NL-Allowed-Countries
+    - NL-Blocked-Countries
+    - NL-Branch-Office-EU
+    - NL-Corporate-HQ
+    - NL-Guest-Network
+    - NL-VPN-Gateway
+instance_attrs:
+  NL-Allowed-Countries:
+    countriesAndRegions: US, GB, DE, FR, CA, AU, JP
+    includeUnknownCountriesAndRegions: 'true'
+  NL-Blocked-Countries:
+    countriesAndRegions: KP, IR, SY, CU, RU
+    includeUnknownCountriesAndRegions: 'false'

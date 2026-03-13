@@ -1,0 +1,58 @@
+meta:
+  subject: service-execution
+  description: Service exec commands, type, working directory, and runtime 
+    identity
+  source_type: systemd-unit
+  total_instances: 10
+class_assignments:
+  _base_only:
+    instances:
+    - systemd-analytics-worker
+    - systemd-auth-service
+    - systemd-backup-svc
+    - systemd-backup-timer
+    - systemd-billing-api
+    - systemd-core-api
+    - systemd-legacy-dashboard
+    - systemd-report-gen-svc
+    - systemd-report-gen-timer
+    - systemd-web-app
+instance_attrs:
+  systemd-analytics-worker:
+    Service.execstart: /opt/ridgeline/analytics/venv/bin/celery -A 
+      analytics.tasks worker --loglevel=info --concurrency=4
+    Service.type: simple
+    Service.workingdirectory: /opt/ridgeline/analytics
+  systemd-auth-service:
+    Service.execstart: /opt/ridgeline/auth-service/venv/bin/uvicorn 
+      auth_svc.main:app --host 0.0.0.0 --port 8001
+    Service.type: simple
+    Service.workingdirectory: /opt/ridgeline/auth-service
+  systemd-backup-svc:
+    Service.execstart: /opt/ridgeline/scripts/backup-all-dbs.sh
+    Service.type: oneshot
+    Service.workingdirectory: /opt/ridgeline/scripts
+  systemd-billing-api:
+    Service.execstart: /opt/ridgeline/billing-api/venv/bin/uvicorn 
+      billing.main:app --host 0.0.0.0 --port 8002
+    Service.type: simple
+    Service.workingdirectory: /opt/ridgeline/billing-api
+  systemd-core-api:
+    Service.execstart: /opt/ridgeline/core-api/venv/bin/uvicorn 
+      core_api.main:app --host 0.0.0.0 --port 8000
+    Service.type: simple
+    Service.workingdirectory: /opt/ridgeline/core-api
+  systemd-legacy-dashboard:
+    Service.execstart: /opt/ridgeline/legacy-dashboard/venv/bin/gunicorn -w 4 -b
+      0.0.0.0:5000 dashboard.app:app
+    Service.type: simple
+    Service.workingdirectory: /opt/ridgeline/legacy-dashboard
+  systemd-report-gen-svc:
+    Service.execstart: /opt/ridgeline/report-gen/venv/bin/python -m 
+      report_gen.main
+    Service.type: oneshot
+    Service.workingdirectory: /opt/ridgeline/report-gen
+  systemd-web-app:
+    Service.execstart: /usr/bin/node /opt/ridgeline/web-app/server.js
+    Service.type: simple
+    Service.workingdirectory: /opt/ridgeline/web-app

@@ -1,0 +1,243 @@
+meta:
+  subject: bgp-vrf-neighbors-redistribution
+  description: BGP neighbor and redistribution settings specific to each VRF.
+  source_type: iosxr-services-pe
+  total_instances: 8
+base_class:
+  router.bgp.65006.neighbors: iosxr-services-pe.router.bgp.65006.neighbors.T0
+class_assignments:
+  _base_only:
+    instances:
+    - SVC-PE-01..SVC-PE-08
+instance_data:
+  schema:
+  - hostname
+  records:
+    SVC-PE-01:
+    - SVC-PE-01
+    SVC-PE-02:
+    - SVC-PE-02
+    SVC-PE-03:
+    - SVC-PE-03
+    SVC-PE-04:
+    - SVC-PE-04
+    SVC-PE-05:
+    - SVC-PE-05
+    SVC-PE-06:
+    - SVC-PE-06
+    SVC-PE-07:
+    - SVC-PE-07
+    SVC-PE-08:
+    - SVC-PE-08
+instance_attrs:
+  SVC-PE-01:
+    router.bgp.65006.vrf.VRF-CLOUD-GW.neighbors:
+      172.16.0.1:
+        remote-as: '64800'
+        address-family.ipv4-unicast.route-policy.RPL-TRANSIT-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+      172.16.0.3:
+        remote-as: '64801'
+        address-family.ipv4-unicast.route-policy.RPL-TRANSIT-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+    router.bgp.65006.vrf.VRF-ENTERPRISE-A.neighbors:
+      172.16.0.1:
+        remote-as: '64800'
+        address-family.ipv4-unicast.route-policy.RPL-TRANSIT-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+      172.16.0.3:
+        remote-as: '64801'
+        address-family.ipv4-unicast.route-policy.RPL-TRANSIT-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+  SVC-PE-02:
+    router.bgp.65006.vrf.VRF-CLOUD-GW.neighbors:
+      172.16.0.5:
+        remote-as: '64800'
+        address-family.ipv4-unicast.route-policy.RPL-TRANSIT-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+      172.16.0.7:
+        remote-as: '64802'
+        address-family.ipv4-unicast.route-policy.RPL-TRANSIT-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+    router.bgp.65006.vrf.VRF-ENTERPRISE-A.neighbors:
+      172.16.0.5:
+        remote-as: '64800'
+        address-family.ipv4-unicast.route-policy.RPL-TRANSIT-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+      172.16.0.7:
+        remote-as: '64802'
+        address-family.ipv4-unicast.route-policy.RPL-TRANSIT-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+  SVC-PE-03:
+    router.bgp.65006.vrf.VRF-CDN.neighbors:
+      172.16.1.1:
+        remote-as: '64803'
+        address-family.ipv4-unicast.route-policy.RPL-CDN-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+      172.16.1.3:
+        remote-as: '64804'
+        address-family.ipv4-unicast.route-policy.RPL-CDN-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+    router.bgp.65006.vrf.VRF-MGMT.neighbors:
+      172.16.1.1:
+        remote-as: '64803'
+        address-family.ipv4-unicast.route-policy.RPL-CDN-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+      172.16.1.3:
+        remote-as: '64804'
+        address-family.ipv4-unicast.route-policy.RPL-CDN-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+  SVC-PE-04:
+    router.bgp.65006.vrf.VRF-CDN.neighbors:
+      172.16.1.5:
+        remote-as: '64803'
+        address-family.ipv4-unicast.route-policy.RPL-CDN-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+      172.16.1.7:
+        remote-as: '64805'
+        address-family.ipv4-unicast.route-policy.RPL-CDN-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+    router.bgp.65006.vrf.VRF-MGMT.neighbors:
+      172.16.1.5:
+        remote-as: '64803'
+        address-family.ipv4-unicast.route-policy.RPL-CDN-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+      172.16.1.7:
+        remote-as: '64805'
+        address-family.ipv4-unicast.route-policy.RPL-CDN-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+  SVC-PE-05:
+    router.bgp.65006.vrf.VRF-IX-1.neighbors:
+      172.16.2.1:
+        remote-as: '64806'
+        address-family.ipv4-unicast.route-policy.RPL-IX-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+      172.16.2.3:
+        remote-as: '64807'
+        address-family.ipv4-unicast.route-policy.RPL-IX-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+  SVC-PE-06:
+    router.bgp.65006.vrf.VRF-IX-1.neighbors:
+      172.16.2.5:
+        remote-as: '64806'
+        address-family.ipv4-unicast.route-policy.RPL-IX-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+      172.16.2.7:
+        remote-as: '64808'
+        address-family.ipv4-unicast.route-policy.RPL-IX-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+  SVC-PE-07:
+    router.bgp.65006.vrf.VRF-MOBILE-CORE.neighbors:
+      172.16.3.1:
+        remote-as: '64809'
+        address-family.ipv4-unicast.route-policy.RPL-MOBILE-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+      172.16.3.3:
+        remote-as: '64810'
+        address-family.ipv4-unicast.route-policy.RPL-MOBILE-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+  SVC-PE-08:
+    router.bgp.65006.vrf.VRF-MOBILE-CORE.neighbors:
+      172.16.3.5:
+        remote-as: '64809'
+        address-family.ipv4-unicast.route-policy.RPL-MOBILE-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+      172.16.3.7:
+        remote-as: '64811'
+        address-family.ipv4-unicast.route-policy.RPL-MOBILE-IN: in
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+b_composite_deltas:
+  SVC-PE-01:
+    router.bgp.65006.neighbors:
+      delta:
+        172.16.0.1:
+          address-family.ipv4-unicast.route-policy.RPL-TRANSIT-IN: in
+        172.16.0.3:
+          remote-as: '64801'
+          description: TRANSIT-B
+          address-family.ipv4-unicast.route-policy.RPL-TRANSIT-IN: in
+  SVC-PE-02:
+    router.bgp.65006.neighbors:
+      delta:
+        172.16.0.5:
+          address-family.ipv4-unicast.route-policy.RPL-TRANSIT-IN: in
+        172.16.0.7:
+          remote-as: '64802'
+          description: PEERING-IX
+          address-family.ipv4-unicast.route-policy.RPL-TRANSIT-IN: in
+  SVC-PE-03:
+    router.bgp.65006.neighbors:
+      delta:
+        172.16.1.1:
+          remote-as: '64803'
+          description: CDN-PROVIDER
+          address-family.ipv4-unicast.route-policy.RPL-CDN-IN: in
+        172.16.1.3:
+          remote-as: '64804'
+          description: CLOUD-AWS
+          address-family.ipv4-unicast.route-policy.RPL-CDN-IN: in
+  SVC-PE-04:
+    router.bgp.65006.neighbors:
+      delta:
+        172.16.1.5:
+          remote-as: '64803'
+          description: CDN-PROVIDER
+          address-family.ipv4-unicast.route-policy.RPL-CDN-IN: in
+        172.16.1.7:
+          remote-as: '64805'
+          description: CLOUD-AZURE
+          address-family.ipv4-unicast.route-policy.RPL-CDN-IN: in
+  SVC-PE-05:
+    router.bgp.65006.neighbors:
+      delta:
+        172.16.2.1:
+          remote-as: '64806'
+          description: IX-PEERING-1
+          address-family.ipv4-unicast.route-policy.RPL-IX-IN: in
+        172.16.2.3:
+          remote-as: '64807'
+          description: IX-PEERING-2
+          address-family.ipv4-unicast.route-policy.RPL-IX-IN: in
+  SVC-PE-06:
+    router.bgp.65006.neighbors:
+      delta:
+        172.16.2.5:
+          remote-as: '64806'
+          description: IX-PEERING-1
+          address-family.ipv4-unicast.route-policy.RPL-IX-IN: in
+        172.16.2.7:
+          remote-as: '64808'
+          description: TRANSIT-C
+          address-family.ipv4-unicast.route-policy.RPL-IX-IN: in
+  SVC-PE-07:
+    router.bgp.65006.neighbors:
+      delta:
+        172.16.3.1:
+          remote-as: '64809'
+          description: MOBILE-GW-1
+          address-family.ipv4-unicast.route-policy.RPL-MOBILE-IN: in
+        172.16.3.3:
+          remote-as: '64810'
+          description: MOBILE-GW-2
+          address-family.ipv4-unicast.route-policy.RPL-MOBILE-IN: in
+  SVC-PE-08:
+    router.bgp.65006.neighbors:
+      delta:
+        172.16.3.5:
+          remote-as: '64809'
+          description: MOBILE-GW-1
+          address-family.ipv4-unicast.route-policy.RPL-MOBILE-IN: in
+        172.16.3.7:
+          remote-as: '64811'
+          description: DC-INTERCONNECT
+          address-family.ipv4-unicast.route-policy.RPL-MOBILE-IN: in
+composite_templates:
+  router.bgp.65006.neighbors:
+    iosxr-services-pe.router.bgp.65006.neighbors.T0:
+      elements:
+        address-family.ipv4-unicast.route-policy.RPL-EBGP-OUT: out
+        address-family.ipv4-unicast.soft-reconfiguration: inbound always
+        advertisement-interval: '30'
+        description: TRANSIT-A
+        remote-as: '64800'
+        timers: 60 180

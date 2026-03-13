@@ -1,0 +1,84 @@
+version: 1
+source_type: prometheus
+generated_by: decoct-infer
+subjects:
+- name: global-settings
+  description: Global Prometheus configuration settings.
+  include_paths:
+  - global.body_size_limit
+  - global.keep_dropped_targets
+  - global.label_limit
+  - global.label_name_length_limit
+  - global.label_value_length_limit
+  - global.sample_limit
+  - global.scrape_native_histograms
+  - global.scrape_timeout
+  - global.target_limit
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What is the global scrape timeout configured on each Prometheus instance?
+  - Are there any Prometheus instances with a non-zero label limit?
+  - What is the maximum body size limit for all Prometheus servers?
+- name: global-scheduling
+  description: Global evaluation and scrape intervals and external labels.
+  include_paths:
+  - global.evaluation_interval
+  - global.scrape_interval
+  - global.external_labels.cluster
+  - global.external_labels.env
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the common evaluation and scrape intervals across all instances?
+  - Which clusters and environments are represented by the external labels?
+  - Are there any Prometheus instances with different global scrape intervals?
+- name: alerting-configuration
+  description: Alerting manager configuration for Prometheus.
+  include_paths:
+  - alerting.alertmanagers.**
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which alert managers are configured for each Prometheus instance?
+  - Are there any Prometheus instances that don't have alerting enabled?
+  - What are the configurations for alert managers on different instances?
+- name: remote-write-settings
+  description: Configuration for remote write integrations.
+  include_paths:
+  - remote_write.**
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which Prometheus instances are configured for remote writes?
+  - What are the endpoints and authentication settings for remote write on each 
+    server?
+  - Are there any Prometheus instances that lack remote write configurations?
+- name: rule-files
+  description: Locations of Prometheus recording and alerting rule files.
+  include_paths:
+  - rule_files.**
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What rule files are loaded by each Prometheus instance?
+  - Are there any instances missing a specific rule file?
+  - How do the rule file paths compare across the different Prometheus 
+    instances?
+- name: scrape-job-configs
+  description: Detailed configurations for scraping metrics from targets.
+  include_paths:
+  - scrape_configs.**
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the different scrape jobs configured on each Prometheus instance?
+  - Are there any instances with unique scrape job definitions?
+  - How do the scrape targets or relabeling configurations vary across 
+    instances?

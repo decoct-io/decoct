@@ -1,7 +1,6 @@
 meta:
   subject: service-management
-  description: Administration of system services, including starting, stopping, 
-    and enabling.
+  description: Tasks and handlers related to systemd service lifecycle
   source_type: ansible-playbook
   total_instances: 16
 class_assignments:

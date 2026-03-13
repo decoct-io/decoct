@@ -1,0 +1,30 @@
+meta:
+  subject: daemon-metrics-and-limits
+  description: Configuration for exposing metrics and default ulimit settings.
+  source_type: docker-daemon
+  total_instances: 3
+class_assignments:
+  _base_only:
+    instances:
+    - docker-daemon-ci
+    - docker-daemon-dev
+    - docker-daemon-prod
+instance_attrs:
+  docker-daemon-ci:
+    default-ulimits:
+      nofile:
+        Name: nofile
+        Soft: '65535'
+        Hard: '65535'
+  docker-daemon-dev:
+    default-ulimits:
+      nofile:
+        Name: nofile
+        Soft: '1024'
+        Hard: '1024'
+  docker-daemon-prod:
+    default-ulimits:
+      nofile:
+        Name: nofile
+        Soft: '65535'
+        Hard: '65535'

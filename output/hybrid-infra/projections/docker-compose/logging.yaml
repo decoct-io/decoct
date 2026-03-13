@@ -1,0 +1,22 @@
+meta:
+  subject: logging
+  description: Container logging driver and options configuration
+  source_type: docker-compose
+  total_instances: 16
+class_assignments:
+  _base_only:
+    instances:
+    - compose-app-prod-01..compose-app-prod-03
+    - compose-billing-prod
+    - compose-ci
+    - compose-cron-prod
+    - compose-dev
+    - compose-dr
+    - compose-edge-prod
+    - compose-load-test
+    - compose-monitoring-prod
+    - compose-notification-prod
+    - compose-report-prod
+    - compose-search-prod
+    - compose-staging
+    - compose-worker-prod

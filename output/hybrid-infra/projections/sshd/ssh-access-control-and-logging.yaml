@@ -1,0 +1,46 @@
+meta:
+  subject: ssh-access-control-and-logging
+  description: Controls for user access, root login, banners, and logging.
+  source_type: sshd
+  total_instances: 4
+base_class:
+  ExposeAuthInfo: 'false'
+  IgnoreRhosts: 'true'
+  IgnoreUserKnownHosts: 'false'
+  PermitUserEnvironment: 'false'
+  PrintLastLog: 'true'
+  SyslogFacility: AUTH
+class_assignments:
+  _base_only:
+    instances:
+    - sshd-bastion
+    - sshd-dev
+    - sshd-prod
+    - sshd-staging
+instance_data:
+  schema:
+  - LogLevel
+  - PermitUserRC
+  - PrintMotd
+  records:
+    sshd-bastion:
+    - VERBOSE
+    - 'false'
+    - 'false'
+    sshd-dev:
+    - INFO
+    - 'true'
+    - 'true'
+    sshd-prod:
+    - VERBOSE
+    - 'false'
+    - 'false'
+    sshd-staging:
+    - INFO
+    - 'true'
+    - 'true'
+instance_attrs:
+  sshd-bastion:
+    AllowUsers: deploy ops
+  sshd-prod:
+    AllowUsers: deploy ops admins

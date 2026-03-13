@@ -1,0 +1,23 @@
+meta:
+  subject: application-identity
+  description: Core identification and basic settings for the application.
+  source_type: app-config-json
+  total_instances: 3
+base_class:
+  environment: prod
+class_assignments:
+  _base_only:
+    instances:
+    - app-config-auth-jwt
+    - app-config-billing
+    - app-config-search
+instance_data:
+  schema:
+  - name
+  records:
+    app-config-auth-jwt:
+    - Auth Service JWT Config
+    app-config-billing:
+    - Billing API Config
+    app-config-search:
+    - Search Service Config

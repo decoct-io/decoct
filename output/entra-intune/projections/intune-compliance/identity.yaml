@@ -1,0 +1,68 @@
+meta:
+  subject: identity
+  description: Compliance policy identity including display name, description, 
+    and version
+  source_type: intune-compliance
+  total_instances: 10
+base_class:
+  roleScopeTagIds: '0'
+  version: '1'
+class_assignments:
+  _base_only:
+    instances:
+    - CP-Android-Corporate
+    - CP-Android-Standard
+    - CP-Win-Advanced-Security
+    - CP-Win-Basic-Security
+    - CP-Win-Kiosk-Devices
+    - CP-iOS-BYOD
+    - CP-iOS-Corporate-Managed
+    - CP-iOS-Standard
+    - CP-macOS-Secure-Workstation
+    - CP-macOS-Standard
+instance_data:
+  schema:
+  - _uuid
+  - description
+  - displayName
+  records:
+    CP-Android-Corporate:
+    - 7d3088a6-6a7a-5e2b-89a2-8b6a8bad05e6
+    - Strict Android compliance for corporate devices
+    - CP-Android-Corporate
+    CP-Android-Standard:
+    - 95e7cb4c-2ad7-54ce-8ca9-5a534b81ef0e
+    - Standard Android compliance policy
+    - CP-Android-Standard
+    CP-Win-Advanced-Security:
+    - 06b006d8-7319-5afc-8b8c-13d4e133889c
+    - Advanced Windows compliance with hardware security
+    - CP-Win-Advanced-Security
+    CP-Win-Basic-Security:
+    - 92455516-ef36-5f00-b129-db1a9d2c78d6
+    - Basic Windows 10 compliance for standard users
+    - CP-Win-Basic-Security
+    CP-Win-Kiosk-Devices:
+    - 0fc9bd15-e1c8-567f-b71e-f77d58585e0d
+    - Minimal compliance for shared kiosk Windows devices
+    - CP-Win-Kiosk-Devices
+    CP-iOS-BYOD:
+    - 6106ee17-83e8-54d5-a8f5-694023003586
+    - Lightweight compliance for BYOD iOS devices
+    - CP-iOS-BYOD
+    CP-iOS-Corporate-Managed:
+    - b1b668de-82d5-5089-a520-76682021c834
+    - Strict iOS compliance for corporate-managed devices
+    - CP-iOS-Corporate-Managed
+    CP-iOS-Standard:
+    - 5eef8562-2182-5a82-ab79-dafa40458d0e
+    - Standard iOS compliance policy
+    - CP-iOS-Standard
+    CP-macOS-Secure-Workstation:
+    - 248adf12-000a-51d1-9cbf-20fd427262ca
+    - High-security macOS workstation compliance
+    - CP-macOS-Secure-Workstation
+    CP-macOS-Standard:
+    - 913c41c1-0007-5121-b999-82354bd2fc6f
+    - Standard macOS compliance policy
+    - CP-macOS-Standard

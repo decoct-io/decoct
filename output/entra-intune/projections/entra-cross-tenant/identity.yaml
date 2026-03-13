@@ -1,0 +1,32 @@
+meta:
+  subject: identity
+  description: Tenant identity including display name, tenant ID, and service 
+    default/provider flags
+  source_type: entra-cross-tenant
+  total_instances: 3
+base_class:
+  isServiceProvider: 'false'
+class_assignments:
+  _base_only:
+    instances:
+    - CTA-Default-Settings
+    - CTA-Partner-Contoso
+    - CTA-Partner-Fabrikam
+instance_data:
+  schema:
+  - displayName
+  - isServiceDefault
+  - tenantId
+  records:
+    CTA-Default-Settings:
+    - CTA-Default-Settings
+    - 'true'
+    - 00000000-0000-0000-0000-000000000000
+    CTA-Partner-Contoso:
+    - CTA-Partner-Contoso
+    - 'false'
+    - 72f988bf-86f1-41af-91ab-2d7cd011db47
+    CTA-Partner-Fabrikam:
+    - CTA-Partner-Fabrikam
+    - 'false'
+    - f8cdef31-a31e-4b4a-93e4-5f571e91255a

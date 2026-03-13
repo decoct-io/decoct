@@ -1,0 +1,110 @@
+version: 1
+source_type: docker-compose
+generated_by: decoct-infer
+subjects:
+- name: service-identity
+  description: Core identification and image information for services.
+  include_paths:
+  - services.*.image
+  - services.*.init
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which Docker images are used by each service?
+  - Does any service explicitly disable the init process?
+- name: service-resource-allocation
+  description: CPU, memory, and logging configurations for services.
+  include_paths:
+  - services.*.cpus
+  - services.*.mem_limit
+  - services.*.logging.driver
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the CPU limits set for each service?
+  - How much memory is allocated to each service?
+  - What logging drivers are configured across services?
+- name: service-deployment-strategy
+  description: Deployment and restart policies for services.
+  include_paths:
+  - services.*.deploy.replicas
+  - services.*.deploy.restart_policy.**
+  - services.*.deploy.rollback_config.**
+  - services.*.deploy.update_config.**
+  - services.*.restart
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - How many replicas are configured for each service?
+  - What are the restart policies for services failing to start?
+  - Compare the rollback and update configurations across services.
+- name: service-healthchecks
+  description: Health check parameters for services.
+  include_paths:
+  - services.*.healthcheck.**
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What command is used for health checks on each service?
+  - How often are health checks performed and what is their timeout?
+  - What are the start intervals and retry counts for service health checks?
+- name: service-network-ports
+  description: Network and port mappings for services.
+  include_paths:
+  - services.*.networks
+  - services.*.ports
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which network(s) are services connected to?
+  - What port mappings are defined for each service?
+- name: service-permissions-volumes
+  description: Privileged status, read-only settings, and volume mounts for 
+    services.
+  include_paths:
+  - services.*.privileged
+  - services.*.read_only
+  - services.*.stdin_open
+  - services.*.tty
+  - services.*.volumes
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Are there any privileged services configured?
+  - Which volumes are mounted by each service?
+  - Are any services running in read-only mode, or with stdin/tty enabled?
+- name: compose-networks-config
+  description: Configuration of Docker Compose networks.
+  include_paths:
+  - networks.*.attachable
+  - networks.*.driver
+  - networks.*.enable_ipv6
+  - networks.*.external
+  - networks.*.internal
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which networks allow external access?
+  - Are any networks configured with IPv6 enabled?
+  - What network drivers are in use?
+- name: compose-volumes-external
+  description: Focus on volume configurations, specifically their external 
+    property.
+  include_paths:
+  - volumes.*.external
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which defined volumes are external?
+  - Are there any instances where normally internal volumes are configured as 
+    external?
+  - Compare the external status of volumes named 'influx-data', 'redis-data', 
+    'redis-notif-data', and 'search-data' across instances.

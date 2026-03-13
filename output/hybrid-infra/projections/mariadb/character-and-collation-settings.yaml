@@ -1,0 +1,17 @@
+meta:
+  subject: character-and-collation-settings
+  description: Database character set and collation configurations for proper 
+    text handling.
+  source_type: mariadb
+  total_instances: 5
+base_class:
+  mysqld.character_set_filesystem: binary
+  mysqld.lower_case_table_names: '0'
+class_assignments:
+  _base_only:
+    instances:
+    - maria-dev
+    - maria-galera-node
+    - maria-legacy-billing
+    - maria-legacy-main
+    - maria-staging

@@ -1,0 +1,36 @@
+meta:
+  subject: replication
+  description: Binary log, replication, and server identity settings
+  source_type: mariadb
+  total_instances: 5
+base_class:
+  mysqld.binlog_expire_logs_seconds: '2592000'
+  mysqld.binlog_row_image: FULL
+  mysqld.binlog_rows_query_log_events: 'false'
+  mysqld.log_replica_updates: 'true'
+  mysqld.max_binlog_size: '1073741824'
+  mysqld.relay_log_purge: 'true'
+  mysqld.relay_log_recovery: 'false'
+  mysqld.replica_net_timeout: '60'
+class_assignments:
+  _base_only:
+    instances:
+    - maria-dev
+    - maria-galera-node
+    - maria-legacy-billing
+    - maria-legacy-main
+    - maria-staging
+instance_data:
+  schema:
+  - mysqld.server_id
+  records:
+    maria-dev:
+    - '20'
+    maria-galera-node:
+    - '100'
+    maria-legacy-billing:
+    - '2'
+    maria-legacy-main:
+    - '1'
+    maria-staging:
+    - '10'

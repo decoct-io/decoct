@@ -1,0 +1,25 @@
+meta:
+  subject: timer-settings
+  description: Configuration specific to systemd timer units.
+  source_type: systemd-unit
+  total_instances: 10
+class_assignments:
+  _base_only:
+    instances:
+    - systemd-analytics-worker
+    - systemd-auth-service
+    - systemd-backup-svc
+    - systemd-backup-timer
+    - systemd-billing-api
+    - systemd-core-api
+    - systemd-legacy-dashboard
+    - systemd-report-gen-svc
+    - systemd-report-gen-timer
+    - systemd-web-app
+instance_attrs:
+  systemd-backup-timer:
+    Timer.oncalendar: '*-*-* 03:00:00'
+    Timer.unit: db-backup.service
+  systemd-report-gen-timer:
+    Timer.oncalendar: '*-*-* 02:00:00'
+    Timer.unit: report-generator.service

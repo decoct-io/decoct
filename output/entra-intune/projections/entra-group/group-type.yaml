@@ -1,0 +1,59 @@
+meta:
+  subject: group-type
+  description: Group type classification including security-enabled, 
+    mail-enabled, and group types
+  source_type: entra-group
+  total_instances: 25
+class_assignments:
+  _base_only:
+    instances:
+    - DG-All-Corp-Android
+    - DG-All-Corp-Windows
+    - DG-All-Corp-iOS
+    - DG-All-Corp-macOS
+    - DG-All-Licensed-Users
+    - DG-Dept-Engineering
+    - DG-Dept-Sales
+    - DG-Remote-Workers
+    - M365-AllCompany-Comms
+    - M365-Leadership-Team
+    - M365-Project-Alpha
+    - M365-Project-Beta
+    - RAG-Compliance-Admin-Role
+    - RAG-Global-Admin-Role
+    - RAG-Security-Admin-Role
+    - SG-Compliance-Officers
+    - SG-Engineering
+    - SG-Executive-Team
+    - SG-External-Contractors
+    - SG-Finance-Users
+    - SG-HR-Users
+    - SG-Helpdesk-Staff
+    - SG-IT-Admins
+    - SG-Marketing-Users
+    - SG-Security-Team
+instance_attrs:
+  DG-All-Corp-Android:
+    groupTypes: DynamicMembership
+  DG-All-Corp-Windows:
+    groupTypes: DynamicMembership
+  DG-All-Corp-iOS:
+    groupTypes: DynamicMembership
+  DG-All-Corp-macOS:
+    groupTypes: DynamicMembership
+  DG-All-Licensed-Users:
+    groupTypes: DynamicMembership
+  DG-Dept-Engineering:
+    groupTypes: DynamicMembership
+  DG-Dept-Sales:
+    groupTypes: DynamicMembership
+  DG-Remote-Workers:
+    groupTypes: DynamicMembership
+  M365-AllCompany-Comms:
+    groupTypes: Unified
+  M365-Leadership-Team:
+    groupTypes: Unified
+  M365-Project-Alpha:
+    groupTypes: Unified
+  M365-Project-Beta:
+    groupTypes: Unified

@@ -1,0 +1,11 @@
+meta:
+  subject: feature-flags
+  description: Configuration switches for various application features.
+  source_type: app-config-json
+  total_instances: 3
+class_assignments:
+  _base_only:
+    instances:
+    - app-config-auth-jwt
+    - app-config-billing
+    - app-config-search

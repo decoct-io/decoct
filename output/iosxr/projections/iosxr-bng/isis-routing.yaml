@@ -1,0 +1,96 @@
+meta:
+  subject: isis-routing
+  description: ISIS routing protocol configuration, including interface 
+    settings, address families, and segment routing.
+  source_type: iosxr-bng
+  total_instances: 8
+base_class:
+  mpls.address-family: ipv4
+  mpls.discovery.hello.hold-time: '15'
+  mpls.discovery.hello.interval: '5'
+  mpls.discovery.targeted-hello.hold-time: '90'
+  mpls.discovery.targeted-hello.interval: '10'
+  mpls.graceful-restart: 'true'
+  mpls.log: neighbor
+  router.isis.CORE.address-family.ipv4-unicast.metric-style: wide
+  router.isis.CORE.address-family.ipv4-unicast.mpls.traffic-eng.level-2-only: 'true'
+  router.isis.CORE.address-family.ipv4-unicast.mpls.traffic-eng.router-id: 
+    Loopback0
+  router.isis.CORE.address-family.ipv4-unicast.router-id: Loopback0
+  router.isis.CORE.address-family.ipv4-unicast.segment-routing: mpls sr-prefer
+  router.isis.CORE.address-family.ipv6-unicast.metric-style: wide
+  router.isis.CORE.address-family.ipv6-unicast.segment-routing: mpls sr-prefer
+  router.isis.CORE.interface.Loopback0.address-family: ipv6 unicast
+  router.isis.CORE.interface.Loopback0.passive: 'true'
+  router.isis.CORE.interface.TenGigE0/0/0/0.address-family.ipv4-unicast.metric: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/0.address-family.ipv6-unicast.metric: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/0.csnp-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/0.hello-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/0.hello-multiplier: '3'
+  router.isis.CORE.interface.TenGigE0/0/0/0.point-to-point: 'true'
+  router.isis.CORE.interface.TenGigE0/0/0/0.retransmit-interval: '5'
+  router.isis.CORE.interface.TenGigE0/0/0/1.address-family.ipv4-unicast.metric: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/1.address-family.ipv6-unicast.metric: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/1.csnp-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/1.hello-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/1.hello-multiplier: '3'
+  router.isis.CORE.interface.TenGigE0/0/0/1.point-to-point: 'true'
+  router.isis.CORE.interface.TenGigE0/0/0/1.retransmit-interval: '5'
+  router.isis.CORE.is-type: level-2-only
+  router.isis.CORE.log: adjacency changes
+  router.isis.CORE.lsp-lifetime: '1200'
+  router.isis.CORE.lsp-mtu: '1497'
+  router.isis.CORE.lsp-refresh-interval: '900'
+  segment-routing.global-block: 16000 23999
+  segment-routing.local-block: 15000 15999
+class_assignments:
+  _base_only:
+    instances:
+    - BNG-01..BNG-08
+instance_data:
+  schema:
+  - hostname
+  - mpls.router-id
+  - router.isis.CORE.interface.Loopback0.address-family.ipv4-unicast.prefix-sid
+  - router.isis.CORE.net
+  records:
+    BNG-01:
+    - BNG-01
+    - 10.0.2.1
+    - index 16201
+    - 49.0001.0100.0002.0001.00
+    BNG-02:
+    - BNG-02
+    - 10.0.2.2
+    - index 16202
+    - 49.0001.0100.0002.0002.00
+    BNG-03:
+    - BNG-03
+    - 10.0.2.3
+    - index 16203
+    - 49.0001.0100.0002.0003.00
+    BNG-04:
+    - BNG-04
+    - 10.0.2.4
+    - index 16204
+    - 49.0001.0100.0002.0004.00
+    BNG-05:
+    - BNG-05
+    - 10.0.2.5
+    - index 16205
+    - 49.0001.0100.0002.0005.00
+    BNG-06:
+    - BNG-06
+    - 10.0.2.6
+    - index 16206
+    - 49.0001.0100.0002.0006.00
+    BNG-07:
+    - BNG-07
+    - 10.0.2.7
+    - index 16207
+    - 49.0001.0100.0002.0007.00
+    BNG-08:
+    - BNG-08
+    - 10.0.2.8
+    - index 16208
+    - 49.0001.0100.0002.0008.00

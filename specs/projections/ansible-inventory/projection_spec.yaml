@@ -1,0 +1,37 @@
+version: 1
+source_type: ansible-inventory
+generated_by: decoct-infer
+subjects:
+- name: identity
+  description: Basic identification and user information for Ansible inventory.
+  include_paths:
+  - all.vars.ansible_user
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What is the default Ansible user for all devices?
+  - Are there any devices with overridden Ansible users?
+- name: network-services
+  description: DNS and NTP server configurations for devices.
+  include_paths:
+  - all.vars.dns_servers
+  - all.vars.ntp_server
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which devices use a specific NTP server?
+  - What are the DNS server configurations across different devices?
+  - Are there any devices missing DNS server configurations?
+- name: children-groups
+  description: Hierarchical grouping of devices within the Ansible inventory.
+  include_paths:
+  - all.children
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which devices belong to the 'webservers' group?
+  - What is the parent group for a specific device?
+  - How are devices grouped in the inventory?

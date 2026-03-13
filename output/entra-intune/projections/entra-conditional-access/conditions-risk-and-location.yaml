@@ -1,0 +1,50 @@
+meta:
+  subject: conditions-risk-and-location
+  description: Risk level conditions, platform conditions, and location-based 
+    conditions
+  source_type: entra-conditional-access
+  total_instances: 20
+class_assignments:
+  _base_only:
+    instances:
+    - CA-Block-Legacy-Auth-Exchange
+    - CA-Block-Legacy-Auth-Global
+    - CA-Block-Legacy-Auth-SharePoint
+    - CA-Block-Legacy-Auth-Teams
+    - CA-Compliant-Device-Azure
+    - CA-Compliant-Device-Internal
+    - CA-Compliant-Device-Office365
+    - CA-Disabled-Draft-TestPolicy
+    - CA-Location-Block-Countries
+    - CA-Location-Require-MFA-External
+    - CA-MFA-Azure-Management
+    - CA-MFA-Global-Admins
+    - CA-MFA-Privileged-Roles
+    - CA-MFA-Security-Admins
+    - CA-Named-Location-Corporate
+    - CA-Report-Only-AllUsers-MFA
+    - CA-SignIn-Risk-High-Block
+    - CA-SignIn-Risk-Medium-MFA
+    - CA-User-Risk-High-PasswordChange
+    - CA-User-Risk-Medium-MFA
+instance_attrs:
+  CA-Compliant-Device-Azure:
+    conditions.platforms.includePlatforms: windows, macOS
+  CA-Compliant-Device-Internal:
+    conditions.platforms.includePlatforms: windows
+  CA-Compliant-Device-Office365:
+    conditions.platforms.includePlatforms: windows, iOS, android
+  CA-Location-Block-Countries:
+    conditions.locations.includeLocations: NL-Blocked-Countries
+  CA-Location-Require-MFA-External:
+    conditions.locations.includeLocations: AllTrusted
+  CA-Named-Location-Corporate:
+    conditions.locations.includeLocations: NL-Corporate-HQ
+  CA-SignIn-Risk-High-Block:
+    conditions.signInRiskLevels: high
+  CA-SignIn-Risk-Medium-MFA:
+    conditions.signInRiskLevels: medium, low
+  CA-User-Risk-High-PasswordChange:
+    conditions.userRiskLevels: high
+  CA-User-Risk-Medium-MFA:
+    conditions.userRiskLevels: medium

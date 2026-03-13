@@ -1,0 +1,27 @@
+meta:
+  subject: logging
+  description: Docker daemon logging driver and log rotation settings
+  source_type: docker-daemon
+  total_instances: 3
+base_class:
+  log-driver: json-file
+class_assignments:
+  _base_only:
+    instances:
+    - docker-daemon-ci
+    - docker-daemon-dev
+    - docker-daemon-prod
+instance_data:
+  schema:
+  - log-opts.max-file
+  - log-opts.max-size
+  records:
+    docker-daemon-ci:
+    - '2'
+    - 10m
+    docker-daemon-dev:
+    - '3'
+    - 100m
+    docker-daemon-prod:
+    - '5'
+    - 50m

@@ -1,0 +1,149 @@
+version: 1
+source_type: traefik
+generated_by: decoct-infer
+subjects:
+- name: api-config
+  description: Configuration settings for the Traefik API and dashboard.
+  include_paths:
+  - api.dashboard
+  - api.debug
+  - api.insecure
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which Traefik instances have API debugging enabled?
+  - Compare API dashboard status across the fleet.
+- name: access-logging
+  description: Settings for access logging, including format, buffering, and 
+    field filtering.
+  include_paths:
+  - accessLog.bufferingSize
+  - accessLog.fields.defaultMode
+  - accessLog.fields.headers.defaultMode
+  - accessLog.filters.minDuration
+  - accessLog.filters.retryAttempts
+  - accessLog.format
+  - accessLog.addInternals
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which instances include internal details in access logs?
+  - What is the buffering size for access logs across all instances?
+- name: general-logging
+  description: General logging configuration like level, format, and rotation 
+    settings.
+  include_paths:
+  - log.level
+  - log.compress
+  - log.format
+  - log.maxAge
+  - log.maxBackups
+  - log.maxSize
+  - log.noColor
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which instances have verbose logging enabled?
+  - Compare log retention settings (maxAge, maxBackups) across instances.
+  - Are there any instances overriding the default log color setting?
+- name: global-settings
+  description: Global Traefik settings like new version checks and anonymous 
+    usage.
+  include_paths:
+  - global.checkNewVersion
+  - global.sendAnonymousUsage
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Are all instances configured to check for new Traefik versions?
+  - Which Traefik instances send anonymous usage data?
+- name: providers-docker-config
+  description: Configuration for the Docker provider, including endpoint and 
+    service exposure.
+  include_paths:
+  - providers.docker.allowEmptyServices
+  - providers.docker.endpoint
+  - providers.docker.exposedByDefault
+  - providers.docker.useBindPortIP
+  - providers.docker.watch
+  - providers.providersThrottleDuration
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which Docker providers watch for changes?
+  - Are there instances that allow empty services from Docker?
+- name: providers-file-config
+  description: Configuration for the File provider, including directory and 
+    watching behavior.
+  include_paths:
+  - providers.file.directory
+  - providers.file.watch
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - List all instances using a file provider and their respective directories.
+  - Which file providers are configured to watch for file changes?
+- name: server-transport-security
+  description: Secure transport settings for backend servers, including TLS and 
+    timeouts.
+  include_paths:
+  - serversTransport.disableHTTP2
+  - serversTransport.forwardingTimeouts.**
+  - serversTransport.maxIdleConnsPerHost
+  - serversTransport.insecureSkipVerify
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which instances have insecureSkipVerify enabled for server transport?
+  - Compare idle connection timeouts for server transport across the fleet.
+- name: tls-options
+  description: Global and default TLS options for Traefik.
+  include_paths:
+  - tls.options.default.minVersion
+  - tls.options.default.sniStrict
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What is the minimum TLS version configured for Traefik instances?
+  - Are all instances enforcing SNI strictness?
+- name: entrypoints-config
+  description: Configuration for Traefik entrypoints.
+  include_paths:
+  - entryPoints.**
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - List all defined entrypoints and their configurations for each instance.
+  - Are there any instances with unique entrypoint configurations?
+- name: http-routing-config
+  description: Configuration for HTTP routers and middlewares.
+  include_paths:
+  - http.middlewares
+  - http.routers
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which instances have custom HTTP middlewares defined?
+  - Compare the HTTP router configurations across the fleet.
+- name: metrics-prometheus-config
+  description: Configuration for Prometheus metrics, including labels and 
+    entrypoint.
+  include_paths:
+  - metrics.prometheus.**
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Compare Prometheus label settings (entryPoints, routers, services) per 
+    instance.
+  - Which instances manually route Prometheus metrics?

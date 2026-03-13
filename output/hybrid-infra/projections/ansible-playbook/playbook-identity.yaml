@@ -1,0 +1,82 @@
+meta:
+  subject: playbook-identity
+  description: Core identification and execution control for Ansible playbooks.
+  source_type: ansible-playbook
+  total_instances: 16
+base_class:
+  check_mode: 'false'
+  no_log: 'false'
+  order: inventory
+  run_once: 'false'
+class_assignments:
+  _base_only:
+    instances:
+    - ansible-base-server
+    - ansible-deploy-auth-service
+    - ansible-deploy-billing-api
+    - ansible-deploy-core-api
+    - ansible-deploy-web-app
+    - ansible-emergency-rollback
+    - ansible-harden-ssh
+    - ansible-setup-backup
+    - ansible-setup-cloud-init
+    - ansible-setup-grafana
+    - ansible-setup-mariadb
+    - ansible-setup-monitoring-agent
+    - ansible-setup-postgresql
+    - ansible-setup-prometheus
+    - ansible-setup-traefik
+    - ansible-update-packages
+instance_data:
+  schema:
+  - hosts
+  - name
+  records:
+    ansible-base-server:
+    - all
+    - Base Server Provisioning
+    ansible-deploy-auth-service:
+    - app_servers
+    - Deploy Auth Service
+    ansible-deploy-billing-api:
+    - app_servers
+    - Deploy Billing API
+    ansible-deploy-core-api:
+    - app_servers
+    - Deploy Core API
+    ansible-deploy-web-app:
+    - web_servers
+    - Deploy Web App
+    ansible-emergency-rollback:
+    - app_servers
+    - Emergency Rollback
+    ansible-harden-ssh:
+    - all
+    - Harden SSH Configuration
+    ansible-setup-backup:
+    - db_servers
+    - Setup Backup System
+    ansible-setup-cloud-init:
+    - all
+    - Setup Cloud-Init Configs
+    ansible-setup-grafana:
+    - monitoring_servers
+    - Setup Grafana
+    ansible-setup-mariadb:
+    - legacy_db_servers
+    - Setup MariaDB
+    ansible-setup-monitoring-agent:
+    - all
+    - Setup Monitoring Agent
+    ansible-setup-postgresql:
+    - db_servers
+    - Setup PostgreSQL
+    ansible-setup-prometheus:
+    - monitoring_servers
+    - Setup Prometheus
+    ansible-setup-traefik:
+    - edge_servers
+    - Setup Traefik
+    ansible-update-packages:
+    - all
+    - Update System Packages

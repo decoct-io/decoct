@@ -1,0 +1,122 @@
+version: 1
+source_type: app-config-json
+generated_by: decoct-infer
+subjects:
+- name: application-identity
+  description: Core identification and basic settings for the application.
+  include_paths:
+  - name
+  - environment
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the names and environments of all applications?
+  - Are there any applications running in non-prod environments?
+- name: authentication-settings
+  description: Configuration related to JWT and API key authentication.
+  include_paths:
+  - auth.api_key
+  - auth.jwt_expiry_seconds
+  - auth.jwt_issuer
+  - auth.jwt_refresh_expiry_seconds
+  - auth.jwt_secret
+  - auth.encryption_key
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which applications have a different JWT secret configured?
+  - What are the JWT expiry settings for all applications?
+  - Are there any applications with a shared API key?
+- name: cors-configuration
+  description: Cross-Origin Resource Sharing (CORS) settings.
+  include_paths:
+  - cors.allow_credentials
+  - cors.enabled
+  - cors.methods
+  - cors.origins
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which applications allow credentials for CORS?
+  - What CORS origins are configured for each application?
+  - Are there any applications with CORS disabled?
+- name: logging-setup
+  description: Configuration for application logging.
+  include_paths:
+  - logging.format
+  - logging.output
+  - logging.level
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What logging level is configured for each application?
+  - Are all applications configured to output logs to stdout?
+  - Which applications use a different logging format?
+- name: rate-limiting-parameters
+  description: Settings for API request rate limiting.
+  include_paths:
+  - rate_limiting.burst
+  - rate_limiting.enabled
+  - rate_limiting.requests_per_minute
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What is the requests per minute rate limit for each application?
+  - Are there any applications with rate limiting disabled?
+  - What is the burst limit configured across the applications?
+- name: redis-connection
+  description: Redis connection and pool configuration.
+  include_paths:
+  - redis.url
+  - redis.pool_size
+  - redis.timeout
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the Redis connection URLs for each application?
+  - Are any applications using a non-standard Redis pool size?
+  - What is the Redis connection timeout for all applications?
+- name: database-connection
+  description: Detailed database connection parameters.
+  include_paths:
+  - database.host
+  - database.name
+  - database.password
+  - database.pool_size
+  - database.pool_timeout
+  - database.port
+  - database.ssl
+  - database.user
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which applications connect to a different database host?
+  - What are the database usernames and names for each instance?
+  - Are all applications using SSL for database connections?
+- name: feature-flags
+  description: Configuration switches for various application features.
+  include_paths:
+  - features.auto_retry
+  - features.autocomplete
+  - features.fuzzy_search
+  - features.index_cache
+  - features.invoice_batching
+  - features.mfa_required
+  - features.password_complexity
+  - features.session_rotation
+  - features.stripe_v2
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which applications have 'fuzzy search' enabled?
+  - Is 'MFA required' enabled consistently across all applications?
+  - Are there any applications with 'stripe_v2' enabled but not 
+    'invoice_batching'?

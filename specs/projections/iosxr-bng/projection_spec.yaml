@@ -1,0 +1,210 @@
+version: 1
+source_type: iosxr-bng
+generated_by: decoct-infer
+subjects:
+- name: device-identity
+  description: Core identification and location information for the device.
+  include_paths:
+  - hostname
+  - domain.name
+  - domain.lookup
+  - domain.name-server.**
+  - ntp.source
+  - ntp.server.**
+  - ntp.update-calendar
+  - snmp-server.contact
+  - snmp-server.location
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the domain name servers configured across the fleet?
+  - Is NTP updated from a calendar on all devices?
+  - What are the SNMP contact and location details for each device?
+- name: interface-physical-core
+  description: Configuration for core facing physical interfaces, including 
+    descriptions and IP addressing.
+  include_paths:
+  - interface.TenGigE0/0/0/0.description
+  - interface.TenGigE0/0/0/0.ipv4
+  - interface.TenGigE0/0/0/0.arp
+  - interface.TenGigE0/0/0/0.bandwidth
+  - interface.TenGigE0/0/0/0.carrier-delay.**
+  - interface.TenGigE0/0/0/0.cdp
+  - interface.TenGigE0/0/0/0.load-interval
+  - interface.TenGigE0/0/0/0.mtu
+  - interface.TenGigE0/0/0/0.shutdown
+  - interface.TenGigE0/0/0/1.description
+  - interface.TenGigE0/0/0/1.ipv4
+  - interface.TenGigE0/0/0/1.arp
+  - interface.TenGigE0/0/0/1.bandwidth
+  - interface.TenGigE0/0/0/1.carrier-delay.**
+  - interface.TenGigE0/0/0/1.cdp
+  - interface.TenGigE0/0/0/1.load-interval
+  - interface.TenGigE0/0/0/1.mtu
+  - interface.TenGigE0/0/0/1.shutdown
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the IP addresses assigned to the core uplinks TenGigE0/0/0/0 and 
+    TenGigE0/0/0/1?
+  - Are there any TenGigE interfaces with non-standard MTUs or carrier delay 
+    settings?
+  - Compare the ARP timeout settings on TenGigE0/0/0/0 and TenGigE0/0/0/1 across
+    all devices.
+- name: interface-loopback-management
+  description: Configuration for loopback and management interfaces, including 
+    IP addresses and descriptions.
+  include_paths:
+  - interface.Loopback0.description
+  - interface.Loopback0.ipv4
+  - interface.Loopback0.shutdown
+  - interface.MgmtEth0/RP0/CPU0/0.description
+  - interface.MgmtEth0/RP0/CPU0/0.ipv4
+  - interface.MgmtEth0/RP0/CPU0/0.shutdown
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What is the IPv4 address configured on Loopback0 for each device?
+  - Are there any devices with the Management Ethernet interface shut down?
+  - Compare the descriptions of Loopback0 across the fleet.
+- name: pppoe-subscriber-services
+  description: Configuration for PPPoE and dynamic subscriber services, 
+    including session limits, templates, and pools.
+  include_paths:
+  - pppoe
+  - pppoe.sessions.max
+  - pppoe.sessions.per-mac.**
+  - pool
+  - pool.address-range
+  - dynamic-template.type.**
+  - dynamic-template.type.ppp.**
+  - interface.Bundle-Ether100.pppoe
+  - interface.Bundle-Ether100.100.pppoe
+  - interface.Bundle-Ether100.200.pppoe
+  - interface.Bundle-Ether100.service-policy.**
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the PPPoE session limits configured per device?
+  - Which IP address pools are assigned to which dynamic templates?
+  - Verify the service policies attached to Bundle-Ether100 sub-interfaces.
+- name: isis-routing
+  description: ISIS routing protocol configuration, including interface 
+    settings, address families, and segment routing.
+  include_paths:
+  - router.isis.CORE.**
+  - mpls.address-family
+  - mpls.discovery.**
+  - mpls.graceful-restart
+  - mpls.log
+  - mpls.router-id
+  - segment-routing.global-block
+  - segment-routing.local-block
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Are all ISIS instances configured with segment routing preference?
+  - What are the ISIS metric and hello interval settings on core interfaces?
+  - Are there any devices with a non-standard MPLS router-ID?
+- name: bgp-routing-confederation
+  description: BGP routing protocol configuration, focusing on peering, 
+    confederation, and address families.
+  include_paths:
+  - router.bgp.65005.**
+  - router.bgp.65005.address-family.ipv4-unicast.network
+  - router.bgp.65005.bgp.router-id
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which BGP router-IDs are configured across the fleet?
+  - What BGP networks are being advertised by each device?
+  - Verify the BGP confederation peers match the design.
+- name: aaa-security
+  description: AAA (Authentication, Authorization, Accounting) settings, 
+    including TACACS+ and RADIUS configurations.
+  include_paths:
+  - aaa.accounting.**
+  - aaa.authentication.**
+  - aaa.authorization.**
+  - aaa.group.**
+  - radius-server
+  - radius-server.key
+  - radius-server.retransmit
+  - radius-server.timeout
+  - tacacs-server
+  - tacacs-server.key
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the configured RADIUS and TACACS+ server keys?
+  - Are the AAA authentication methods consistent across all devices?
+  - Check the retry and timeout settings for RADIUS servers.
+- name: system-logging-access
+  description: System logging, SSH, and console access configurations.
+  include_paths:
+  - logging.**
+  - ssh.server.logging
+  - ssh.server.rate-limit
+  - ssh.server.v2
+  - ssh.timeout
+  - line.**
+  - control-plane.management-plane.**
+  - service.timestamps.**
+  - snmp-server.community.**
+  - snmp-server.enable.traps.**
+  - snmp-server.host
+  - snmp-server.trap-source
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the logging levels configured for each device?
+  - Are SSH servers configured for v2 and with a rate-limit?
+  - Which SNMP hosts are configured to receive traps?
+- name: policy-maps-qos
+  description: Detailed configuration of quality of service policy maps and 
+    their classes.
+  include_paths:
+  - policy-map.PM-BUSINESS-10GBPS.**
+  - policy-map.PM-RESIDENTIAL-1GBPS.**
+  - policy-map.PM-RESIDENTIAL-500MBPS.**
+  - policy-map.PM-WHOLESALE-100MBPS.**
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Compare the `police` rates configured within the 'PM-BUSINESS-10GBPS' policy
+    map across all devices.
+  - Are there any variations in the `shape` parameters for the 
+    'PM-RESIDENTIAL-1GBPS' policy map?
+  - Verify the `bandwidth` and `queue-limit` settings for all classes in the 
+    'PM-WHOLESALE-100MBPS' policy map.
+- name: general-interface-bundle-ether
+  description: General settings for the main Bundle-Ethernet subscriber-facing 
+    interface.
+  include_paths:
+  - interface.Bundle-Ether100.description
+  - interface.Bundle-Ether100.bandwidth
+  - interface.Bundle-Ether100.carrier-delay.**
+  - interface.Bundle-Ether100.cdp
+  - interface.Bundle-Ether100.load-interval
+  - interface.Bundle-Ether100.mtu
+  - interface.Bundle-Ether100.shutdown
+  - interface.Bundle-Ether100.100
+  - interface.Bundle-Ether100.100.encapsulation
+  - interface.Bundle-Ether100.200
+  - interface.Bundle-Ether100.200.encapsulation
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What is the configured MTU for Bundle-Ether100 across the fleet?
+  - Are the encapsulation types for Bundle-Ether100.100 and .200 consistent?
+  - Check the `carrier-delay` settings for the main Bundle-Ethernet interface.

@@ -1,0 +1,45 @@
+meta:
+  subject: management-interfaces
+  description: Configuration specific to management interfaces.
+  source_type: iosxr-p-core
+  total_instances: 6
+base_class:
+  control-plane.management-plane.inband.interface.all.allow.SNMP: 'true'
+  control-plane.management-plane.inband.interface.all.allow.SSH: 'true'
+  interface.MgmtEth0/RP0/CPU0/0.shutdown: 'false'
+  router.static.address-family.ipv4-unicast.0.0.0.0/0: MgmtEth0/RP0/CPU0/0 
+    192.168.100.254
+class_assignments:
+  _base_only:
+    instances:
+    - P-CORE-01..P-CORE-06
+instance_data:
+  schema:
+  - hostname
+  - interface.MgmtEth0/RP0/CPU0/0.description
+  - interface.MgmtEth0/RP0/CPU0/0.ipv4
+  records:
+    P-CORE-01:
+    - P-CORE-01
+    - MGMT-P-CORE-01
+    - address 192.168.100.1 255.255.255.0
+    P-CORE-02:
+    - P-CORE-02
+    - MGMT-P-CORE-02
+    - address 192.168.100.2 255.255.255.0
+    P-CORE-03:
+    - P-CORE-03
+    - MGMT-P-CORE-03
+    - address 192.168.100.3 255.255.255.0
+    P-CORE-04:
+    - P-CORE-04
+    - MGMT-P-CORE-04
+    - address 192.168.100.4 255.255.255.0
+    P-CORE-05:
+    - P-CORE-05
+    - MGMT-P-CORE-05
+    - address 192.168.100.5 255.255.255.0
+    P-CORE-06:
+    - P-CORE-06
+    - MGMT-P-CORE-06
+    - address 192.168.100.6 255.255.255.0

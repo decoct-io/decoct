@@ -1,0 +1,33 @@
+meta:
+  subject: ip-ranges
+  description: IP range configurations defining the network boundaries of the 
+    named location.
+  source_type: entra-named-location
+  total_instances: 6
+class_assignments:
+  _base_only:
+    instances:
+    - NL-Allowed-Countries
+    - NL-Blocked-Countries
+    - NL-Branch-Office-EU
+    - NL-Corporate-HQ
+    - NL-Guest-Network
+    - NL-VPN-Gateway
+instance_attrs:
+  NL-Branch-Office-EU:
+    ipRanges:
+    - cidrAddress: 198.51.100.0/24
+    - cidrAddress: 192.0.2.0/24
+  NL-Corporate-HQ:
+    ipRanges:
+    - cidrAddress: 10.0.0.0/8
+    - cidrAddress: 172.16.0.0/12
+    - cidrAddress: 203.0.113.0/24
+  NL-Guest-Network:
+    ipRanges:
+    - cidrAddress: 10.99.0.0/16
+    - cidrAddress: 172.31.0.0/16
+  NL-VPN-Gateway:
+    ipRanges:
+    - cidrAddress: 203.0.113.50/32
+    - cidrAddress: 203.0.113.51/32

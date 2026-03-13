@@ -1,0 +1,45 @@
+meta:
+  subject: management-interfaces
+  description: Configuration for management-specific interfaces, including 
+    loopback and management ethernet.
+  source_type: iosxr-rr
+  total_instances: 4
+base_class:
+  interface.Loopback0.shutdown: 'false'
+  interface.MgmtEth0/RP0/CPU0/0.shutdown: 'false'
+class_assignments:
+  _base_only:
+    instances:
+    - RR-01..RR-04
+instance_data:
+  schema:
+  - hostname
+  - interface.Loopback0.description
+  - interface.Loopback0.ipv4
+  - interface.MgmtEth0/RP0/CPU0/0.description
+  - interface.MgmtEth0/RP0/CPU0/0.ipv4
+  records:
+    RR-01:
+    - RR-01
+    - RR-01 Router-ID
+    - address 10.0.0.11 255.255.255.255
+    - MGMT-RR-01
+    - address 192.168.100.11 255.255.255.0
+    RR-02:
+    - RR-02
+    - RR-02 Router-ID
+    - address 10.0.0.12 255.255.255.255
+    - MGMT-RR-02
+    - address 192.168.100.12 255.255.255.0
+    RR-03:
+    - RR-03
+    - RR-03 Router-ID
+    - address 10.0.0.13 255.255.255.255
+    - MGMT-RR-03
+    - address 192.168.100.13 255.255.255.0
+    RR-04:
+    - RR-04
+    - RR-04 Router-ID
+    - address 10.0.0.14 255.255.255.255
+    - MGMT-RR-04
+    - address 192.168.100.14 255.255.255.0

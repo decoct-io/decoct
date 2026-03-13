@@ -1,0 +1,36 @@
+meta:
+  subject: connections-and-timeouts
+  description: Connection limits, thread caching, and timeout configuration
+  source_type: mariadb
+  total_instances: 5
+base_class:
+  mysqld.back_log: '-1'
+  mysqld.connect_timeout: '10'
+  mysqld.interactive_timeout: '28800'
+  mysqld.net_read_timeout: '30'
+  mysqld.net_write_timeout: '60'
+  mysqld.port: '3306'
+  mysqld.thread_cache_size: '-1'
+  mysqld.wait_timeout: '28800'
+class_assignments:
+  _base_only:
+    instances:
+    - maria-dev
+    - maria-galera-node
+    - maria-legacy-billing
+    - maria-legacy-main
+    - maria-staging
+instance_data:
+  schema:
+  - mysqld.max_connections
+  records:
+    maria-dev:
+    - '50'
+    maria-galera-node:
+    - '300'
+    maria-legacy-billing:
+    - '200'
+    maria-legacy-main:
+    - '151'
+    maria-staging:
+    - '100'

@@ -1,0 +1,38 @@
+meta:
+  subject: logging-and-monitoring
+  description: Slow query log, general log, error log, and performance schema 
+    settings
+  source_type: mariadb
+  total_instances: 5
+base_class:
+  mysqld.log_output: FILE
+  mysqld.log_slow_admin_statements: 'false'
+  mysqld.performance_schema: 'true'
+class_assignments:
+  _base_only:
+    instances:
+    - maria-dev
+    - maria-galera-node
+    - maria-legacy-billing
+    - maria-legacy-main
+    - maria-staging
+instance_data:
+  schema:
+  - mysqld.long_query_time
+  - mysqld.slow_query_log
+  records:
+    maria-dev:
+    - '0'
+    - 'true'
+    maria-galera-node:
+    - '1'
+    - 'true'
+    maria-legacy-billing:
+    - '2'
+    - 'true'
+    maria-legacy-main:
+    - '10'
+    - 'false'
+    maria-staging:
+    - '10'
+    - 'false'

@@ -1,0 +1,46 @@
+meta:
+  subject: session-and-connection
+  description: Session limits, keepalive, compression, and TCP settings
+  source_type: sshd
+  total_instances: 4
+base_class:
+  TCPKeepAlive: 'true'
+classes:
+  AddressFamily_any_ClientAliveCountMax_3:
+    inherits: base
+    own_attrs:
+      AddressFamily: any
+      ClientAliveCountMax: '3'
+      Port: '22'
+    instance_count_inclusive: 3
+class_assignments:
+  AddressFamily_any_ClientAliveCountMax_3:
+    instances:
+    - sshd-dev
+    - sshd-prod
+    - sshd-staging
+  _base_only:
+    instances:
+    - sshd-bastion
+instance_data:
+  schema:
+  - ClientAliveInterval
+  - Compression
+  - MaxSessions
+  records:
+    sshd-bastion:
+    - '120'
+    - 'false'
+    - '1'
+    sshd-dev:
+    - '0'
+    - 'true'
+    - '10'
+    sshd-prod:
+    - '300'
+    - 'false'
+    - '2'
+    sshd-staging:
+    - '0'
+    - 'true'
+    - '10'

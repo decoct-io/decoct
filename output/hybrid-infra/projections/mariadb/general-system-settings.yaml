@@ -1,0 +1,22 @@
+meta:
+  subject: general-system-settings
+  description: Miscellaneous system-level settings, including security file 
+    privileges, port, and auto-commit behavior.
+  source_type: mariadb
+  total_instances: 5
+base_class:
+  mysqld.autocommit: 'true'
+  mysqld.div_precision_increment: '4'
+  mysqld.explicit_defaults_for_timestamp: 'true'
+  mysqld.local_infile: 'false'
+  mysqld.performance_schema: 'true'
+  mysqld.port: '3306'
+  mysqld.secure_file_priv: 'NULL'
+class_assignments:
+  _base_only:
+    instances:
+    - maria-dev
+    - maria-galera-node
+    - maria-legacy-billing
+    - maria-legacy-main
+    - maria-staging

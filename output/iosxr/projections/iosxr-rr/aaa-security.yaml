@@ -1,0 +1,38 @@
+meta:
+  subject: aaa-security
+  description: Authentication, Authorization, and Accounting settings.
+  source_type: iosxr-rr
+  total_instances: 4
+base_class:
+  aaa.accounting.commands: 15 default start-stop group tacacs+
+  aaa.accounting.exec: default start-stop group tacacs+
+  aaa.authentication: login default group tacacs+ local
+  aaa.authorization.commands: 15 default group tacacs+ local
+  aaa.authorization.exec: default group tacacs+ local
+  control-plane.management-plane.inband.interface.all.allow.SSH: 'true'
+  line: default
+  line.exec-timeout: 15 0
+  line.session-timeout: '15'
+  line.transport: input ssh
+  ssh.server.logging: 'true'
+  ssh.server.rate-limit: '60'
+  ssh.server.v2: 'true'
+  ssh.timeout: '30'
+  tacacs-server: host T4c4csK3y!2024 port 49
+  tacacs-server.key: 7 T4c4csK3y!2024
+class_assignments:
+  _base_only:
+    instances:
+    - RR-01..RR-04
+instance_data:
+  schema:
+  - hostname
+  records:
+    RR-01:
+    - RR-01
+    RR-02:
+    - RR-02
+    RR-03:
+    - RR-03
+    RR-04:
+    - RR-04

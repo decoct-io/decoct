@@ -1,0 +1,158 @@
+meta:
+  subject: api-permissions
+  description: OAuth2 permission scopes, required resource access, and API 
+    settings
+  source_type: entra-application
+  total_instances: 12
+base_class:
+  api.requestedAccessTokenVersion: '2'
+class_assignments:
+  _base_only:
+    instances:
+    - App-API-Backend
+    - App-API-Gateway
+    - App-B2C-Customer-Portal
+    - App-Daemon-Service
+    - App-DevTest-Sandbox
+    - App-Legacy-WinApp
+    - App-Mobile-Android
+    - App-Mobile-iOS
+    - App-Portal-SPA
+    - App-Portal-Web
+    - App-PowerBI-Embedded
+    - App-Teams-Bot
+instance_attrs:
+  App-API-Backend:
+    api.oauth2PermissionScopes:
+      access_as_user:
+        adminConsentDescription: Allow the application to access App-API-Backend
+          on behalf of the signed-in user.
+        adminConsentDisplayName: access_as_user
+        isEnabled: 'true'
+        type: User
+        userConsentDescription: Allow the application to access App-API-Backend 
+          on your behalf.
+        userConsentDisplayName: access_as_user
+      read_all:
+        adminConsentDescription: Allow the application to access App-API-Backend
+          on behalf of the signed-in user.
+        adminConsentDisplayName: read_all
+        isEnabled: 'true'
+        type: User
+        userConsentDescription: Allow the application to access App-API-Backend 
+          on your behalf.
+        userConsentDisplayName: read_all
+      write_all:
+        adminConsentDescription: Allow the application to access App-API-Backend
+          on behalf of the signed-in user.
+        adminConsentDisplayName: write_all
+        isEnabled: 'true'
+        type: User
+        userConsentDescription: Allow the application to access App-API-Backend 
+          on your behalf.
+        userConsentDisplayName: write_all
+    requiredResourceAccess:
+    - resourceAppId: 00000003-0000-0000-c000-000000000000
+      resourceAccess.0.type: Scope
+  App-API-Gateway:
+    api.oauth2PermissionScopes:
+      gateway.read:
+        adminConsentDescription: Allow the application to access App-API-Gateway
+          on behalf of the signed-in user.
+        adminConsentDisplayName: gateway.read
+        isEnabled: 'true'
+        type: User
+        userConsentDescription: Allow the application to access App-API-Gateway 
+          on your behalf.
+        userConsentDisplayName: gateway.read
+      gateway.write:
+        adminConsentDescription: Allow the application to access App-API-Gateway
+          on behalf of the signed-in user.
+        adminConsentDisplayName: gateway.write
+        isEnabled: 'true'
+        type: User
+        userConsentDescription: Allow the application to access App-API-Gateway 
+          on your behalf.
+        userConsentDisplayName: gateway.write
+    requiredResourceAccess:
+    - resourceAppId: 00000003-0000-0000-c000-000000000000
+      resourceAccess.0.type: Scope
+    - resourceAppId: 00000003-0000-0000-c000-000000000000
+      resourceAccess.0.type: Scope
+  App-B2C-Customer-Portal:
+    requiredResourceAccess:
+    - resourceAppId: 00000003-0000-0000-c000-000000000000
+      resourceAccess.0.type: Scope
+    - resourceAppId: 00000003-0000-0000-c000-000000000000
+      resourceAccess.0.type: Scope
+    - resourceAppId: 00000003-0000-0000-c000-000000000000
+      resourceAccess.0.type: Scope
+  App-Daemon-Service:
+    requiredResourceAccess:
+    - resourceAppId: 00000003-0000-0000-c000-000000000000
+      resourceAccess.0.type: Scope
+    - resourceAppId: 00000003-0000-0000-c000-000000000000
+      resourceAccess.0.type: Scope
+  App-DevTest-Sandbox:
+    api.oauth2PermissionScopes:
+      test.read:
+        adminConsentDescription: Allow the application to access 
+          App-DevTest-Sandbox on behalf of the signed-in user.
+        adminConsentDisplayName: test.read
+        isEnabled: 'true'
+        type: User
+        userConsentDescription: Allow the application to access 
+          App-DevTest-Sandbox on your behalf.
+        userConsentDisplayName: test.read
+      test.write:
+        adminConsentDescription: Allow the application to access 
+          App-DevTest-Sandbox on behalf of the signed-in user.
+        adminConsentDisplayName: test.write
+        isEnabled: 'true'
+        type: User
+        userConsentDescription: Allow the application to access 
+          App-DevTest-Sandbox on your behalf.
+        userConsentDisplayName: test.write
+    requiredResourceAccess:
+    - resourceAppId: 00000003-0000-0000-c000-000000000000
+      resourceAccess.0.type: Scope
+  App-Legacy-WinApp:
+    requiredResourceAccess:
+    - resourceAppId: 00000003-0000-0000-c000-000000000000
+      resourceAccess.0.type: Scope
+  App-Mobile-Android:
+    requiredResourceAccess:
+    - resourceAppId: 00000003-0000-0000-c000-000000000000
+      resourceAccess.0.type: Scope
+    - resourceAppId: 00000003-0000-0000-c000-000000000000
+      resourceAccess.0.type: Scope
+  App-Mobile-iOS:
+    requiredResourceAccess:
+    - resourceAppId: 00000003-0000-0000-c000-000000000000
+      resourceAccess.0.type: Scope
+    - resourceAppId: 00000003-0000-0000-c000-000000000000
+      resourceAccess.0.type: Scope
+  App-Portal-SPA:
+    requiredResourceAccess:
+    - resourceAppId: 00000003-0000-0000-c000-000000000000
+      resourceAccess.0.type: Scope
+  App-Portal-Web:
+    requiredResourceAccess:
+    - resourceAppId: 00000003-0000-0000-c000-000000000000
+      resourceAccess.0.type: Scope
+    - resourceAppId: 00000003-0000-0000-c000-000000000000
+      resourceAccess.0.type: Scope
+  App-PowerBI-Embedded:
+    requiredResourceAccess:
+    - resourceAppId: 00000003-0000-0000-c000-000000000000
+      resourceAccess.0.type: Scope
+    - resourceAppId: 00000003-0000-0000-c000-000000000000
+      resourceAccess.0.type: Scope
+    - resourceAppId: 00000003-0000-0000-c000-000000000000
+      resourceAccess.0.type: Scope
+  App-Teams-Bot:
+    requiredResourceAccess:
+    - resourceAppId: 00000003-0000-0000-c000-000000000000
+      resourceAccess.0.type: Scope
+    - resourceAppId: 00000003-0000-0000-c000-000000000000
+      resourceAccess.0.type: Scope

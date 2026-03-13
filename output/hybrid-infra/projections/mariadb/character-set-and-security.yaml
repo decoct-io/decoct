@@ -1,0 +1,24 @@
+meta:
+  subject: character-set-and-security
+  description: Character set, collation, storage engine defaults, and security 
+    settings
+  source_type: mariadb
+  total_instances: 5
+base_class:
+  mysqld.autocommit: 'true'
+  mysqld.character_set_filesystem: binary
+  mysqld.default_storage_engine: InnoDB
+  mysqld.default_tmp_storage_engine: InnoDB
+  mysqld.explicit_defaults_for_timestamp: 'true'
+  mysqld.local_infile: 'false'
+  mysqld.lower_case_table_names: '0'
+  mysqld.secure_file_priv: 'NULL'
+  mysqld.sql_require_primary_key: 'false'
+class_assignments:
+  _base_only:
+    instances:
+    - maria-dev
+    - maria-galera-node
+    - maria-legacy-billing
+    - maria-legacy-main
+    - maria-staging

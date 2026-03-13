@@ -1,0 +1,22 @@
+meta:
+  subject: database-connection
+  description: Detailed database connection parameters.
+  source_type: app-config-json
+  total_instances: 3
+class_assignments:
+  _base_only:
+    instances:
+    - app-config-auth-jwt
+    - app-config-billing
+    - app-config-search
+instance_attrs:
+  app-config-auth-jwt:
+    database.host: db-prod-01
+    database.name: auth
+    database.port: '5432'
+    database.user: auth_svc
+  app-config-billing:
+    database.host: db-legacy-01
+    database.name: billing
+    database.port: '3306'
+    database.user: billing_svc

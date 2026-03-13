@@ -1,0 +1,48 @@
+meta:
+  subject: device-identity
+  description: Core identification and location information for the device.
+  source_type: iosxr-bng
+  total_instances: 8
+base_class:
+  domain.lookup: disable
+  domain.name: lab.example.com
+  domain.name-server.10.255.2.1: 'true'
+  domain.name-server.10.255.2.2: 'true'
+  ntp.server.10.255.0.1: 'true'
+  ntp.server.10.255.0.2: 'true'
+  ntp.source: Loopback0
+  ntp.update-calendar: 'true'
+  snmp-server.contact: noc@example.com
+class_assignments:
+  _base_only:
+    instances:
+    - BNG-01..BNG-08
+instance_data:
+  schema:
+  - hostname
+  - snmp-server.location
+  records:
+    BNG-01:
+    - BNG-01
+    - BNG-01-RACK
+    BNG-02:
+    - BNG-02
+    - BNG-02-RACK
+    BNG-03:
+    - BNG-03
+    - BNG-03-RACK
+    BNG-04:
+    - BNG-04
+    - BNG-04-RACK
+    BNG-05:
+    - BNG-05
+    - BNG-05-RACK
+    BNG-06:
+    - BNG-06
+    - BNG-06-RACK
+    BNG-07:
+    - BNG-07
+    - BNG-07-RACK
+    BNG-08:
+    - BNG-08
+    - BNG-08-RACK

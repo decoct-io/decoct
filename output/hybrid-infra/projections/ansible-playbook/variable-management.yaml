@@ -1,0 +1,38 @@
+meta:
+  subject: variable-management
+  description: Key variables used within Ansible playbooks that might override 
+    defaults.
+  source_type: ansible-playbook
+  total_instances: 16
+class_assignments:
+  _base_only:
+    instances:
+    - ansible-base-server
+    - ansible-deploy-auth-service
+    - ansible-deploy-billing-api
+    - ansible-deploy-core-api
+    - ansible-deploy-web-app
+    - ansible-emergency-rollback
+    - ansible-harden-ssh
+    - ansible-setup-backup
+    - ansible-setup-cloud-init
+    - ansible-setup-grafana
+    - ansible-setup-mariadb
+    - ansible-setup-monitoring-agent
+    - ansible-setup-postgresql
+    - ansible-setup-prometheus
+    - ansible-setup-traefik
+    - ansible-update-packages
+instance_attrs:
+  ansible-deploy-auth-service:
+    vars.app_port: '8001'
+    vars.app_version: 1.8.0
+  ansible-deploy-billing-api:
+    vars.app_port: '8002'
+    vars.app_version: 1.3.0
+  ansible-deploy-core-api:
+    vars.app_port: '8000'
+    vars.app_version: 2.1.0
+  ansible-deploy-web-app:
+    vars.app_port: '3000'
+    vars.app_version: 3.0.0

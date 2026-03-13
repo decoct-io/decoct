@@ -1,0 +1,22 @@
+meta:
+  subject: application-environment
+  description: Environmental variables and service-specific configurations for 
+    applications.
+  source_type: ansible-vars
+  total_instances: 3
+class_assignments:
+  _base_only:
+    instances:
+    - ansible-vars-dev
+    - ansible-vars-prod
+    - ansible-vars-staging
+instance_data:
+  schema:
+  - env
+  records:
+    ansible-vars-dev:
+    - dev
+    ansible-vars-prod:
+    - prod
+    ansible-vars-staging:
+    - staging

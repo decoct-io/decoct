@@ -1,0 +1,28 @@
+meta:
+  subject: access-logging
+  description: Settings for access logging, including format, buffering, and 
+    field filtering.
+  source_type: traefik
+  total_instances: 4
+base_class:
+  accessLog.bufferingSize: '0'
+  accessLog.fields.defaultMode: keep
+  accessLog.fields.headers.defaultMode: drop
+  accessLog.filters.minDuration: '0'
+  accessLog.filters.retryAttempts: 'false'
+  accessLog.format: common
+classes:
+  addInternals_false_noColor_false:
+    inherits: base
+    own_attrs:
+      accessLog.addInternals: 'false'
+    instance_count_inclusive: 3
+class_assignments:
+  addInternals_false_noColor_false:
+    instances:
+    - traefik-prod-dynamic
+    - traefik-prod-static
+    - traefik-staging
+  _base_only:
+    instances:
+    - traefik-dev

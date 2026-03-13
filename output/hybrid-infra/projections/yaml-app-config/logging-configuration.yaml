@@ -1,0 +1,28 @@
+meta:
+  subject: logging-configuration
+  description: Details about application logging settings.
+  source_type: yaml-app-config
+  total_instances: 3
+base_class:
+  logging.file.compress: 'true'
+  logging.file.max_backups: '5'
+  logging.file.max_size: 100MB
+  logging.file.path: /var/log/ridgeline/app.log
+  logging.format: json
+  logging.handlers: console,file
+class_assignments:
+  _base_only:
+    instances:
+    - yaml-app-feature-flags
+    - yaml-app-logging-config
+    - yaml-app-service-mesh
+instance_data:
+  schema:
+  - logging.level
+  records:
+    yaml-app-feature-flags:
+    - INFO
+    yaml-app-logging-config:
+    - INFO
+    yaml-app-service-mesh:
+    - WARNING

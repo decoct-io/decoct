@@ -1,0 +1,30 @@
+meta:
+  subject: inbound-trust-settings
+  description: Configurations related to accepting compliant, hybrid Azure AD 
+    joined, and MFA-enabled devices for inbound trust.
+  source_type: entra-cross-tenant
+  total_instances: 3
+class_assignments:
+  _base_only:
+    instances:
+    - CTA-Default-Settings
+    - CTA-Partner-Contoso
+    - CTA-Partner-Fabrikam
+instance_data:
+  schema:
+  - inboundTrust.isCompliantDeviceAccepted
+  - inboundTrust.isHybridAzureADJoinedDeviceAccepted
+  - inboundTrust.isMfaAccepted
+  records:
+    CTA-Default-Settings:
+    - 'false'
+    - 'false'
+    - 'false'
+    CTA-Partner-Contoso:
+    - 'true'
+    - 'true'
+    - 'true'
+    CTA-Partner-Fabrikam:
+    - 'false'
+    - 'false'
+    - 'true'

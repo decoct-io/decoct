@@ -1,18 +1,14 @@
 meta:
   subject: authentication
-  description: Settings related to user authentication methods.
+  description: Authentication methods including pubkey, password, 
+    keyboard-interactive, and Kerberos
   source_type: sshd
   total_instances: 4
 base_class:
-  ExposeAuthInfo: 'false'
   HostbasedAuthentication: 'false'
-  IgnoreRhosts: 'true'
-  IgnoreUserKnownHosts: 'false'
   KerberosAuthentication: 'false'
   PermitEmptyPasswords: 'false'
-  PermitUserEnvironment: 'false'
   PubkeyAuthentication: 'true'
-  StrictModes: 'true'
 class_assignments:
   _base_only:
     instances:
@@ -20,3 +16,35 @@ class_assignments:
     - sshd-dev
     - sshd-prod
     - sshd-staging
+instance_data:
+  schema:
+  - KbdInteractiveAuthentication
+  - LoginGraceTime
+  - MaxAuthTries
+  - PasswordAuthentication
+  records:
+    sshd-bastion:
+    - 'false'
+    - '30'
+    - '3'
+    - 'false'
+    sshd-dev:
+    - 'true'
+    - '120'
+    - '6'
+    - 'true'
+    sshd-prod:
+    - 'false'
+    - '60'
+    - '3'
+    - 'false'
+    sshd-staging:
+    - 'true'
+    - '120'
+    - '6'
+    - 'true'
+instance_attrs:
+  sshd-bastion:
+    AllowUsers: deploy ops
+  sshd-prod:
+    AllowUsers: deploy ops admins

@@ -1,0 +1,290 @@
+meta:
+  subject: isis-routing
+  description: IS-IS CORE routing protocol configuration including address 
+    families, interface metrics, and segment routing
+  source_type: iosxr-access-pe
+  total_instances: 60
+base_class:
+  router.isis.CORE.address-family.ipv4-unicast.metric-style: wide
+  router.isis.CORE.address-family.ipv4-unicast.mpls.traffic-eng.level-2-only: 'true'
+  router.isis.CORE.address-family.ipv4-unicast.mpls.traffic-eng.router-id: 
+    Loopback0
+  router.isis.CORE.address-family.ipv4-unicast.router-id: Loopback0
+  router.isis.CORE.address-family.ipv4-unicast.segment-routing: mpls sr-prefer
+  router.isis.CORE.address-family.ipv6-unicast.metric-style: wide
+  router.isis.CORE.address-family.ipv6-unicast.segment-routing: mpls sr-prefer
+  router.isis.CORE.interface.Loopback0.address-family: ipv6 unicast
+  router.isis.CORE.interface.Loopback0.passive: 'true'
+  router.isis.CORE.interface.TenGigE0/0/0/0.address-family.ipv4-unicast.metric: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/0.address-family.ipv6-unicast.metric: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/0.csnp-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/0.hello-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/0.hello-multiplier: '3'
+  router.isis.CORE.interface.TenGigE0/0/0/0.point-to-point: 'true'
+  router.isis.CORE.interface.TenGigE0/0/0/0.retransmit-interval: '5'
+  router.isis.CORE.interface.TenGigE0/0/0/1.address-family.ipv4-unicast.metric: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/1.address-family.ipv6-unicast.metric: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/1.csnp-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/1.hello-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/1.hello-multiplier: '3'
+  router.isis.CORE.interface.TenGigE0/0/0/1.point-to-point: 'true'
+  router.isis.CORE.interface.TenGigE0/0/0/1.retransmit-interval: '5'
+  router.isis.CORE.is-type: level-2-only
+  router.isis.CORE.log: adjacency changes
+  router.isis.CORE.lsp-lifetime: '1200'
+  router.isis.CORE.lsp-mtu: '1497'
+  router.isis.CORE.lsp-refresh-interval: '900'
+  segment-routing.global-block: 16000 23999
+  segment-routing.local-block: 15000 15999
+class_assignments:
+  _base_only:
+    instances:
+    - APE-R1-01..APE-R1-20
+    - APE-R2-01..APE-R2-20
+    - APE-R3-01..APE-R3-20
+instance_data:
+  schema:
+  - hostname
+  - router.isis.CORE.interface.Loopback0.address-family.ipv4-unicast.prefix-sid
+  - router.isis.CORE.net
+  records:
+    APE-R1-01:
+    - APE-R1-01
+    - index 16101
+    - 49.0001.0100.0001.0001.00
+    APE-R1-02:
+    - APE-R1-02
+    - index 16102
+    - 49.0001.0100.0001.0002.00
+    APE-R1-03:
+    - APE-R1-03
+    - index 16103
+    - 49.0001.0100.0001.0003.00
+    APE-R1-04:
+    - APE-R1-04
+    - index 16104
+    - 49.0001.0100.0001.0004.00
+    APE-R1-05:
+    - APE-R1-05
+    - index 16105
+    - 49.0001.0100.0001.0005.00
+    APE-R1-06:
+    - APE-R1-06
+    - index 16106
+    - 49.0001.0100.0001.0006.00
+    APE-R1-07:
+    - APE-R1-07
+    - index 16107
+    - 49.0001.0100.0001.0007.00
+    APE-R1-08:
+    - APE-R1-08
+    - index 16108
+    - 49.0001.0100.0001.0008.00
+    APE-R1-09:
+    - APE-R1-09
+    - index 16109
+    - 49.0001.0100.0001.0009.00
+    APE-R1-10:
+    - APE-R1-10
+    - index 16110
+    - 49.0001.0100.0001.0010.00
+    APE-R1-11:
+    - APE-R1-11
+    - index 16111
+    - 49.0001.0100.0001.0011.00
+    APE-R1-12:
+    - APE-R1-12
+    - index 16112
+    - 49.0001.0100.0001.0012.00
+    APE-R1-13:
+    - APE-R1-13
+    - index 16113
+    - 49.0001.0100.0001.0013.00
+    APE-R1-14:
+    - APE-R1-14
+    - index 16114
+    - 49.0001.0100.0001.0014.00
+    APE-R1-15:
+    - APE-R1-15
+    - index 16115
+    - 49.0001.0100.0001.0015.00
+    APE-R1-16:
+    - APE-R1-16
+    - index 16116
+    - 49.0001.0100.0001.0016.00
+    APE-R1-17:
+    - APE-R1-17
+    - index 16117
+    - 49.0001.0100.0001.0017.00
+    APE-R1-18:
+    - APE-R1-18
+    - index 16118
+    - 49.0001.0100.0001.0018.00
+    APE-R1-19:
+    - APE-R1-19
+    - index 16119
+    - 49.0001.0100.0001.0019.00
+    APE-R1-20:
+    - APE-R1-20
+    - index 16120
+    - 49.0001.0100.0001.0020.00
+    APE-R2-01:
+    - APE-R2-01
+    - index 16121
+    - 49.0001.0100.0001.0021.00
+    APE-R2-02:
+    - APE-R2-02
+    - index 16122
+    - 49.0001.0100.0001.0022.00
+    APE-R2-03:
+    - APE-R2-03
+    - index 16123
+    - 49.0001.0100.0001.0023.00
+    APE-R2-04:
+    - APE-R2-04
+    - index 16124
+    - 49.0001.0100.0001.0024.00
+    APE-R2-05:
+    - APE-R2-05
+    - index 16125
+    - 49.0001.0100.0001.0025.00
+    APE-R2-06:
+    - APE-R2-06
+    - index 16126
+    - 49.0001.0100.0001.0026.00
+    APE-R2-07:
+    - APE-R2-07
+    - index 16127
+    - 49.0001.0100.0001.0027.00
+    APE-R2-08:
+    - APE-R2-08
+    - index 16128
+    - 49.0001.0100.0001.0028.00
+    APE-R2-09:
+    - APE-R2-09
+    - index 16129
+    - 49.0001.0100.0001.0029.00
+    APE-R2-10:
+    - APE-R2-10
+    - index 16130
+    - 49.0001.0100.0001.0030.00
+    APE-R2-11:
+    - APE-R2-11
+    - index 16131
+    - 49.0001.0100.0001.0031.00
+    APE-R2-12:
+    - APE-R2-12
+    - index 16132
+    - 49.0001.0100.0001.0032.00
+    APE-R2-13:
+    - APE-R2-13
+    - index 16133
+    - 49.0001.0100.0001.0033.00
+    APE-R2-14:
+    - APE-R2-14
+    - index 16134
+    - 49.0001.0100.0001.0034.00
+    APE-R2-15:
+    - APE-R2-15
+    - index 16135
+    - 49.0001.0100.0001.0035.00
+    APE-R2-16:
+    - APE-R2-16
+    - index 16136
+    - 49.0001.0100.0001.0036.00
+    APE-R2-17:
+    - APE-R2-17
+    - index 16137
+    - 49.0001.0100.0001.0037.00
+    APE-R2-18:
+    - APE-R2-18
+    - index 16138
+    - 49.0001.0100.0001.0038.00
+    APE-R2-19:
+    - APE-R2-19
+    - index 16139
+    - 49.0001.0100.0001.0039.00
+    APE-R2-20:
+    - APE-R2-20
+    - index 16140
+    - 49.0001.0100.0001.0040.00
+    APE-R3-01:
+    - APE-R3-01
+    - index 16141
+    - 49.0001.0100.0001.0041.00
+    APE-R3-02:
+    - APE-R3-02
+    - index 16142
+    - 49.0001.0100.0001.0042.00
+    APE-R3-03:
+    - APE-R3-03
+    - index 16143
+    - 49.0001.0100.0001.0043.00
+    APE-R3-04:
+    - APE-R3-04
+    - index 16144
+    - 49.0001.0100.0001.0044.00
+    APE-R3-05:
+    - APE-R3-05
+    - index 16145
+    - 49.0001.0100.0001.0045.00
+    APE-R3-06:
+    - APE-R3-06
+    - index 16146
+    - 49.0001.0100.0001.0046.00
+    APE-R3-07:
+    - APE-R3-07
+    - index 16147
+    - 49.0001.0100.0001.0047.00
+    APE-R3-08:
+    - APE-R3-08
+    - index 16148
+    - 49.0001.0100.0001.0048.00
+    APE-R3-09:
+    - APE-R3-09
+    - index 16149
+    - 49.0001.0100.0001.0049.00
+    APE-R3-10:
+    - APE-R3-10
+    - index 16150
+    - 49.0001.0100.0001.0050.00
+    APE-R3-11:
+    - APE-R3-11
+    - index 16151
+    - 49.0001.0100.0001.0051.00
+    APE-R3-12:
+    - APE-R3-12
+    - index 16152
+    - 49.0001.0100.0001.0052.00
+    APE-R3-13:
+    - APE-R3-13
+    - index 16153
+    - 49.0001.0100.0001.0053.00
+    APE-R3-14:
+    - APE-R3-14
+    - index 16154
+    - 49.0001.0100.0001.0054.00
+    APE-R3-15:
+    - APE-R3-15
+    - index 16155
+    - 49.0001.0100.0001.0055.00
+    APE-R3-16:
+    - APE-R3-16
+    - index 16156
+    - 49.0001.0100.0001.0056.00
+    APE-R3-17:
+    - APE-R3-17
+    - index 16157
+    - 49.0001.0100.0001.0057.00
+    APE-R3-18:
+    - APE-R3-18
+    - index 16158
+    - 49.0001.0100.0001.0058.00
+    APE-R3-19:
+    - APE-R3-19
+    - index 16159
+    - 49.0001.0100.0001.0059.00
+    APE-R3-20:
+    - APE-R3-20
+    - index 16160
+    - 49.0001.0100.0001.0060.00

@@ -1,0 +1,59 @@
+meta:
+  subject: file-and-host-management
+  description: Management of `/etc/hosts` and custom file creation.
+  source_type: cloud-init
+  total_instances: 6
+class_assignments:
+  _base_only:
+    instances:
+    - cloud-init-app-server
+    - cloud-init-db-server
+    - cloud-init-dev-server
+    - cloud-init-edge-server
+    - cloud-init-monitoring
+    - cloud-init-worker-server
+instance_data:
+  schema:
+  - hostname
+  records:
+    cloud-init-app-server:
+    - app-prod-01
+    cloud-init-db-server:
+    - db-prod-01
+    cloud-init-dev-server:
+    - dev-01
+    cloud-init-edge-server:
+    - edge-prod-01
+    cloud-init-monitoring:
+    - mon-prod-01
+    cloud-init-worker-server:
+    - worker-prod-01
+instance_attrs:
+  cloud-init-app-server:
+    write_files:
+    - path: /etc/ridgeline/api.conf
+      content: ''
+      permissions: '0644'
+      append: 'false'
+      defer: 'false'
+  cloud-init-db-server:
+    write_files:
+    - path: /etc/postgresql/16/main/pg_hba.conf
+      content: ''
+      permissions: '0644'
+      append: 'false'
+      defer: 'false'
+  cloud-init-edge-server:
+    write_files:
+    - path: /etc/traefik/traefik.yaml
+      content: ''
+      permissions: '0644'
+      append: 'false'
+      defer: 'false'
+  cloud-init-worker-server:
+    write_files:
+    - path: /opt/ridgeline/worker.env
+      content: ''
+      permissions: '0644'
+      append: 'false'
+      defer: 'false'

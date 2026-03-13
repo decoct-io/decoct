@@ -1,0 +1,14 @@
+meta:
+  subject: daemon-security-features
+  description: Security-related settings including insecure registries and 
+    storage driver.
+  source_type: docker-daemon
+  total_instances: 3
+base_class:
+  storage-driver: overlay2
+class_assignments:
+  _base_only:
+    instances:
+    - docker-daemon-ci
+    - docker-daemon-dev
+    - docker-daemon-prod

@@ -1,0 +1,58 @@
+meta:
+  subject: fundamental-security-settings
+  description: Essential security settings related to device access and data 
+    protection.
+  source_type: intune-device-config
+  total_instances: 8
+base_class:
+  passwordBlockFingerprintUnlock: 'false'
+  passwordBlockTrustAgents: 'false'
+class_assignments:
+  _base_only:
+    instances:
+    - DC-Android-BYOD
+    - DC-Android-Contractor
+    - DC-Android-Corporate-Lockdown
+    - DC-Android-Executive
+    - DC-Android-Field-Workers
+    - DC-Android-Kiosk
+    - DC-Android-Lab-Devices
+    - DC-Android-Standard
+instance_data:
+  schema:
+  - passwordRequired
+  - passwordRequiredType
+  records:
+    DC-Android-BYOD:
+    - 'false'
+    - deviceDefault
+    DC-Android-Contractor:
+    - 'false'
+    - deviceDefault
+    DC-Android-Corporate-Lockdown:
+    - 'true'
+    - alphanumeric
+    DC-Android-Executive:
+    - 'true'
+    - alphanumeric
+    DC-Android-Field-Workers:
+    - 'true'
+    - numeric
+    DC-Android-Kiosk:
+    - 'true'
+    - numeric
+    DC-Android-Lab-Devices:
+    - 'false'
+    - deviceDefault
+    DC-Android-Standard:
+    - 'false'
+    - deviceDefault
+instance_attrs:
+  DC-Android-Corporate-Lockdown:
+    passwordMinimumLength: '8'
+  DC-Android-Executive:
+    passwordMinimumLength: '6'
+  DC-Android-Field-Workers:
+    passwordMinimumLength: '4'
+  DC-Android-Kiosk:
+    passwordMinimumLength: '4'

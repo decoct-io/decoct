@@ -1,0 +1,75 @@
+meta:
+  subject: logging-and-monitoring
+  description: Logging destination, verbosity, statement logging, and checkpoint
+    logging
+  source_type: postgresql
+  total_instances: 6
+base_class:
+  log_autovacuum_min_duration: 10min
+  log_checkpoints: 'true'
+  log_destination: "'stderr'"
+  log_duration: 'false'
+  log_error_verbosity: DEFAULT
+  log_file_mode: '600'
+  log_hostname: 'false'
+  log_min_duration_sample: '-1'
+  log_min_error_statement: ERROR
+  log_min_messages: WARNING
+  log_parameter_max_length: '-1'
+  log_parameter_max_length_on_error: '0'
+  log_recovery_conflict_waits: 'false'
+  log_replication_commands: 'false'
+  log_rotation_age: 24h
+  log_rotation_size: 10MB
+  log_startup_progress_interval: 10s
+  log_statement_sample_rate: '1.0'
+  log_temp_files: '-1'
+  log_transaction_sample_rate: '0'
+  log_truncate_on_rotation: 'false'
+  track_commit_timestamp: 'false'
+class_assignments:
+  _base_only:
+    instances:
+    - pg-dev
+    - pg-migration
+    - pg-prod-analytics
+    - pg-prod-primary
+    - pg-prod-replica
+    - pg-staging
+instance_data:
+  schema:
+  - log_connections
+  - log_disconnections
+  - log_timezone
+  - logging_collector
+  records:
+    pg-dev:
+    - 'true'
+    - 'true'
+    - "'UTC'"
+    - 'true'
+    pg-migration:
+    - 'true'
+    - 'true'
+    - "'UTC'"
+    - 'true'
+    pg-prod-analytics:
+    - 'false'
+    - 'false'
+    - "'UTC'"
+    - 'true'
+    pg-prod-primary:
+    - 'true'
+    - 'true'
+    - "'America/New_York'"
+    - 'true'
+    pg-prod-replica:
+    - 'false'
+    - 'false'
+    - "'GMT'"
+    - 'false'
+    pg-staging:
+    - 'false'
+    - 'false'
+    - "'GMT'"
+    - 'false'

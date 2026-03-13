@@ -1,0 +1,38 @@
+meta:
+  subject: isis-global-and-address-families
+  description: Global IS-IS process settings, metric styles, and segment routing
+    configurations.
+  source_type: iosxr-rr
+  total_instances: 4
+base_class:
+  router.isis.CORE.is-type: level-2-only
+  router.isis.CORE.log: adjacency changes
+  router.isis.CORE.lsp-lifetime: '1200'
+  router.isis.CORE.lsp-mtu: '1497'
+  router.isis.CORE.lsp-refresh-interval: '900'
+class_assignments:
+  _base_only:
+    instances:
+    - RR-01..RR-04
+instance_data:
+  schema:
+  - hostname
+  - router.isis.CORE.interface.Loopback0.address-family.ipv4-unicast.prefix-sid
+  - router.isis.CORE.net
+  records:
+    RR-01:
+    - RR-01
+    - index 16011
+    - 49.0001.0100.0000.0011.00
+    RR-02:
+    - RR-02
+    - index 16012
+    - 49.0001.0100.0000.0012.00
+    RR-03:
+    - RR-03
+    - index 16013
+    - 49.0001.0100.0000.0013.00
+    RR-04:
+    - RR-04
+    - index 16014
+    - 49.0001.0100.0000.0014.00

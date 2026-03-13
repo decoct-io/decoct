@@ -1,0 +1,21 @@
+meta:
+  subject: global-settings
+  description: Global Prometheus configuration settings.
+  source_type: prometheus
+  total_instances: 3
+base_class:
+  global.body_size_limit: '0'
+  global.keep_dropped_targets: '0'
+  global.label_limit: '0'
+  global.label_name_length_limit: '0'
+  global.label_value_length_limit: '0'
+  global.sample_limit: '0'
+  global.scrape_native_histograms: 'false'
+  global.scrape_timeout: 10s
+  global.target_limit: '0'
+class_assignments:
+  _base_only:
+    instances:
+    - prometheus-dev
+    - prometheus-prod
+    - prometheus-staging

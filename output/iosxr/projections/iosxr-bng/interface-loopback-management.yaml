@@ -1,0 +1,69 @@
+meta:
+  subject: interface-loopback-management
+  description: Configuration for loopback and management interfaces, including 
+    IP addresses and descriptions.
+  source_type: iosxr-bng
+  total_instances: 8
+base_class:
+  interface.Loopback0.shutdown: 'false'
+  interface.MgmtEth0/RP0/CPU0/0.shutdown: 'false'
+class_assignments:
+  _base_only:
+    instances:
+    - BNG-01..BNG-08
+instance_data:
+  schema:
+  - hostname
+  - interface.Loopback0.description
+  - interface.Loopback0.ipv4
+  - interface.MgmtEth0/RP0/CPU0/0.description
+  - interface.MgmtEth0/RP0/CPU0/0.ipv4
+  records:
+    BNG-01:
+    - BNG-01
+    - BNG-01 Router-ID
+    - address 10.0.2.1 255.255.255.255
+    - MGMT-BNG-01
+    - address 192.168.102.1 255.255.255.0
+    BNG-02:
+    - BNG-02
+    - BNG-02 Router-ID
+    - address 10.0.2.2 255.255.255.255
+    - MGMT-BNG-02
+    - address 192.168.102.2 255.255.255.0
+    BNG-03:
+    - BNG-03
+    - BNG-03 Router-ID
+    - address 10.0.2.3 255.255.255.255
+    - MGMT-BNG-03
+    - address 192.168.102.3 255.255.255.0
+    BNG-04:
+    - BNG-04
+    - BNG-04 Router-ID
+    - address 10.0.2.4 255.255.255.255
+    - MGMT-BNG-04
+    - address 192.168.102.4 255.255.255.0
+    BNG-05:
+    - BNG-05
+    - BNG-05 Router-ID
+    - address 10.0.2.5 255.255.255.255
+    - MGMT-BNG-05
+    - address 192.168.102.5 255.255.255.0
+    BNG-06:
+    - BNG-06
+    - BNG-06 Router-ID
+    - address 10.0.2.6 255.255.255.255
+    - MGMT-BNG-06
+    - address 192.168.102.6 255.255.255.0
+    BNG-07:
+    - BNG-07
+    - BNG-07 Router-ID
+    - address 10.0.2.7 255.255.255.255
+    - MGMT-BNG-07
+    - address 192.168.102.7 255.255.255.0
+    BNG-08:
+    - BNG-08
+    - BNG-08 Router-ID
+    - address 10.0.2.8 255.255.255.255
+    - MGMT-BNG-08
+    - address 192.168.102.8 255.255.255.0

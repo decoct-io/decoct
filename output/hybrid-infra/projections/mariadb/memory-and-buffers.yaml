@@ -1,0 +1,18 @@
+meta:
+  subject: memory-and-buffers
+  description: Memory allocation for sort buffers, join buffers, key buffers, 
+    and temp tables
+  source_type: mariadb
+  total_instances: 5
+base_class:
+  mysqld.bulk_insert_buffer_size: '8388608'
+  mysqld.key_buffer_size: '8388608'
+  mysqld.max_allowed_packet: '67108864'
+class_assignments:
+  _base_only:
+    instances:
+    - maria-dev
+    - maria-galera-node
+    - maria-legacy-billing
+    - maria-legacy-main
+    - maria-staging

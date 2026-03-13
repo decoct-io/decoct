@@ -1,0 +1,52 @@
+meta:
+  subject: grant-controls-and-state
+  description: Defines the access controls applied when conditions are met and 
+    the policy state.
+  source_type: entra-conditional-access
+  total_instances: 20
+classes:
+  includeUsers_All_operator_OR:
+    inherits: base
+    own_attrs:
+      grantControls.operator: OR
+    instance_count_inclusive: 7
+subclasses:
+  includeUsers_All_operator_OR_clientAppTypes_builtInControls:
+    parent: includeUsers_All_operator_OR
+    own_attrs:
+      grantControls.builtInControls: block
+      state: enabled
+    instance_count: 4
+class_assignments:
+  includeUsers_All_operator_OR:
+    instances:
+    - CA-Block-Legacy-Auth-Exchange
+    - CA-Block-Legacy-Auth-Global
+    - CA-Block-Legacy-Auth-SharePoint
+    - CA-Block-Legacy-Auth-Teams
+    - CA-Compliant-Device-Office365
+    - CA-Disabled-Draft-TestPolicy
+    - CA-MFA-Azure-Management
+  _base_only:
+    instances:
+    - CA-Compliant-Device-Azure
+    - CA-Compliant-Device-Internal
+    - CA-Location-Block-Countries
+    - CA-Location-Require-MFA-External
+    - CA-MFA-Global-Admins
+    - CA-MFA-Privileged-Roles
+    - CA-MFA-Security-Admins
+    - CA-Named-Location-Corporate
+    - CA-Report-Only-AllUsers-MFA
+    - CA-SignIn-Risk-High-Block
+    - CA-SignIn-Risk-Medium-MFA
+    - CA-User-Risk-High-PasswordChange
+    - CA-User-Risk-Medium-MFA
+subclass_assignments:
+  includeUsers_All_operator_OR_clientAppTypes_builtInControls:
+    parent: includeUsers_All_operator_OR
+    instances:
+    - CA-Block-Legacy-Auth-Exchange
+    - CA-Block-Legacy-Auth-Global
+    - CA-Block-Legacy-Auth-SharePoint
+    - CA-Block-Legacy-Auth-Teams

@@ -1,0 +1,21 @@
+meta:
+  subject: grafana-access
+  description: Grafana administrative credentials.
+  source_type: ansible-vars
+  total_instances: 3
+class_assignments:
+  _base_only:
+    instances:
+    - ansible-vars-dev
+    - ansible-vars-prod
+    - ansible-vars-staging
+instance_data:
+  schema:
+  - grafana_admin_password
+  records:
+    ansible-vars-dev:
+    - devgrafana
+    ansible-vars-prod:
+    - Gr@fanaAdm1n!
+    ansible-vars-staging:
+    - StagingGr@fana

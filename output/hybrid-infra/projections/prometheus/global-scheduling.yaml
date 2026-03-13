@@ -1,0 +1,33 @@
+meta:
+  subject: global-scheduling
+  description: Global evaluation and scrape intervals and external labels.
+  source_type: prometheus
+  total_instances: 3
+class_assignments:
+  _base_only:
+    instances:
+    - prometheus-dev
+    - prometheus-prod
+    - prometheus-staging
+instance_data:
+  schema:
+  - global.evaluation_interval
+  - global.external_labels.cluster
+  - global.external_labels.env
+  - global.scrape_interval
+  records:
+    prometheus-dev:
+    - 1m
+    - ridgeline-dev
+    - dev
+    - 1m
+    prometheus-prod:
+    - 15s
+    - ridgeline-prod
+    - prod
+    - 15s
+    prometheus-staging:
+    - 30s
+    - ridgeline-staging
+    - staging
+    - 30s

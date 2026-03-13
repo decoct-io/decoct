@@ -1,0 +1,49 @@
+meta:
+  subject: assignments
+  description: Group assignment targets for device configuration profiles
+  source_type: intune-device-config
+  total_instances: 8
+class_assignments:
+  _base_only:
+    instances:
+    - DC-Android-BYOD
+    - DC-Android-Contractor
+    - DC-Android-Corporate-Lockdown
+    - DC-Android-Executive
+    - DC-Android-Field-Workers
+    - DC-Android-Kiosk
+    - DC-Android-Lab-Devices
+    - DC-Android-Standard
+instance_attrs:
+  DC-Android-BYOD:
+    assignments:
+      template: intune-device-config.assignments.T1
+  DC-Android-Contractor:
+    assignments:
+      template: intune-device-config.assignments.T1
+  DC-Android-Corporate-Lockdown:
+    assignments:
+      template: intune-device-config.assignments.T0
+  DC-Android-Executive:
+    assignments:
+    - target.groupId: 79dedecf-0247-52c4-80f0-32a82b42f6f9
+  DC-Android-Field-Workers:
+    assignments:
+    - target.groupId: c7ab825c-4116-5394-a58f-0a42a9843eff
+  DC-Android-Kiosk:
+    assignments:
+    - target.groupId: acd95104-b130-537e-a46d-6e2219a3bc8f
+  DC-Android-Lab-Devices:
+    assignments:
+    - target.groupId: ad039121-ab39-5e68-aaa5-5814dc5ab927
+  DC-Android-Standard:
+    assignments:
+      template: intune-device-config.assignments.T0
+composite_templates:
+  assignments:
+    intune-device-config.assignments.T0:
+      elements:
+      - target.groupId: 496f4253-0480-5d9f-a32e-faad9a648cba
+    intune-device-config.assignments.T1:
+      elements:
+      - target.groupId: f5843f0d-24e2-5506-9911-ebc899094fab

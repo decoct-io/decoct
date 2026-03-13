@@ -1,0 +1,43 @@
+meta:
+  subject: general-interface-bundle-ether
+  description: General settings for the main Bundle-Ethernet subscriber-facing 
+    interface.
+  source_type: iosxr-bng
+  total_instances: 8
+base_class:
+  interface.Bundle-Ether100.100: l2transport
+  interface.Bundle-Ether100.100.encapsulation: dot1q 100
+  interface.Bundle-Ether100.200: l2transport
+  interface.Bundle-Ether100.200.encapsulation: dot1q 200
+  interface.Bundle-Ether100.bandwidth: '100000'
+  interface.Bundle-Ether100.carrier-delay.down: '0'
+  interface.Bundle-Ether100.carrier-delay.up: '0'
+  interface.Bundle-Ether100.cdp: 'true'
+  interface.Bundle-Ether100.description: BNG-SUBSCRIBER-FACING
+  interface.Bundle-Ether100.load-interval: '300'
+  interface.Bundle-Ether100.mtu: '9216'
+  interface.Bundle-Ether100.shutdown: 'false'
+class_assignments:
+  _base_only:
+    instances:
+    - BNG-01..BNG-08
+instance_data:
+  schema:
+  - hostname
+  records:
+    BNG-01:
+    - BNG-01
+    BNG-02:
+    - BNG-02
+    BNG-03:
+    - BNG-03
+    BNG-04:
+    - BNG-04
+    BNG-05:
+    - BNG-05
+    BNG-06:
+    - BNG-06
+    BNG-07:
+    - BNG-07
+    BNG-08:
+    - BNG-08

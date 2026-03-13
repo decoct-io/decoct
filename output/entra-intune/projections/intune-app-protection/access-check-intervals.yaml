@@ -1,0 +1,34 @@
+meta:
+  subject: access-check-intervals
+  description: Time intervals for offline access checks and wipe enforcement.
+  source_type: intune-app-protection
+  total_instances: 4
+class_assignments:
+  _base_only:
+    instances:
+    - AP-Android-Standard
+    - AP-Android-Strict
+    - AP-iOS-Standard
+    - AP-iOS-Strict
+instance_data:
+  schema:
+  - periodOfflineBeforeAccessCheck
+  - periodOfflineBeforeWipeIsEnforced
+  - periodOnlineBeforeAccessCheck
+  records:
+    AP-Android-Standard:
+    - PT720M
+    - P90D
+    - PT30M
+    AP-Android-Strict:
+    - PT360M
+    - P30D
+    - PT15M
+    AP-iOS-Standard:
+    - PT720M
+    - P90D
+    - PT30M
+    AP-iOS-Strict:
+    - PT360M
+    - P30D
+    - PT15M

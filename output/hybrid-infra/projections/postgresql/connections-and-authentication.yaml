@@ -1,0 +1,50 @@
+meta:
+  subject: connections-and-authentication
+  description: Connection limits, listen addresses, authentication, and SSL 
+    settings
+  source_type: postgresql
+  total_instances: 6
+base_class:
+  authentication_timeout: 1min
+  gss_accept_delegation: 'false'
+  krb_caseins_users: 'false'
+  password_encryption: scram-sha-256
+  port: '5432'
+  reserved_connections: '0'
+  scram_iterations: '4096'
+  ssl_min_protocol_version: TLSv1.2
+  ssl_passphrase_command_supports_reload: 'false'
+  ssl_prefer_server_ciphers: 'true'
+  superuser_reserved_connections: '3'
+class_assignments:
+  _base_only:
+    instances:
+    - pg-dev
+    - pg-migration
+    - pg-prod-analytics
+    - pg-prod-primary
+    - pg-prod-replica
+    - pg-staging
+instance_data:
+  schema:
+  - max_connections
+  - ssl
+  records:
+    pg-dev:
+    - '100'
+    - 'false'
+    pg-migration:
+    - '20'
+    - 'false'
+    pg-prod-analytics:
+    - '50'
+    - 'true'
+    pg-prod-primary:
+    - '200'
+    - 'true'
+    pg-prod-replica:
+    - '200'
+    - 'false'
+    pg-staging:
+    - '100'
+    - 'false'

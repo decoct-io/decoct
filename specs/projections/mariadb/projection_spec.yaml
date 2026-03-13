@@ -1,0 +1,164 @@
+version: 1
+source_type: mariadb
+generated_by: decoct-infer
+subjects:
+- name: database-identity-and-logging
+  description: Core database identification and general logging settings, 
+    including slow query logging status and error verbosity.
+  include_paths:
+  - mysqld.server_id
+  - mysqld.slow_query_log
+  - mysqld.long_query_time
+  - mysqld.general_log
+  - mysqld.log_output
+  - mysqld.log_slow_admin_statements
+  - mysqld.log_replica_updates
+  - mysqld.log_error_verbosity
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which MariaDB instances have slow query logging enabled and what is their 
+    threshold?
+  - What is the server ID and general logging status for each database?
+  - Are there any databases with different error verbosity levels?
+- name: connection-and-buffer-management
+  description: Settings controlling client connections, various buffer sizes, 
+    and timeout parameters.
+  include_paths:
+  - mysqld.max_connections
+  - mysqld.connect_timeout
+  - mysqld.read_buffer_size
+  - mysqld.read_rnd_buffer_size
+  - mysqld.sort_buffer_size
+  - mysqld.join_buffer_size
+  - mysqld.key_buffer_size
+  - mysqld.bulk_insert_buffer_size
+  - mysqld.max_allowed_packet
+  - mysqld.interactive_timeout
+  - mysqld.wait_timeout
+  - mysqld.replica_net_timeout
+  - mysqld.net_read_timeout
+  - mysqld.net_write_timeout
+  - mysqld.thread_cache_size
+  - mysqld.back_log
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which MariaDB instances have the highest maximum connections configured?
+  - Are there any databases with unusual read_rnd_buffer_size compared to the 
+    fleet?
+  - Compare the `wait_timeout` and `connect_timeout` across all instances.
+- name: character-and-collation-settings
+  description: Database character set and collation configurations for proper 
+    text handling.
+  include_paths:
+  - mysqld.character_set_server
+  - mysqld.character_set_filesystem
+  - mysqld.collation_server
+  - mysqld.lower_case_table_names
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which MariaDB instances use a different character set or collation?
+  - Do all instances have `lower_case_table_names` set to the same value?
+  - Identify instances with non-default `character_set_server`.
+- name: innodb-core-configuration
+  description: Core InnoDB engine settings, including buffer pool size, 
+    transaction commit behavior, and file-per-table.
+  include_paths:
+  - mysqld.innodb_buffer_pool_size
+  - mysqld.innodb_flush_log_at_trx_commit
+  - mysqld.innodb_log_buffer_size
+  - mysqld.innodb_max_dirty_pages_pct
+  - mysqld.innodb_file_per_table
+  - mysqld.innodb_doublewrite
+  - mysqld.innodb_lock_wait_timeout
+  - mysqld.innodb_online_alter_log_max_size
+  - mysqld.innodb_open_files
+  - mysqld.innodb_strict_mode
+  - mysqld.innodb_autoinc_lock_mode
+  - mysqld.innodb_purge_threads
+  - mysqld.innodb_thread_concurrency
+  - mysqld.innodb_adaptive_hash_index
+  - mysqld.innodb_flush_neighbors
+  - mysqld.innodb_stats_on_metadata
+  - mysqld.innodb_stats_persistent
+  - mysqld.innodb_change_buffering
+  - mysqld.innodb_io_capacity
+  - mysqld.innodb_io_capacity_max
+  - mysqld.innodb_read_io_threads
+  - mysqld.innodb_write_io_threads
+  - mysqld.innodb_sort_buffer_size
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What is the `innodb_buffer_pool_size` for each database instance?
+  - Compare `innodb_flush_log_at_trx_commit` across instances.
+  - Are there any instances with non-default `innodb_change_buffering` or 
+    `innodb_io_capacity` settings?
+- name: binary-logging-and-replication
+  description: Settings related to binary logging, replication behavior, and log
+    expiration.
+  include_paths:
+  - mysqld.binlog_expire_logs_seconds
+  - mysqld.binlog_row_image
+  - mysqld.binlog_rows_query_log_events
+  - mysqld.max_binlog_size
+  - mysqld.relay_log_purge
+  - mysqld.relay_log_recovery
+  - mysqld.sync_binlog
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What is the `binlog_expire_logs_seconds` configured for each instance?
+  - Are there any differences in `binlog_row_image` or `sync_binlog` settings 
+    across the fleet?
+  - Which instances have `relay_log_recovery` enabled?
+- name: query-optimizer-and-tables
+  description: Configuration for the query optimizer, table caching, and 
+    temporary table settings.
+  include_paths:
+  - mysqld.optimizer_prune_level
+  - mysqld.optimizer_search_depth
+  - mysqld.eq_range_index_dive_limit
+  - mysqld.group_concat_max_len
+  - mysqld.max_heap_table_size
+  - mysqld.tmp_table_size
+  - mysqld.table_definition_cache
+  - mysqld.table_open_cache
+  - mysqld.big_tables
+  - mysqld.sql_require_primary_key
+  - mysqld.default_storage_engine
+  - mysqld.default_tmp_storage_engine
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Are there any MariaDB instances with different `max_heap_table_size` or 
+    `tmp_table_size` values?
+  - What are the optimizer settings (`optimizer_prune_level`, 
+    `optimizer_search_depth`) for each instance?
+  - Identify systems with non-standard `table_open_cache` configurations.
+- name: general-system-settings
+  description: Miscellaneous system-level settings, including security file 
+    privileges, port, and auto-commit behavior.
+  include_paths:
+  - mysqld.port
+  - mysqld.secure_file_priv
+  - mysqld.autocommit
+  - mysqld.div_precision_increment
+  - mysqld.explicit_defaults_for_timestamp
+  - mysqld.local_infile
+  - mysqld.performance_schema
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What is the configured port for each MariaDB instance?
+  - Which instances have `secure_file_priv` set differently?
+  - Are all instances running with `performance_schema` enabled?

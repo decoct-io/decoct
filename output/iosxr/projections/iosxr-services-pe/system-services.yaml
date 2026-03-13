@@ -1,0 +1,50 @@
+meta:
+  subject: system-services
+  description: System services including NTP, DNS, logging, clock, and line 
+    console settings
+  source_type: iosxr-services-pe
+  total_instances: 8
+base_class:
+  clock: timezone UTC 0
+  domain.lookup: disable
+  domain.name: lab.example.com
+  domain.name-server.10.255.2.1: 'true'
+  domain.name-server.10.255.2.2: 'true'
+  line: default
+  logging.10.255.1.1: vrf default severity info port default
+  logging.buffered: 307200 debugging
+  logging.console: informational
+  logging.events: link-status
+  logging.monitor: debugging
+  logging.source-interface: Loopback0
+  logging.trap: informational
+  ntp.server.10.255.0.1: 'true'
+  ntp.server.10.255.0.2: 'true'
+  ntp.source: Loopback0
+  ntp.update-calendar: 'true'
+  service.timestamps.debug: datetime msec localtime show-timezone
+  service.timestamps.log: datetime msec localtime show-timezone
+class_assignments:
+  _base_only:
+    instances:
+    - SVC-PE-01..SVC-PE-08
+instance_data:
+  schema:
+  - hostname
+  records:
+    SVC-PE-01:
+    - SVC-PE-01
+    SVC-PE-02:
+    - SVC-PE-02
+    SVC-PE-03:
+    - SVC-PE-03
+    SVC-PE-04:
+    - SVC-PE-04
+    SVC-PE-05:
+    - SVC-PE-05
+    SVC-PE-06:
+    - SVC-PE-06
+    SVC-PE-07:
+    - SVC-PE-07
+    SVC-PE-08:
+    - SVC-PE-08

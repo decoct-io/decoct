@@ -1,0 +1,855 @@
+meta:
+  subject: bgp
+  description: BGP route reflector configuration including AS 65001, 
+    confederation, address families (IPv4, VPNv4, VPNv6, L2VPN-EVPN), and timers
+  source_type: iosxr-rr
+  total_instances: 4
+base_class:
+  router.bgp.65001.address-family.ipv4-unicast: 'true'
+  router.bgp.65001.address-family.ipv4-unicast.maximum-paths.ebgp: '1'
+  router.bgp.65001.address-family.ipv4-unicast.maximum-paths.ibgp: '1'
+  router.bgp.65001.address-family.l2vpn-evpn: 'true'
+  router.bgp.65001.address-family.vpnv4-unicast: 'true'
+  router.bgp.65001.address-family.vpnv6-unicast: 'true'
+  router.bgp.65001.bgp.confederation.identifier: '64512'
+  router.bgp.65001.bgp.confederation.peers.65002: 'true'
+  router.bgp.65001.bgp.confederation.peers.65003: 'true'
+  router.bgp.65001.bgp.confederation.peers.65004: 'true'
+  router.bgp.65001.bgp.confederation.peers.65005: 'true'
+  router.bgp.65001.bgp.confederation.peers.65006: 'true'
+  router.bgp.65001.bgp.log: neighbor changes detail
+  router.bgp.65001.distance: bgp 20 200 200
+  router.bgp.65001.graceful-restart: 'true'
+  router.bgp.65001.nsr: 'true'
+  router.bgp.65001.timers: bgp 60 180
+class_assignments:
+  _base_only:
+    instances:
+    - RR-01..RR-04
+instance_data:
+  schema:
+  - hostname
+  - router.bgp.65001.address-family.ipv4-unicast.network
+  - router.bgp.65001.bgp.router-id
+  records:
+    RR-01:
+    - RR-01
+    - 10.0.0.11/32
+    - 10.0.0.11
+    RR-02:
+    - RR-02
+    - 10.0.0.12/32
+    - 10.0.0.12
+    RR-03:
+    - RR-03
+    - 10.0.0.13/32
+    - 10.0.0.13
+    RR-04:
+    - RR-04
+    - 10.0.0.14/32
+    - 10.0.0.14
+instance_attrs:
+  RR-01:
+    router.bgp.65001.neighbors:
+      10.10.0.36:
+        remote-as: '65001'
+        description: RR-02
+        update-source: Loopback0
+        address-family.ipv4-unicast.soft-reconfiguration: inbound always
+        address-family.vpnv4-unicast.soft-reconfiguration: inbound always
+        address-family.l2vpn-evpn.soft-reconfiguration: inbound always
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.1:
+        remote-as: '65001'
+        description: CORE-PEERS-P-CORE-01
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.2:
+        remote-as: '65001'
+        description: CORE-PEERS-P-CORE-02
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.3:
+        remote-as: '65001'
+        description: CORE-PEERS-P-CORE-03
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.4:
+        remote-as: '65001'
+        description: CORE-PEERS-P-CORE-04
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.5:
+        remote-as: '65001'
+        description: CORE-PEERS-P-CORE-05
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.6:
+        remote-as: '65001'
+        description: CORE-PEERS-P-CORE-06
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.7:
+        remote-as: '65001'
+        description: ACCESS-PEERS-APE-R1-01
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.8:
+        remote-as: '65001'
+        description: ACCESS-PEERS-APE-R1-02
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.9:
+        remote-as: '65001'
+        description: ACCESS-PEERS-APE-R1-03
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.10:
+        remote-as: '65001'
+        description: ACCESS-PEERS-APE-R1-04
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.11:
+        remote-as: '65001'
+        description: ACCESS-PEERS-APE-R1-05
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.12:
+        remote-as: '65001'
+        description: BNG-PEERS-BNG-01
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.13:
+        remote-as: '65001'
+        description: BNG-PEERS-BNG-02
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.14:
+        remote-as: '65001'
+        description: BNG-PEERS-BNG-03
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.15:
+        remote-as: '65001'
+        description: BNG-PEERS-BNG-04
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.16:
+        remote-as: '65001'
+        description: SVC-PEERS-SVC-PE-01
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.17:
+        remote-as: '65001'
+        description: SVC-PEERS-SVC-PE-02
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.18:
+        remote-as: '65001'
+        description: SVC-PEERS-SVC-PE-03
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.19:
+        remote-as: '65001'
+        description: SVC-PEERS-SVC-PE-04
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+  RR-02:
+    router.bgp.65001.neighbors:
+      10.10.0.37:
+        remote-as: '65001'
+        description: RR-01
+        update-source: Loopback0
+        address-family.ipv4-unicast.soft-reconfiguration: inbound always
+        address-family.vpnv4-unicast.soft-reconfiguration: inbound always
+        address-family.l2vpn-evpn.soft-reconfiguration: inbound always
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.1:
+        remote-as: '65001'
+        description: CORE-PEERS-P-CORE-01
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.2:
+        remote-as: '65001'
+        description: CORE-PEERS-P-CORE-02
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.3:
+        remote-as: '65001'
+        description: CORE-PEERS-P-CORE-03
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.4:
+        remote-as: '65001'
+        description: CORE-PEERS-P-CORE-04
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.5:
+        remote-as: '65001'
+        description: CORE-PEERS-P-CORE-05
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.6:
+        remote-as: '65001'
+        description: CORE-PEERS-P-CORE-06
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.7:
+        remote-as: '65001'
+        description: ACCESS-PEERS-APE-R1-06
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.8:
+        remote-as: '65001'
+        description: ACCESS-PEERS-APE-R1-07
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.9:
+        remote-as: '65001'
+        description: ACCESS-PEERS-APE-R1-08
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.10:
+        remote-as: '65001'
+        description: ACCESS-PEERS-APE-R1-09
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.11:
+        remote-as: '65001'
+        description: ACCESS-PEERS-APE-R1-10
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.12:
+        remote-as: '65001'
+        description: BNG-PEERS-BNG-05
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.13:
+        remote-as: '65001'
+        description: BNG-PEERS-BNG-06
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.14:
+        remote-as: '65001'
+        description: BNG-PEERS-BNG-07
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.15:
+        remote-as: '65001'
+        description: BNG-PEERS-BNG-08
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.16:
+        remote-as: '65001'
+        description: SVC-PEERS-SVC-PE-05
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.17:
+        remote-as: '65001'
+        description: SVC-PEERS-SVC-PE-06
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.18:
+        remote-as: '65001'
+        description: SVC-PEERS-SVC-PE-07
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.19:
+        remote-as: '65001'
+        description: SVC-PEERS-SVC-PE-08
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+  RR-03:
+    router.bgp.65001.neighbors:
+      10.10.0.38:
+        remote-as: '65001'
+        description: RR-04
+        update-source: Loopback0
+        address-family.ipv4-unicast.soft-reconfiguration: inbound always
+        address-family.vpnv4-unicast.soft-reconfiguration: inbound always
+        address-family.l2vpn-evpn.soft-reconfiguration: inbound always
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.1:
+        remote-as: '65001'
+        description: CORE-PEERS-P-CORE-01
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.2:
+        remote-as: '65001'
+        description: CORE-PEERS-P-CORE-02
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.3:
+        remote-as: '65001'
+        description: CORE-PEERS-P-CORE-03
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.4:
+        remote-as: '65001'
+        description: CORE-PEERS-P-CORE-04
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.5:
+        remote-as: '65001'
+        description: CORE-PEERS-P-CORE-05
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.6:
+        remote-as: '65001'
+        description: CORE-PEERS-P-CORE-06
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.7:
+        remote-as: '65001'
+        description: ACCESS-PEERS-APE-R2-01
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.8:
+        remote-as: '65001'
+        description: ACCESS-PEERS-APE-R2-02
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.9:
+        remote-as: '65001'
+        description: ACCESS-PEERS-APE-R2-03
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.10:
+        remote-as: '65001'
+        description: ACCESS-PEERS-APE-R2-04
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.11:
+        remote-as: '65001'
+        description: ACCESS-PEERS-APE-R2-05
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.12:
+        remote-as: '65001'
+        description: BNG-PEERS-BNG-01
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.13:
+        remote-as: '65001'
+        description: BNG-PEERS-BNG-02
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.14:
+        remote-as: '65001'
+        description: BNG-PEERS-BNG-03
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.15:
+        remote-as: '65001'
+        description: BNG-PEERS-BNG-04
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.16:
+        remote-as: '65001'
+        description: SVC-PEERS-SVC-PE-01
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.17:
+        remote-as: '65001'
+        description: SVC-PEERS-SVC-PE-02
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.18:
+        remote-as: '65001'
+        description: SVC-PEERS-SVC-PE-03
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.19:
+        remote-as: '65001'
+        description: SVC-PEERS-SVC-PE-04
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+  RR-04:
+    router.bgp.65001.neighbors:
+      10.10.0.39:
+        remote-as: '65001'
+        description: RR-03
+        update-source: Loopback0
+        address-family.ipv4-unicast.soft-reconfiguration: inbound always
+        address-family.vpnv4-unicast.soft-reconfiguration: inbound always
+        address-family.l2vpn-evpn.soft-reconfiguration: inbound always
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.1:
+        remote-as: '65001'
+        description: CORE-PEERS-P-CORE-01
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.2:
+        remote-as: '65001'
+        description: CORE-PEERS-P-CORE-02
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.3:
+        remote-as: '65001'
+        description: CORE-PEERS-P-CORE-03
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.4:
+        remote-as: '65001'
+        description: CORE-PEERS-P-CORE-04
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.5:
+        remote-as: '65001'
+        description: CORE-PEERS-P-CORE-05
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.6:
+        remote-as: '65001'
+        description: CORE-PEERS-P-CORE-06
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.7:
+        remote-as: '65001'
+        description: ACCESS-PEERS-APE-R2-06
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.8:
+        remote-as: '65001'
+        description: ACCESS-PEERS-APE-R2-07
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.9:
+        remote-as: '65001'
+        description: ACCESS-PEERS-APE-R2-08
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.10:
+        remote-as: '65001'
+        description: ACCESS-PEERS-APE-R2-09
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.11:
+        remote-as: '65001'
+        description: ACCESS-PEERS-APE-R2-10
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.12:
+        remote-as: '65001'
+        description: BNG-PEERS-BNG-05
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.13:
+        remote-as: '65001'
+        description: BNG-PEERS-BNG-06
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.14:
+        remote-as: '65001'
+        description: BNG-PEERS-BNG-07
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.15:
+        remote-as: '65001'
+        description: BNG-PEERS-BNG-08
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.16:
+        remote-as: '65001'
+        description: SVC-PEERS-SVC-PE-05
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.17:
+        remote-as: '65001'
+        description: SVC-PEERS-SVC-PE-06
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.18:
+        remote-as: '65001'
+        description: SVC-PEERS-SVC-PE-07
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180
+      10.0.10.19:
+        remote-as: '65001'
+        description: SVC-PEERS-SVC-PE-08
+        update-source: Loopback0
+        address-family.ipv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv4-unicast.route-reflector-client: 'true'
+        address-family.vpnv6-unicast.route-reflector-client: 'true'
+        address-family.l2vpn-evpn.route-reflector-client: 'true'
+        advertisement-interval: '30'
+        timers: 60 180

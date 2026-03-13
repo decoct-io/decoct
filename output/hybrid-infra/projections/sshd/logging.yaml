@@ -1,0 +1,32 @@
+meta:
+  subject: logging
+  description: Syslog facility, log level, and MOTD settings
+  source_type: sshd
+  total_instances: 4
+base_class:
+  PrintLastLog: 'true'
+  SyslogFacility: AUTH
+class_assignments:
+  _base_only:
+    instances:
+    - sshd-bastion
+    - sshd-dev
+    - sshd-prod
+    - sshd-staging
+instance_data:
+  schema:
+  - LogLevel
+  - PrintMotd
+  records:
+    sshd-bastion:
+    - VERBOSE
+    - 'false'
+    sshd-dev:
+    - INFO
+    - 'true'
+    sshd-prod:
+    - VERBOSE
+    - 'false'
+    sshd-staging:
+    - INFO
+    - 'true'

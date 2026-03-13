@@ -1,0 +1,42 @@
+meta:
+  subject: web-browser
+  description: Web browser settings including blocking, JavaScript, popups, 
+    cookies, and autofill
+  source_type: intune-device-config
+  total_instances: 8
+base_class:
+  webBrowserBlockAutofill: 'false'
+  webBrowserBlockJavaScript: 'false'
+  webBrowserBlockPopups: 'false'
+  webBrowserBlocked: 'false'
+class_assignments:
+  _base_only:
+    instances:
+    - DC-Android-BYOD
+    - DC-Android-Contractor
+    - DC-Android-Corporate-Lockdown
+    - DC-Android-Executive
+    - DC-Android-Field-Workers
+    - DC-Android-Kiosk
+    - DC-Android-Lab-Devices
+    - DC-Android-Standard
+instance_data:
+  schema:
+  - webBrowserCookieSettings
+  records:
+    DC-Android-BYOD:
+    - browserDefault
+    DC-Android-Contractor:
+    - browserDefault
+    DC-Android-Corporate-Lockdown:
+    - blockAll
+    DC-Android-Executive:
+    - browserDefault
+    DC-Android-Field-Workers:
+    - browserDefault
+    DC-Android-Kiosk:
+    - blockAll
+    DC-Android-Lab-Devices:
+    - allowCurrentWebSite
+    DC-Android-Standard:
+    - browserDefault

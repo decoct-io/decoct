@@ -1,0 +1,54 @@
+meta:
+  subject: vacuum-and-maintenance
+  description: Autovacuum tuning, vacuum cost delay, and checkpoint 
+    configuration
+  source_type: postgresql
+  total_instances: 6
+base_class:
+  autovacuum_analyze_scale_factor: '0.1'
+  autovacuum_analyze_threshold: '50'
+  autovacuum_freeze_max_age: '200000000'
+  autovacuum_multixact_freeze_max_age: '400000000'
+  autovacuum_naptime: 1min
+  autovacuum_vacuum_cost_delay: 2ms
+  autovacuum_vacuum_cost_limit: '-1'
+  autovacuum_vacuum_insert_scale_factor: '0.2'
+  autovacuum_vacuum_insert_threshold: '1000'
+  autovacuum_vacuum_scale_factor: '0.2'
+  autovacuum_vacuum_threshold: '50'
+  autovacuum_work_mem: '-1'
+  checkpoint_completion_target: '0.9'
+  checkpoint_warning: 30s
+  fsync: 'true'
+  full_page_writes: 'true'
+  vacuum_buffer_usage_limit: 2MB
+  vacuum_cost_delay: '0'
+  vacuum_cost_limit: '200'
+  vacuum_cost_page_dirty: '20'
+  vacuum_cost_page_hit: '1'
+  vacuum_cost_page_miss: '2'
+class_assignments:
+  _base_only:
+    instances:
+    - pg-dev
+    - pg-migration
+    - pg-prod-analytics
+    - pg-prod-primary
+    - pg-prod-replica
+    - pg-staging
+instance_data:
+  schema:
+  - autovacuum_max_workers
+  records:
+    pg-dev:
+    - '3'
+    pg-migration:
+    - '3'
+    pg-prod-analytics:
+    - '5'
+    pg-prod-primary:
+    - '5'
+    pg-prod-replica:
+    - '3'
+    pg-staging:
+    - '3'

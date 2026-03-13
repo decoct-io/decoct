@@ -1,0 +1,56 @@
+meta:
+  subject: system-logging-access
+  description: System logging, SSH, and console access configurations.
+  source_type: iosxr-bng
+  total_instances: 8
+base_class:
+  control-plane.management-plane.inband.interface.all.allow.SNMP: 'true'
+  control-plane.management-plane.inband.interface.all.allow.SSH: 'true'
+  line: default
+  line.exec-timeout: 15 0
+  line.session-timeout: '15'
+  line.transport: input ssh
+  logging.10.255.1.1: vrf default severity info port default
+  logging.buffered: 307200 debugging
+  logging.console: informational
+  logging.events: link-status
+  logging.monitor: debugging
+  logging.source-interface: Loopback0
+  logging.trap: informational
+  service.timestamps.debug: datetime msec localtime show-timezone
+  service.timestamps.log: datetime msec localtime show-timezone
+  snmp-server.community.S3cr3tRO_c0mmunity: RO
+  snmp-server.community.S3cr3tRW_c0mmunity: RW
+  snmp-server.enable.traps.bgp: 'true'
+  snmp-server.enable.traps.isis: 'true'
+  snmp-server.enable.traps.snmp: linkdown linkup
+  snmp-server.host: '[REDACTED]'
+  snmp-server.trap-source: Loopback0
+  ssh.server.logging: 'true'
+  ssh.server.rate-limit: '60'
+  ssh.server.v2: 'true'
+  ssh.timeout: '30'
+class_assignments:
+  _base_only:
+    instances:
+    - BNG-01..BNG-08
+instance_data:
+  schema:
+  - hostname
+  records:
+    BNG-01:
+    - BNG-01
+    BNG-02:
+    - BNG-02
+    BNG-03:
+    - BNG-03
+    BNG-04:
+    - BNG-04
+    BNG-05:
+    - BNG-05
+    BNG-06:
+    - BNG-06
+    BNG-07:
+    - BNG-07
+    BNG-08:
+    - BNG-08

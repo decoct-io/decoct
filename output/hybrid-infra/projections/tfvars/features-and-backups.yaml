@@ -1,0 +1,42 @@
+meta:
+  subject: features-and-backups
+  description: Feature flags for monitoring and backup, including retention 
+    policies
+  source_type: tfvars
+  total_instances: 5
+classes:
+  edge_instance_type_t3_medium_enable_monitoring_tru:
+    inherits: base
+    own_attrs:
+      features.enable_monitoring: 'true'
+    instance_count_inclusive: 3
+class_assignments:
+  edge_instance_type_t3_medium_enable_monitoring_tru:
+    instances:
+    - tfvars-dr
+    - tfvars-edge
+    - tfvars-prod
+  _base_only:
+    instances:
+    - tfvars-dev
+    - tfvars-staging
+instance_data:
+  schema:
+  - features.backup_retention_days
+  - features.enable_backups
+  records:
+    tfvars-dev:
+    - '0'
+    - 'false'
+    tfvars-dr:
+    - '30'
+    - 'true'
+    tfvars-edge:
+    - '0'
+    - 'false'
+    tfvars-prod:
+    - '30'
+    - 'true'
+    tfvars-staging:
+    - '7'
+    - 'true'

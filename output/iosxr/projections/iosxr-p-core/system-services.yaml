@@ -1,0 +1,46 @@
+meta:
+  subject: system-services
+  description: System services including NTP, DNS, logging, clock, and line 
+    console settings
+  source_type: iosxr-p-core
+  total_instances: 6
+base_class:
+  clock: timezone UTC 0
+  domain.lookup: disable
+  domain.name: lab.example.com
+  domain.name-server.10.255.2.1: 'true'
+  domain.name-server.10.255.2.2: 'true'
+  line: default
+  logging.10.255.1.1: vrf default severity info port default
+  logging.buffered: 307200 debugging
+  logging.console: informational
+  logging.events: link-status
+  logging.monitor: debugging
+  logging.source-interface: Loopback0
+  logging.trap: informational
+  ntp.server.10.255.0.1: 'true'
+  ntp.server.10.255.0.2: 'true'
+  ntp.source: Loopback0
+  ntp.update-calendar: 'true'
+  service.timestamps.debug: datetime msec localtime show-timezone
+  service.timestamps.log: datetime msec localtime show-timezone
+class_assignments:
+  _base_only:
+    instances:
+    - P-CORE-01..P-CORE-06
+instance_data:
+  schema:
+  - hostname
+  records:
+    P-CORE-01:
+    - P-CORE-01
+    P-CORE-02:
+    - P-CORE-02
+    P-CORE-03:
+    - P-CORE-03
+    P-CORE-04:
+    - P-CORE-04
+    P-CORE-05:
+    - P-CORE-05
+    P-CORE-06:
+    - P-CORE-06

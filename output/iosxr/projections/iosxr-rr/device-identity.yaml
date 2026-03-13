@@ -1,0 +1,29 @@
+meta:
+  subject: device-identity
+  description: Core device identification and contact information.
+  source_type: iosxr-rr
+  total_instances: 4
+base_class:
+  domain.name: lab.example.com
+  snmp-server.contact: noc@example.com
+class_assignments:
+  _base_only:
+    instances:
+    - RR-01..RR-04
+instance_data:
+  schema:
+  - hostname
+  - snmp-server.location
+  records:
+    RR-01:
+    - RR-01
+    - RR-01-RACK
+    RR-02:
+    - RR-02
+    - RR-02-RACK
+    RR-03:
+    - RR-03
+    - RR-03-RACK
+    RR-04:
+    - RR-04
+    - RR-04-RACK

@@ -1,0 +1,44 @@
+version: 1
+source_type: ansible-vars
+generated_by: decoct-infer
+subjects:
+- name: secrets-and-keys
+  description: Sensitive API keys, database passwords, and secrets for various 
+    services.
+  include_paths:
+  - api_key
+  - db_password
+  - backup_encryption_key
+  - jwt_secret
+  - redis_password
+  - smtp_password
+  - vault_password
+  - deploy_key
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the API keys configured for each instance?
+  - Compare the database passwords across all devices.
+  - Which instances have a backup encryption key defined?
+- name: application-environment
+  description: Environmental variables and service-specific configurations for 
+    applications.
+  include_paths:
+  - env
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What is the deployment environment for each instance?
+  - Are there any inconsistencies in the 'env' setting across the fleet?
+- name: grafana-access
+  description: Grafana administrative credentials.
+  include_paths:
+  - grafana_admin_password
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What is the Grafana admin password for each instance?
+  - Are there any instances using a default or common Grafana password?

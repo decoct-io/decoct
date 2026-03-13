@@ -1,0 +1,11 @@
+meta:
+  subject: rate-limiting
+  description: Configuration for API rate limiting.
+  source_type: yaml-app-config
+  total_instances: 3
+class_assignments:
+  _base_only:
+    instances:
+    - yaml-app-feature-flags
+    - yaml-app-logging-config
+    - yaml-app-service-mesh

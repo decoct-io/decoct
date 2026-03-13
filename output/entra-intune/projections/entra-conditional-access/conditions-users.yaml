@@ -1,0 +1,56 @@
+meta:
+  subject: conditions-users
+  description: User and group conditions including included/excluded users and 
+    groups
+  source_type: entra-conditional-access
+  total_instances: 20
+classes:
+  includeUsers_All_operator_OR:
+    inherits: base
+    own_attrs:
+      conditions.users.includeUsers: All
+    instance_count_inclusive: 7
+class_assignments:
+  includeUsers_All_operator_OR:
+    instances:
+    - CA-Block-Legacy-Auth-Exchange
+    - CA-Block-Legacy-Auth-Global
+    - CA-Block-Legacy-Auth-SharePoint
+    - CA-Block-Legacy-Auth-Teams
+    - CA-Compliant-Device-Office365
+    - CA-Disabled-Draft-TestPolicy
+    - CA-MFA-Azure-Management
+  _base_only:
+    instances:
+    - CA-Compliant-Device-Azure
+    - CA-Compliant-Device-Internal
+    - CA-Location-Block-Countries
+    - CA-Location-Require-MFA-External
+    - CA-MFA-Global-Admins
+    - CA-MFA-Privileged-Roles
+    - CA-MFA-Security-Admins
+    - CA-Named-Location-Corporate
+    - CA-Report-Only-AllUsers-MFA
+    - CA-SignIn-Risk-High-Block
+    - CA-SignIn-Risk-Medium-MFA
+    - CA-User-Risk-High-PasswordChange
+    - CA-User-Risk-Medium-MFA
+instance_attrs:
+  CA-Compliant-Device-Internal:
+    conditions.users.includeGroups: SG-Engineering, SG-Finance-Users
+  CA-Compliant-Device-Office365:
+    conditions.users.excludeUsers: SG-External-Contractors
+  CA-Location-Block-Countries:
+    conditions.users.excludeUsers: SG-IT-Admins
+  CA-MFA-Azure-Management:
+    conditions.users.excludeUsers: SG-IT-Admins
+  CA-MFA-Global-Admins:
+    conditions.users.includeGroups: SG-IT-Admins
+  CA-MFA-Privileged-Roles:
+    conditions.users.includeGroups: SG-Security-Team, SG-IT-Admins
+  CA-MFA-Security-Admins:
+    conditions.users.includeGroups: SG-Security-Team
+  CA-SignIn-Risk-High-Block:
+    conditions.users.excludeUsers: SG-IT-Admins
+  CA-User-Risk-Medium-MFA:
+    conditions.users.excludeUsers: SG-External-Contractors

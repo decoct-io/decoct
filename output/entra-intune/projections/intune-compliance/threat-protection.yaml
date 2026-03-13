@@ -1,0 +1,53 @@
+meta:
+  subject: threat-protection
+  description: Device threat protection, Defender, and antivirus settings
+  source_type: intune-compliance
+  total_instances: 10
+class_assignments:
+  _base_only:
+    instances:
+    - CP-Android-Corporate
+    - CP-Android-Standard
+    - CP-Win-Advanced-Security
+    - CP-Win-Basic-Security
+    - CP-Win-Kiosk-Devices
+    - CP-iOS-BYOD
+    - CP-iOS-Corporate-Managed
+    - CP-iOS-Standard
+    - CP-macOS-Secure-Workstation
+    - CP-macOS-Standard
+instance_data:
+  schema:
+  - deviceThreatProtectionEnabled
+  - deviceThreatProtectionRequiredSecurityLevel
+  records:
+    CP-Android-Corporate:
+    - 'true'
+    - secured
+    CP-Android-Standard:
+    - 'false'
+    - unavailable
+    CP-Win-Advanced-Security:
+    - 'true'
+    - secured
+    CP-Win-Basic-Security:
+    - 'false'
+    - unavailable
+    CP-Win-Kiosk-Devices:
+    - 'false'
+    - unavailable
+    CP-iOS-BYOD:
+    - 'false'
+    - unavailable
+    CP-iOS-Corporate-Managed:
+    - 'true'
+    - secured
+    CP-iOS-Standard:
+    - 'false'
+    - unavailable
+    CP-macOS-Secure-Workstation:
+    - 'true'
+    - secured
+    CP-macOS-Standard:
+    - 'false'
+    - unavailable

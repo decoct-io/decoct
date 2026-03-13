@@ -1,0 +1,72 @@
+meta:
+  subject: unit-metadata
+  description: Unit description, dependencies, ordering, and install targets
+  source_type: systemd-unit
+  total_instances: 10
+classes:
+  wantedby_multi_user_target_environment__REDACTED:
+    inherits: base
+    own_attrs:
+      Install.wantedby: multi-user.target
+    instance_count_inclusive: 7
+class_assignments:
+  wantedby_multi_user_target_environment__REDACTED:
+    instances:
+    - systemd-analytics-worker
+    - systemd-auth-service
+    - systemd-backup-svc
+    - systemd-billing-api
+    - systemd-core-api
+    - systemd-legacy-dashboard
+    - systemd-report-gen-svc
+  _base_only:
+    instances:
+    - systemd-backup-timer
+    - systemd-report-gen-timer
+    - systemd-web-app
+instance_data:
+  schema:
+  - Unit.description
+  records:
+    systemd-analytics-worker:
+    - Ridgeline Analytics Worker
+    systemd-auth-service:
+    - Ridgeline Auth Service
+    systemd-backup-svc:
+    - Ridgeline DB Backup Service
+    systemd-backup-timer:
+    - Ridgeline DB Backup Timer
+    systemd-billing-api:
+    - Ridgeline Billing API Service
+    systemd-core-api:
+    - Ridgeline Core API Service
+    systemd-legacy-dashboard:
+    - Ridgeline Legacy Dashboard (Flask)
+    systemd-report-gen-svc:
+    - Ridgeline Report Generator
+    systemd-report-gen-timer:
+    - Ridgeline Report Generator Timer
+    systemd-web-app:
+    - Ridgeline Web App (Node.js SSR)
+instance_attrs:
+  systemd-analytics-worker:
+    Unit.after: network.target redis.service
+    Unit.wants: redis.service
+  systemd-auth-service:
+    Unit.after: network.target postgresql.service
+    Unit.wants: postgresql.service
+  systemd-backup-svc:
+    Unit.after: postgresql.service
+  systemd-billing-api:
+    Unit.after: network.target mariadb.service
+    Unit.wants: mariadb.service
+  systemd-core-api:
+    Unit.after: network.target postgresql.service
+    Unit.wants: postgresql.service
+  systemd-legacy-dashboard:
+    Unit.after: network.target mariadb.service
+    Unit.wants: mariadb.service
+  systemd-report-gen-svc:
+    Unit.after: postgresql.service
+  systemd-web-app:
+    Unit.after: network.target

@@ -1,11 +1,11 @@
 meta:
   subject: evpn
-  description: EVPN and L2VPN configuration
+  description: EVPN instance configuration including route targets and MAC 
+    advertisement
   source_type: iosxr-access-pe
   total_instances: 60
 base_class:
-  evpn.!: 'true'
-  l2vpn.!: 'true'
+  evpn.evis: iosxr-access-pe.evpn.evis.T0
 class_assignments:
   _base_only:
     instances:
@@ -136,484 +136,1089 @@ instance_data:
     - APE-R3-19
     APE-R3-20:
     - APE-R3-20
-instance_attrs:
+b_composite_deltas:
   APE-R1-01:
-    l2vpn.bridge-groups:
-      BG-APE-R1-01:
-        bridge-domain.BD-APE-R1-01-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R1-01-VOICE.!: 'true'
-        bridge-domain.BD-APE-R1-01-VOICE.evi: '10002'
-        bridge-domain.BD-APE-R1-01-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '10000': {}
+        '10001':
+          bgp.route-target.import: 65002:10001
+          bgp.route-target.export: 65002:10001
+        '10002':
+          bgp.route-target.import: 65002:10002
+          bgp.route-target.export: 65002:10002
+        '10003':
+          bgp.route-target.import: 65002:10003
+          bgp.route-target.export: 65002:10003
+        '10004':
+          bgp.route-target.import: 65002:10004
+          bgp.route-target.export: 65002:10004
   APE-R1-02:
-    l2vpn.bridge-groups:
-      BG-APE-R1-02:
-        bridge-domain.BD-APE-R1-02-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R1-02-VOICE.!: 'true'
-        bridge-domain.BD-APE-R1-02-VOICE.evi: '10102'
-        bridge-domain.BD-APE-R1-02-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '10100':
+          bgp.route-target.import: 65002:10100
+          bgp.route-target.export: 65002:10100
+        '10101':
+          bgp.route-target.import: 65002:10101
+          bgp.route-target.export: 65002:10101
+        '10102':
+          bgp.route-target.import: 65002:10102
+          bgp.route-target.export: 65002:10102
+        '10103':
+          bgp.route-target.import: 65002:10103
+          bgp.route-target.export: 65002:10103
+        '10104':
+          bgp.route-target.import: 65002:10104
+          bgp.route-target.export: 65002:10104
   APE-R1-03:
-    l2vpn.bridge-groups:
-      BG-APE-R1-03:
-        bridge-domain.BD-APE-R1-03-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R1-03-VOICE.!: 'true'
-        bridge-domain.BD-APE-R1-03-VOICE.evi: '10202'
-        bridge-domain.BD-APE-R1-03-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '10200':
+          bgp.route-target.import: 65002:10200
+          bgp.route-target.export: 65002:10200
+        '10201':
+          bgp.route-target.import: 65002:10201
+          bgp.route-target.export: 65002:10201
+        '10202':
+          bgp.route-target.import: 65002:10202
+          bgp.route-target.export: 65002:10202
+        '10203':
+          bgp.route-target.import: 65002:10203
+          bgp.route-target.export: 65002:10203
+        '10204':
+          bgp.route-target.import: 65002:10204
+          bgp.route-target.export: 65002:10204
   APE-R1-04:
-    l2vpn.bridge-groups:
-      BG-APE-R1-04:
-        bridge-domain.BD-APE-R1-04-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R1-04-VOICE.!: 'true'
-        bridge-domain.BD-APE-R1-04-VOICE.evi: '10302'
-        bridge-domain.BD-APE-R1-04-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '10300':
+          bgp.route-target.import: 65002:10300
+          bgp.route-target.export: 65002:10300
+        '10301':
+          bgp.route-target.import: 65002:10301
+          bgp.route-target.export: 65002:10301
+        '10302':
+          bgp.route-target.import: 65002:10302
+          bgp.route-target.export: 65002:10302
+        '10303':
+          bgp.route-target.import: 65002:10303
+          bgp.route-target.export: 65002:10303
+        '10304':
+          bgp.route-target.import: 65002:10304
+          bgp.route-target.export: 65002:10304
   APE-R1-05:
-    l2vpn.bridge-groups:
-      BG-APE-R1-05:
-        bridge-domain.BD-APE-R1-05-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R1-05-VOICE.!: 'true'
-        bridge-domain.BD-APE-R1-05-VOICE.evi: '10402'
-        bridge-domain.BD-APE-R1-05-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '10400':
+          bgp.route-target.import: 65002:10400
+          bgp.route-target.export: 65002:10400
+        '10401':
+          bgp.route-target.import: 65002:10401
+          bgp.route-target.export: 65002:10401
+        '10402':
+          bgp.route-target.import: 65002:10402
+          bgp.route-target.export: 65002:10402
+        '10403':
+          bgp.route-target.import: 65002:10403
+          bgp.route-target.export: 65002:10403
+        '10404':
+          bgp.route-target.import: 65002:10404
+          bgp.route-target.export: 65002:10404
   APE-R1-06:
-    l2vpn.bridge-groups:
-      BG-APE-R1-06:
-        bridge-domain.BD-APE-R1-06-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R1-06-VOICE.!: 'true'
-        bridge-domain.BD-APE-R1-06-VOICE.evi: '10502'
-        bridge-domain.BD-APE-R1-06-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '10500':
+          bgp.route-target.import: 65002:10500
+          bgp.route-target.export: 65002:10500
+        '10501':
+          bgp.route-target.import: 65002:10501
+          bgp.route-target.export: 65002:10501
+        '10502':
+          bgp.route-target.import: 65002:10502
+          bgp.route-target.export: 65002:10502
+        '10503':
+          bgp.route-target.import: 65002:10503
+          bgp.route-target.export: 65002:10503
+        '10504':
+          bgp.route-target.import: 65002:10504
+          bgp.route-target.export: 65002:10504
   APE-R1-07:
-    l2vpn.bridge-groups:
-      BG-APE-R1-07:
-        bridge-domain.BD-APE-R1-07-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R1-07-VOICE.!: 'true'
-        bridge-domain.BD-APE-R1-07-VOICE.evi: '10602'
-        bridge-domain.BD-APE-R1-07-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '10600':
+          bgp.route-target.import: 65002:10600
+          bgp.route-target.export: 65002:10600
+        '10601':
+          bgp.route-target.import: 65002:10601
+          bgp.route-target.export: 65002:10601
+        '10602':
+          bgp.route-target.import: 65002:10602
+          bgp.route-target.export: 65002:10602
+        '10603':
+          bgp.route-target.import: 65002:10603
+          bgp.route-target.export: 65002:10603
+        '10604':
+          bgp.route-target.import: 65002:10604
+          bgp.route-target.export: 65002:10604
   APE-R1-08:
-    l2vpn.bridge-groups:
-      BG-APE-R1-08:
-        bridge-domain.BD-APE-R1-08-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R1-08-VOICE.!: 'true'
-        bridge-domain.BD-APE-R1-08-VOICE.evi: '10702'
-        bridge-domain.BD-APE-R1-08-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '10700':
+          bgp.route-target.import: 65002:10700
+          bgp.route-target.export: 65002:10700
+        '10701':
+          bgp.route-target.import: 65002:10701
+          bgp.route-target.export: 65002:10701
+        '10702':
+          bgp.route-target.import: 65002:10702
+          bgp.route-target.export: 65002:10702
+        '10703':
+          bgp.route-target.import: 65002:10703
+          bgp.route-target.export: 65002:10703
+        '10704':
+          bgp.route-target.import: 65002:10704
+          bgp.route-target.export: 65002:10704
   APE-R1-09:
-    l2vpn.bridge-groups:
-      BG-APE-R1-09:
-        bridge-domain.BD-APE-R1-09-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R1-09-VOICE.!: 'true'
-        bridge-domain.BD-APE-R1-09-VOICE.evi: '10802'
-        bridge-domain.BD-APE-R1-09-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '10800':
+          bgp.route-target.import: 65002:10800
+          bgp.route-target.export: 65002:10800
+        '10801':
+          bgp.route-target.import: 65002:10801
+          bgp.route-target.export: 65002:10801
+        '10802':
+          bgp.route-target.import: 65002:10802
+          bgp.route-target.export: 65002:10802
+        '10803':
+          bgp.route-target.import: 65002:10803
+          bgp.route-target.export: 65002:10803
+        '10804':
+          bgp.route-target.import: 65002:10804
+          bgp.route-target.export: 65002:10804
   APE-R1-10:
-    l2vpn.bridge-groups:
-      BG-APE-R1-10:
-        bridge-domain.BD-APE-R1-10-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R1-10-VOICE.!: 'true'
-        bridge-domain.BD-APE-R1-10-VOICE.evi: '10902'
-        bridge-domain.BD-APE-R1-10-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '10900':
+          bgp.route-target.import: 65002:10900
+          bgp.route-target.export: 65002:10900
+        '10901':
+          bgp.route-target.import: 65002:10901
+          bgp.route-target.export: 65002:10901
+        '10902':
+          bgp.route-target.import: 65002:10902
+          bgp.route-target.export: 65002:10902
+        '10903':
+          bgp.route-target.import: 65002:10903
+          bgp.route-target.export: 65002:10903
+        '10904':
+          bgp.route-target.import: 65002:10904
+          bgp.route-target.export: 65002:10904
   APE-R1-11:
-    l2vpn.bridge-groups:
-      BG-APE-R1-11:
-        bridge-domain.BD-APE-R1-11-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R1-11-VOICE.!: 'true'
-        bridge-domain.BD-APE-R1-11-VOICE.evi: '11002'
-        bridge-domain.BD-APE-R1-11-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '11000':
+          bgp.route-target.import: 65002:11000
+          bgp.route-target.export: 65002:11000
+        '11001':
+          bgp.route-target.import: 65002:11001
+          bgp.route-target.export: 65002:11001
+        '11002':
+          bgp.route-target.import: 65002:11002
+          bgp.route-target.export: 65002:11002
+        '11003':
+          bgp.route-target.import: 65002:11003
+          bgp.route-target.export: 65002:11003
+        '11004':
+          bgp.route-target.import: 65002:11004
+          bgp.route-target.export: 65002:11004
   APE-R1-12:
-    l2vpn.bridge-groups:
-      BG-APE-R1-12:
-        bridge-domain.BD-APE-R1-12-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R1-12-VOICE.!: 'true'
-        bridge-domain.BD-APE-R1-12-VOICE.evi: '11102'
-        bridge-domain.BD-APE-R1-12-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '11100':
+          bgp.route-target.import: 65002:11100
+          bgp.route-target.export: 65002:11100
+        '11101':
+          bgp.route-target.import: 65002:11101
+          bgp.route-target.export: 65002:11101
+        '11102':
+          bgp.route-target.import: 65002:11102
+          bgp.route-target.export: 65002:11102
+        '11103':
+          bgp.route-target.import: 65002:11103
+          bgp.route-target.export: 65002:11103
+        '11104':
+          bgp.route-target.import: 65002:11104
+          bgp.route-target.export: 65002:11104
   APE-R1-13:
-    l2vpn.bridge-groups:
-      BG-APE-R1-13:
-        bridge-domain.BD-APE-R1-13-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R1-13-VOICE.!: 'true'
-        bridge-domain.BD-APE-R1-13-VOICE.evi: '11202'
-        bridge-domain.BD-APE-R1-13-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '11200':
+          bgp.route-target.import: 65002:11200
+          bgp.route-target.export: 65002:11200
+        '11201':
+          bgp.route-target.import: 65002:11201
+          bgp.route-target.export: 65002:11201
+        '11202':
+          bgp.route-target.import: 65002:11202
+          bgp.route-target.export: 65002:11202
+        '11203':
+          bgp.route-target.import: 65002:11203
+          bgp.route-target.export: 65002:11203
+        '11204':
+          bgp.route-target.import: 65002:11204
+          bgp.route-target.export: 65002:11204
   APE-R1-14:
-    l2vpn.bridge-groups:
-      BG-APE-R1-14:
-        bridge-domain.BD-APE-R1-14-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R1-14-VOICE.!: 'true'
-        bridge-domain.BD-APE-R1-14-VOICE.evi: '11302'
-        bridge-domain.BD-APE-R1-14-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '11300':
+          bgp.route-target.import: 65002:11300
+          bgp.route-target.export: 65002:11300
+        '11301':
+          bgp.route-target.import: 65002:11301
+          bgp.route-target.export: 65002:11301
+        '11302':
+          bgp.route-target.import: 65002:11302
+          bgp.route-target.export: 65002:11302
+        '11303':
+          bgp.route-target.import: 65002:11303
+          bgp.route-target.export: 65002:11303
+        '11304':
+          bgp.route-target.import: 65002:11304
+          bgp.route-target.export: 65002:11304
   APE-R1-15:
-    l2vpn.bridge-groups:
-      BG-APE-R1-15:
-        bridge-domain.BD-APE-R1-15-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R1-15-VOICE.!: 'true'
-        bridge-domain.BD-APE-R1-15-VOICE.evi: '11402'
-        bridge-domain.BD-APE-R1-15-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '11400':
+          bgp.route-target.import: 65002:11400
+          bgp.route-target.export: 65002:11400
+        '11401':
+          bgp.route-target.import: 65002:11401
+          bgp.route-target.export: 65002:11401
+        '11402':
+          bgp.route-target.import: 65002:11402
+          bgp.route-target.export: 65002:11402
+        '11403':
+          bgp.route-target.import: 65002:11403
+          bgp.route-target.export: 65002:11403
+        '11404':
+          bgp.route-target.import: 65002:11404
+          bgp.route-target.export: 65002:11404
   APE-R1-16:
-    l2vpn.bridge-groups:
-      BG-APE-R1-16:
-        bridge-domain.BD-APE-R1-16-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R1-16-VOICE.!: 'true'
-        bridge-domain.BD-APE-R1-16-VOICE.evi: '11502'
-        bridge-domain.BD-APE-R1-16-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '11500':
+          bgp.route-target.import: 65002:11500
+          bgp.route-target.export: 65002:11500
+        '11501':
+          bgp.route-target.import: 65002:11501
+          bgp.route-target.export: 65002:11501
+        '11502':
+          bgp.route-target.import: 65002:11502
+          bgp.route-target.export: 65002:11502
+        '11503':
+          bgp.route-target.import: 65002:11503
+          bgp.route-target.export: 65002:11503
+        '11504':
+          bgp.route-target.import: 65002:11504
+          bgp.route-target.export: 65002:11504
   APE-R1-17:
-    l2vpn.bridge-groups:
-      BG-APE-R1-17:
-        bridge-domain.BD-APE-R1-17-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R1-17-VOICE.!: 'true'
-        bridge-domain.BD-APE-R1-17-VOICE.evi: '11602'
-        bridge-domain.BD-APE-R1-17-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '11600':
+          bgp.route-target.import: 65002:11600
+          bgp.route-target.export: 65002:11600
+        '11601':
+          bgp.route-target.import: 65002:11601
+          bgp.route-target.export: 65002:11601
+        '11602':
+          bgp.route-target.import: 65002:11602
+          bgp.route-target.export: 65002:11602
+        '11603':
+          bgp.route-target.import: 65002:11603
+          bgp.route-target.export: 65002:11603
+        '11604':
+          bgp.route-target.import: 65002:11604
+          bgp.route-target.export: 65002:11604
   APE-R1-18:
-    l2vpn.bridge-groups:
-      BG-APE-R1-18:
-        bridge-domain.BD-APE-R1-18-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R1-18-VOICE.!: 'true'
-        bridge-domain.BD-APE-R1-18-VOICE.evi: '11702'
-        bridge-domain.BD-APE-R1-18-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '11700':
+          bgp.route-target.import: 65002:11700
+          bgp.route-target.export: 65002:11700
+        '11701':
+          bgp.route-target.import: 65002:11701
+          bgp.route-target.export: 65002:11701
+        '11702':
+          bgp.route-target.import: 65002:11702
+          bgp.route-target.export: 65002:11702
+        '11703':
+          bgp.route-target.import: 65002:11703
+          bgp.route-target.export: 65002:11703
+        '11704':
+          bgp.route-target.import: 65002:11704
+          bgp.route-target.export: 65002:11704
   APE-R1-19:
-    l2vpn.bridge-groups:
-      BG-APE-R1-19:
-        bridge-domain.BD-APE-R1-19-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R1-19-VOICE.!: 'true'
-        bridge-domain.BD-APE-R1-19-VOICE.evi: '11802'
-        bridge-domain.BD-APE-R1-19-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '11800':
+          bgp.route-target.import: 65002:11800
+          bgp.route-target.export: 65002:11800
+        '11801':
+          bgp.route-target.import: 65002:11801
+          bgp.route-target.export: 65002:11801
+        '11802':
+          bgp.route-target.import: 65002:11802
+          bgp.route-target.export: 65002:11802
+        '11803':
+          bgp.route-target.import: 65002:11803
+          bgp.route-target.export: 65002:11803
+        '11804':
+          bgp.route-target.import: 65002:11804
+          bgp.route-target.export: 65002:11804
   APE-R1-20:
-    l2vpn.bridge-groups:
-      BG-APE-R1-20:
-        bridge-domain.BD-APE-R1-20-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R1-20-VOICE.!: 'true'
-        bridge-domain.BD-APE-R1-20-VOICE.evi: '11902'
-        bridge-domain.BD-APE-R1-20-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '11900':
+          bgp.route-target.import: 65002:11900
+          bgp.route-target.export: 65002:11900
+        '11901':
+          bgp.route-target.import: 65002:11901
+          bgp.route-target.export: 65002:11901
+        '11902':
+          bgp.route-target.import: 65002:11902
+          bgp.route-target.export: 65002:11902
+        '11903':
+          bgp.route-target.import: 65002:11903
+          bgp.route-target.export: 65002:11903
+        '11904':
+          bgp.route-target.import: 65002:11904
+          bgp.route-target.export: 65002:11904
   APE-R2-01:
-    l2vpn.bridge-groups:
-      BG-APE-R2-01:
-        bridge-domain.BD-APE-R2-01-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R2-01-VOICE.!: 'true'
-        bridge-domain.BD-APE-R2-01-VOICE.evi: '12002'
-        bridge-domain.BD-APE-R2-01-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '12000':
+          bgp.route-target.import: 65003:12000
+          bgp.route-target.export: 65003:12000
+        '12001':
+          bgp.route-target.import: 65003:12001
+          bgp.route-target.export: 65003:12001
+        '12002':
+          bgp.route-target.import: 65003:12002
+          bgp.route-target.export: 65003:12002
+        '12003':
+          bgp.route-target.import: 65003:12003
+          bgp.route-target.export: 65003:12003
+        '12004':
+          bgp.route-target.import: 65003:12004
+          bgp.route-target.export: 65003:12004
   APE-R2-02:
-    l2vpn.bridge-groups:
-      BG-APE-R2-02:
-        bridge-domain.BD-APE-R2-02-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R2-02-VOICE.!: 'true'
-        bridge-domain.BD-APE-R2-02-VOICE.evi: '12102'
-        bridge-domain.BD-APE-R2-02-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '12100':
+          bgp.route-target.import: 65003:12100
+          bgp.route-target.export: 65003:12100
+        '12101':
+          bgp.route-target.import: 65003:12101
+          bgp.route-target.export: 65003:12101
+        '12102':
+          bgp.route-target.import: 65003:12102
+          bgp.route-target.export: 65003:12102
+        '12103':
+          bgp.route-target.import: 65003:12103
+          bgp.route-target.export: 65003:12103
+        '12104':
+          bgp.route-target.import: 65003:12104
+          bgp.route-target.export: 65003:12104
   APE-R2-03:
-    l2vpn.bridge-groups:
-      BG-APE-R2-03:
-        bridge-domain.BD-APE-R2-03-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R2-03-VOICE.!: 'true'
-        bridge-domain.BD-APE-R2-03-VOICE.evi: '12202'
-        bridge-domain.BD-APE-R2-03-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '12200':
+          bgp.route-target.import: 65003:12200
+          bgp.route-target.export: 65003:12200
+        '12201':
+          bgp.route-target.import: 65003:12201
+          bgp.route-target.export: 65003:12201
+        '12202':
+          bgp.route-target.import: 65003:12202
+          bgp.route-target.export: 65003:12202
+        '12203':
+          bgp.route-target.import: 65003:12203
+          bgp.route-target.export: 65003:12203
+        '12204':
+          bgp.route-target.import: 65003:12204
+          bgp.route-target.export: 65003:12204
   APE-R2-04:
-    l2vpn.bridge-groups:
-      BG-APE-R2-04:
-        bridge-domain.BD-APE-R2-04-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R2-04-VOICE.!: 'true'
-        bridge-domain.BD-APE-R2-04-VOICE.evi: '12302'
-        bridge-domain.BD-APE-R2-04-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '12300':
+          bgp.route-target.import: 65003:12300
+          bgp.route-target.export: 65003:12300
+        '12301':
+          bgp.route-target.import: 65003:12301
+          bgp.route-target.export: 65003:12301
+        '12302':
+          bgp.route-target.import: 65003:12302
+          bgp.route-target.export: 65003:12302
+        '12303':
+          bgp.route-target.import: 65003:12303
+          bgp.route-target.export: 65003:12303
+        '12304':
+          bgp.route-target.import: 65003:12304
+          bgp.route-target.export: 65003:12304
   APE-R2-05:
-    l2vpn.bridge-groups:
-      BG-APE-R2-05:
-        bridge-domain.BD-APE-R2-05-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R2-05-VOICE.!: 'true'
-        bridge-domain.BD-APE-R2-05-VOICE.evi: '12402'
-        bridge-domain.BD-APE-R2-05-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '12400':
+          bgp.route-target.import: 65003:12400
+          bgp.route-target.export: 65003:12400
+        '12401':
+          bgp.route-target.import: 65003:12401
+          bgp.route-target.export: 65003:12401
+        '12402':
+          bgp.route-target.import: 65003:12402
+          bgp.route-target.export: 65003:12402
+        '12403':
+          bgp.route-target.import: 65003:12403
+          bgp.route-target.export: 65003:12403
+        '12404':
+          bgp.route-target.import: 65003:12404
+          bgp.route-target.export: 65003:12404
   APE-R2-06:
-    l2vpn.bridge-groups:
-      BG-APE-R2-06:
-        bridge-domain.BD-APE-R2-06-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R2-06-VOICE.!: 'true'
-        bridge-domain.BD-APE-R2-06-VOICE.evi: '12502'
-        bridge-domain.BD-APE-R2-06-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '12500':
+          bgp.route-target.import: 65003:12500
+          bgp.route-target.export: 65003:12500
+        '12501':
+          bgp.route-target.import: 65003:12501
+          bgp.route-target.export: 65003:12501
+        '12502':
+          bgp.route-target.import: 65003:12502
+          bgp.route-target.export: 65003:12502
+        '12503':
+          bgp.route-target.import: 65003:12503
+          bgp.route-target.export: 65003:12503
+        '12504':
+          bgp.route-target.import: 65003:12504
+          bgp.route-target.export: 65003:12504
   APE-R2-07:
-    l2vpn.bridge-groups:
-      BG-APE-R2-07:
-        bridge-domain.BD-APE-R2-07-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R2-07-VOICE.!: 'true'
-        bridge-domain.BD-APE-R2-07-VOICE.evi: '12602'
-        bridge-domain.BD-APE-R2-07-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '12600':
+          bgp.route-target.import: 65003:12600
+          bgp.route-target.export: 65003:12600
+        '12601':
+          bgp.route-target.import: 65003:12601
+          bgp.route-target.export: 65003:12601
+        '12602':
+          bgp.route-target.import: 65003:12602
+          bgp.route-target.export: 65003:12602
+        '12603':
+          bgp.route-target.import: 65003:12603
+          bgp.route-target.export: 65003:12603
+        '12604':
+          bgp.route-target.import: 65003:12604
+          bgp.route-target.export: 65003:12604
   APE-R2-08:
-    l2vpn.bridge-groups:
-      BG-APE-R2-08:
-        bridge-domain.BD-APE-R2-08-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R2-08-VOICE.!: 'true'
-        bridge-domain.BD-APE-R2-08-VOICE.evi: '12702'
-        bridge-domain.BD-APE-R2-08-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '12700':
+          bgp.route-target.import: 65003:12700
+          bgp.route-target.export: 65003:12700
+        '12701':
+          bgp.route-target.import: 65003:12701
+          bgp.route-target.export: 65003:12701
+        '12702':
+          bgp.route-target.import: 65003:12702
+          bgp.route-target.export: 65003:12702
+        '12703':
+          bgp.route-target.import: 65003:12703
+          bgp.route-target.export: 65003:12703
+        '12704':
+          bgp.route-target.import: 65003:12704
+          bgp.route-target.export: 65003:12704
   APE-R2-09:
-    l2vpn.bridge-groups:
-      BG-APE-R2-09:
-        bridge-domain.BD-APE-R2-09-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R2-09-VOICE.!: 'true'
-        bridge-domain.BD-APE-R2-09-VOICE.evi: '12802'
-        bridge-domain.BD-APE-R2-09-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '12800':
+          bgp.route-target.import: 65003:12800
+          bgp.route-target.export: 65003:12800
+        '12801':
+          bgp.route-target.import: 65003:12801
+          bgp.route-target.export: 65003:12801
+        '12802':
+          bgp.route-target.import: 65003:12802
+          bgp.route-target.export: 65003:12802
+        '12803':
+          bgp.route-target.import: 65003:12803
+          bgp.route-target.export: 65003:12803
+        '12804':
+          bgp.route-target.import: 65003:12804
+          bgp.route-target.export: 65003:12804
   APE-R2-10:
-    l2vpn.bridge-groups:
-      BG-APE-R2-10:
-        bridge-domain.BD-APE-R2-10-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R2-10-VOICE.!: 'true'
-        bridge-domain.BD-APE-R2-10-VOICE.evi: '12902'
-        bridge-domain.BD-APE-R2-10-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '12900':
+          bgp.route-target.import: 65003:12900
+          bgp.route-target.export: 65003:12900
+        '12901':
+          bgp.route-target.import: 65003:12901
+          bgp.route-target.export: 65003:12901
+        '12902':
+          bgp.route-target.import: 65003:12902
+          bgp.route-target.export: 65003:12902
+        '12903':
+          bgp.route-target.import: 65003:12903
+          bgp.route-target.export: 65003:12903
+        '12904':
+          bgp.route-target.import: 65003:12904
+          bgp.route-target.export: 65003:12904
   APE-R2-11:
-    l2vpn.bridge-groups:
-      BG-APE-R2-11:
-        bridge-domain.BD-APE-R2-11-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R2-11-VOICE.!: 'true'
-        bridge-domain.BD-APE-R2-11-VOICE.evi: '13002'
-        bridge-domain.BD-APE-R2-11-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '13000':
+          bgp.route-target.import: 65003:13000
+          bgp.route-target.export: 65003:13000
+        '13001':
+          bgp.route-target.import: 65003:13001
+          bgp.route-target.export: 65003:13001
+        '13002':
+          bgp.route-target.import: 65003:13002
+          bgp.route-target.export: 65003:13002
+        '13003':
+          bgp.route-target.import: 65003:13003
+          bgp.route-target.export: 65003:13003
+        '13004':
+          bgp.route-target.import: 65003:13004
+          bgp.route-target.export: 65003:13004
   APE-R2-12:
-    l2vpn.bridge-groups:
-      BG-APE-R2-12:
-        bridge-domain.BD-APE-R2-12-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R2-12-VOICE.!: 'true'
-        bridge-domain.BD-APE-R2-12-VOICE.evi: '13102'
-        bridge-domain.BD-APE-R2-12-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '13100':
+          bgp.route-target.import: 65003:13100
+          bgp.route-target.export: 65003:13100
+        '13101':
+          bgp.route-target.import: 65003:13101
+          bgp.route-target.export: 65003:13101
+        '13102':
+          bgp.route-target.import: 65003:13102
+          bgp.route-target.export: 65003:13102
+        '13103':
+          bgp.route-target.import: 65003:13103
+          bgp.route-target.export: 65003:13103
+        '13104':
+          bgp.route-target.import: 65003:13104
+          bgp.route-target.export: 65003:13104
   APE-R2-13:
-    l2vpn.bridge-groups:
-      BG-APE-R2-13:
-        bridge-domain.BD-APE-R2-13-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R2-13-VOICE.!: 'true'
-        bridge-domain.BD-APE-R2-13-VOICE.evi: '13202'
-        bridge-domain.BD-APE-R2-13-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '13200':
+          bgp.route-target.import: 65003:13200
+          bgp.route-target.export: 65003:13200
+        '13201':
+          bgp.route-target.import: 65003:13201
+          bgp.route-target.export: 65003:13201
+        '13202':
+          bgp.route-target.import: 65003:13202
+          bgp.route-target.export: 65003:13202
+        '13203':
+          bgp.route-target.import: 65003:13203
+          bgp.route-target.export: 65003:13203
+        '13204':
+          bgp.route-target.import: 65003:13204
+          bgp.route-target.export: 65003:13204
   APE-R2-14:
-    l2vpn.bridge-groups:
-      BG-APE-R2-14:
-        bridge-domain.BD-APE-R2-14-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R2-14-VOICE.!: 'true'
-        bridge-domain.BD-APE-R2-14-VOICE.evi: '13302'
-        bridge-domain.BD-APE-R2-14-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '13300':
+          bgp.route-target.import: 65003:13300
+          bgp.route-target.export: 65003:13300
+        '13301':
+          bgp.route-target.import: 65003:13301
+          bgp.route-target.export: 65003:13301
+        '13302':
+          bgp.route-target.import: 65003:13302
+          bgp.route-target.export: 65003:13302
+        '13303':
+          bgp.route-target.import: 65003:13303
+          bgp.route-target.export: 65003:13303
+        '13304':
+          bgp.route-target.import: 65003:13304
+          bgp.route-target.export: 65003:13304
   APE-R2-15:
-    l2vpn.bridge-groups:
-      BG-APE-R2-15:
-        bridge-domain.BD-APE-R2-15-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R2-15-VOICE.!: 'true'
-        bridge-domain.BD-APE-R2-15-VOICE.evi: '13402'
-        bridge-domain.BD-APE-R2-15-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '13400':
+          bgp.route-target.import: 65003:13400
+          bgp.route-target.export: 65003:13400
+        '13401':
+          bgp.route-target.import: 65003:13401
+          bgp.route-target.export: 65003:13401
+        '13402':
+          bgp.route-target.import: 65003:13402
+          bgp.route-target.export: 65003:13402
+        '13403':
+          bgp.route-target.import: 65003:13403
+          bgp.route-target.export: 65003:13403
+        '13404':
+          bgp.route-target.import: 65003:13404
+          bgp.route-target.export: 65003:13404
   APE-R2-16:
-    l2vpn.bridge-groups:
-      BG-APE-R2-16:
-        bridge-domain.BD-APE-R2-16-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R2-16-VOICE.!: 'true'
-        bridge-domain.BD-APE-R2-16-VOICE.evi: '13502'
-        bridge-domain.BD-APE-R2-16-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '13500':
+          bgp.route-target.import: 65003:13500
+          bgp.route-target.export: 65003:13500
+        '13501':
+          bgp.route-target.import: 65003:13501
+          bgp.route-target.export: 65003:13501
+        '13502':
+          bgp.route-target.import: 65003:13502
+          bgp.route-target.export: 65003:13502
+        '13503':
+          bgp.route-target.import: 65003:13503
+          bgp.route-target.export: 65003:13503
+        '13504':
+          bgp.route-target.import: 65003:13504
+          bgp.route-target.export: 65003:13504
   APE-R2-17:
-    l2vpn.bridge-groups:
-      BG-APE-R2-17:
-        bridge-domain.BD-APE-R2-17-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R2-17-VOICE.!: 'true'
-        bridge-domain.BD-APE-R2-17-VOICE.evi: '13602'
-        bridge-domain.BD-APE-R2-17-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '13600':
+          bgp.route-target.import: 65003:13600
+          bgp.route-target.export: 65003:13600
+        '13601':
+          bgp.route-target.import: 65003:13601
+          bgp.route-target.export: 65003:13601
+        '13602':
+          bgp.route-target.import: 65003:13602
+          bgp.route-target.export: 65003:13602
+        '13603':
+          bgp.route-target.import: 65003:13603
+          bgp.route-target.export: 65003:13603
+        '13604':
+          bgp.route-target.import: 65003:13604
+          bgp.route-target.export: 65003:13604
   APE-R2-18:
-    l2vpn.bridge-groups:
-      BG-APE-R2-18:
-        bridge-domain.BD-APE-R2-18-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R2-18-VOICE.!: 'true'
-        bridge-domain.BD-APE-R2-18-VOICE.evi: '13702'
-        bridge-domain.BD-APE-R2-18-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '13700':
+          bgp.route-target.import: 65003:13700
+          bgp.route-target.export: 65003:13700
+        '13701':
+          bgp.route-target.import: 65003:13701
+          bgp.route-target.export: 65003:13701
+        '13702':
+          bgp.route-target.import: 65003:13702
+          bgp.route-target.export: 65003:13702
+        '13703':
+          bgp.route-target.import: 65003:13703
+          bgp.route-target.export: 65003:13703
+        '13704':
+          bgp.route-target.import: 65003:13704
+          bgp.route-target.export: 65003:13704
   APE-R2-19:
-    l2vpn.bridge-groups:
-      BG-APE-R2-19:
-        bridge-domain.BD-APE-R2-19-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R2-19-VOICE.!: 'true'
-        bridge-domain.BD-APE-R2-19-VOICE.evi: '13802'
-        bridge-domain.BD-APE-R2-19-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '13800':
+          bgp.route-target.import: 65003:13800
+          bgp.route-target.export: 65003:13800
+        '13801':
+          bgp.route-target.import: 65003:13801
+          bgp.route-target.export: 65003:13801
+        '13802':
+          bgp.route-target.import: 65003:13802
+          bgp.route-target.export: 65003:13802
+        '13803':
+          bgp.route-target.import: 65003:13803
+          bgp.route-target.export: 65003:13803
+        '13804':
+          bgp.route-target.import: 65003:13804
+          bgp.route-target.export: 65003:13804
   APE-R2-20:
-    l2vpn.bridge-groups:
-      BG-APE-R2-20:
-        bridge-domain.BD-APE-R2-20-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R2-20-VOICE.!: 'true'
-        bridge-domain.BD-APE-R2-20-VOICE.evi: '13902'
-        bridge-domain.BD-APE-R2-20-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '13900':
+          bgp.route-target.import: 65003:13900
+          bgp.route-target.export: 65003:13900
+        '13901':
+          bgp.route-target.import: 65003:13901
+          bgp.route-target.export: 65003:13901
+        '13902':
+          bgp.route-target.import: 65003:13902
+          bgp.route-target.export: 65003:13902
+        '13903':
+          bgp.route-target.import: 65003:13903
+          bgp.route-target.export: 65003:13903
+        '13904':
+          bgp.route-target.import: 65003:13904
+          bgp.route-target.export: 65003:13904
   APE-R3-01:
-    l2vpn.bridge-groups:
-      BG-APE-R3-01:
-        bridge-domain.BD-APE-R3-01-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R3-01-VOICE.!: 'true'
-        bridge-domain.BD-APE-R3-01-VOICE.evi: '14002'
-        bridge-domain.BD-APE-R3-01-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '14000':
+          bgp.route-target.import: 65004:14000
+          bgp.route-target.export: 65004:14000
+        '14001':
+          bgp.route-target.import: 65004:14001
+          bgp.route-target.export: 65004:14001
+        '14002':
+          bgp.route-target.import: 65004:14002
+          bgp.route-target.export: 65004:14002
+        '14003':
+          bgp.route-target.import: 65004:14003
+          bgp.route-target.export: 65004:14003
+        '14004':
+          bgp.route-target.import: 65004:14004
+          bgp.route-target.export: 65004:14004
   APE-R3-02:
-    l2vpn.bridge-groups:
-      BG-APE-R3-02:
-        bridge-domain.BD-APE-R3-02-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R3-02-VOICE.!: 'true'
-        bridge-domain.BD-APE-R3-02-VOICE.evi: '14102'
-        bridge-domain.BD-APE-R3-02-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '14100':
+          bgp.route-target.import: 65004:14100
+          bgp.route-target.export: 65004:14100
+        '14101':
+          bgp.route-target.import: 65004:14101
+          bgp.route-target.export: 65004:14101
+        '14102':
+          bgp.route-target.import: 65004:14102
+          bgp.route-target.export: 65004:14102
+        '14103':
+          bgp.route-target.import: 65004:14103
+          bgp.route-target.export: 65004:14103
+        '14104':
+          bgp.route-target.import: 65004:14104
+          bgp.route-target.export: 65004:14104
   APE-R3-03:
-    l2vpn.bridge-groups:
-      BG-APE-R3-03:
-        bridge-domain.BD-APE-R3-03-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R3-03-VOICE.!: 'true'
-        bridge-domain.BD-APE-R3-03-VOICE.evi: '14202'
-        bridge-domain.BD-APE-R3-03-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '14200':
+          bgp.route-target.import: 65004:14200
+          bgp.route-target.export: 65004:14200
+        '14201':
+          bgp.route-target.import: 65004:14201
+          bgp.route-target.export: 65004:14201
+        '14202':
+          bgp.route-target.import: 65004:14202
+          bgp.route-target.export: 65004:14202
+        '14203':
+          bgp.route-target.import: 65004:14203
+          bgp.route-target.export: 65004:14203
+        '14204':
+          bgp.route-target.import: 65004:14204
+          bgp.route-target.export: 65004:14204
   APE-R3-04:
-    l2vpn.bridge-groups:
-      BG-APE-R3-04:
-        bridge-domain.BD-APE-R3-04-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R3-04-VOICE.!: 'true'
-        bridge-domain.BD-APE-R3-04-VOICE.evi: '14302'
-        bridge-domain.BD-APE-R3-04-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '14300':
+          bgp.route-target.import: 65004:14300
+          bgp.route-target.export: 65004:14300
+        '14301':
+          bgp.route-target.import: 65004:14301
+          bgp.route-target.export: 65004:14301
+        '14302':
+          bgp.route-target.import: 65004:14302
+          bgp.route-target.export: 65004:14302
+        '14303':
+          bgp.route-target.import: 65004:14303
+          bgp.route-target.export: 65004:14303
+        '14304':
+          bgp.route-target.import: 65004:14304
+          bgp.route-target.export: 65004:14304
   APE-R3-05:
-    l2vpn.bridge-groups:
-      BG-APE-R3-05:
-        bridge-domain.BD-APE-R3-05-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R3-05-VOICE.!: 'true'
-        bridge-domain.BD-APE-R3-05-VOICE.evi: '14402'
-        bridge-domain.BD-APE-R3-05-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '14400':
+          bgp.route-target.import: 65004:14400
+          bgp.route-target.export: 65004:14400
+        '14401':
+          bgp.route-target.import: 65004:14401
+          bgp.route-target.export: 65004:14401
+        '14402':
+          bgp.route-target.import: 65004:14402
+          bgp.route-target.export: 65004:14402
+        '14403':
+          bgp.route-target.import: 65004:14403
+          bgp.route-target.export: 65004:14403
+        '14404':
+          bgp.route-target.import: 65004:14404
+          bgp.route-target.export: 65004:14404
   APE-R3-06:
-    l2vpn.bridge-groups:
-      BG-APE-R3-06:
-        bridge-domain.BD-APE-R3-06-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R3-06-VOICE.!: 'true'
-        bridge-domain.BD-APE-R3-06-VOICE.evi: '14502'
-        bridge-domain.BD-APE-R3-06-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '14500':
+          bgp.route-target.import: 65004:14500
+          bgp.route-target.export: 65004:14500
+        '14501':
+          bgp.route-target.import: 65004:14501
+          bgp.route-target.export: 65004:14501
+        '14502':
+          bgp.route-target.import: 65004:14502
+          bgp.route-target.export: 65004:14502
+        '14503':
+          bgp.route-target.import: 65004:14503
+          bgp.route-target.export: 65004:14503
+        '14504':
+          bgp.route-target.import: 65004:14504
+          bgp.route-target.export: 65004:14504
   APE-R3-07:
-    l2vpn.bridge-groups:
-      BG-APE-R3-07:
-        bridge-domain.BD-APE-R3-07-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R3-07-VOICE.!: 'true'
-        bridge-domain.BD-APE-R3-07-VOICE.evi: '14602'
-        bridge-domain.BD-APE-R3-07-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '14600':
+          bgp.route-target.import: 65004:14600
+          bgp.route-target.export: 65004:14600
+        '14601':
+          bgp.route-target.import: 65004:14601
+          bgp.route-target.export: 65004:14601
+        '14602':
+          bgp.route-target.import: 65004:14602
+          bgp.route-target.export: 65004:14602
+        '14603':
+          bgp.route-target.import: 65004:14603
+          bgp.route-target.export: 65004:14603
+        '14604':
+          bgp.route-target.import: 65004:14604
+          bgp.route-target.export: 65004:14604
   APE-R3-08:
-    l2vpn.bridge-groups:
-      BG-APE-R3-08:
-        bridge-domain.BD-APE-R3-08-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R3-08-VOICE.!: 'true'
-        bridge-domain.BD-APE-R3-08-VOICE.evi: '14702'
-        bridge-domain.BD-APE-R3-08-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '14700':
+          bgp.route-target.import: 65004:14700
+          bgp.route-target.export: 65004:14700
+        '14701':
+          bgp.route-target.import: 65004:14701
+          bgp.route-target.export: 65004:14701
+        '14702':
+          bgp.route-target.import: 65004:14702
+          bgp.route-target.export: 65004:14702
+        '14703':
+          bgp.route-target.import: 65004:14703
+          bgp.route-target.export: 65004:14703
+        '14704':
+          bgp.route-target.import: 65004:14704
+          bgp.route-target.export: 65004:14704
   APE-R3-09:
-    l2vpn.bridge-groups:
-      BG-APE-R3-09:
-        bridge-domain.BD-APE-R3-09-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R3-09-VOICE.!: 'true'
-        bridge-domain.BD-APE-R3-09-VOICE.evi: '14802'
-        bridge-domain.BD-APE-R3-09-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '14800':
+          bgp.route-target.import: 65004:14800
+          bgp.route-target.export: 65004:14800
+        '14801':
+          bgp.route-target.import: 65004:14801
+          bgp.route-target.export: 65004:14801
+        '14802':
+          bgp.route-target.import: 65004:14802
+          bgp.route-target.export: 65004:14802
+        '14803':
+          bgp.route-target.import: 65004:14803
+          bgp.route-target.export: 65004:14803
+        '14804':
+          bgp.route-target.import: 65004:14804
+          bgp.route-target.export: 65004:14804
   APE-R3-10:
-    l2vpn.bridge-groups:
-      BG-APE-R3-10:
-        bridge-domain.BD-APE-R3-10-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R3-10-VOICE.!: 'true'
-        bridge-domain.BD-APE-R3-10-VOICE.evi: '14902'
-        bridge-domain.BD-APE-R3-10-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '14900':
+          bgp.route-target.import: 65004:14900
+          bgp.route-target.export: 65004:14900
+        '14901':
+          bgp.route-target.import: 65004:14901
+          bgp.route-target.export: 65004:14901
+        '14902':
+          bgp.route-target.import: 65004:14902
+          bgp.route-target.export: 65004:14902
+        '14903':
+          bgp.route-target.import: 65004:14903
+          bgp.route-target.export: 65004:14903
+        '14904':
+          bgp.route-target.import: 65004:14904
+          bgp.route-target.export: 65004:14904
   APE-R3-11:
-    l2vpn.bridge-groups:
-      BG-APE-R3-11:
-        bridge-domain.BD-APE-R3-11-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R3-11-VOICE.!: 'true'
-        bridge-domain.BD-APE-R3-11-VOICE.evi: '15002'
-        bridge-domain.BD-APE-R3-11-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '15000':
+          bgp.route-target.import: 65004:15000
+          bgp.route-target.export: 65004:15000
+        '15001':
+          bgp.route-target.import: 65004:15001
+          bgp.route-target.export: 65004:15001
+        '15002':
+          bgp.route-target.import: 65004:15002
+          bgp.route-target.export: 65004:15002
+        '15003':
+          bgp.route-target.import: 65004:15003
+          bgp.route-target.export: 65004:15003
+        '15004':
+          bgp.route-target.import: 65004:15004
+          bgp.route-target.export: 65004:15004
   APE-R3-12:
-    l2vpn.bridge-groups:
-      BG-APE-R3-12:
-        bridge-domain.BD-APE-R3-12-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R3-12-VOICE.!: 'true'
-        bridge-domain.BD-APE-R3-12-VOICE.evi: '15102'
-        bridge-domain.BD-APE-R3-12-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '15100':
+          bgp.route-target.import: 65004:15100
+          bgp.route-target.export: 65004:15100
+        '15101':
+          bgp.route-target.import: 65004:15101
+          bgp.route-target.export: 65004:15101
+        '15102':
+          bgp.route-target.import: 65004:15102
+          bgp.route-target.export: 65004:15102
+        '15103':
+          bgp.route-target.import: 65004:15103
+          bgp.route-target.export: 65004:15103
+        '15104':
+          bgp.route-target.import: 65004:15104
+          bgp.route-target.export: 65004:15104
   APE-R3-13:
-    l2vpn.bridge-groups:
-      BG-APE-R3-13:
-        bridge-domain.BD-APE-R3-13-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R3-13-VOICE.!: 'true'
-        bridge-domain.BD-APE-R3-13-VOICE.evi: '15202'
-        bridge-domain.BD-APE-R3-13-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '15200':
+          bgp.route-target.import: 65004:15200
+          bgp.route-target.export: 65004:15200
+        '15201':
+          bgp.route-target.import: 65004:15201
+          bgp.route-target.export: 65004:15201
+        '15202':
+          bgp.route-target.import: 65004:15202
+          bgp.route-target.export: 65004:15202
+        '15203':
+          bgp.route-target.import: 65004:15203
+          bgp.route-target.export: 65004:15203
+        '15204':
+          bgp.route-target.import: 65004:15204
+          bgp.route-target.export: 65004:15204
   APE-R3-14:
-    l2vpn.bridge-groups:
-      BG-APE-R3-14:
-        bridge-domain.BD-APE-R3-14-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R3-14-VOICE.!: 'true'
-        bridge-domain.BD-APE-R3-14-VOICE.evi: '15302'
-        bridge-domain.BD-APE-R3-14-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '15300':
+          bgp.route-target.import: 65004:15300
+          bgp.route-target.export: 65004:15300
+        '15301':
+          bgp.route-target.import: 65004:15301
+          bgp.route-target.export: 65004:15301
+        '15302':
+          bgp.route-target.import: 65004:15302
+          bgp.route-target.export: 65004:15302
+        '15303':
+          bgp.route-target.import: 65004:15303
+          bgp.route-target.export: 65004:15303
+        '15304':
+          bgp.route-target.import: 65004:15304
+          bgp.route-target.export: 65004:15304
   APE-R3-15:
-    l2vpn.bridge-groups:
-      BG-APE-R3-15:
-        bridge-domain.BD-APE-R3-15-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R3-15-VOICE.!: 'true'
-        bridge-domain.BD-APE-R3-15-VOICE.evi: '15402'
-        bridge-domain.BD-APE-R3-15-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '15400':
+          bgp.route-target.import: 65004:15400
+          bgp.route-target.export: 65004:15400
+        '15401':
+          bgp.route-target.import: 65004:15401
+          bgp.route-target.export: 65004:15401
+        '15402':
+          bgp.route-target.import: 65004:15402
+          bgp.route-target.export: 65004:15402
+        '15403':
+          bgp.route-target.import: 65004:15403
+          bgp.route-target.export: 65004:15403
+        '15404':
+          bgp.route-target.import: 65004:15404
+          bgp.route-target.export: 65004:15404
   APE-R3-16:
-    l2vpn.bridge-groups:
-      BG-APE-R3-16:
-        bridge-domain.BD-APE-R3-16-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R3-16-VOICE.!: 'true'
-        bridge-domain.BD-APE-R3-16-VOICE.evi: '15502'
-        bridge-domain.BD-APE-R3-16-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '15500':
+          bgp.route-target.import: 65004:15500
+          bgp.route-target.export: 65004:15500
+        '15501':
+          bgp.route-target.import: 65004:15501
+          bgp.route-target.export: 65004:15501
+        '15502':
+          bgp.route-target.import: 65004:15502
+          bgp.route-target.export: 65004:15502
+        '15503':
+          bgp.route-target.import: 65004:15503
+          bgp.route-target.export: 65004:15503
+        '15504':
+          bgp.route-target.import: 65004:15504
+          bgp.route-target.export: 65004:15504
   APE-R3-17:
-    l2vpn.bridge-groups:
-      BG-APE-R3-17:
-        bridge-domain.BD-APE-R3-17-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R3-17-VOICE.!: 'true'
-        bridge-domain.BD-APE-R3-17-VOICE.evi: '15602'
-        bridge-domain.BD-APE-R3-17-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '15600':
+          bgp.route-target.import: 65004:15600
+          bgp.route-target.export: 65004:15600
+        '15601':
+          bgp.route-target.import: 65004:15601
+          bgp.route-target.export: 65004:15601
+        '15602':
+          bgp.route-target.import: 65004:15602
+          bgp.route-target.export: 65004:15602
+        '15603':
+          bgp.route-target.import: 65004:15603
+          bgp.route-target.export: 65004:15603
+        '15604':
+          bgp.route-target.import: 65004:15604
+          bgp.route-target.export: 65004:15604
   APE-R3-18:
-    l2vpn.bridge-groups:
-      BG-APE-R3-18:
-        bridge-domain.BD-APE-R3-18-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R3-18-VOICE.!: 'true'
-        bridge-domain.BD-APE-R3-18-VOICE.evi: '15702'
-        bridge-domain.BD-APE-R3-18-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '15700':
+          bgp.route-target.import: 65004:15700
+          bgp.route-target.export: 65004:15700
+        '15701':
+          bgp.route-target.import: 65004:15701
+          bgp.route-target.export: 65004:15701
+        '15702':
+          bgp.route-target.import: 65004:15702
+          bgp.route-target.export: 65004:15702
+        '15703':
+          bgp.route-target.import: 65004:15703
+          bgp.route-target.export: 65004:15703
+        '15704':
+          bgp.route-target.import: 65004:15704
+          bgp.route-target.export: 65004:15704
   APE-R3-19:
-    l2vpn.bridge-groups:
-      BG-APE-R3-19:
-        bridge-domain.BD-APE-R3-19-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R3-19-VOICE.!: 'true'
-        bridge-domain.BD-APE-R3-19-VOICE.evi: '15802'
-        bridge-domain.BD-APE-R3-19-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '15800':
+          bgp.route-target.import: 65004:15800
+          bgp.route-target.export: 65004:15800
+        '15801':
+          bgp.route-target.import: 65004:15801
+          bgp.route-target.export: 65004:15801
+        '15802':
+          bgp.route-target.import: 65004:15802
+          bgp.route-target.export: 65004:15802
+        '15803':
+          bgp.route-target.import: 65004:15803
+          bgp.route-target.export: 65004:15803
+        '15804':
+          bgp.route-target.import: 65004:15804
+          bgp.route-target.export: 65004:15804
   APE-R3-20:
-    l2vpn.bridge-groups:
-      BG-APE-R3-20:
-        bridge-domain.BD-APE-R3-20-VOICE.interface: Bundle-Ether300.300
-        bridge-domain.BD-APE-R3-20-VOICE.!: 'true'
-        bridge-domain.BD-APE-R3-20-VOICE.evi: '15902'
-        bridge-domain.BD-APE-R3-20-VOICE.routed: interface BVI300
-        '!': 'true'
+    evpn.evis:
+      delta:
+        '15900':
+          bgp.route-target.import: 65004:15900
+          bgp.route-target.export: 65004:15900
+        '15901':
+          bgp.route-target.import: 65004:15901
+          bgp.route-target.export: 65004:15901
+        '15902':
+          bgp.route-target.import: 65004:15902
+          bgp.route-target.export: 65004:15902
+        '15903':
+          bgp.route-target.import: 65004:15903
+          bgp.route-target.export: 65004:15903
+        '15904':
+          bgp.route-target.import: 65004:15904
+          bgp.route-target.export: 65004:15904
+composite_templates:
+  evpn.evis:
+    iosxr-access-pe.evpn.evis.T0:
+      elements:
+        advertise-mac: 'true'
+        bgp.route-target.export: 65002:10000
+        bgp.route-target.import: 65002:10000

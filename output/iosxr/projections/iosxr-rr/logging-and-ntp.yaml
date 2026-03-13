@@ -1,0 +1,33 @@
+meta:
+  subject: logging-and-ntp
+  description: System logging and Network Time Protocol configurations.
+  source_type: iosxr-rr
+  total_instances: 4
+base_class:
+  logging.10.255.1.1: vrf default severity info port default
+  logging.buffered: 307200 debugging
+  logging.console: informational
+  logging.events: link-status
+  logging.monitor: debugging
+  logging.source-interface: Loopback0
+  logging.trap: informational
+  ntp.server.10.255.0.1: 'true'
+  ntp.server.10.255.0.2: 'true'
+  ntp.source: Loopback0
+  ntp.update-calendar: 'true'
+class_assignments:
+  _base_only:
+    instances:
+    - RR-01..RR-04
+instance_data:
+  schema:
+  - hostname
+  records:
+    RR-01:
+    - RR-01
+    RR-02:
+    - RR-02
+    RR-03:
+    - RR-03
+    RR-04:
+    - RR-04

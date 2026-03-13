@@ -1,0 +1,24 @@
+meta:
+  subject: rate-limiting-parameters
+  description: Settings for API request rate limiting.
+  source_type: app-config-json
+  total_instances: 3
+base_class:
+  rate_limiting.burst: '50'
+  rate_limiting.enabled: 'true'
+class_assignments:
+  _base_only:
+    instances:
+    - app-config-auth-jwt
+    - app-config-billing
+    - app-config-search
+instance_data:
+  schema:
+  - rate_limiting.requests_per_minute
+  records:
+    app-config-auth-jwt:
+    - '1000'
+    app-config-billing:
+    - '500'
+    app-config-search:
+    - '2000'

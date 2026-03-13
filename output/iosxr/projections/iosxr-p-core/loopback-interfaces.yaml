@@ -1,0 +1,57 @@
+meta:
+  subject: loopback-interfaces
+  description: Loopback interface configuration and related ISIS/MPLS settings.
+  source_type: iosxr-p-core
+  total_instances: 6
+base_class:
+  interface.Loopback0.shutdown: 'false'
+  router.isis.CORE.interface.Loopback0.address-family: ipv6 unicast
+  router.isis.CORE.interface.Loopback0.passive: 'true'
+class_assignments:
+  _base_only:
+    instances:
+    - P-CORE-01..P-CORE-06
+instance_data:
+  schema:
+  - hostname
+  - interface.Loopback0.description
+  - interface.Loopback0.ipv4
+  - mpls.ldp.router-id
+  - router.isis.CORE.interface.Loopback0.address-family.ipv4-unicast.prefix-sid
+  records:
+    P-CORE-01:
+    - P-CORE-01
+    - P-CORE-01 Router-ID
+    - address 10.0.0.1 255.255.255.255
+    - 10.0.0.1
+    - index 16001
+    P-CORE-02:
+    - P-CORE-02
+    - P-CORE-02 Router-ID
+    - address 10.0.0.2 255.255.255.255
+    - 10.0.0.2
+    - index 16002
+    P-CORE-03:
+    - P-CORE-03
+    - P-CORE-03 Router-ID
+    - address 10.0.0.3 255.255.255.255
+    - 10.0.0.3
+    - index 16003
+    P-CORE-04:
+    - P-CORE-04
+    - P-CORE-04 Router-ID
+    - address 10.0.0.4 255.255.255.255
+    - 10.0.0.4
+    - index 16004
+    P-CORE-05:
+    - P-CORE-05
+    - P-CORE-05 Router-ID
+    - address 10.0.0.5 255.255.255.255
+    - 10.0.0.5
+    - index 16005
+    P-CORE-06:
+    - P-CORE-06
+    - P-CORE-06 Router-ID
+    - address 10.0.0.6 255.255.255.255
+    - 10.0.0.6
+    - index 16006

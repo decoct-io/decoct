@@ -1,6 +1,7 @@
 meta:
   subject: assignments
-  description: Group assignments for conditional access policies.
+  description: Assignment details for compliance policies, indicating target 
+    groups.
   source_type: intune-compliance
   total_instances: 10
 class_assignments:

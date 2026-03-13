@@ -1,0 +1,72 @@
+meta:
+  subject: policy-state
+  description: Policy enablement state and display name
+  source_type: entra-conditional-access
+  total_instances: 20
+class_assignments:
+  _base_only:
+    instances:
+    - CA-Block-Legacy-Auth-Exchange
+    - CA-Block-Legacy-Auth-Global
+    - CA-Block-Legacy-Auth-SharePoint
+    - CA-Block-Legacy-Auth-Teams
+    - CA-Compliant-Device-Azure
+    - CA-Compliant-Device-Internal
+    - CA-Compliant-Device-Office365
+    - CA-Disabled-Draft-TestPolicy
+    - CA-Location-Block-Countries
+    - CA-Location-Require-MFA-External
+    - CA-MFA-Azure-Management
+    - CA-MFA-Global-Admins
+    - CA-MFA-Privileged-Roles
+    - CA-MFA-Security-Admins
+    - CA-Named-Location-Corporate
+    - CA-Report-Only-AllUsers-MFA
+    - CA-SignIn-Risk-High-Block
+    - CA-SignIn-Risk-Medium-MFA
+    - CA-User-Risk-High-PasswordChange
+    - CA-User-Risk-Medium-MFA
+instance_data:
+  schema:
+  - displayName
+  records:
+    CA-Block-Legacy-Auth-Exchange:
+    - CA-Block-Legacy-Auth-Exchange
+    CA-Block-Legacy-Auth-Global:
+    - CA-Block-Legacy-Auth-Global
+    CA-Block-Legacy-Auth-SharePoint:
+    - CA-Block-Legacy-Auth-SharePoint
+    CA-Block-Legacy-Auth-Teams:
+    - CA-Block-Legacy-Auth-Teams
+    CA-Compliant-Device-Azure:
+    - CA-Compliant-Device-Azure
+    CA-Compliant-Device-Internal:
+    - CA-Compliant-Device-Internal
+    CA-Compliant-Device-Office365:
+    - CA-Compliant-Device-Office365
+    CA-Disabled-Draft-TestPolicy:
+    - CA-Disabled-Draft-TestPolicy
+    CA-Location-Block-Countries:
+    - CA-Location-Block-Countries
+    CA-Location-Require-MFA-External:
+    - CA-Location-Require-MFA-External
+    CA-MFA-Azure-Management:
+    - CA-MFA-Azure-Management
+    CA-MFA-Global-Admins:
+    - CA-MFA-Global-Admins
+    CA-MFA-Privileged-Roles:
+    - CA-MFA-Privileged-Roles
+    CA-MFA-Security-Admins:
+    - CA-MFA-Security-Admins
+    CA-Named-Location-Corporate:
+    - CA-Named-Location-Corporate
+    CA-Report-Only-AllUsers-MFA:
+    - CA-Report-Only-AllUsers-MFA
+    CA-SignIn-Risk-High-Block:
+    - CA-SignIn-Risk-High-Block
+    CA-SignIn-Risk-Medium-MFA:
+    - CA-SignIn-Risk-Medium-MFA
+    CA-User-Risk-High-PasswordChange:
+    - CA-User-Risk-High-PasswordChange
+    CA-User-Risk-Medium-MFA:
+    - CA-User-Risk-Medium-MFA

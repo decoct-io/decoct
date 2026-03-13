@@ -1,0 +1,34 @@
+meta:
+  subject: route-policy
+  description: Route policy definitions applied to BGP and other protocols
+  source_type: iosxr-services-pe
+  total_instances: 8
+base_class:
+  route-policy.RPL-EBGP-OUT.body:
+  - set med 100
+  - set community (65006:100) additive
+  - pass
+class_assignments:
+  _base_only:
+    instances:
+    - SVC-PE-01..SVC-PE-08
+instance_data:
+  schema:
+  - hostname
+  records:
+    SVC-PE-01:
+    - SVC-PE-01
+    SVC-PE-02:
+    - SVC-PE-02
+    SVC-PE-03:
+    - SVC-PE-03
+    SVC-PE-04:
+    - SVC-PE-04
+    SVC-PE-05:
+    - SVC-PE-05
+    SVC-PE-06:
+    - SVC-PE-06
+    SVC-PE-07:
+    - SVC-PE-07
+    SVC-PE-08:
+    - SVC-PE-08

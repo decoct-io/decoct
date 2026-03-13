@@ -1,0 +1,55 @@
+meta:
+  subject: application-web-browsing-controls
+  description: Controls for applications, clipboard sharing, and web browser 
+    behavior.
+  source_type: intune-device-config
+  total_instances: 8
+base_class:
+  appsBlockClipboardSharing: 'false'
+  appsBlockCopyPaste: 'false'
+  appsBlockYouTube: 'false'
+  googlePlayStoreBlocked: 'false'
+  securityRequireVerifyApps: 'false'
+  webBrowserBlockAutofill: 'false'
+  webBrowserBlockJavaScript: 'false'
+  webBrowserBlockPopups: 'false'
+  webBrowserBlocked: 'false'
+classes:
+  compliantAppListType_none_wiFiBlocked_false:
+    inherits: base
+    own_attrs:
+      compliantAppListType: none
+    instance_count_inclusive: 6
+class_assignments:
+  compliantAppListType_none_wiFiBlocked_false:
+    instances:
+    - DC-Android-BYOD
+    - DC-Android-Contractor
+    - DC-Android-Executive
+    - DC-Android-Field-Workers
+    - DC-Android-Lab-Devices
+    - DC-Android-Standard
+  _base_only:
+    instances:
+    - DC-Android-Corporate-Lockdown
+    - DC-Android-Kiosk
+instance_data:
+  schema:
+  - webBrowserCookieSettings
+  records:
+    DC-Android-BYOD:
+    - browserDefault
+    DC-Android-Contractor:
+    - browserDefault
+    DC-Android-Corporate-Lockdown:
+    - blockAll
+    DC-Android-Executive:
+    - browserDefault
+    DC-Android-Field-Workers:
+    - browserDefault
+    DC-Android-Kiosk:
+    - blockAll
+    DC-Android-Lab-Devices:
+    - allowCurrentWebSite
+    DC-Android-Standard:
+    - browserDefault

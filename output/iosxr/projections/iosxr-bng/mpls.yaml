@@ -1,0 +1,48 @@
+meta:
+  subject: mpls
+  description: MPLS LDP configuration including discovery timers, graceful 
+    restart, and address family
+  source_type: iosxr-bng
+  total_instances: 8
+base_class:
+  mpls: ldp
+  mpls.address-family: ipv4
+  mpls.discovery.hello.hold-time: '15'
+  mpls.discovery.hello.interval: '5'
+  mpls.discovery.targeted-hello.hold-time: '90'
+  mpls.discovery.targeted-hello.interval: '10'
+  mpls.graceful-restart: 'true'
+  mpls.log: neighbor
+class_assignments:
+  _base_only:
+    instances:
+    - BNG-01..BNG-08
+instance_data:
+  schema:
+  - hostname
+  - mpls.router-id
+  records:
+    BNG-01:
+    - BNG-01
+    - 10.0.2.1
+    BNG-02:
+    - BNG-02
+    - 10.0.2.2
+    BNG-03:
+    - BNG-03
+    - 10.0.2.3
+    BNG-04:
+    - BNG-04
+    - 10.0.2.4
+    BNG-05:
+    - BNG-05
+    - 10.0.2.5
+    BNG-06:
+    - BNG-06
+    - 10.0.2.6
+    BNG-07:
+    - BNG-07
+    - 10.0.2.7
+    BNG-08:
+    - BNG-08
+    - 10.0.2.8

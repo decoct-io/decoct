@@ -1,0 +1,110 @@
+meta:
+  subject: play-metadata
+  description: Play-level settings including hosts, become, gather_facts, and 
+    error handling
+  source_type: ansible-playbook
+  total_instances: 16
+base_class:
+  check_mode: 'false'
+  no_log: 'false'
+  order: inventory
+  run_once: 'false'
+classes:
+  any_errors_fatal_false_gather_facts_true:
+    inherits: base
+    own_attrs:
+      any_errors_fatal: 'false'
+      gather_facts: 'true'
+      ignore_errors: 'false'
+    instance_count_inclusive: 13
+class_assignments:
+  any_errors_fatal_false_gather_facts_true:
+    instances:
+    - ansible-base-server
+    - ansible-deploy-auth-service
+    - ansible-deploy-billing-api
+    - ansible-deploy-core-api
+    - ansible-deploy-web-app
+    - ansible-harden-ssh
+    - ansible-setup-backup
+    - ansible-setup-cloud-init
+    - ansible-setup-grafana
+    - ansible-setup-monitoring-agent
+    - ansible-setup-prometheus
+    - ansible-setup-traefik
+    - ansible-update-packages
+  _base_only:
+    instances:
+    - ansible-emergency-rollback
+    - ansible-setup-mariadb
+    - ansible-setup-postgresql
+instance_data:
+  schema:
+  - become
+  - hosts
+  - name
+  records:
+    ansible-base-server:
+    - 'true'
+    - all
+    - Base Server Provisioning
+    ansible-deploy-auth-service:
+    - 'false'
+    - app_servers
+    - Deploy Auth Service
+    ansible-deploy-billing-api:
+    - 'false'
+    - app_servers
+    - Deploy Billing API
+    ansible-deploy-core-api:
+    - 'false'
+    - app_servers
+    - Deploy Core API
+    ansible-deploy-web-app:
+    - 'false'
+    - web_servers
+    - Deploy Web App
+    ansible-emergency-rollback:
+    - 'false'
+    - app_servers
+    - Emergency Rollback
+    ansible-harden-ssh:
+    - 'true'
+    - all
+    - Harden SSH Configuration
+    ansible-setup-backup:
+    - 'true'
+    - db_servers
+    - Setup Backup System
+    ansible-setup-cloud-init:
+    - 'true'
+    - all
+    - Setup Cloud-Init Configs
+    ansible-setup-grafana:
+    - 'true'
+    - monitoring_servers
+    - Setup Grafana
+    ansible-setup-mariadb:
+    - 'true'
+    - legacy_db_servers
+    - Setup MariaDB
+    ansible-setup-monitoring-agent:
+    - 'true'
+    - all
+    - Setup Monitoring Agent
+    ansible-setup-postgresql:
+    - 'true'
+    - db_servers
+    - Setup PostgreSQL
+    ansible-setup-prometheus:
+    - 'true'
+    - monitoring_servers
+    - Setup Prometheus
+    ansible-setup-traefik:
+    - 'true'
+    - edge_servers
+    - Setup Traefik
+    ansible-update-packages:
+    - 'true'
+    - all
+    - Update System Packages

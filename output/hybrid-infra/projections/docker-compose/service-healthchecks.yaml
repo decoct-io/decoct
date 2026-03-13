@@ -1,6 +1,6 @@
 meta:
   subject: service-healthchecks
-  description: Health check configurations for Docker Compose services.
+  description: Health check parameters for services.
   source_type: docker-compose
   total_instances: 16
 class_assignments:

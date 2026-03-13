@@ -1,0 +1,16 @@
+meta:
+  subject: cache-settings
+  description: Configuration for caching mechanisms, including backend and TTL.
+  source_type: yaml-app-config
+  total_instances: 3
+class_assignments:
+  _base_only:
+    instances:
+    - yaml-app-feature-flags
+    - yaml-app-logging-config
+    - yaml-app-service-mesh
+instance_attrs:
+  yaml-app-logging-config:
+    cache.ttl: '300'
+  yaml-app-service-mesh:
+    cache.ttl: '60'

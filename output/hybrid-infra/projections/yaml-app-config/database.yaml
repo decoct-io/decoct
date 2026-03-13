@@ -1,0 +1,18 @@
+meta:
+  subject: database
+  description: Database connection pool settings and query behavior
+  source_type: yaml-app-config
+  total_instances: 3
+class_assignments:
+  _base_only:
+    instances:
+    - yaml-app-feature-flags
+    - yaml-app-logging-config
+    - yaml-app-service-mesh
+instance_attrs:
+  yaml-app-logging-config:
+    database.pool_size: '20'
+    database.pool_timeout: '30'
+  yaml-app-service-mesh:
+    database.pool_size: '10'
+    database.pool_timeout: '15'

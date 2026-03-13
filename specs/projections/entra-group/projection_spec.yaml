@@ -1,0 +1,76 @@
+version: 1
+source_type: entra-group
+generated_by: decoct-infer
+subjects:
+- name: identity-and-basic-metadata
+  description: Core identifiers and descriptive attributes for Entra groups.
+  include_paths:
+  - _uuid
+  - displayName
+  - mailNickname
+  - description
+  - securityIdentifier
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the display names and mail nicknames for all Entra groups?
+  - Can you list the security identifiers for groups with a specific 
+    description?
+  - Which groups have a particular UUID?
+- name: mail-and-visibility-settings
+  description: Configuration related to email and visibility within Outlook and 
+    address lists.
+  include_paths:
+  - allowExternalSenders
+  - mailEnabled
+  - autoSubscribeNewMembers
+  - hideFromOutlookClients
+  - hideFromAddressLists
+  - mail
+  - proxyAddresses
+  - visibility
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which Entra groups allow external senders to email them?
+  - List all mail-enabled groups and their primary email addresses.
+  - Are there any groups hidden from Outlook clients but visible in address 
+    lists?
+- name: security-and-role-assignment
+  description: Attributes defining group security posture and role 
+    assignability.
+  include_paths:
+  - securityEnabled
+  - isAssignableToRole
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which groups are security-enabled but not assignable to roles?
+  - Can you list all groups that are assignable to a role?
+  - What is the security status of each group?
+- name: membership-rules
+  description: Attributes related to dynamic membership rules for Entra groups.
+  include_paths:
+  - membershipRule
+  - membershipRuleProcessingState
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which groups have a dynamic membership rule defined?
+  - What is the processing state for membership rules across all groups?
+  - Show me the membership rules for groups with a specific processing state.
+- name: group-type-details
+  description: Specific types associated with the Entra groups.
+  include_paths:
+  - groupTypes
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which groups are 'Unified' or 'DynamicMembership' types?
+  - List all groups and their associated group types.
+  - Are there any groups without a specified group type?

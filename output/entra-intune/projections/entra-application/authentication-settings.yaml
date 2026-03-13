@@ -1,0 +1,33 @@
+meta:
+  subject: authentication-settings
+  description: Settings related to device-only authentication and sign-in 
+    audience.
+  source_type: entra-application
+  total_instances: 12
+base_class:
+  api.requestedAccessTokenVersion: '2'
+  nativeAuthenticationApisEnabled: none
+classes:
+  isDeviceOnlyAuthSupported_false_signInAudience_Azu:
+    inherits: base
+    own_attrs:
+      isDeviceOnlyAuthSupported: 'false'
+      signInAudience: AzureADMyOrg
+    instance_count_inclusive: 9
+class_assignments:
+  isDeviceOnlyAuthSupported_false_signInAudience_Azu:
+    instances:
+    - App-API-Backend
+    - App-Daemon-Service
+    - App-DevTest-Sandbox
+    - App-Mobile-Android
+    - App-Mobile-iOS
+    - App-Portal-SPA
+    - App-Portal-Web
+    - App-PowerBI-Embedded
+    - App-Teams-Bot
+  _base_only:
+    instances:
+    - App-API-Gateway
+    - App-B2C-Customer-Portal
+    - App-Legacy-WinApp

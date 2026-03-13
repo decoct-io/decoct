@@ -1,0 +1,33 @@
+meta:
+  subject: data-transfer-settings
+  description: Policies governing data transfer and clipboard sharing for apps.
+  source_type: intune-app-protection
+  total_instances: 4
+base_class:
+  allowedInboundDataTransferSources: allApps
+  allowedOutboundClipboardSharingLevel: managedAppsWithPasteIn
+  allowedOutboundDataTransferDestinations: managedApps
+class_assignments:
+  _base_only:
+    instances:
+    - AP-Android-Standard
+    - AP-Android-Strict
+    - AP-iOS-Standard
+    - AP-iOS-Strict
+instance_data:
+  schema:
+  - dataBackupBlocked
+  - saveAsBlocked
+  records:
+    AP-Android-Standard:
+    - 'false'
+    - 'false'
+    AP-Android-Strict:
+    - 'true'
+    - 'true'
+    AP-iOS-Standard:
+    - 'false'
+    - 'false'
+    AP-iOS-Strict:
+    - 'true'
+    - 'true'

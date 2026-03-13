@@ -1,0 +1,128 @@
+meta:
+  subject: pppoe-subscriber-services
+  description: Configuration for PPPoE and dynamic subscriber services, 
+    including session limits, templates, and pools.
+  source_type: iosxr-bng
+  total_instances: 8
+base_class:
+  dynamic-template.type.accounting: aaa list default type session 
+    periodic-interval 15
+  dynamic-template.type.ipv4: unnumbered Loopback0
+  dynamic-template.type.ppp.authentication: chap
+  pppoe.sessions.max: limit 32000
+  pppoe.sessions.per-mac.limit: '4'
+  pppoe.sessions.per-mac.throttle: 10 10 10
+class_assignments:
+  _base_only:
+    instances:
+    - BNG-01..BNG-08
+instance_data:
+  schema:
+  - dynamic-template.type
+  - dynamic-template.type.ppp.ipcp
+  - hostname
+  - interface.Bundle-Ether100.100.pppoe
+  - interface.Bundle-Ether100.200.pppoe
+  - interface.Bundle-Ether100.pppoe
+  - interface.Bundle-Ether100.service-policy.input
+  - interface.Bundle-Ether100.service-policy.output
+  - pool
+  - pool.address-range
+  - pppoe
+  records:
+    BNG-01:
+    - ppp DT-PPPoE-RESIDENTIAL
+    - peer-address pool POOL-RESIDENTIAL-1
+    - BNG-01
+    - enable bba-group BBA-RESIDENTIAL
+    - enable bba-group BBA-RESIDENTIAL
+    - enable bba-group BBA-RESIDENTIAL
+    - PM-RESIDENTIAL-1GBPS
+    - PM-RESIDENTIAL-1GBPS
+    - '[REDACTED]'
+    - 100.64.0.0 100.64.0.254
+    - bba-group BBA-RESIDENTIAL
+    BNG-02:
+    - ppp DT-PPPoE-RESIDENTIAL
+    - peer-address pool POOL-RESIDENTIAL-2
+    - BNG-02
+    - enable bba-group BBA-RESIDENTIAL
+    - enable bba-group BBA-RESIDENTIAL
+    - enable bba-group BBA-RESIDENTIAL
+    - PM-RESIDENTIAL-1GBPS
+    - PM-RESIDENTIAL-1GBPS
+    - '[REDACTED]'
+    - 100.64.16.0 100.64.16.254
+    - bba-group BBA-RESIDENTIAL
+    BNG-03:
+    - ppp DT-PPPoE-BUSINESS
+    - peer-address pool POOL-BUSINESS-1
+    - BNG-03
+    - enable bba-group BBA-BUSINESS
+    - enable bba-group BBA-BUSINESS
+    - enable bba-group BBA-BUSINESS
+    - PM-BUSINESS-10GBPS
+    - PM-BUSINESS-10GBPS
+    - vrf default ipv4 POOL-BUSINESS-1
+    - 100.65.0.0 100.65.0.254
+    - bba-group BBA-BUSINESS
+    BNG-04:
+    - ppp DT-PPPoE-BUSINESS
+    - peer-address pool POOL-BUSINESS-2
+    - BNG-04
+    - enable bba-group BBA-BUSINESS
+    - enable bba-group BBA-BUSINESS
+    - enable bba-group BBA-BUSINESS
+    - PM-BUSINESS-10GBPS
+    - PM-BUSINESS-10GBPS
+    - vrf default ipv4 POOL-BUSINESS-2
+    - 100.65.16.0 100.65.16.254
+    - bba-group BBA-BUSINESS
+    BNG-05:
+    - ppp DT-PPPoE-WHOLESALE
+    - peer-address pool POOL-WHOLESALE-1
+    - BNG-05
+    - enable bba-group BBA-WHOLESALE
+    - enable bba-group BBA-WHOLESALE
+    - enable bba-group BBA-WHOLESALE
+    - PM-WHOLESALE-100MBPS
+    - PM-WHOLESALE-100MBPS
+    - vrf default ipv4 POOL-WHOLESALE-1
+    - 100.66.0.0 100.66.0.254
+    - bba-group BBA-WHOLESALE
+    BNG-06:
+    - ppp DT-PPPoE-WHOLESALE
+    - peer-address pool POOL-WHOLESALE-2
+    - BNG-06
+    - enable bba-group BBA-WHOLESALE
+    - enable bba-group BBA-WHOLESALE
+    - enable bba-group BBA-WHOLESALE
+    - PM-WHOLESALE-100MBPS
+    - PM-WHOLESALE-100MBPS
+    - vrf default ipv4 POOL-WHOLESALE-2
+    - 100.66.16.0 100.66.16.254
+    - bba-group BBA-WHOLESALE
+    BNG-07:
+    - ppp DT-PPPoE-RESIDENTIAL
+    - peer-address pool POOL-RESIDENTIAL-3
+    - BNG-07
+    - enable bba-group BBA-RESIDENTIAL
+    - enable bba-group BBA-RESIDENTIAL
+    - enable bba-group BBA-RESIDENTIAL
+    - PM-RESIDENTIAL-500MBPS
+    - PM-RESIDENTIAL-500MBPS
+    - '[REDACTED]'
+    - 100.67.0.0 100.67.0.254
+    - bba-group BBA-RESIDENTIAL
+    BNG-08:
+    - ppp DT-PPPoE-RESIDENTIAL
+    - peer-address pool POOL-RESIDENTIAL-4
+    - BNG-08
+    - enable bba-group BBA-RESIDENTIAL
+    - enable bba-group BBA-RESIDENTIAL
+    - enable bba-group BBA-RESIDENTIAL
+    - PM-RESIDENTIAL-500MBPS
+    - PM-RESIDENTIAL-500MBPS
+    - '[REDACTED]'
+    - 100.67.16.0 100.67.16.254
+    - bba-group BBA-RESIDENTIAL

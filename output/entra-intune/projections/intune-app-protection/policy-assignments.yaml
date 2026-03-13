@@ -1,0 +1,28 @@
+meta:
+  subject: policy-assignments
+  description: Information regarding user or group assignments for app 
+    protection policies.
+  source_type: intune-app-protection
+  total_instances: 4
+class_assignments:
+  _base_only:
+    instances:
+    - AP-Android-Standard
+    - AP-Android-Strict
+    - AP-iOS-Standard
+    - AP-iOS-Strict
+instance_attrs:
+  AP-Android-Standard:
+    assignments:
+    - target.groupId: 496f4253-0480-5d9f-a32e-faad9a648cba
+  AP-Android-Strict:
+    assignments:
+    - target.groupId: 098e10db-f215-51c2-978d-687b16aa42f5
+    - target.groupId: 79dedecf-0247-52c4-80f0-32a82b42f6f9
+  AP-iOS-Standard:
+    assignments:
+    - target.groupId: da0f57dc-64a3-55d9-b2ad-9db34afcec0b
+  AP-iOS-Strict:
+    assignments:
+    - target.groupId: 098e10db-f215-51c2-978d-687b16aa42f5
+    - target.groupId: 79dedecf-0247-52c4-80f0-32a82b42f6f9

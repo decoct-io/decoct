@@ -1,0 +1,25 @@
+meta:
+  subject: apt-package-management
+  description: Tasks related to installing and managing packages using the apt 
+    module.
+  source_type: ansible-playbook
+  total_instances: 16
+class_assignments:
+  _base_only:
+    instances:
+    - ansible-base-server
+    - ansible-deploy-auth-service
+    - ansible-deploy-billing-api
+    - ansible-deploy-core-api
+    - ansible-deploy-web-app
+    - ansible-emergency-rollback
+    - ansible-harden-ssh
+    - ansible-setup-backup
+    - ansible-setup-cloud-init
+    - ansible-setup-grafana
+    - ansible-setup-mariadb
+    - ansible-setup-monitoring-agent
+    - ansible-setup-postgresql
+    - ansible-setup-prometheus
+    - ansible-setup-traefik
+    - ansible-update-packages

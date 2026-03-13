@@ -1,0 +1,93 @@
+meta:
+  subject: identity-and-metadata
+  description: Core identification and metadata for conditional access policies.
+  source_type: entra-conditional-access
+  total_instances: 20
+class_assignments:
+  _base_only:
+    instances:
+    - CA-Block-Legacy-Auth-Exchange
+    - CA-Block-Legacy-Auth-Global
+    - CA-Block-Legacy-Auth-SharePoint
+    - CA-Block-Legacy-Auth-Teams
+    - CA-Compliant-Device-Azure
+    - CA-Compliant-Device-Internal
+    - CA-Compliant-Device-Office365
+    - CA-Disabled-Draft-TestPolicy
+    - CA-Location-Block-Countries
+    - CA-Location-Require-MFA-External
+    - CA-MFA-Azure-Management
+    - CA-MFA-Global-Admins
+    - CA-MFA-Privileged-Roles
+    - CA-MFA-Security-Admins
+    - CA-Named-Location-Corporate
+    - CA-Report-Only-AllUsers-MFA
+    - CA-SignIn-Risk-High-Block
+    - CA-SignIn-Risk-Medium-MFA
+    - CA-User-Risk-High-PasswordChange
+    - CA-User-Risk-Medium-MFA
+instance_data:
+  schema:
+  - _uuid
+  - displayName
+  records:
+    CA-Block-Legacy-Auth-Exchange:
+    - 7af58caf-b7f5-53ed-a0ae-15d847b3636d
+    - CA-Block-Legacy-Auth-Exchange
+    CA-Block-Legacy-Auth-Global:
+    - 6e9105e2-4df0-580c-a0fb-1cc5da209d64
+    - CA-Block-Legacy-Auth-Global
+    CA-Block-Legacy-Auth-SharePoint:
+    - e6c99035-7629-5408-8cd0-c8902ce3870d
+    - CA-Block-Legacy-Auth-SharePoint
+    CA-Block-Legacy-Auth-Teams:
+    - 76aec516-9b08-540b-9d08-b76718ddadab
+    - CA-Block-Legacy-Auth-Teams
+    CA-Compliant-Device-Azure:
+    - d51e683e-391b-5aca-b898-1c0e3cad9a11
+    - CA-Compliant-Device-Azure
+    CA-Compliant-Device-Internal:
+    - 97a9a6a3-4ed6-5f92-bc0d-806efe539f73
+    - CA-Compliant-Device-Internal
+    CA-Compliant-Device-Office365:
+    - 1b97e96f-4e34-50b8-b0bd-a3a44ee5a5a9
+    - CA-Compliant-Device-Office365
+    CA-Disabled-Draft-TestPolicy:
+    - 7e05c5a7-184e-59d3-9e48-0d7f16544ed6
+    - CA-Disabled-Draft-TestPolicy
+    CA-Location-Block-Countries:
+    - 8e9d0a92-b18b-5d84-82a7-8644ac56df54
+    - CA-Location-Block-Countries
+    CA-Location-Require-MFA-External:
+    - a5e2e3de-e765-5167-a979-3e18e8cb5e9f
+    - CA-Location-Require-MFA-External
+    CA-MFA-Azure-Management:
+    - 2d6a5681-1308-57fb-ae5e-0a333f0389a0
+    - CA-MFA-Azure-Management
+    CA-MFA-Global-Admins:
+    - 611a19dc-e512-5068-8688-bd45be3d4a58
+    - CA-MFA-Global-Admins
+    CA-MFA-Privileged-Roles:
+    - 75ad3ca0-5b2b-5168-9c0e-16a2680a930a
+    - CA-MFA-Privileged-Roles
+    CA-MFA-Security-Admins:
+    - 32ec6dbc-446f-5b4c-83d7-1d639c54f976
+    - CA-MFA-Security-Admins
+    CA-Named-Location-Corporate:
+    - cb1626ab-0573-5b79-8a66-90dc93d657a8
+    - CA-Named-Location-Corporate
+    CA-Report-Only-AllUsers-MFA:
+    - 303e5ac2-440a-5a8e-baa0-ffe8ad1eaa5c
+    - CA-Report-Only-AllUsers-MFA
+    CA-SignIn-Risk-High-Block:
+    - fffefef1-9a88-5725-b517-0dc930f3ab67
+    - CA-SignIn-Risk-High-Block
+    CA-SignIn-Risk-Medium-MFA:
+    - e1772c2e-3841-519b-80a9-6f90514717a5
+    - CA-SignIn-Risk-Medium-MFA
+    CA-User-Risk-High-PasswordChange:
+    - b9abc224-0ed1-5af4-92f5-9eac01fe13c6
+    - CA-User-Risk-High-PasswordChange
+    CA-User-Risk-Medium-MFA:
+    - aa06fba8-162b-5c85-8542-5a636da0b30e
+    - CA-User-Risk-Medium-MFA

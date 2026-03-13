@@ -1,0 +1,63 @@
+meta:
+  subject: device-features
+  description: Device feature controls including kiosk mode, power, voice, and 
+    location services
+  source_type: intune-device-config
+  total_instances: 8
+base_class:
+  deviceSharingAllowed: 'false'
+  diagnosticDataBlockSubmission: 'false'
+  kioskModeBlockSleepButton: 'false'
+  kioskModeBlockVolumeButtons: 'false'
+  powerOffBlocked: 'false'
+  voiceAssistantBlocked: 'false'
+  voiceDialingBlocked: 'false'
+class_assignments:
+  _base_only:
+    instances:
+    - DC-Android-BYOD
+    - DC-Android-Contractor
+    - DC-Android-Corporate-Lockdown
+    - DC-Android-Executive
+    - DC-Android-Field-Workers
+    - DC-Android-Kiosk
+    - DC-Android-Lab-Devices
+    - DC-Android-Standard
+instance_data:
+  schema:
+  - factoryResetBlocked
+  - locationServicesBlocked
+  - screenCaptureBlocked
+  records:
+    DC-Android-BYOD:
+    - 'false'
+    - 'false'
+    - 'false'
+    DC-Android-Contractor:
+    - 'false'
+    - 'false'
+    - 'true'
+    DC-Android-Corporate-Lockdown:
+    - 'true'
+    - 'false'
+    - 'true'
+    DC-Android-Executive:
+    - 'false'
+    - 'false'
+    - 'true'
+    DC-Android-Field-Workers:
+    - 'false'
+    - 'true'
+    - 'false'
+    DC-Android-Kiosk:
+    - 'true'
+    - 'true'
+    - 'true'
+    DC-Android-Lab-Devices:
+    - 'false'
+    - 'false'
+    - 'false'
+    DC-Android-Standard:
+    - 'false'
+    - 'false'
+    - 'false'

@@ -1,0 +1,32 @@
+meta:
+  subject: api-and-dashboard
+  description: API dashboard enablement, debug mode, and insecure access 
+    settings
+  source_type: traefik
+  total_instances: 4
+base_class:
+  api.dashboard: 'true'
+class_assignments:
+  _base_only:
+    instances:
+    - traefik-dev
+    - traefik-prod-dynamic
+    - traefik-prod-static
+    - traefik-staging
+instance_data:
+  schema:
+  - api.debug
+  - api.insecure
+  records:
+    traefik-dev:
+    - 'true'
+    - 'true'
+    traefik-prod-dynamic:
+    - 'false'
+    - 'false'
+    traefik-prod-static:
+    - 'false'
+    - 'false'
+    traefik-staging:
+    - 'true'
+    - 'true'

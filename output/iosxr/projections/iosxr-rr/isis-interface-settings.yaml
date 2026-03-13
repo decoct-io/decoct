@@ -1,0 +1,44 @@
+meta:
+  subject: isis-interface-settings
+  description: Interface-specific IS-IS configurations.
+  source_type: iosxr-rr
+  total_instances: 4
+base_class:
+  router.isis.CORE.interface.Loopback0.address-family: ipv6 unicast
+  router.isis.CORE.interface.Loopback0.passive: 'true'
+  router.isis.CORE.interface.TenGigE0/0/0/0.csnp-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/0.hello-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/0.hello-multiplier: '3'
+  router.isis.CORE.interface.TenGigE0/0/0/0.point-to-point: 'true'
+  router.isis.CORE.interface.TenGigE0/0/0/0.retransmit-interval: '5'
+  router.isis.CORE.interface.TenGigE0/0/0/1.csnp-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/1.hello-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/1.hello-multiplier: '3'
+  router.isis.CORE.interface.TenGigE0/0/0/1.point-to-point: 'true'
+  router.isis.CORE.interface.TenGigE0/0/0/1.retransmit-interval: '5'
+  router.isis.CORE.interface.TenGigE0/0/0/2.csnp-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/2.hello-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/2.hello-multiplier: '3'
+  router.isis.CORE.interface.TenGigE0/0/0/2.point-to-point: 'true'
+  router.isis.CORE.interface.TenGigE0/0/0/2.retransmit-interval: '5'
+  router.isis.CORE.interface.TenGigE0/0/0/3.csnp-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/3.hello-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/3.hello-multiplier: '3'
+  router.isis.CORE.interface.TenGigE0/0/0/3.point-to-point: 'true'
+  router.isis.CORE.interface.TenGigE0/0/0/3.retransmit-interval: '5'
+class_assignments:
+  _base_only:
+    instances:
+    - RR-01..RR-04
+instance_data:
+  schema:
+  - hostname
+  records:
+    RR-01:
+    - RR-01
+    RR-02:
+    - RR-02
+    RR-03:
+    - RR-03
+    RR-04:
+    - RR-04

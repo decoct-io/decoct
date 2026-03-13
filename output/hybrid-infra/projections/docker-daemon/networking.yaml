@@ -1,0 +1,14 @@
+meta:
+  subject: networking
+  description: Network forwarding, iptables, DNS, and proxy configuration
+  source_type: docker-daemon
+  total_instances: 3
+base_class:
+  ip-forward: 'true'
+  iptables: 'true'
+class_assignments:
+  _base_only:
+    instances:
+    - docker-daemon-ci
+    - docker-daemon-dev
+    - docker-daemon-prod

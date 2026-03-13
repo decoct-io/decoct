@@ -1,0 +1,101 @@
+meta:
+  subject: isis-routing
+  description: IS-IS CORE routing protocol including address families, interface
+    metrics, overload-bit, and segment routing
+  source_type: iosxr-p-core
+  total_instances: 6
+base_class:
+  router.isis.CORE.address-family.ipv4-unicast.metric-style: wide
+  router.isis.CORE.address-family.ipv4-unicast.mpls.traffic-eng.level-2-only: 'true'
+  router.isis.CORE.address-family.ipv4-unicast.mpls.traffic-eng.router-id: 
+    Loopback0
+  router.isis.CORE.address-family.ipv4-unicast.router-id: Loopback0
+  router.isis.CORE.address-family.ipv4-unicast.segment-routing: mpls sr-prefer
+  router.isis.CORE.address-family.ipv6-unicast.metric-style: wide
+  router.isis.CORE.address-family.ipv6-unicast.segment-routing: mpls sr-prefer
+  router.isis.CORE.interface.HundredGigE0/0/1/0.address-family.ipv4-unicast.metric: '10'
+  router.isis.CORE.interface.HundredGigE0/0/1/0.address-family.ipv6-unicast.metric: '10'
+  router.isis.CORE.interface.HundredGigE0/0/1/0.csnp-interval: '10'
+  router.isis.CORE.interface.HundredGigE0/0/1/0.hello-interval: '10'
+  router.isis.CORE.interface.HundredGigE0/0/1/0.hello-multiplier: '3'
+  router.isis.CORE.interface.HundredGigE0/0/1/0.point-to-point: 'true'
+  router.isis.CORE.interface.HundredGigE0/0/1/0.retransmit-interval: '5'
+  router.isis.CORE.interface.HundredGigE0/0/1/1.address-family.ipv4-unicast.metric: '10'
+  router.isis.CORE.interface.HundredGigE0/0/1/1.address-family.ipv6-unicast.metric: '10'
+  router.isis.CORE.interface.HundredGigE0/0/1/1.csnp-interval: '10'
+  router.isis.CORE.interface.HundredGigE0/0/1/1.hello-interval: '10'
+  router.isis.CORE.interface.HundredGigE0/0/1/1.hello-multiplier: '3'
+  router.isis.CORE.interface.HundredGigE0/0/1/1.point-to-point: 'true'
+  router.isis.CORE.interface.HundredGigE0/0/1/1.retransmit-interval: '5'
+  router.isis.CORE.interface.Loopback0.address-family: ipv6 unicast
+  router.isis.CORE.interface.Loopback0.passive: 'true'
+  router.isis.CORE.interface.TenGigE0/0/0/0.address-family.ipv4-unicast.metric: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/0.address-family.ipv6-unicast.metric: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/0.csnp-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/0.hello-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/0.hello-multiplier: '3'
+  router.isis.CORE.interface.TenGigE0/0/0/0.point-to-point: 'true'
+  router.isis.CORE.interface.TenGigE0/0/0/0.retransmit-interval: '5'
+  router.isis.CORE.interface.TenGigE0/0/0/1.address-family.ipv4-unicast.metric: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/1.address-family.ipv6-unicast.metric: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/1.csnp-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/1.hello-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/1.hello-multiplier: '3'
+  router.isis.CORE.interface.TenGigE0/0/0/1.point-to-point: 'true'
+  router.isis.CORE.interface.TenGigE0/0/0/1.retransmit-interval: '5'
+  router.isis.CORE.interface.TenGigE0/0/0/2.address-family.ipv4-unicast.metric: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/2.address-family.ipv6-unicast.metric: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/2.csnp-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/2.hello-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/2.hello-multiplier: '3'
+  router.isis.CORE.interface.TenGigE0/0/0/2.point-to-point: 'true'
+  router.isis.CORE.interface.TenGigE0/0/0/2.retransmit-interval: '5'
+  router.isis.CORE.interface.TenGigE0/0/0/3.address-family.ipv4-unicast.metric: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/3.address-family.ipv6-unicast.metric: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/3.csnp-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/3.hello-interval: '10'
+  router.isis.CORE.interface.TenGigE0/0/0/3.hello-multiplier: '3'
+  router.isis.CORE.interface.TenGigE0/0/0/3.point-to-point: 'true'
+  router.isis.CORE.interface.TenGigE0/0/0/3.retransmit-interval: '5'
+  router.isis.CORE.is-type: level-2-only
+  router.isis.CORE.log: adjacency changes
+  router.isis.CORE.lsp-lifetime: '1200'
+  router.isis.CORE.lsp-mtu: '1497'
+  router.isis.CORE.lsp-refresh-interval: '900'
+  router.isis.CORE.set-overload-bit: on-startup 600
+  segment-routing.global-block: 16000 23999
+  segment-routing.local-block: 15000 15999
+class_assignments:
+  _base_only:
+    instances:
+    - P-CORE-01..P-CORE-06
+instance_data:
+  schema:
+  - hostname
+  - router.isis.CORE.interface.Loopback0.address-family.ipv4-unicast.prefix-sid
+  - router.isis.CORE.net
+  records:
+    P-CORE-01:
+    - P-CORE-01
+    - index 16001
+    - 49.0001.0100.0000.0001.00
+    P-CORE-02:
+    - P-CORE-02
+    - index 16002
+    - 49.0001.0100.0000.0002.00
+    P-CORE-03:
+    - P-CORE-03
+    - index 16003
+    - 49.0001.0100.0000.0003.00
+    P-CORE-04:
+    - P-CORE-04
+    - index 16004
+    - 49.0001.0100.0000.0004.00
+    P-CORE-05:
+    - P-CORE-05
+    - index 16005
+    - 49.0001.0100.0000.0005.00
+    P-CORE-06:
+    - P-CORE-06
+    - index 16006
+    - 49.0001.0100.0000.0006.00

@@ -1,0 +1,191 @@
+version: 1
+source_type: iosxr-rr
+generated_by: decoct-infer
+subjects:
+- name: device-identity
+  description: Core device identification and contact information.
+  include_paths:
+  - hostname
+  - domain.name
+  - snmp-server.contact
+  - snmp-server.location
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What is the domain name and SNMP contact for each router?
+  - Where is each device physically located?
+  - What are the hostnames in the network?
+- name: aaa-security
+  description: Authentication, Authorization, and Accounting settings.
+  include_paths:
+  - aaa.**
+  - line.**
+  - ssh.**
+  - tacacs-server.**
+  - control-plane.management-plane.inband.interface.all.allow.SSH
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the TACACS+ server settings across all devices?
+  - Are there any differences in SSH server configurations?
+  - What AAA methods are configured for login and command authorization?
+- name: management-interfaces
+  description: Configuration for management-specific interfaces, including 
+    loopback and management ethernet.
+  include_paths:
+  - interface.Loopback0.description
+  - interface.Loopback0.ipv4
+  - interface.Loopback0.shutdown
+  - interface.MgmtEth0/RP0/CPU0/0.description
+  - interface.MgmtEth0/RP0/CPU0/0.ipv4
+  - interface.MgmtEth0/RP0/CPU0/0.shutdown
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the IP addresses and descriptions for Loopback0 interfaces?
+  - Are there any management interfaces unexpectedly shut down?
+  - How do the descriptions of MgmtEth interfaces differ across the fleet?
+- name: ten-gig-ethernet-interfaces
+  description: Configuration details for 10 Gigabit Ethernet data plane 
+    interfaces.
+  include_paths:
+  - interface.TenGigE0/0/0/*.arp
+  - interface.TenGigE0/0/0/*.bandwidth
+  - interface.TenGigE0/0/0/*.carrier-delay.**
+  - interface.TenGigE0/0/0/*.cdp
+  - interface.TenGigE0/0/0/*.load-interval
+  - interface.TenGigE0/0/0/*.mtu
+  - interface.TenGigE0/0/0/*.shutdown
+  - interface.TenGigE0/0/0/*.description
+  - interface.TenGigE0/0/0/*.ipv4
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which TenGigE interfaces have different MTU settings?
+  - What are the IP addresses and descriptions of the TenGigE interfaces on each
+    router?
+  - Are there any TenGigE interfaces with CDP disabled or different ARP 
+    timeouts?
+- name: logging-and-ntp
+  description: System logging and Network Time Protocol configurations.
+  include_paths:
+  - logging.**
+  - ntp.**
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the configured NTP servers and source interfaces?
+  - How are console and buffered logging configured on each device?
+  - Are there any inconsistencies in the logging event settings across devices?
+- name: bgp-global-and-address-families
+  description: Global BGP settings, graceful restart, timers, and address family
+    activations.
+  include_paths:
+  - router.bgp.**bgp.log
+  - router.bgp.**distance
+  - router.bgp.**graceful-restart
+  - router.bgp.**nsr
+  - router.bgp.**timers
+  - router.bgp.65001.address-family.**
+  - router.bgp.65001.bgp.confederation.**
+  - router.bgp.65001.address-family.ipv4-unicast.network
+  - router.bgp.65001.bgp.router-id
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the BGP router IDs and confederation peers configured on each 
+    router?
+  - Which BGP address families are activated, and what are their maximum path 
+    settings?
+  - Are all devices configured with BGP graceful-restart and NSR?
+- name: bgp-neighbors
+  description: Specific configurations for BGP neighbors (complex attribute).
+  include_paths:
+  - router.bgp.**neighbors
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the BGP neighbors configured for each device?
+  - Are there any devices with unique BGP neighbor configurations?
+  - How do the neighbor settings vary across the fleet?
+- name: isis-global-and-address-families
+  description: Global IS-IS process settings, metric styles, and segment routing
+    configurations.
+  include_paths:
+  - router.isis.CORE.**address-family.**metric-style
+  - router.isis.CORE.**address-family.**mpls.traffic-eng.**
+  - router.isis.CORE.address-family.**router-id
+  - router.isis.CORE.address-family.**segment-routing
+  - router.isis.CORE.**is-type
+  - router.isis.CORE.**log
+  - router.isis.CORE.**lsp-lifetime
+  - router.isis.CORE.**lsp-mtu
+  - router.isis.CORE.**lsp-refresh-interval
+  - router.isis.CORE.net
+  - router.isis.CORE.interface.Loopback0.address-family.ipv4-unicast.prefix-sid
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which devices have MPLS traffic engineering enabled for IS-IS?
+  - What are the ISIS NETs and LSP timers configured on each router?
+  - Are there any differences in segment routing preferences for IS-IS 
+    IPv4/IPv6?
+- name: isis-interface-settings
+  description: Interface-specific IS-IS configurations.
+  include_paths:
+  - router.isis.CORE.interface.Loopback0.address-family
+  - router.isis.CORE.interface.Loopback0.passive
+  - router.isis.CORE.interface.TenGigE0/0/0/*.address-family.**metric
+  - router.isis.CORE.interface.TenGigE0/0/0/*.csnp-interval
+  - router.isis.CORE.interface.TenGigE0/0/0/*.hello-interval
+  - router.isis.CORE.interface.TenGigE0/0/0/*.hello-multiplier
+  - router.isis.CORE.interface.TenGigE0/0/0/*.point-to-point
+  - router.isis.CORE.interface.TenGigE0/0/0/*.retransmit-interval
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the IS-IS metrics for TenGigE interfaces across all routers?
+  - Are there any IS-IS interfaces configured as point-to-point differently?
+  - What are the hello and CSNP intervals for IS-IS on the data interfaces?
+- name: mpls-and-segment-routing-infra
+  description: Global MPLS, LDP, and Segment Routing infrastructure settings.
+  include_paths:
+  - mpls.**
+  - segment-routing.**
+  - mpls.router-id
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the MPLS LDP discovery intervals and hold times?
+  - Are there any devices with different global or local segment routing blocks?
+  - What is the MPLS router ID configured for each device?
+- name: system-services
+  description: Miscellaneous system-wide services and configurations.
+  include_paths:
+  - clock.**
+  - domain.lookup
+  - domain.name-server.**
+  - router.static.**
+  - service.timestamps.**
+  - snmp-server.community.**
+  - snmp-server.enable.traps.**
+  - snmp-server.host
+  - snmp-server.trap-source
+  - control-plane.management-plane.inband.interface.all.allow.SNMP
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the DNS name servers and domain lookup settings?
+  - Are all SNMP communities consistent across the fleet?
+  - Which devices have specific SNMP trap hosts configured?

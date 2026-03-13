@@ -1,0 +1,38 @@
+meta:
+  subject: conditions-applications
+  description: Application conditions including included and excluded 
+    applications and client app types
+  source_type: entra-conditional-access
+  total_instances: 20
+classes:
+  includeApplications_All_clientAppTypes:
+    inherits: base
+    own_attrs:
+      conditions.applications.includeApplications: All
+      conditions.clientAppTypes: browser, mobileAppsAndDesktopClients
+    instance_count_inclusive: 11
+class_assignments:
+  includeApplications_All_clientAppTypes:
+    instances:
+    - CA-Compliant-Device-Internal
+    - CA-Location-Block-Countries
+    - CA-Location-Require-MFA-External
+    - CA-MFA-Global-Admins
+    - CA-MFA-Privileged-Roles
+    - CA-MFA-Security-Admins
+    - CA-Named-Location-Corporate
+    - CA-Report-Only-AllUsers-MFA
+    - CA-SignIn-Risk-Medium-MFA
+    - CA-User-Risk-High-PasswordChange
+    - CA-User-Risk-Medium-MFA
+  _base_only:
+    instances:
+    - CA-Block-Legacy-Auth-Exchange
+    - CA-Block-Legacy-Auth-Global
+    - CA-Block-Legacy-Auth-SharePoint
+    - CA-Block-Legacy-Auth-Teams
+    - CA-Compliant-Device-Azure
+    - CA-Compliant-Device-Office365
+    - CA-Disabled-Draft-TestPolicy
+    - CA-MFA-Azure-Management
+    - CA-SignIn-Risk-High-Block

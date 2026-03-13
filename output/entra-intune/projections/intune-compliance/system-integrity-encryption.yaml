@@ -1,0 +1,45 @@
+meta:
+  subject: system-integrity-encryption
+  description: Device integrity checks including TPM, BitLocker, secure boot, 
+    and storage encryption.
+  source_type: intune-compliance
+  total_instances: 10
+class_assignments:
+  _base_only:
+    instances:
+    - CP-Android-Corporate
+    - CP-Android-Standard
+    - CP-Win-Advanced-Security
+    - CP-Win-Basic-Security
+    - CP-Win-Kiosk-Devices
+    - CP-iOS-BYOD
+    - CP-iOS-Corporate-Managed
+    - CP-iOS-Standard
+    - CP-macOS-Secure-Workstation
+    - CP-macOS-Standard
+instance_attrs:
+  CP-Android-Corporate:
+    storageRequireEncryption: 'true'
+  CP-Android-Standard:
+    storageRequireEncryption: 'false'
+  CP-Win-Advanced-Security:
+    bitLockerEnabled: 'true'
+    codeIntegrityEnabled: 'true'
+    secureBootEnabled: 'true'
+    storageRequireEncryption: 'true'
+  CP-Win-Basic-Security:
+    bitLockerEnabled: 'false'
+    codeIntegrityEnabled: 'false'
+    secureBootEnabled: 'false'
+    storageRequireEncryption: 'false'
+  CP-Win-Kiosk-Devices:
+    bitLockerEnabled: 'false'
+    codeIntegrityEnabled: 'false'
+    secureBootEnabled: 'false'
+    storageRequireEncryption: 'true'
+  CP-macOS-Secure-Workstation:
+    storageRequireEncryption: 'true'
+    systemIntegrityProtectionEnabled: 'true'
+  CP-macOS-Standard:
+    storageRequireEncryption: 'false'
+    systemIntegrityProtectionEnabled: 'false'

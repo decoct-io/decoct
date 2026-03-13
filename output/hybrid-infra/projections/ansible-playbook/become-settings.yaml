@@ -1,0 +1,60 @@
+meta:
+  subject: become-settings
+  description: Privilege escalation settings including user and method.
+  source_type: ansible-playbook
+  total_instances: 16
+class_assignments:
+  _base_only:
+    instances:
+    - ansible-base-server
+    - ansible-deploy-auth-service
+    - ansible-deploy-billing-api
+    - ansible-deploy-core-api
+    - ansible-deploy-web-app
+    - ansible-emergency-rollback
+    - ansible-harden-ssh
+    - ansible-setup-backup
+    - ansible-setup-cloud-init
+    - ansible-setup-grafana
+    - ansible-setup-mariadb
+    - ansible-setup-monitoring-agent
+    - ansible-setup-postgresql
+    - ansible-setup-prometheus
+    - ansible-setup-traefik
+    - ansible-update-packages
+instance_data:
+  schema:
+  - become
+  records:
+    ansible-base-server:
+    - 'true'
+    ansible-deploy-auth-service:
+    - 'false'
+    ansible-deploy-billing-api:
+    - 'false'
+    ansible-deploy-core-api:
+    - 'false'
+    ansible-deploy-web-app:
+    - 'false'
+    ansible-emergency-rollback:
+    - 'false'
+    ansible-harden-ssh:
+    - 'true'
+    ansible-setup-backup:
+    - 'true'
+    ansible-setup-cloud-init:
+    - 'true'
+    ansible-setup-grafana:
+    - 'true'
+    ansible-setup-mariadb:
+    - 'true'
+    ansible-setup-monitoring-agent:
+    - 'true'
+    ansible-setup-postgresql:
+    - 'true'
+    ansible-setup-prometheus:
+    - 'true'
+    ansible-setup-traefik:
+    - 'true'
+    ansible-update-packages:
+    - 'true'

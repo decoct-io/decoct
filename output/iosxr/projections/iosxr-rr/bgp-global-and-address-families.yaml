@@ -1,0 +1,45 @@
+meta:
+  subject: bgp-global-and-address-families
+  description: Global BGP settings, graceful restart, timers, and address family
+    activations.
+  source_type: iosxr-rr
+  total_instances: 4
+base_class:
+  router.bgp.65001.address-family.ipv4-unicast: 'true'
+  router.bgp.65001.address-family.ipv4-unicast.maximum-paths.ebgp: '1'
+  router.bgp.65001.address-family.ipv4-unicast.maximum-paths.ibgp: '1'
+  router.bgp.65001.address-family.l2vpn-evpn: 'true'
+  router.bgp.65001.address-family.vpnv4-unicast: 'true'
+  router.bgp.65001.address-family.vpnv6-unicast: 'true'
+  router.bgp.65001.bgp.confederation.identifier: '64512'
+  router.bgp.65001.bgp.confederation.peers.65002: 'true'
+  router.bgp.65001.bgp.confederation.peers.65003: 'true'
+  router.bgp.65001.bgp.confederation.peers.65004: 'true'
+  router.bgp.65001.bgp.confederation.peers.65005: 'true'
+  router.bgp.65001.bgp.confederation.peers.65006: 'true'
+class_assignments:
+  _base_only:
+    instances:
+    - RR-01..RR-04
+instance_data:
+  schema:
+  - hostname
+  - router.bgp.65001.address-family.ipv4-unicast.network
+  - router.bgp.65001.bgp.router-id
+  records:
+    RR-01:
+    - RR-01
+    - 10.0.0.11/32
+    - 10.0.0.11
+    RR-02:
+    - RR-02
+    - 10.0.0.12/32
+    - 10.0.0.12
+    RR-03:
+    - RR-03
+    - 10.0.0.13/32
+    - 10.0.0.13
+    RR-04:
+    - RR-04
+    - 10.0.0.14/32
+    - 10.0.0.14

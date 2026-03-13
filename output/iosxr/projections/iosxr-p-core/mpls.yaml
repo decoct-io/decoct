@@ -1,0 +1,47 @@
+meta:
+  subject: mpls
+  description: MPLS LDP and traffic engineering configuration including 
+    TE-enabled interfaces
+  source_type: iosxr-p-core
+  total_instances: 6
+base_class:
+  mpls.ldp.address-family: ipv4
+  mpls.ldp.discovery.hello.hold-time: '15'
+  mpls.ldp.discovery.hello.interval: '5'
+  mpls.ldp.discovery.targeted-hello.hold-time: '90'
+  mpls.ldp.discovery.targeted-hello.interval: '10'
+  mpls.ldp.graceful-restart: 'true'
+  mpls.ldp.log: neighbor
+  mpls.traffic-eng.interface.HundredGigE0/0/1/0: 'true'
+  mpls.traffic-eng.interface.HundredGigE0/0/1/1: 'true'
+  mpls.traffic-eng.interface.TenGigE0/0/0/0: 'true'
+  mpls.traffic-eng.interface.TenGigE0/0/0/1: 'true'
+  mpls.traffic-eng.interface.TenGigE0/0/0/2: 'true'
+  mpls.traffic-eng.interface.TenGigE0/0/0/3: 'true'
+class_assignments:
+  _base_only:
+    instances:
+    - P-CORE-01..P-CORE-06
+instance_data:
+  schema:
+  - hostname
+  - mpls.ldp.router-id
+  records:
+    P-CORE-01:
+    - P-CORE-01
+    - 10.0.0.1
+    P-CORE-02:
+    - P-CORE-02
+    - 10.0.0.2
+    P-CORE-03:
+    - P-CORE-03
+    - 10.0.0.3
+    P-CORE-04:
+    - P-CORE-04
+    - 10.0.0.4
+    P-CORE-05:
+    - P-CORE-05
+    - 10.0.0.5
+    P-CORE-06:
+    - P-CORE-06
+    - 10.0.0.6

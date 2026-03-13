@@ -1,0 +1,52 @@
+meta:
+  subject: session-controls
+  description: Granular controls over user sessions, including persistent 
+    browser and sign-in frequency.
+  source_type: entra-conditional-access
+  total_instances: 20
+classes:
+  includeApplications_All_clientAppTypes:
+    inherits: base
+    own_attrs:
+      sessionControls.disableResilienceDefaults: 'false'
+    instance_count_inclusive: 11
+  includeUsers_All_operator_OR:
+    inherits: base
+    own_attrs:
+      sessionControls.disableResilienceDefaults: 'false'
+    instance_count_inclusive: 7
+class_assignments:
+  includeApplications_All_clientAppTypes:
+    instances:
+    - CA-Compliant-Device-Internal
+    - CA-Location-Block-Countries
+    - CA-Location-Require-MFA-External
+    - CA-MFA-Global-Admins
+    - CA-MFA-Privileged-Roles
+    - CA-MFA-Security-Admins
+    - CA-Named-Location-Corporate
+    - CA-Report-Only-AllUsers-MFA
+    - CA-SignIn-Risk-Medium-MFA
+    - CA-User-Risk-High-PasswordChange
+    - CA-User-Risk-Medium-MFA
+  includeUsers_All_operator_OR:
+    instances:
+    - CA-Block-Legacy-Auth-Exchange
+    - CA-Block-Legacy-Auth-Global
+    - CA-Block-Legacy-Auth-SharePoint
+    - CA-Block-Legacy-Auth-Teams
+    - CA-Compliant-Device-Office365
+    - CA-Disabled-Draft-TestPolicy
+    - CA-MFA-Azure-Management
+  _base_only:
+    instances:
+    - CA-Compliant-Device-Azure
+    - CA-SignIn-Risk-High-Block
+instance_attrs:
+  CA-Disabled-Draft-TestPolicy:
+    sessionControls.persistentBrowser.mode: never
+  CA-Location-Require-MFA-External:
+    sessionControls.signInFrequency.value: '4'
+  CA-Report-Only-AllUsers-MFA:
+    sessionControls.persistentBrowser.mode: always
+    sessionControls.signInFrequency.value: '8'

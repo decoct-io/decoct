@@ -1,0 +1,592 @@
+meta:
+  subject: global-interface-parameters
+  description: Common parameters for various interface types.
+  source_type: iosxr-access-pe
+  total_instances: 60
+base_class:
+  interface.BVI100.ipv4: address 10.0.1.100 255.255.255.0
+  interface.BVI100.shutdown: 'false'
+  interface.BVI200.ipv4: address 10.0.1.200 255.255.255.0
+  interface.BVI200.shutdown: 'false'
+  interface.BVI300.ipv4: address 10.0.1.300 255.255.255.0
+  interface.BVI300.shutdown: 'false'
+  interface.Bundle-Ether100.100: l2transport
+  interface.Bundle-Ether100.100.encapsulation: dot1q 100
+  interface.Bundle-Ether200.200: l2transport
+  interface.Bundle-Ether200.200.encapsulation: dot1q 200
+  interface.Bundle-Ether300.300: l2transport
+  interface.Bundle-Ether300.300.encapsulation: dot1q 300
+  interface.Loopback0.shutdown: 'false'
+  interface.TenGigE0/0/0/0.arp: timeout 14400
+  interface.TenGigE0/0/0/0.bandwidth: '100000'
+  interface.TenGigE0/0/0/0.carrier-delay.down: '0'
+  interface.TenGigE0/0/0/0.carrier-delay.up: '0'
+  interface.TenGigE0/0/0/0.cdp: 'true'
+  interface.TenGigE0/0/0/0.load-interval: '300'
+  interface.TenGigE0/0/0/0.mtu: '9216'
+  interface.TenGigE0/0/0/0.shutdown: 'false'
+  interface.TenGigE0/0/0/1.arp: timeout 14400
+  interface.TenGigE0/0/0/1.bandwidth: '100000'
+  interface.TenGigE0/0/0/1.carrier-delay.down: '0'
+  interface.TenGigE0/0/0/1.carrier-delay.up: '0'
+  interface.TenGigE0/0/0/1.cdp: 'true'
+  interface.TenGigE0/0/0/1.load-interval: '300'
+  interface.TenGigE0/0/0/1.mtu: '9216'
+  interface.TenGigE0/0/0/1.shutdown: 'false'
+class_assignments:
+  _base_only:
+    instances:
+    - APE-R1-01..APE-R1-20
+    - APE-R2-01..APE-R2-20
+    - APE-R3-01..APE-R3-20
+instance_data:
+  schema:
+  - hostname
+  - interface.Bundle-Ether100.100.description
+  - interface.Bundle-Ether200.200.description
+  - interface.Bundle-Ether300.300.description
+  - interface.TenGigE0/0/0/0.description
+  - interface.TenGigE0/0/0/0.ipv4
+  - interface.TenGigE0/0/0/1.description
+  - interface.TenGigE0/0/0/1.ipv4
+  records:
+    APE-R1-01:
+    - APE-R1-01
+    - L2-BD-APE-R1-01-MGMT
+    - L2-BD-APE-R1-01-DATA
+    - L2-BD-APE-R1-01-VOICE
+    - TO-P-CORE-01
+    - address 10.10.10.0 255.255.255.254
+    - TO-P-CORE-02
+    - address 10.10.10.2 255.255.255.254
+    APE-R1-02:
+    - APE-R1-02
+    - L2-BD-APE-R1-02-MGMT
+    - L2-BD-APE-R1-02-DATA
+    - L2-BD-APE-R1-02-VOICE
+    - TO-P-CORE-02
+    - address 10.10.14.0 255.255.255.254
+    - TO-P-CORE-03
+    - address 10.10.14.2 255.255.255.254
+    APE-R1-03:
+    - APE-R1-03
+    - L2-BD-APE-R1-03-MGMT
+    - L2-BD-APE-R1-03-DATA
+    - L2-BD-APE-R1-03-VOICE
+    - TO-P-CORE-03
+    - address 10.10.18.0 255.255.255.254
+    - TO-P-CORE-04
+    - address 10.10.18.2 255.255.255.254
+    APE-R1-04:
+    - APE-R1-04
+    - L2-BD-APE-R1-04-MGMT
+    - L2-BD-APE-R1-04-DATA
+    - L2-BD-APE-R1-04-VOICE
+    - TO-P-CORE-04
+    - address 10.10.22.0 255.255.255.254
+    - TO-P-CORE-05
+    - address 10.10.22.2 255.255.255.254
+    APE-R1-05:
+    - APE-R1-05
+    - L2-BD-APE-R1-05-MGMT
+    - L2-BD-APE-R1-05-DATA
+    - L2-BD-APE-R1-05-VOICE
+    - TO-P-CORE-05
+    - address 10.10.26.0 255.255.255.254
+    - TO-P-CORE-06
+    - address 10.10.26.2 255.255.255.254
+    APE-R1-06:
+    - APE-R1-06
+    - L2-BD-APE-R1-06-MGMT
+    - L2-BD-APE-R1-06-DATA
+    - L2-BD-APE-R1-06-VOICE
+    - TO-P-CORE-06
+    - address 10.10.30.0 255.255.255.254
+    - TO-P-CORE-01
+    - address 10.10.30.2 255.255.255.254
+    APE-R1-07:
+    - APE-R1-07
+    - L2-BD-APE-R1-07-MGMT
+    - L2-BD-APE-R1-07-DATA
+    - L2-BD-APE-R1-07-VOICE
+    - TO-P-CORE-01
+    - address 10.10.34.0 255.255.255.254
+    - TO-P-CORE-02
+    - address 10.10.34.2 255.255.255.254
+    APE-R1-08:
+    - APE-R1-08
+    - L2-BD-APE-R1-08-MGMT
+    - L2-BD-APE-R1-08-DATA
+    - L2-BD-APE-R1-08-VOICE
+    - TO-P-CORE-02
+    - address 10.10.38.0 255.255.255.254
+    - TO-P-CORE-03
+    - address 10.10.38.2 255.255.255.254
+    APE-R1-09:
+    - APE-R1-09
+    - L2-BD-APE-R1-09-MGMT
+    - L2-BD-APE-R1-09-DATA
+    - L2-BD-APE-R1-09-VOICE
+    - TO-P-CORE-03
+    - address 10.10.42.0 255.255.255.254
+    - TO-P-CORE-04
+    - address 10.10.42.2 255.255.255.254
+    APE-R1-10:
+    - APE-R1-10
+    - L2-BD-APE-R1-10-MGMT
+    - L2-BD-APE-R1-10-DATA
+    - L2-BD-APE-R1-10-VOICE
+    - TO-P-CORE-04
+    - address 10.10.46.0 255.255.255.254
+    - TO-P-CORE-05
+    - address 10.10.46.2 255.255.255.254
+    APE-R1-11:
+    - APE-R1-11
+    - L2-BD-APE-R1-11-MGMT
+    - L2-BD-APE-R1-11-DATA
+    - L2-BD-APE-R1-11-VOICE
+    - TO-P-CORE-05
+    - address 10.10.50.0 255.255.255.254
+    - TO-P-CORE-06
+    - address 10.10.50.2 255.255.255.254
+    APE-R1-12:
+    - APE-R1-12
+    - L2-BD-APE-R1-12-MGMT
+    - L2-BD-APE-R1-12-DATA
+    - L2-BD-APE-R1-12-VOICE
+    - TO-P-CORE-06
+    - address 10.10.54.0 255.255.255.254
+    - TO-P-CORE-01
+    - address 10.10.54.2 255.255.255.254
+    APE-R1-13:
+    - APE-R1-13
+    - L2-BD-APE-R1-13-MGMT
+    - L2-BD-APE-R1-13-DATA
+    - L2-BD-APE-R1-13-VOICE
+    - TO-P-CORE-01
+    - address 10.10.58.0 255.255.255.254
+    - TO-P-CORE-02
+    - address 10.10.58.2 255.255.255.254
+    APE-R1-14:
+    - APE-R1-14
+    - L2-BD-APE-R1-14-MGMT
+    - L2-BD-APE-R1-14-DATA
+    - L2-BD-APE-R1-14-VOICE
+    - TO-P-CORE-02
+    - address 10.10.62.0 255.255.255.254
+    - TO-P-CORE-03
+    - address 10.10.62.2 255.255.255.254
+    APE-R1-15:
+    - APE-R1-15
+    - L2-BD-APE-R1-15-MGMT
+    - L2-BD-APE-R1-15-DATA
+    - L2-BD-APE-R1-15-VOICE
+    - TO-P-CORE-03
+    - address 10.10.66.0 255.255.255.254
+    - TO-P-CORE-04
+    - address 10.10.66.2 255.255.255.254
+    APE-R1-16:
+    - APE-R1-16
+    - L2-BD-APE-R1-16-MGMT
+    - L2-BD-APE-R1-16-DATA
+    - L2-BD-APE-R1-16-VOICE
+    - TO-P-CORE-04
+    - address 10.10.70.0 255.255.255.254
+    - TO-P-CORE-05
+    - address 10.10.70.2 255.255.255.254
+    APE-R1-17:
+    - APE-R1-17
+    - L2-BD-APE-R1-17-MGMT
+    - L2-BD-APE-R1-17-DATA
+    - L2-BD-APE-R1-17-VOICE
+    - TO-P-CORE-05
+    - address 10.10.74.0 255.255.255.254
+    - TO-P-CORE-06
+    - address 10.10.74.2 255.255.255.254
+    APE-R1-18:
+    - APE-R1-18
+    - L2-BD-APE-R1-18-MGMT
+    - L2-BD-APE-R1-18-DATA
+    - L2-BD-APE-R1-18-VOICE
+    - TO-P-CORE-06
+    - address 10.10.78.0 255.255.255.254
+    - TO-P-CORE-01
+    - address 10.10.78.2 255.255.255.254
+    APE-R1-19:
+    - APE-R1-19
+    - L2-BD-APE-R1-19-MGMT
+    - L2-BD-APE-R1-19-DATA
+    - L2-BD-APE-R1-19-VOICE
+    - TO-P-CORE-01
+    - address 10.10.82.0 255.255.255.254
+    - TO-P-CORE-02
+    - address 10.10.82.2 255.255.255.254
+    APE-R1-20:
+    - APE-R1-20
+    - L2-BD-APE-R1-20-MGMT
+    - L2-BD-APE-R1-20-DATA
+    - L2-BD-APE-R1-20-VOICE
+    - TO-P-CORE-02
+    - address 10.10.86.0 255.255.255.254
+    - TO-P-CORE-03
+    - address 10.10.86.2 255.255.255.254
+    APE-R2-01:
+    - APE-R2-01
+    - L2-BD-APE-R2-01-MGMT
+    - L2-BD-APE-R2-01-DATA
+    - L2-BD-APE-R2-01-VOICE
+    - TO-P-CORE-03
+    - address 10.10.90.0 255.255.255.254
+    - TO-P-CORE-04
+    - address 10.10.90.2 255.255.255.254
+    APE-R2-02:
+    - APE-R2-02
+    - L2-BD-APE-R2-02-MGMT
+    - L2-BD-APE-R2-02-DATA
+    - L2-BD-APE-R2-02-VOICE
+    - TO-P-CORE-04
+    - address 10.10.94.0 255.255.255.254
+    - TO-P-CORE-05
+    - address 10.10.94.2 255.255.255.254
+    APE-R2-03:
+    - APE-R2-03
+    - L2-BD-APE-R2-03-MGMT
+    - L2-BD-APE-R2-03-DATA
+    - L2-BD-APE-R2-03-VOICE
+    - TO-P-CORE-05
+    - address 10.10.98.0 255.255.255.254
+    - TO-P-CORE-06
+    - address 10.10.98.2 255.255.255.254
+    APE-R2-04:
+    - APE-R2-04
+    - L2-BD-APE-R2-04-MGMT
+    - L2-BD-APE-R2-04-DATA
+    - L2-BD-APE-R2-04-VOICE
+    - TO-P-CORE-06
+    - address 10.10.102.0 255.255.255.254
+    - TO-P-CORE-01
+    - address 10.10.102.2 255.255.255.254
+    APE-R2-05:
+    - APE-R2-05
+    - L2-BD-APE-R2-05-MGMT
+    - L2-BD-APE-R2-05-DATA
+    - L2-BD-APE-R2-05-VOICE
+    - TO-P-CORE-01
+    - address 10.10.106.0 255.255.255.254
+    - TO-P-CORE-02
+    - address 10.10.106.2 255.255.255.254
+    APE-R2-06:
+    - APE-R2-06
+    - L2-BD-APE-R2-06-MGMT
+    - L2-BD-APE-R2-06-DATA
+    - L2-BD-APE-R2-06-VOICE
+    - TO-P-CORE-02
+    - address 10.10.110.0 255.255.255.254
+    - TO-P-CORE-03
+    - address 10.10.110.2 255.255.255.254
+    APE-R2-07:
+    - APE-R2-07
+    - L2-BD-APE-R2-07-MGMT
+    - L2-BD-APE-R2-07-DATA
+    - L2-BD-APE-R2-07-VOICE
+    - TO-P-CORE-03
+    - address 10.10.114.0 255.255.255.254
+    - TO-P-CORE-04
+    - address 10.10.114.2 255.255.255.254
+    APE-R2-08:
+    - APE-R2-08
+    - L2-BD-APE-R2-08-MGMT
+    - L2-BD-APE-R2-08-DATA
+    - L2-BD-APE-R2-08-VOICE
+    - TO-P-CORE-04
+    - address 10.10.118.0 255.255.255.254
+    - TO-P-CORE-05
+    - address 10.10.118.2 255.255.255.254
+    APE-R2-09:
+    - APE-R2-09
+    - L2-BD-APE-R2-09-MGMT
+    - L2-BD-APE-R2-09-DATA
+    - L2-BD-APE-R2-09-VOICE
+    - TO-P-CORE-05
+    - address 10.10.122.0 255.255.255.254
+    - TO-P-CORE-06
+    - address 10.10.122.2 255.255.255.254
+    APE-R2-10:
+    - APE-R2-10
+    - L2-BD-APE-R2-10-MGMT
+    - L2-BD-APE-R2-10-DATA
+    - L2-BD-APE-R2-10-VOICE
+    - TO-P-CORE-06
+    - address 10.10.126.0 255.255.255.254
+    - TO-P-CORE-01
+    - address 10.10.126.2 255.255.255.254
+    APE-R2-11:
+    - APE-R2-11
+    - L2-BD-APE-R2-11-MGMT
+    - L2-BD-APE-R2-11-DATA
+    - L2-BD-APE-R2-11-VOICE
+    - TO-P-CORE-01
+    - address 10.10.130.0 255.255.255.254
+    - TO-P-CORE-02
+    - address 10.10.130.2 255.255.255.254
+    APE-R2-12:
+    - APE-R2-12
+    - L2-BD-APE-R2-12-MGMT
+    - L2-BD-APE-R2-12-DATA
+    - L2-BD-APE-R2-12-VOICE
+    - TO-P-CORE-02
+    - address 10.10.134.0 255.255.255.254
+    - TO-P-CORE-03
+    - address 10.10.134.2 255.255.255.254
+    APE-R2-13:
+    - APE-R2-13
+    - L2-BD-APE-R2-13-MGMT
+    - L2-BD-APE-R2-13-DATA
+    - L2-BD-APE-R2-13-VOICE
+    - TO-P-CORE-03
+    - address 10.10.138.0 255.255.255.254
+    - TO-P-CORE-04
+    - address 10.10.138.2 255.255.255.254
+    APE-R2-14:
+    - APE-R2-14
+    - L2-BD-APE-R2-14-MGMT
+    - L2-BD-APE-R2-14-DATA
+    - L2-BD-APE-R2-14-VOICE
+    - TO-P-CORE-04
+    - address 10.10.142.0 255.255.255.254
+    - TO-P-CORE-05
+    - address 10.10.142.2 255.255.255.254
+    APE-R2-15:
+    - APE-R2-15
+    - L2-BD-APE-R2-15-MGMT
+    - L2-BD-APE-R2-15-DATA
+    - L2-BD-APE-R2-15-VOICE
+    - TO-P-CORE-05
+    - address 10.10.146.0 255.255.255.254
+    - TO-P-CORE-06
+    - address 10.10.146.2 255.255.255.254
+    APE-R2-16:
+    - APE-R2-16
+    - L2-BD-APE-R2-16-MGMT
+    - L2-BD-APE-R2-16-DATA
+    - L2-BD-APE-R2-16-VOICE
+    - TO-P-CORE-06
+    - address 10.10.150.0 255.255.255.254
+    - TO-P-CORE-01
+    - address 10.10.150.2 255.255.255.254
+    APE-R2-17:
+    - APE-R2-17
+    - L2-BD-APE-R2-17-MGMT
+    - L2-BD-APE-R2-17-DATA
+    - L2-BD-APE-R2-17-VOICE
+    - TO-P-CORE-01
+    - address 10.10.154.0 255.255.255.254
+    - TO-P-CORE-02
+    - address 10.10.154.2 255.255.255.254
+    APE-R2-18:
+    - APE-R2-18
+    - L2-BD-APE-R2-18-MGMT
+    - L2-BD-APE-R2-18-DATA
+    - L2-BD-APE-R2-18-VOICE
+    - TO-P-CORE-02
+    - address 10.10.158.0 255.255.255.254
+    - TO-P-CORE-03
+    - address 10.10.158.2 255.255.255.254
+    APE-R2-19:
+    - APE-R2-19
+    - L2-BD-APE-R2-19-MGMT
+    - L2-BD-APE-R2-19-DATA
+    - L2-BD-APE-R2-19-VOICE
+    - TO-P-CORE-03
+    - address 10.10.162.0 255.255.255.254
+    - TO-P-CORE-04
+    - address 10.10.162.2 255.255.255.254
+    APE-R2-20:
+    - APE-R2-20
+    - L2-BD-APE-R2-20-MGMT
+    - L2-BD-APE-R2-20-DATA
+    - L2-BD-APE-R2-20-VOICE
+    - TO-P-CORE-04
+    - address 10.10.166.0 255.255.255.254
+    - TO-P-CORE-05
+    - address 10.10.166.2 255.255.255.254
+    APE-R3-01:
+    - APE-R3-01
+    - L2-BD-APE-R3-01-MGMT
+    - L2-BD-APE-R3-01-DATA
+    - L2-BD-APE-R3-01-VOICE
+    - TO-P-CORE-05
+    - address 10.10.170.0 255.255.255.254
+    - TO-P-CORE-06
+    - address 10.10.170.2 255.255.255.254
+    APE-R3-02:
+    - APE-R3-02
+    - L2-BD-APE-R3-02-MGMT
+    - L2-BD-APE-R3-02-DATA
+    - L2-BD-APE-R3-02-VOICE
+    - TO-P-CORE-06
+    - address 10.10.174.0 255.255.255.254
+    - TO-P-CORE-01
+    - address 10.10.174.2 255.255.255.254
+    APE-R3-03:
+    - APE-R3-03
+    - L2-BD-APE-R3-03-MGMT
+    - L2-BD-APE-R3-03-DATA
+    - L2-BD-APE-R3-03-VOICE
+    - TO-P-CORE-01
+    - address 10.10.178.0 255.255.255.254
+    - TO-P-CORE-02
+    - address 10.10.178.2 255.255.255.254
+    APE-R3-04:
+    - APE-R3-04
+    - L2-BD-APE-R3-04-MGMT
+    - L2-BD-APE-R3-04-DATA
+    - L2-BD-APE-R3-04-VOICE
+    - TO-P-CORE-02
+    - address 10.10.182.0 255.255.255.254
+    - TO-P-CORE-03
+    - address 10.10.182.2 255.255.255.254
+    APE-R3-05:
+    - APE-R3-05
+    - L2-BD-APE-R3-05-MGMT
+    - L2-BD-APE-R3-05-DATA
+    - L2-BD-APE-R3-05-VOICE
+    - TO-P-CORE-03
+    - address 10.10.186.0 255.255.255.254
+    - TO-P-CORE-04
+    - address 10.10.186.2 255.255.255.254
+    APE-R3-06:
+    - APE-R3-06
+    - L2-BD-APE-R3-06-MGMT
+    - L2-BD-APE-R3-06-DATA
+    - L2-BD-APE-R3-06-VOICE
+    - TO-P-CORE-04
+    - address 10.10.190.0 255.255.255.254
+    - TO-P-CORE-05
+    - address 10.10.190.2 255.255.255.254
+    APE-R3-07:
+    - APE-R3-07
+    - L2-BD-APE-R3-07-MGMT
+    - L2-BD-APE-R3-07-DATA
+    - L2-BD-APE-R3-07-VOICE
+    - TO-P-CORE-05
+    - address 10.10.194.0 255.255.255.254
+    - TO-P-CORE-06
+    - address 10.10.194.2 255.255.255.254
+    APE-R3-08:
+    - APE-R3-08
+    - L2-BD-APE-R3-08-MGMT
+    - L2-BD-APE-R3-08-DATA
+    - L2-BD-APE-R3-08-VOICE
+    - TO-P-CORE-06
+    - address 10.10.198.0 255.255.255.254
+    - TO-P-CORE-01
+    - address 10.10.198.2 255.255.255.254
+    APE-R3-09:
+    - APE-R3-09
+    - L2-BD-APE-R3-09-MGMT
+    - L2-BD-APE-R3-09-DATA
+    - L2-BD-APE-R3-09-VOICE
+    - TO-P-CORE-01
+    - address 10.10.202.0 255.255.255.254
+    - TO-P-CORE-02
+    - address 10.10.202.2 255.255.255.254
+    APE-R3-10:
+    - APE-R3-10
+    - L2-BD-APE-R3-10-MGMT
+    - L2-BD-APE-R3-10-DATA
+    - L2-BD-APE-R3-10-VOICE
+    - TO-P-CORE-02
+    - address 10.10.206.0 255.255.255.254
+    - TO-P-CORE-03
+    - address 10.10.206.2 255.255.255.254
+    APE-R3-11:
+    - APE-R3-11
+    - L2-BD-APE-R3-11-MGMT
+    - L2-BD-APE-R3-11-DATA
+    - L2-BD-APE-R3-11-VOICE
+    - TO-P-CORE-03
+    - address 10.10.210.0 255.255.255.254
+    - TO-P-CORE-04
+    - address 10.10.210.2 255.255.255.254
+    APE-R3-12:
+    - APE-R3-12
+    - L2-BD-APE-R3-12-MGMT
+    - L2-BD-APE-R3-12-DATA
+    - L2-BD-APE-R3-12-VOICE
+    - TO-P-CORE-04
+    - address 10.10.214.0 255.255.255.254
+    - TO-P-CORE-05
+    - address 10.10.214.2 255.255.255.254
+    APE-R3-13:
+    - APE-R3-13
+    - L2-BD-APE-R3-13-MGMT
+    - L2-BD-APE-R3-13-DATA
+    - L2-BD-APE-R3-13-VOICE
+    - TO-P-CORE-05
+    - address 10.10.218.0 255.255.255.254
+    - TO-P-CORE-06
+    - address 10.10.218.2 255.255.255.254
+    APE-R3-14:
+    - APE-R3-14
+    - L2-BD-APE-R3-14-MGMT
+    - L2-BD-APE-R3-14-DATA
+    - L2-BD-APE-R3-14-VOICE
+    - TO-P-CORE-06
+    - address 10.10.222.0 255.255.255.254
+    - TO-P-CORE-01
+    - address 10.10.222.2 255.255.255.254
+    APE-R3-15:
+    - APE-R3-15
+    - L2-BD-APE-R3-15-MGMT
+    - L2-BD-APE-R3-15-DATA
+    - L2-BD-APE-R3-15-VOICE
+    - TO-P-CORE-01
+    - address 10.10.226.0 255.255.255.254
+    - TO-P-CORE-02
+    - address 10.10.226.2 255.255.255.254
+    APE-R3-16:
+    - APE-R3-16
+    - L2-BD-APE-R3-16-MGMT
+    - L2-BD-APE-R3-16-DATA
+    - L2-BD-APE-R3-16-VOICE
+    - TO-P-CORE-02
+    - address 10.10.230.0 255.255.255.254
+    - TO-P-CORE-03
+    - address 10.10.230.2 255.255.255.254
+    APE-R3-17:
+    - APE-R3-17
+    - L2-BD-APE-R3-17-MGMT
+    - L2-BD-APE-R3-17-DATA
+    - L2-BD-APE-R3-17-VOICE
+    - TO-P-CORE-03
+    - address 10.10.234.0 255.255.255.254
+    - TO-P-CORE-04
+    - address 10.10.234.2 255.255.255.254
+    APE-R3-18:
+    - APE-R3-18
+    - L2-BD-APE-R3-18-MGMT
+    - L2-BD-APE-R3-18-DATA
+    - L2-BD-APE-R3-18-VOICE
+    - TO-P-CORE-04
+    - address 10.10.238.0 255.255.255.254
+    - TO-P-CORE-05
+    - address 10.10.238.2 255.255.255.254
+    APE-R3-19:
+    - APE-R3-19
+    - L2-BD-APE-R3-19-MGMT
+    - L2-BD-APE-R3-19-DATA
+    - L2-BD-APE-R3-19-VOICE
+    - TO-P-CORE-05
+    - address 10.10.242.0 255.255.255.254
+    - TO-P-CORE-06
+    - address 10.10.242.2 255.255.255.254
+    APE-R3-20:
+    - APE-R3-20
+    - L2-BD-APE-R3-20-MGMT
+    - L2-BD-APE-R3-20-DATA
+    - L2-BD-APE-R3-20-VOICE
+    - TO-P-CORE-06
+    - address 10.10.246.0 255.255.255.254
+    - TO-P-CORE-01
+    - address 10.10.246.2 255.255.255.254

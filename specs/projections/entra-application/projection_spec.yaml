@@ -1,0 +1,89 @@
+version: 1
+source_type: entra-application
+generated_by: decoct-infer
+subjects:
+- name: application-identity
+  description: Core identity and display attributes for Entra applications.
+  include_paths:
+  - _uuid
+  - appId
+  - displayName
+  - isFallbackPublicClient
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the application IDs and display names for all applications?
+  - Which applications are configured as fallback public clients?
+  - Retrieve the UUIDs for applications with a specific display name.
+- name: authentication-settings
+  description: Settings related to device-only authentication and sign-in 
+    audience.
+  include_paths:
+  - isDeviceOnlyAuthSupported
+  - signInAudience
+  - api.requestedAccessTokenVersion
+  - nativeAuthenticationApisEnabled
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which applications support device-only authentication?
+  - What is the sign-in audience for each application?
+  - Are there any applications with 'nativeAuthenticationApisEnabled' set to 
+    anything other than 'none'?
+- name: oauth-api-settings
+  description: API-specific OAuth2 and publisher domain settings.
+  include_paths:
+  - web.implicitGrantSettings.enableAccessTokenIssuance
+  - web.implicitGrantSettings.enableIdTokenIssuance
+  - oauth2RequiredPostResponse
+  - publisherDomain
+  - api.oauth2PermissionScopes
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which applications have implicit grant settings for access token issuance 
+    enabled?
+  - What are the custom OAuth2 permission scopes defined for each application?
+  - Are there any applications that require an OAuth2 post-response?
+- name: uri-configuration
+  description: Configuration for identifier URIs, web redirect URIs, and SPA 
+    redirect URIs.
+  include_paths:
+  - identifierUris
+  - web.redirectUris
+  - spa.redirectUris
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the configured identifier URIs for each application?
+  - List all web redirect URIs for applications with a specific display name.
+  - Which applications use SPA redirect URIs?
+- name: credential-management
+  description: Key and password credential configurations.
+  include_paths:
+  - keyCredentials
+  - passwordCredentials
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which applications have key credentials configured?
+  - Are there any applications with password credentials defined?
+  - Compare the key credentials across different applications.
+- name: access-claims
+  description: Required resource access settings and optional claims for access 
+    tokens.
+  include_paths:
+  - requiredResourceAccess
+  - optionalClaims.accessToken
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What specific resource access is required by each application?
+  - Which optional claims are configured for access tokens?
+  - Identify applications with specific required resource access configurations.

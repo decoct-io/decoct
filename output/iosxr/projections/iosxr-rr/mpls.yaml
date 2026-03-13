@@ -1,0 +1,36 @@
+meta:
+  subject: mpls
+  description: MPLS LDP configuration including discovery timers, graceful 
+    restart, and address family
+  source_type: iosxr-rr
+  total_instances: 4
+base_class:
+  mpls: ldp
+  mpls.address-family: ipv4
+  mpls.discovery.hello.hold-time: '15'
+  mpls.discovery.hello.interval: '5'
+  mpls.discovery.targeted-hello.hold-time: '90'
+  mpls.discovery.targeted-hello.interval: '10'
+  mpls.graceful-restart: 'true'
+  mpls.log: neighbor
+class_assignments:
+  _base_only:
+    instances:
+    - RR-01..RR-04
+instance_data:
+  schema:
+  - hostname
+  - mpls.router-id
+  records:
+    RR-01:
+    - RR-01
+    - 10.0.0.11
+    RR-02:
+    - RR-02
+    - 10.0.0.12
+    RR-03:
+    - RR-03
+    - 10.0.0.13
+    RR-04:
+    - RR-04
+    - 10.0.0.14

@@ -1,0 +1,1095 @@
+meta:
+  subject: tasks
+  description: Task definitions including module usage, parameters, and looping
+  source_type: ansible-playbook
+  total_instances: 16
+class_assignments:
+  _base_only:
+    instances:
+    - ansible-base-server
+    - ansible-deploy-auth-service
+    - ansible-deploy-billing-api
+    - ansible-deploy-core-api
+    - ansible-deploy-web-app
+    - ansible-emergency-rollback
+    - ansible-harden-ssh
+    - ansible-setup-backup
+    - ansible-setup-cloud-init
+    - ansible-setup-grafana
+    - ansible-setup-mariadb
+    - ansible-setup-monitoring-agent
+    - ansible-setup-postgresql
+    - ansible-setup-prometheus
+    - ansible-setup-traefik
+    - ansible-update-packages
+instance_data:
+  schema:
+  - name
+  records:
+    ansible-base-server:
+    - Base Server Provisioning
+    ansible-deploy-auth-service:
+    - Deploy Auth Service
+    ansible-deploy-billing-api:
+    - Deploy Billing API
+    ansible-deploy-core-api:
+    - Deploy Core API
+    ansible-deploy-web-app:
+    - Deploy Web App
+    ansible-emergency-rollback:
+    - Emergency Rollback
+    ansible-harden-ssh:
+    - Harden SSH Configuration
+    ansible-setup-backup:
+    - Setup Backup System
+    ansible-setup-cloud-init:
+    - Setup Cloud-Init Configs
+    ansible-setup-grafana:
+    - Setup Grafana
+    ansible-setup-mariadb:
+    - Setup MariaDB
+    ansible-setup-monitoring-agent:
+    - Setup Monitoring Agent
+    ansible-setup-postgresql:
+    - Setup PostgreSQL
+    ansible-setup-prometheus:
+    - Setup Prometheus
+    ansible-setup-traefik:
+    - Setup Traefik
+    ansible-update-packages:
+    - Update System Packages
+instance_attrs:
+  ansible-base-server:
+    tasks:
+    - name: Install packages via apt
+      ansible.builtin.apt.name: '{{ item }}'
+      ansible.builtin.apt.state: present
+      ansible.builtin.apt.update_cache: 'false'
+      ansible.builtin.apt.force: 'false'
+      ansible.builtin.apt.purge: 'false'
+      ansible.builtin.apt.autoremove: 'false'
+      ansible.builtin.apt.autoclean: 'false'
+      ansible.builtin.apt.only_upgrade: 'false'
+      ansible.builtin.apt.force_apt_get: 'false'
+      ansible.builtin.apt.allow_unauthenticated: 'false'
+      ansible.builtin.apt.allow_downgrade: 'false'
+      ansible.builtin.apt.fail_on_autoremove: 'false'
+      ansible.builtin.apt.lock_timeout: '60'
+      ansible.builtin.apt.cache_valid_time: '0'
+      loop: htop
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'true'
+    - name: Create application user
+      ansible.builtin.user.name: ridgeline
+      ansible.builtin.user.state: present
+      ansible.builtin.user.system: 'false'
+      ansible.builtin.user.create_home: 'true'
+      ansible.builtin.user.append: 'false'
+      ansible.builtin.user.force: 'false'
+      ansible.builtin.user.generate_ssh_key: 'false'
+      ansible.builtin.user.move_home: 'false'
+      ansible.builtin.user.non_unique: 'false'
+      ansible.builtin.user.remove: 'false'
+      ansible.builtin.user.update_password: always
+      ansible.builtin.user.shell: /bin/bash
+      ansible.builtin.user.home: /opt/ridgeline
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'true'
+    - name: Copy configuration files
+      ansible.builtin.copy.src: '{{ item.src }}'
+      ansible.builtin.copy.dest: '{{ item.dest }}'
+      ansible.builtin.copy.owner: root
+      ansible.builtin.copy.group: root
+      ansible.builtin.copy.mode: '0644'
+      ansible.builtin.copy.backup: 'false'
+      ansible.builtin.copy.decrypt: 'true'
+      ansible.builtin.copy.follow: 'false'
+      ansible.builtin.copy.force: 'true'
+      ansible.builtin.copy.remote_src: 'false'
+      ansible.builtin.copy.unsafe_writes: 'false'
+      loop.0.src: files/config.conf
+      loop.0.dest: /etc/ridgeline/config.conf
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'true'
+    - name: Enable and start service
+      ansible.builtin.systemd.name: "{{ service_name | default('ridgeline') }}"
+      ansible.builtin.systemd.state: started
+      ansible.builtin.systemd.enabled: 'true'
+      ansible.builtin.systemd.daemon_reload: 'false'
+      ansible.builtin.systemd.daemon_reexec: 'false'
+      ansible.builtin.systemd.no_block: 'false'
+      ansible.builtin.systemd.scope: system
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'true'
+    - name: Set file permissions
+      ansible.builtin.file.path: /opt/ridgeline
+      ansible.builtin.file.state: directory
+      ansible.builtin.file.owner: ridgeline
+      ansible.builtin.file.group: ridgeline
+      ansible.builtin.file.mode: '0755'
+      ansible.builtin.file.follow: 'true'
+      ansible.builtin.file.force: 'false'
+      ansible.builtin.file.recurse: 'false'
+      ansible.builtin.file.unsafe_writes: 'false'
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'true'
+  ansible-deploy-auth-service:
+    tasks:
+      template: ansible-playbook.tasks.T1
+  ansible-deploy-billing-api:
+    tasks:
+      template: ansible-playbook.tasks.T1
+  ansible-deploy-core-api:
+    tasks:
+      template: ansible-playbook.tasks.T1
+  ansible-deploy-web-app:
+    tasks:
+    - name: Install packages via dnf
+      ansible.builtin.dnf.name: '{{ item }}'
+      ansible.builtin.dnf.state: present
+      ansible.builtin.dnf.update_cache: 'false'
+      ansible.builtin.dnf.allow_downgrade: 'false'
+      ansible.builtin.dnf.autoremove: 'false'
+      ansible.builtin.dnf.disable_gpg_check: 'false'
+      ansible.builtin.dnf.download_only: 'false'
+      ansible.builtin.dnf.install_weak_deps: 'true'
+      ansible.builtin.dnf.lock_timeout: '30'
+      ansible.builtin.dnf.security: 'false'
+      ansible.builtin.dnf.skip_broken: 'false'
+      ansible.builtin.dnf.sslverify: 'true'
+      ansible.builtin.dnf.update_only: 'false'
+      ansible.builtin.dnf.validate_certs: 'true'
+      loop: nodejs,npm,curl
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'false'
+    - name: Clone application repository
+      ansible.builtin.git.repo: https://github.com/ridgeline-data/{{ app_name | 
+        default('app') }}.git
+      ansible.builtin.git.dest: /opt/ridgeline/{{ app_name | default('app') }}
+      ansible.builtin.git.bare: 'false'
+      ansible.builtin.git.clone: 'true'
+      ansible.builtin.git.force: 'false'
+      ansible.builtin.git.recursive: 'true'
+      ansible.builtin.git.remote: origin
+      ansible.builtin.git.track_submodules: 'false'
+      ansible.builtin.git.update: 'true'
+      ansible.builtin.git.verify_commit: 'false'
+      ansible.builtin.git.version: HEAD
+      ansible.builtin.git.accept_hostkey: 'false'
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'false'
+    - name: Copy configuration files
+      ansible.builtin.copy.src: '{{ item.src }}'
+      ansible.builtin.copy.dest: '{{ item.dest }}'
+      ansible.builtin.copy.owner: root
+      ansible.builtin.copy.group: root
+      ansible.builtin.copy.mode: '0644'
+      ansible.builtin.copy.backup: 'false'
+      ansible.builtin.copy.decrypt: 'true'
+      ansible.builtin.copy.follow: 'false'
+      ansible.builtin.copy.force: 'true'
+      ansible.builtin.copy.remote_src: 'false'
+      ansible.builtin.copy.unsafe_writes: 'false'
+      loop.0.src: files/config.conf
+      loop.0.dest: /etc/ridgeline/config.conf
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'false'
+    - name: Enable and start service
+      ansible.builtin.systemd.name: "{{ service_name | default('ridgeline') }}"
+      ansible.builtin.systemd.state: started
+      ansible.builtin.systemd.enabled: 'true'
+      ansible.builtin.systemd.daemon_reload: 'false'
+      ansible.builtin.systemd.daemon_reexec: 'false'
+      ansible.builtin.systemd.no_block: 'false'
+      ansible.builtin.systemd.scope: system
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'false'
+    - name: Wait for service to be ready
+      ansible.builtin.wait_for.port: "{{ app_port | default('8000') }}"
+      ansible.builtin.wait_for.host: 127.0.0.1
+      ansible.builtin.wait_for.connect_timeout: '5'
+      ansible.builtin.wait_for.delay: '0'
+      ansible.builtin.wait_for.sleep: '1'
+      ansible.builtin.wait_for.state: started
+      ansible.builtin.wait_for.timeout: '300'
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'false'
+  ansible-emergency-rollback:
+    tasks:
+    - name: Enable and start service
+      ansible.builtin.systemd.name: "{{ service_name | default('ridgeline') }}"
+      ansible.builtin.systemd.state: started
+      ansible.builtin.systemd.enabled: 'true'
+      ansible.builtin.systemd.daemon_reload: 'false'
+      ansible.builtin.systemd.daemon_reexec: 'false'
+      ansible.builtin.systemd.no_block: 'false'
+      ansible.builtin.systemd.scope: system
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'false'
+    - name: Wait for service to be ready
+      ansible.builtin.wait_for.port: "{{ app_port | default('8000') }}"
+      ansible.builtin.wait_for.host: 127.0.0.1
+      ansible.builtin.wait_for.connect_timeout: '5'
+      ansible.builtin.wait_for.delay: '0'
+      ansible.builtin.wait_for.sleep: '1'
+      ansible.builtin.wait_for.state: started
+      ansible.builtin.wait_for.timeout: '300'
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'false'
+    - name: Verify service health endpoint
+      ansible.builtin.uri.url: http://localhost:{{ app_port | default('8000') 
+        }}/health
+      ansible.builtin.uri.method: GET
+      ansible.builtin.uri.follow_redirects: safe
+      ansible.builtin.uri.force: 'false'
+      ansible.builtin.uri.force_basic_auth: 'false'
+      ansible.builtin.uri.return_content: 'false'
+      ansible.builtin.uri.timeout: '30'
+      ansible.builtin.uri.use_proxy: 'true'
+      ansible.builtin.uri.validate_certs: 'true'
+      ansible.builtin.uri.status_code: '200'
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'false'
+  ansible-harden-ssh:
+    tasks:
+    - name: Copy configuration files
+      ansible.builtin.copy.src: '{{ item.src }}'
+      ansible.builtin.copy.dest: '{{ item.dest }}'
+      ansible.builtin.copy.owner: root
+      ansible.builtin.copy.group: root
+      ansible.builtin.copy.mode: '0644'
+      ansible.builtin.copy.backup: 'false'
+      ansible.builtin.copy.decrypt: 'true'
+      ansible.builtin.copy.follow: 'false'
+      ansible.builtin.copy.force: 'true'
+      ansible.builtin.copy.remote_src: 'false'
+      ansible.builtin.copy.unsafe_writes: 'false'
+      loop.0.src: files/config.conf
+      loop.0.dest: /etc/ridgeline/config.conf
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'true'
+    - name: Configure sshd settings
+      ansible.builtin.lineinfile.path: /etc/ssh/sshd_config
+      ansible.builtin.lineinfile.regexp: '{{ item.regexp }}'
+      ansible.builtin.lineinfile.line: '{{ item.line }}'
+      ansible.builtin.lineinfile.state: present
+      ansible.builtin.lineinfile.create: 'false'
+      ansible.builtin.lineinfile.backup: 'false'
+      ansible.builtin.lineinfile.backrefs: 'false'
+      ansible.builtin.lineinfile.firstmatch: 'false'
+      ansible.builtin.lineinfile.unsafe_writes: 'false'
+      loop.0.regexp: ^PermitRootLogin
+      loop.0.line: PermitRootLogin no
+      loop.1.regexp: ^PasswordAuthentication
+      loop.1.line: PasswordAuthentication no
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'true'
+    - name: Set file permissions
+      ansible.builtin.file.path: /opt/ridgeline
+      ansible.builtin.file.state: directory
+      ansible.builtin.file.owner: ridgeline
+      ansible.builtin.file.group: ridgeline
+      ansible.builtin.file.mode: '0755'
+      ansible.builtin.file.follow: 'true'
+      ansible.builtin.file.force: 'false'
+      ansible.builtin.file.recurse: 'false'
+      ansible.builtin.file.unsafe_writes: 'false'
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'true'
+    - name: Enable and start service
+      ansible.builtin.systemd.name: "{{ service_name | default('ridgeline') }}"
+      ansible.builtin.systemd.state: started
+      ansible.builtin.systemd.enabled: 'true'
+      ansible.builtin.systemd.daemon_reload: 'false'
+      ansible.builtin.systemd.daemon_reexec: 'false'
+      ansible.builtin.systemd.no_block: 'false'
+      ansible.builtin.systemd.scope: system
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'true'
+  ansible-setup-backup:
+    tasks:
+    - name: Install packages via apt
+      ansible.builtin.apt.name: '{{ item }}'
+      ansible.builtin.apt.state: present
+      ansible.builtin.apt.update_cache: 'false'
+      ansible.builtin.apt.force: 'false'
+      ansible.builtin.apt.purge: 'false'
+      ansible.builtin.apt.autoremove: 'false'
+      ansible.builtin.apt.autoclean: 'false'
+      ansible.builtin.apt.only_upgrade: 'false'
+      ansible.builtin.apt.force_apt_get: 'false'
+      ansible.builtin.apt.allow_unauthenticated: 'false'
+      ansible.builtin.apt.allow_downgrade: 'false'
+      ansible.builtin.apt.fail_on_autoremove: 'false'
+      ansible.builtin.apt.lock_timeout: '60'
+      ansible.builtin.apt.cache_valid_time: '0'
+      loop: curl,wget
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'true'
+    - name: Copy configuration files
+      ansible.builtin.copy.src: '{{ item.src }}'
+      ansible.builtin.copy.dest: '{{ item.dest }}'
+      ansible.builtin.copy.owner: root
+      ansible.builtin.copy.group: root
+      ansible.builtin.copy.mode: '0644'
+      ansible.builtin.copy.backup: 'false'
+      ansible.builtin.copy.decrypt: 'true'
+      ansible.builtin.copy.follow: 'false'
+      ansible.builtin.copy.force: 'true'
+      ansible.builtin.copy.remote_src: 'false'
+      ansible.builtin.copy.unsafe_writes: 'false'
+      loop.0.src: files/config.conf
+      loop.0.dest: /etc/ridgeline/config.conf
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'true'
+    - name: Configure scheduled backup
+      ansible.builtin.cron.name: ridgeline-backup
+      ansible.builtin.cron.job: /opt/ridgeline/scripts/backup-all-dbs.sh
+      ansible.builtin.cron.minute: '0'
+      ansible.builtin.cron.hour: '3'
+      ansible.builtin.cron.state: present
+      ansible.builtin.cron.backup: 'false'
+      ansible.builtin.cron.disabled: 'false'
+      ansible.builtin.cron.user: root
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'true'
+    - name: Set file permissions
+      ansible.builtin.file.path: /opt/ridgeline
+      ansible.builtin.file.state: directory
+      ansible.builtin.file.owner: ridgeline
+      ansible.builtin.file.group: ridgeline
+      ansible.builtin.file.mode: '0755'
+      ansible.builtin.file.follow: 'true'
+      ansible.builtin.file.force: 'false'
+      ansible.builtin.file.recurse: 'false'
+      ansible.builtin.file.unsafe_writes: 'false'
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'true'
+  ansible-setup-cloud-init:
+    tasks:
+    - name: Install packages via apt
+      ansible.builtin.apt.name: '{{ item }}'
+      ansible.builtin.apt.state: present
+      ansible.builtin.apt.update_cache: 'false'
+      ansible.builtin.apt.force: 'false'
+      ansible.builtin.apt.purge: 'false'
+      ansible.builtin.apt.autoremove: 'false'
+      ansible.builtin.apt.autoclean: 'false'
+      ansible.builtin.apt.only_upgrade: 'false'
+      ansible.builtin.apt.force_apt_get: 'false'
+      ansible.builtin.apt.allow_unauthenticated: 'false'
+      ansible.builtin.apt.allow_downgrade: 'false'
+      ansible.builtin.apt.fail_on_autoremove: 'false'
+      ansible.builtin.apt.lock_timeout: '60'
+      ansible.builtin.apt.cache_valid_time: '0'
+      loop: curl,wget
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'true'
+    - name: Copy configuration files
+      ansible.builtin.copy.src: '{{ item.src }}'
+      ansible.builtin.copy.dest: '{{ item.dest }}'
+      ansible.builtin.copy.owner: root
+      ansible.builtin.copy.group: root
+      ansible.builtin.copy.mode: '0644'
+      ansible.builtin.copy.backup: 'false'
+      ansible.builtin.copy.decrypt: 'true'
+      ansible.builtin.copy.follow: 'false'
+      ansible.builtin.copy.force: 'true'
+      ansible.builtin.copy.remote_src: 'false'
+      ansible.builtin.copy.unsafe_writes: 'false'
+      loop.0.src: files/config.conf
+      loop.0.dest: /etc/ridgeline/config.conf
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'true'
+    - name: Deploy templated configuration
+      ansible.builtin.template.src: '{{ item.src }}'
+      ansible.builtin.template.dest: '{{ item.dest }}'
+      ansible.builtin.template.owner: root
+      ansible.builtin.template.group: root
+      ansible.builtin.template.mode: '0644'
+      ansible.builtin.template.backup: 'false'
+      ansible.builtin.template.follow: 'false'
+      ansible.builtin.template.force: 'true'
+      ansible.builtin.template.lstrip_blocks: 'false'
+      ansible.builtin.template.trim_blocks: 'true'
+      ansible.builtin.template.unsafe_writes: 'false'
+      ansible.builtin.template.output_encoding: utf-8
+      loop.0.src: templates/app.conf.j2
+      loop.0.dest: /etc/ridgeline/app.conf
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'true'
+  ansible-setup-grafana:
+    tasks:
+    - name: Install packages via apt
+      ansible.builtin.apt.name: '{{ item }}'
+      ansible.builtin.apt.state: present
+      ansible.builtin.apt.update_cache: 'false'
+      ansible.builtin.apt.force: 'false'
+      ansible.builtin.apt.purge: 'false'
+      ansible.builtin.apt.autoremove: 'false'
+      ansible.builtin.apt.autoclean: 'false'
+      ansible.builtin.apt.only_upgrade: 'false'
+      ansible.builtin.apt.force_apt_get: 'false'
+      ansible.builtin.apt.allow_unauthenticated: 'false'
+      ansible.builtin.apt.allow_downgrade: 'false'
+      ansible.builtin.apt.fail_on_autoremove: 'false'
+      ansible.builtin.apt.lock_timeout: '60'
+      ansible.builtin.apt.cache_valid_time: '0'
+      loop: curl,wget
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'true'
+    - name: Copy configuration files
+      ansible.builtin.copy.src: '{{ item.src }}'
+      ansible.builtin.copy.dest: '{{ item.dest }}'
+      ansible.builtin.copy.owner: root
+      ansible.builtin.copy.group: root
+      ansible.builtin.copy.mode: '0644'
+      ansible.builtin.copy.backup: 'false'
+      ansible.builtin.copy.decrypt: 'true'
+      ansible.builtin.copy.follow: 'false'
+      ansible.builtin.copy.force: 'true'
+      ansible.builtin.copy.remote_src: 'false'
+      ansible.builtin.copy.unsafe_writes: 'false'
+      loop.0.src: files/config.conf
+      loop.0.dest: /etc/ridgeline/config.conf
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'true'
+    - name: Enable and start service
+      ansible.builtin.systemd.name: "{{ service_name | default('ridgeline') }}"
+      ansible.builtin.systemd.state: started
+      ansible.builtin.systemd.enabled: 'true'
+      ansible.builtin.systemd.daemon_reload: 'false'
+      ansible.builtin.systemd.daemon_reexec: 'false'
+      ansible.builtin.systemd.no_block: 'false'
+      ansible.builtin.systemd.scope: system
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'true'
+    - name: Wait for service to be ready
+      ansible.builtin.wait_for.port: "{{ app_port | default('8000') }}"
+      ansible.builtin.wait_for.host: 127.0.0.1
+      ansible.builtin.wait_for.connect_timeout: '5'
+      ansible.builtin.wait_for.delay: '0'
+      ansible.builtin.wait_for.sleep: '1'
+      ansible.builtin.wait_for.state: started
+      ansible.builtin.wait_for.timeout: '300'
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'false'
+    - name: Verify service health endpoint
+      ansible.builtin.uri.url: http://localhost:{{ app_port | default('8000') 
+        }}/health
+      ansible.builtin.uri.method: GET
+      ansible.builtin.uri.follow_redirects: safe
+      ansible.builtin.uri.force: 'false'
+      ansible.builtin.uri.force_basic_auth: 'false'
+      ansible.builtin.uri.return_content: 'false'
+      ansible.builtin.uri.timeout: '30'
+      ansible.builtin.uri.use_proxy: 'true'
+      ansible.builtin.uri.validate_certs: 'true'
+      ansible.builtin.uri.status_code: '200'
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'false'
+  ansible-setup-mariadb:
+    tasks:
+      template: ansible-playbook.tasks.T0
+  ansible-setup-monitoring-agent:
+    tasks:
+    - name: Download binary
+      ansible.builtin.get_url.url: "{{ download_url | default('https://github.com/ridgeline-data/releases/latest')
+        }}"
+      ansible.builtin.get_url.dest: /tmp/download
+      ansible.builtin.get_url.mode: '0755'
+      ansible.builtin.get_url.backup: 'false'
+      ansible.builtin.get_url.force: 'false'
+      ansible.builtin.get_url.force_basic_auth: 'false'
+      ansible.builtin.get_url.timeout: '10'
+      ansible.builtin.get_url.unsafe_writes: 'false'
+      ansible.builtin.get_url.use_proxy: 'true'
+      ansible.builtin.get_url.validate_certs: 'true'
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'true'
+    - name: Create application user
+      ansible.builtin.user.name: ridgeline
+      ansible.builtin.user.state: present
+      ansible.builtin.user.system: 'false'
+      ansible.builtin.user.create_home: 'true'
+      ansible.builtin.user.append: 'false'
+      ansible.builtin.user.force: 'false'
+      ansible.builtin.user.generate_ssh_key: 'false'
+      ansible.builtin.user.move_home: 'false'
+      ansible.builtin.user.non_unique: 'false'
+      ansible.builtin.user.remove: 'false'
+      ansible.builtin.user.update_password: always
+      ansible.builtin.user.shell: /bin/bash
+      ansible.builtin.user.home: /opt/ridgeline
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'true'
+    - name: Deploy templated configuration
+      ansible.builtin.template.src: '{{ item.src }}'
+      ansible.builtin.template.dest: '{{ item.dest }}'
+      ansible.builtin.template.owner: root
+      ansible.builtin.template.group: root
+      ansible.builtin.template.mode: '0644'
+      ansible.builtin.template.backup: 'false'
+      ansible.builtin.template.follow: 'false'
+      ansible.builtin.template.force: 'true'
+      ansible.builtin.template.lstrip_blocks: 'false'
+      ansible.builtin.template.trim_blocks: 'true'
+      ansible.builtin.template.unsafe_writes: 'false'
+      ansible.builtin.template.output_encoding: utf-8
+      loop.0.src: templates/app.conf.j2
+      loop.0.dest: /etc/ridgeline/app.conf
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'true'
+    - name: Enable and start service
+      ansible.builtin.systemd.name: "{{ service_name | default('ridgeline') }}"
+      ansible.builtin.systemd.state: started
+      ansible.builtin.systemd.enabled: 'true'
+      ansible.builtin.systemd.daemon_reload: 'false'
+      ansible.builtin.systemd.daemon_reexec: 'false'
+      ansible.builtin.systemd.no_block: 'false'
+      ansible.builtin.systemd.scope: system
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'true'
+    - name: Wait for service to be ready
+      ansible.builtin.wait_for.port: "{{ app_port | default('8000') }}"
+      ansible.builtin.wait_for.host: 127.0.0.1
+      ansible.builtin.wait_for.connect_timeout: '5'
+      ansible.builtin.wait_for.delay: '0'
+      ansible.builtin.wait_for.sleep: '1'
+      ansible.builtin.wait_for.state: started
+      ansible.builtin.wait_for.timeout: '300'
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'false'
+  ansible-setup-postgresql:
+    tasks:
+      template: ansible-playbook.tasks.T0
+  ansible-setup-prometheus:
+    tasks:
+    - name: Download binary
+      ansible.builtin.get_url.url: "{{ download_url | default('https://github.com/ridgeline-data/releases/latest')
+        }}"
+      ansible.builtin.get_url.dest: /tmp/download
+      ansible.builtin.get_url.mode: '0755'
+      ansible.builtin.get_url.backup: 'false'
+      ansible.builtin.get_url.force: 'false'
+      ansible.builtin.get_url.force_basic_auth: 'false'
+      ansible.builtin.get_url.timeout: '10'
+      ansible.builtin.get_url.unsafe_writes: 'false'
+      ansible.builtin.get_url.use_proxy: 'true'
+      ansible.builtin.get_url.validate_certs: 'true'
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'true'
+    - name: Create application user
+      ansible.builtin.user.name: ridgeline
+      ansible.builtin.user.state: present
+      ansible.builtin.user.system: 'false'
+      ansible.builtin.user.create_home: 'true'
+      ansible.builtin.user.append: 'false'
+      ansible.builtin.user.force: 'false'
+      ansible.builtin.user.generate_ssh_key: 'false'
+      ansible.builtin.user.move_home: 'false'
+      ansible.builtin.user.non_unique: 'false'
+      ansible.builtin.user.remove: 'false'
+      ansible.builtin.user.update_password: always
+      ansible.builtin.user.shell: /bin/bash
+      ansible.builtin.user.home: /opt/ridgeline
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'true'
+    - name: Copy configuration files
+      ansible.builtin.copy.src: '{{ item.src }}'
+      ansible.builtin.copy.dest: '{{ item.dest }}'
+      ansible.builtin.copy.owner: root
+      ansible.builtin.copy.group: root
+      ansible.builtin.copy.mode: '0644'
+      ansible.builtin.copy.backup: 'false'
+      ansible.builtin.copy.decrypt: 'true'
+      ansible.builtin.copy.follow: 'false'
+      ansible.builtin.copy.force: 'true'
+      ansible.builtin.copy.remote_src: 'false'
+      ansible.builtin.copy.unsafe_writes: 'false'
+      loop.0.src: files/config.conf
+      loop.0.dest: /etc/ridgeline/config.conf
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'true'
+    - name: Deploy templated configuration
+      ansible.builtin.template.src: '{{ item.src }}'
+      ansible.builtin.template.dest: '{{ item.dest }}'
+      ansible.builtin.template.owner: root
+      ansible.builtin.template.group: root
+      ansible.builtin.template.mode: '0644'
+      ansible.builtin.template.backup: 'false'
+      ansible.builtin.template.follow: 'false'
+      ansible.builtin.template.force: 'true'
+      ansible.builtin.template.lstrip_blocks: 'false'
+      ansible.builtin.template.trim_blocks: 'true'
+      ansible.builtin.template.unsafe_writes: 'false'
+      ansible.builtin.template.output_encoding: utf-8
+      loop.0.src: templates/app.conf.j2
+      loop.0.dest: /etc/ridgeline/app.conf
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'true'
+    - name: Enable and start service
+      ansible.builtin.systemd.name: "{{ service_name | default('ridgeline') }}"
+      ansible.builtin.systemd.state: started
+      ansible.builtin.systemd.enabled: 'true'
+      ansible.builtin.systemd.daemon_reload: 'false'
+      ansible.builtin.systemd.daemon_reexec: 'false'
+      ansible.builtin.systemd.no_block: 'false'
+      ansible.builtin.systemd.scope: system
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'true'
+    - name: Wait for service to be ready
+      ansible.builtin.wait_for.port: "{{ app_port | default('8000') }}"
+      ansible.builtin.wait_for.host: 127.0.0.1
+      ansible.builtin.wait_for.connect_timeout: '5'
+      ansible.builtin.wait_for.delay: '0'
+      ansible.builtin.wait_for.sleep: '1'
+      ansible.builtin.wait_for.state: started
+      ansible.builtin.wait_for.timeout: '300'
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'false'
+  ansible-setup-traefik:
+    tasks:
+    - name: Install packages via apt
+      ansible.builtin.apt.name: '{{ item }}'
+      ansible.builtin.apt.state: present
+      ansible.builtin.apt.update_cache: 'false'
+      ansible.builtin.apt.force: 'false'
+      ansible.builtin.apt.purge: 'false'
+      ansible.builtin.apt.autoremove: 'false'
+      ansible.builtin.apt.autoclean: 'false'
+      ansible.builtin.apt.only_upgrade: 'false'
+      ansible.builtin.apt.force_apt_get: 'false'
+      ansible.builtin.apt.allow_unauthenticated: 'false'
+      ansible.builtin.apt.allow_downgrade: 'false'
+      ansible.builtin.apt.fail_on_autoremove: 'false'
+      ansible.builtin.apt.lock_timeout: '60'
+      ansible.builtin.apt.cache_valid_time: '0'
+      loop: curl,wget
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'true'
+    - name: Copy configuration files
+      ansible.builtin.copy.src: '{{ item.src }}'
+      ansible.builtin.copy.dest: '{{ item.dest }}'
+      ansible.builtin.copy.owner: root
+      ansible.builtin.copy.group: root
+      ansible.builtin.copy.mode: '0644'
+      ansible.builtin.copy.backup: 'false'
+      ansible.builtin.copy.decrypt: 'true'
+      ansible.builtin.copy.follow: 'false'
+      ansible.builtin.copy.force: 'true'
+      ansible.builtin.copy.remote_src: 'false'
+      ansible.builtin.copy.unsafe_writes: 'false'
+      loop.0.src: files/config.conf
+      loop.0.dest: /etc/ridgeline/config.conf
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'true'
+    - name: Deploy templated configuration
+      ansible.builtin.template.src: '{{ item.src }}'
+      ansible.builtin.template.dest: '{{ item.dest }}'
+      ansible.builtin.template.owner: root
+      ansible.builtin.template.group: root
+      ansible.builtin.template.mode: '0644'
+      ansible.builtin.template.backup: 'false'
+      ansible.builtin.template.follow: 'false'
+      ansible.builtin.template.force: 'true'
+      ansible.builtin.template.lstrip_blocks: 'false'
+      ansible.builtin.template.trim_blocks: 'true'
+      ansible.builtin.template.unsafe_writes: 'false'
+      ansible.builtin.template.output_encoding: utf-8
+      loop.0.src: templates/app.conf.j2
+      loop.0.dest: /etc/ridgeline/app.conf
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'true'
+    - name: Enable and start service
+      ansible.builtin.systemd.name: "{{ service_name | default('ridgeline') }}"
+      ansible.builtin.systemd.state: started
+      ansible.builtin.systemd.enabled: 'true'
+      ansible.builtin.systemd.daemon_reload: 'false'
+      ansible.builtin.systemd.daemon_reexec: 'false'
+      ansible.builtin.systemd.no_block: 'false'
+      ansible.builtin.systemd.scope: system
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'true'
+    - name: Wait for service to be ready
+      ansible.builtin.wait_for.port: "{{ app_port | default('8000') }}"
+      ansible.builtin.wait_for.host: 127.0.0.1
+      ansible.builtin.wait_for.connect_timeout: '5'
+      ansible.builtin.wait_for.delay: '0'
+      ansible.builtin.wait_for.sleep: '1'
+      ansible.builtin.wait_for.state: started
+      ansible.builtin.wait_for.timeout: '300'
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'false'
+    - name: Verify service health endpoint
+      ansible.builtin.uri.url: http://localhost:{{ app_port | default('8000') 
+        }}/health
+      ansible.builtin.uri.method: GET
+      ansible.builtin.uri.follow_redirects: safe
+      ansible.builtin.uri.force: 'false'
+      ansible.builtin.uri.force_basic_auth: 'false'
+      ansible.builtin.uri.return_content: 'false'
+      ansible.builtin.uri.timeout: '30'
+      ansible.builtin.uri.use_proxy: 'true'
+      ansible.builtin.uri.validate_certs: 'true'
+      ansible.builtin.uri.status_code: '200'
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'false'
+  ansible-update-packages:
+    tasks:
+    - name: Install packages via apt
+      ansible.builtin.apt.name: '{{ item }}'
+      ansible.builtin.apt.state: present
+      ansible.builtin.apt.update_cache: 'false'
+      ansible.builtin.apt.force: 'false'
+      ansible.builtin.apt.purge: 'false'
+      ansible.builtin.apt.autoremove: 'false'
+      ansible.builtin.apt.autoclean: 'false'
+      ansible.builtin.apt.only_upgrade: 'false'
+      ansible.builtin.apt.force_apt_get: 'false'
+      ansible.builtin.apt.allow_unauthenticated: 'false'
+      ansible.builtin.apt.allow_downgrade: 'false'
+      ansible.builtin.apt.fail_on_autoremove: 'false'
+      ansible.builtin.apt.lock_timeout: '60'
+      ansible.builtin.apt.cache_valid_time: '0'
+      loop: curl,wget
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'true'
+    - name: Enable and start service
+      ansible.builtin.systemd.name: "{{ service_name | default('ridgeline') }}"
+      ansible.builtin.systemd.state: started
+      ansible.builtin.systemd.enabled: 'true'
+      ansible.builtin.systemd.daemon_reload: 'false'
+      ansible.builtin.systemd.daemon_reexec: 'false'
+      ansible.builtin.systemd.no_block: 'false'
+      ansible.builtin.systemd.scope: system
+      ignore_errors: 'false'
+      check_mode: 'false'
+      no_log: 'false'
+      run_once: 'false'
+      become: 'true'
+composite_templates:
+  tasks:
+    ansible-playbook.tasks.T0:
+      elements:
+      - name: Install packages via apt
+        ansible.builtin.apt.name: '{{ item }}'
+        ansible.builtin.apt.state: present
+        ansible.builtin.apt.update_cache: 'false'
+        ansible.builtin.apt.force: 'false'
+        ansible.builtin.apt.purge: 'false'
+        ansible.builtin.apt.autoremove: 'false'
+        ansible.builtin.apt.autoclean: 'false'
+        ansible.builtin.apt.only_upgrade: 'false'
+        ansible.builtin.apt.force_apt_get: 'false'
+        ansible.builtin.apt.allow_unauthenticated: 'false'
+        ansible.builtin.apt.allow_downgrade: 'false'
+        ansible.builtin.apt.fail_on_autoremove: 'false'
+        ansible.builtin.apt.lock_timeout: '60'
+        ansible.builtin.apt.cache_valid_time: '0'
+        loop: curl,wget
+        ignore_errors: 'false'
+        check_mode: 'false'
+        no_log: 'false'
+        run_once: 'false'
+        become: 'true'
+      - name: Copy configuration files
+        ansible.builtin.copy.src: '{{ item.src }}'
+        ansible.builtin.copy.dest: '{{ item.dest }}'
+        ansible.builtin.copy.owner: root
+        ansible.builtin.copy.group: root
+        ansible.builtin.copy.mode: '0644'
+        ansible.builtin.copy.backup: 'false'
+        ansible.builtin.copy.decrypt: 'true'
+        ansible.builtin.copy.follow: 'false'
+        ansible.builtin.copy.force: 'true'
+        ansible.builtin.copy.remote_src: 'false'
+        ansible.builtin.copy.unsafe_writes: 'false'
+        loop.0.src: files/config.conf
+        loop.0.dest: /etc/ridgeline/config.conf
+        ignore_errors: 'false'
+        check_mode: 'false'
+        no_log: 'false'
+        run_once: 'false'
+        become: 'true'
+      - name: Deploy templated configuration
+        ansible.builtin.template.src: '{{ item.src }}'
+        ansible.builtin.template.dest: '{{ item.dest }}'
+        ansible.builtin.template.owner: root
+        ansible.builtin.template.group: root
+        ansible.builtin.template.mode: '0644'
+        ansible.builtin.template.backup: 'false'
+        ansible.builtin.template.follow: 'false'
+        ansible.builtin.template.force: 'true'
+        ansible.builtin.template.lstrip_blocks: 'false'
+        ansible.builtin.template.trim_blocks: 'true'
+        ansible.builtin.template.unsafe_writes: 'false'
+        ansible.builtin.template.output_encoding: utf-8
+        loop.0.src: templates/app.conf.j2
+        loop.0.dest: /etc/ridgeline/app.conf
+        ignore_errors: 'false'
+        check_mode: 'false'
+        no_log: 'false'
+        run_once: 'false'
+        become: 'true'
+      - name: Set file permissions
+        ansible.builtin.file.path: /opt/ridgeline
+        ansible.builtin.file.state: directory
+        ansible.builtin.file.owner: ridgeline
+        ansible.builtin.file.group: ridgeline
+        ansible.builtin.file.mode: '0755'
+        ansible.builtin.file.follow: 'true'
+        ansible.builtin.file.force: 'false'
+        ansible.builtin.file.recurse: 'false'
+        ansible.builtin.file.unsafe_writes: 'false'
+        ignore_errors: 'false'
+        check_mode: 'false'
+        no_log: 'false'
+        run_once: 'false'
+        become: 'true'
+      - name: Enable and start service
+        ansible.builtin.systemd.name: "{{ service_name | default('ridgeline') }}"
+        ansible.builtin.systemd.state: started
+        ansible.builtin.systemd.enabled: 'true'
+        ansible.builtin.systemd.daemon_reload: 'false'
+        ansible.builtin.systemd.daemon_reexec: 'false'
+        ansible.builtin.systemd.no_block: 'false'
+        ansible.builtin.systemd.scope: system
+        ignore_errors: 'false'
+        check_mode: 'false'
+        no_log: 'false'
+        run_once: 'false'
+        become: 'true'
+      - name: Wait for service to be ready
+        ansible.builtin.wait_for.port: "{{ app_port | default('8000') }}"
+        ansible.builtin.wait_for.host: 127.0.0.1
+        ansible.builtin.wait_for.connect_timeout: '5'
+        ansible.builtin.wait_for.delay: '0'
+        ansible.builtin.wait_for.sleep: '1'
+        ansible.builtin.wait_for.state: started
+        ansible.builtin.wait_for.timeout: '300'
+        ignore_errors: 'false'
+        check_mode: 'false'
+        no_log: 'false'
+        run_once: 'false'
+        become: 'false'
+    ansible-playbook.tasks.T1:
+      elements:
+      - name: Install Python dependencies
+        ansible.builtin.pip.requirements: /opt/ridgeline/{{ app_name | 
+          default('app') }}/requirements.txt
+        ansible.builtin.pip.virtualenv: /opt/ridgeline/{{ app_name | 
+          default('app') }}/venv
+        ansible.builtin.pip.state: present
+        ansible.builtin.pip.editable: 'false'
+        ansible.builtin.pip.break_system_packages: 'false'
+        ansible.builtin.pip.virtualenv_site_packages: 'false'
+        ignore_errors: 'false'
+        check_mode: 'false'
+        no_log: 'false'
+        run_once: 'false'
+        become: 'false'
+      - name: Deploy templated configuration
+        ansible.builtin.template.src: '{{ item.src }}'
+        ansible.builtin.template.dest: '{{ item.dest }}'
+        ansible.builtin.template.owner: root
+        ansible.builtin.template.group: root
+        ansible.builtin.template.mode: '0644'
+        ansible.builtin.template.backup: 'false'
+        ansible.builtin.template.follow: 'false'
+        ansible.builtin.template.force: 'true'
+        ansible.builtin.template.lstrip_blocks: 'false'
+        ansible.builtin.template.trim_blocks: 'true'
+        ansible.builtin.template.unsafe_writes: 'false'
+        ansible.builtin.template.output_encoding: utf-8
+        loop.0.src: templates/app.conf.j2
+        loop.0.dest: /etc/ridgeline/app.conf
+        ignore_errors: 'false'
+        check_mode: 'false'
+        no_log: 'false'
+        run_once: 'false'
+        become: 'false'
+      - name: Enable and start service
+        ansible.builtin.systemd.name: "{{ service_name | default('ridgeline') }}"
+        ansible.builtin.systemd.state: started
+        ansible.builtin.systemd.enabled: 'true'
+        ansible.builtin.systemd.daemon_reload: 'false'
+        ansible.builtin.systemd.daemon_reexec: 'false'
+        ansible.builtin.systemd.no_block: 'false'
+        ansible.builtin.systemd.scope: system
+        ignore_errors: 'false'
+        check_mode: 'false'
+        no_log: 'false'
+        run_once: 'false'
+        become: 'false'
+      - name: Wait for service to be ready
+        ansible.builtin.wait_for.port: "{{ app_port | default('8000') }}"
+        ansible.builtin.wait_for.host: 127.0.0.1
+        ansible.builtin.wait_for.connect_timeout: '5'
+        ansible.builtin.wait_for.delay: '0'
+        ansible.builtin.wait_for.sleep: '1'
+        ansible.builtin.wait_for.state: started
+        ansible.builtin.wait_for.timeout: '300'
+        ignore_errors: 'false'
+        check_mode: 'false'
+        no_log: 'false'
+        run_once: 'false'
+        become: 'false'
+      - name: Verify service health endpoint
+        ansible.builtin.uri.url: http://localhost:{{ app_port | default('8000') 
+          }}/health
+        ansible.builtin.uri.method: GET
+        ansible.builtin.uri.follow_redirects: safe
+        ansible.builtin.uri.force: 'false'
+        ansible.builtin.uri.force_basic_auth: 'false'
+        ansible.builtin.uri.return_content: 'false'
+        ansible.builtin.uri.timeout: '30'
+        ansible.builtin.uri.use_proxy: 'true'
+        ansible.builtin.uri.validate_certs: 'true'
+        ansible.builtin.uri.status_code: '200'
+        ignore_errors: 'false'
+        check_mode: 'false'
+        no_log: 'false'
+        run_once: 'false'
+        become: 'false'

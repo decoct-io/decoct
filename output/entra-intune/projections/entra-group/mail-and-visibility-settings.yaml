@@ -1,0 +1,87 @@
+meta:
+  subject: mail-and-visibility-settings
+  description: Configuration related to email and visibility within Outlook and 
+    address lists.
+  source_type: entra-group
+  total_instances: 25
+classes:
+  allowExternalSenders_false_autoSubscribeNewMembers:
+    inherits: base
+    own_attrs:
+      allowExternalSenders: 'false'
+      autoSubscribeNewMembers: 'false'
+      hideFromOutlookClients: 'false'
+    instance_count_inclusive: 22
+subclasses:
+  allowExternalSenders_false_autoSubscribeNewMembers_hideFromAddressLists_false_mai:
+    parent: allowExternalSenders_false_autoSubscribeNewMembers
+    own_attrs:
+      hideFromAddressLists: 'false'
+      mailEnabled: 'false'
+    instance_count: 19
+class_assignments:
+  allowExternalSenders_false_autoSubscribeNewMembers:
+    instances:
+    - DG-All-Corp-Android
+    - DG-All-Corp-Windows
+    - DG-All-Corp-iOS
+    - DG-All-Corp-macOS
+    - DG-All-Licensed-Users
+    - DG-Dept-Engineering
+    - DG-Dept-Sales
+    - DG-Remote-Workers
+    - M365-Project-Alpha
+    - M365-Project-Beta
+    - RAG-Compliance-Admin-Role
+    - RAG-Global-Admin-Role
+    - RAG-Security-Admin-Role
+    - SG-Compliance-Officers
+    - SG-Engineering
+    - SG-External-Contractors
+    - SG-Finance-Users
+    - SG-HR-Users
+    - SG-Helpdesk-Staff
+    - SG-IT-Admins
+    - SG-Marketing-Users
+    - SG-Security-Team
+  _base_only:
+    instances:
+    - M365-AllCompany-Comms
+    - M365-Leadership-Team
+    - SG-Executive-Team
+subclass_assignments:
+  allowExternalSenders_false_autoSubscribeNewMembers_hideFromAddressLists_false_mai:
+    parent: allowExternalSenders_false_autoSubscribeNewMembers
+    instances:
+    - DG-All-Corp-Android
+    - DG-All-Corp-Windows
+    - DG-All-Corp-iOS
+    - DG-All-Corp-macOS
+    - DG-All-Licensed-Users
+    - DG-Dept-Engineering
+    - DG-Dept-Sales
+    - DG-Remote-Workers
+    - RAG-Compliance-Admin-Role
+    - RAG-Global-Admin-Role
+    - RAG-Security-Admin-Role
+    - SG-Compliance-Officers
+    - SG-Engineering
+    - SG-Finance-Users
+    - SG-HR-Users
+    - SG-Helpdesk-Staff
+    - SG-IT-Admins
+    - SG-Marketing-Users
+    - SG-Security-Team
+instance_attrs:
+  M365-AllCompany-Comms:
+    mail: m365-allcompany-comms@contoso.com
+    proxyAddresses: SMTP:m365-allcompany-comms@contoso.com
+  M365-Leadership-Team:
+    mail: m365-leadership-team@contoso.com
+    proxyAddresses: SMTP:m365-leadership-team@contoso.com
+  M365-Project-Alpha:
+    mail: m365-project-alpha@contoso.com
+    proxyAddresses: SMTP:m365-project-alpha@contoso.com
+  M365-Project-Beta:
+    mail: m365-project-beta@contoso.com
+    proxyAddresses: SMTP:m365-project-beta@contoso.com

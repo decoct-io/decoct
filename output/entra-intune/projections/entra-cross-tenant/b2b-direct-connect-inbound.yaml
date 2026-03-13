@@ -1,0 +1,33 @@
+meta:
+  subject: b2b-direct-connect-inbound
+  description: Inbound B2B Direct Connect access configurations for applications
+    and users, including varying access types.
+  source_type: entra-cross-tenant
+  total_instances: 3
+base_class:
+  b2bDirectConnectInbound.applications.targets:
+  - target: AllApplications
+    targetType: application
+  b2bDirectConnectInbound.usersAndGroups.targets:
+  - target: AllUsers
+    targetType: user
+class_assignments:
+  _base_only:
+    instances:
+    - CTA-Default-Settings
+    - CTA-Partner-Contoso
+    - CTA-Partner-Fabrikam
+instance_data:
+  schema:
+  - b2bDirectConnectInbound.applications.accessType
+  - b2bDirectConnectInbound.usersAndGroups.accessType
+  records:
+    CTA-Default-Settings:
+    - blocked
+    - blocked
+    CTA-Partner-Contoso:
+    - allowed
+    - allowed
+    CTA-Partner-Fabrikam:
+    - blocked
+    - blocked

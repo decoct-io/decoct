@@ -1,0 +1,59 @@
+meta:
+  subject: package-dev-dependencies
+  description: Lists development dependencies for the package.
+  source_type: package-json
+  total_instances: 4
+class_assignments:
+  _base_only:
+    instances:
+    - package-json-admin-panel
+    - package-json-notification-svc
+    - package-json-search-svc
+    - package-json-web-app
+instance_attrs:
+  package-json-admin-panel:
+    devDependencies:
+      typescript:
+        _value: ^5.3.3
+      '@types/react':
+        _value: ^18.2.47
+      eslint:
+        _value: ^8.56.0
+      jest:
+        _value: ^29.7.0
+  package-json-notification-svc:
+    devDependencies:
+      typescript:
+        _value: ^5.3.3
+      '@types/express':
+        _value: ^4.17.21
+      '@types/nodemailer':
+        _value: ^6.4.14
+      jest:
+        _value: ^29.7.0
+      ts-node:
+        _value: ^10.9.2
+  package-json-search-svc:
+    devDependencies:
+      typescript:
+        _value: ^5.3.3
+      '@types/node':
+        _value: ^20.11.0
+      jest:
+        _value: ^29.7.0
+      ts-node:
+        _value: ^10.9.2
+  package-json-web-app:
+    devDependencies:
+      typescript:
+        _value: ^5.3.3
+      '@types/react':
+        _value: ^18.2.47
+      '@types/node':
+        _value: ^20.11.0
+      eslint:
+        _value: ^8.56.0
+      jest:
+        _value: ^29.7.0
+      '@testing-library/react':
+        _value: ^14.1.2

@@ -1,0 +1,147 @@
+meta:
+  subject: aaa-security
+  description: Authentication, Authorization, and Accounting (AAA) and SSH 
+    settings.
+  source_type: iosxr-access-pe
+  total_instances: 60
+base_class:
+  aaa.accounting.commands: 15 default start-stop group tacacs+
+  aaa.accounting.exec: default start-stop group tacacs+
+  aaa.authentication: login default group tacacs+ local
+  aaa.authorization.commands: 15 default group tacacs+ local
+  aaa.authorization.exec: default group tacacs+ local
+  ssh.server.logging: 'true'
+  ssh.server.rate-limit: '60'
+  ssh.server.v2: 'true'
+  ssh.timeout: '30'
+  tacacs-server: host T4c4csK3y!2024 port 49
+class_assignments:
+  _base_only:
+    instances:
+    - APE-R1-01..APE-R1-20
+    - APE-R2-01..APE-R2-20
+    - APE-R3-01..APE-R3-20
+instance_data:
+  schema:
+  - hostname
+  records:
+    APE-R1-01:
+    - APE-R1-01
+    APE-R1-02:
+    - APE-R1-02
+    APE-R1-03:
+    - APE-R1-03
+    APE-R1-04:
+    - APE-R1-04
+    APE-R1-05:
+    - APE-R1-05
+    APE-R1-06:
+    - APE-R1-06
+    APE-R1-07:
+    - APE-R1-07
+    APE-R1-08:
+    - APE-R1-08
+    APE-R1-09:
+    - APE-R1-09
+    APE-R1-10:
+    - APE-R1-10
+    APE-R1-11:
+    - APE-R1-11
+    APE-R1-12:
+    - APE-R1-12
+    APE-R1-13:
+    - APE-R1-13
+    APE-R1-14:
+    - APE-R1-14
+    APE-R1-15:
+    - APE-R1-15
+    APE-R1-16:
+    - APE-R1-16
+    APE-R1-17:
+    - APE-R1-17
+    APE-R1-18:
+    - APE-R1-18
+    APE-R1-19:
+    - APE-R1-19
+    APE-R1-20:
+    - APE-R1-20
+    APE-R2-01:
+    - APE-R2-01
+    APE-R2-02:
+    - APE-R2-02
+    APE-R2-03:
+    - APE-R2-03
+    APE-R2-04:
+    - APE-R2-04
+    APE-R2-05:
+    - APE-R2-05
+    APE-R2-06:
+    - APE-R2-06
+    APE-R2-07:
+    - APE-R2-07
+    APE-R2-08:
+    - APE-R2-08
+    APE-R2-09:
+    - APE-R2-09
+    APE-R2-10:
+    - APE-R2-10
+    APE-R2-11:
+    - APE-R2-11
+    APE-R2-12:
+    - APE-R2-12
+    APE-R2-13:
+    - APE-R2-13
+    APE-R2-14:
+    - APE-R2-14
+    APE-R2-15:
+    - APE-R2-15
+    APE-R2-16:
+    - APE-R2-16
+    APE-R2-17:
+    - APE-R2-17
+    APE-R2-18:
+    - APE-R2-18
+    APE-R2-19:
+    - APE-R2-19
+    APE-R2-20:
+    - APE-R2-20
+    APE-R3-01:
+    - APE-R3-01
+    APE-R3-02:
+    - APE-R3-02
+    APE-R3-03:
+    - APE-R3-03
+    APE-R3-04:
+    - APE-R3-04
+    APE-R3-05:
+    - APE-R3-05
+    APE-R3-06:
+    - APE-R3-06
+    APE-R3-07:
+    - APE-R3-07
+    APE-R3-08:
+    - APE-R3-08
+    APE-R3-09:
+    - APE-R3-09
+    APE-R3-10:
+    - APE-R3-10
+    APE-R3-11:
+    - APE-R3-11
+    APE-R3-12:
+    - APE-R3-12
+    APE-R3-13:
+    - APE-R3-13
+    APE-R3-14:
+    - APE-R3-14
+    APE-R3-15:
+    - APE-R3-15
+    APE-R3-16:
+    - APE-R3-16
+    APE-R3-17:
+    - APE-R3-17
+    APE-R3-18:
+    - APE-R3-18
+    APE-R3-19:
+    - APE-R3-19
+    APE-R3-20:
+    - APE-R3-20

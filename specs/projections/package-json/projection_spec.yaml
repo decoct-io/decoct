@@ -1,0 +1,72 @@
+version: 1
+source_type: package-json
+generated_by: decoct-infer
+subjects:
+- name: package-identity
+  description: Core identification and versioning details of the package.
+  include_paths:
+  - name
+  - description
+  - version
+  - private
+  - license
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the names and versions of all packages?
+  - Which packages are marked as private?
+  - What are the descriptions for each package?
+- name: package-entrypoints
+  description: Defines the main entry point for the package.
+  include_paths:
+  - main
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the main entry points for each package?
+  - Are there any packages without a defined main file?
+- name: package-engines
+  description: Specifies the compatible Node.js engine versions.
+  include_paths:
+  - engines.node
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What Node.js versions are required for each package?
+  - Which packages require a specific engine version?
+- name: package-dependencies
+  description: Lists runtime dependencies required by the package.
+  include_paths:
+  - dependencies.**
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the runtime dependencies for each package?
+  - Which packages depend on 'express'?
+  - What versions of 'lodash' are used across all packages?
+- name: package-dev-dependencies
+  description: Lists development dependencies for the package.
+  include_paths:
+  - devDependencies.**
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the development dependencies for each package?
+  - Which packages use 'jest' for testing?
+  - Compare the 'eslint' versions used in development.
+- name: package-scripts
+  description: Contains common scripts for the package lifecycle.
+  include_paths:
+  - scripts.**
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What build scripts are defined in each package?
+  - Are there any 'start' scripts that differ across packages?
+  - List all test commands used in the packages.

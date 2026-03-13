@@ -1,0 +1,102 @@
+meta:
+  subject: device-identity-and-location
+  description: Core identification and physical location attributes of the 
+    device.
+  source_type: iosxr-services-pe
+  total_instances: 8
+class_assignments:
+  _base_only:
+    instances:
+    - SVC-PE-01..SVC-PE-08
+instance_data:
+  schema:
+  - hostname
+  - interface.Loopback0.description
+  - interface.Loopback1.description
+  - interface.Loopback2.description
+  - interface.Loopback3.description
+  - interface.MgmtEth0/RP0/CPU0/0.description
+  - interface.TenGigE0/0/0/0.description
+  - interface.TenGigE0/0/0/1.description
+  - snmp-server.location
+  records:
+    SVC-PE-01:
+    - SVC-PE-01
+    - SVC-PE-01 Router-ID
+    - VRF-ENTERPRISE-A-LOOPBACK
+    - VRF-ENTERPRISE-B-LOOPBACK
+    - VRF-CLOUD-GW-LOOPBACK
+    - MGMT-SVC-PE-01
+    - TO-P-CORE-01
+    - TO-P-CORE-02
+    - SVC-PE-01-RACK
+    SVC-PE-02:
+    - SVC-PE-02
+    - SVC-PE-02 Router-ID
+    - VRF-ENTERPRISE-A-LOOPBACK
+    - VRF-ENTERPRISE-C-LOOPBACK
+    - VRF-CLOUD-GW-LOOPBACK
+    - MGMT-SVC-PE-02
+    - TO-P-CORE-01
+    - TO-P-CORE-02
+    - SVC-PE-02-RACK
+    SVC-PE-03:
+    - SVC-PE-03
+    - SVC-PE-03 Router-ID
+    - VRF-CDN-LOOPBACK
+    - VRF-CLOUD-AWS-LOOPBACK
+    - VRF-MGMT-LOOPBACK
+    - MGMT-SVC-PE-03
+    - TO-P-CORE-03
+    - TO-P-CORE-04
+    - SVC-PE-03-RACK
+    SVC-PE-04:
+    - SVC-PE-04
+    - SVC-PE-04 Router-ID
+    - VRF-CDN-LOOPBACK
+    - VRF-CLOUD-AZURE-LOOPBACK
+    - VRF-MGMT-LOOPBACK
+    - MGMT-SVC-PE-04
+    - TO-P-CORE-03
+    - TO-P-CORE-04
+    - SVC-PE-04-RACK
+    SVC-PE-05:
+    - SVC-PE-05
+    - SVC-PE-05 Router-ID
+    - VRF-IX-1-LOOPBACK
+    - VRF-IX-2-LOOPBACK
+    - VRF-ENTERPRISE-D-LOOPBACK
+    - MGMT-SVC-PE-05
+    - TO-P-CORE-05
+    - TO-P-CORE-06
+    - SVC-PE-05-RACK
+    SVC-PE-06:
+    - SVC-PE-06
+    - SVC-PE-06 Router-ID
+    - VRF-IX-1-LOOPBACK
+    - VRF-TRANSIT-LOOPBACK
+    - VRF-ENTERPRISE-E-LOOPBACK
+    - MGMT-SVC-PE-06
+    - TO-P-CORE-05
+    - TO-P-CORE-06
+    - SVC-PE-06-RACK
+    SVC-PE-07:
+    - SVC-PE-07
+    - SVC-PE-07 Router-ID
+    - VRF-MOBILE-CORE-LOOPBACK
+    - VRF-MOBILE-RAN-LOOPBACK
+    - VRF-ENTERPRISE-F-LOOPBACK
+    - MGMT-SVC-PE-07
+    - TO-P-CORE-01
+    - TO-P-CORE-05
+    - SVC-PE-07-RACK
+    SVC-PE-08:
+    - SVC-PE-08
+    - SVC-PE-08 Router-ID
+    - VRF-MOBILE-CORE-LOOPBACK
+    - VRF-DC-INTER-LOOPBACK
+    - VRF-ENTERPRISE-G-LOOPBACK
+    - MGMT-SVC-PE-08
+    - TO-P-CORE-02
+    - TO-P-CORE-06
+    - SVC-PE-08-RACK

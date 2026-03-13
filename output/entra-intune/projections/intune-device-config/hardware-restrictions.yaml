@@ -1,0 +1,68 @@
+meta:
+  subject: hardware-restrictions
+  description: Hardware feature restrictions including Bluetooth, camera, NFC, 
+    and storage
+  source_type: intune-device-config
+  total_instances: 8
+base_class:
+  storageBlockGoogleBackup: 'false'
+  storageBlockRemovableStorage: 'false'
+  storageRequireRemovableStorageEncryption: 'false'
+class_assignments:
+  _base_only:
+    instances:
+    - DC-Android-BYOD
+    - DC-Android-Contractor
+    - DC-Android-Corporate-Lockdown
+    - DC-Android-Executive
+    - DC-Android-Field-Workers
+    - DC-Android-Kiosk
+    - DC-Android-Lab-Devices
+    - DC-Android-Standard
+instance_data:
+  schema:
+  - bluetoothBlocked
+  - cameraBlocked
+  - nfcBlocked
+  - storageRequireDeviceEncryption
+  records:
+    DC-Android-BYOD:
+    - 'false'
+    - 'false'
+    - 'false'
+    - 'false'
+    DC-Android-Contractor:
+    - 'false'
+    - 'false'
+    - 'false'
+    - 'false'
+    DC-Android-Corporate-Lockdown:
+    - 'true'
+    - 'true'
+    - 'true'
+    - 'true'
+    DC-Android-Executive:
+    - 'false'
+    - 'true'
+    - 'false'
+    - 'true'
+    DC-Android-Field-Workers:
+    - 'false'
+    - 'false'
+    - 'false'
+    - 'true'
+    DC-Android-Kiosk:
+    - 'true'
+    - 'true'
+    - 'true'
+    - 'true'
+    DC-Android-Lab-Devices:
+    - 'false'
+    - 'false'
+    - 'false'
+    - 'false'
+    DC-Android-Standard:
+    - 'false'
+    - 'false'
+    - 'false'
+    - 'false'

@@ -1,0 +1,66 @@
+meta:
+  subject: volumes
+  description: Volume definitions and volume mounts for persistent storage
+  source_type: docker-compose
+  total_instances: 16
+classes:
+  volumes_docker_compose_volumes_T0:
+    inherits: base
+    own_attrs:
+      volumes: docker-compose.volumes.T0
+    instance_count_inclusive: 6
+class_assignments:
+  volumes_docker_compose_volumes_T0:
+    instances:
+    - compose-dev
+    - compose-edge-prod
+    - compose-monitoring-prod
+    - compose-search-prod
+    - compose-staging
+    - compose-worker-prod
+  _base_only:
+    instances:
+    - compose-app-prod-01..compose-app-prod-03
+    - compose-billing-prod
+    - compose-ci
+    - compose-cron-prod
+    - compose-dr
+    - compose-load-test
+    - compose-notification-prod
+    - compose-report-prod
+b_composite_deltas:
+  compose-dev:
+    volumes:
+      delta:
+        pg-dev-data: {}
+        maria-dev-data: {}
+  compose-edge-prod:
+    volumes:
+      delta:
+        acme-data: {}
+        docs-html: {}
+  compose-monitoring-prod:
+    volumes:
+      delta:
+        prom-data: {}
+        grafana-data: {}
+  compose-search-prod:
+    volumes:
+      delta:
+        search-data: {}
+        es-data: {}
+  compose-staging:
+    volumes:
+      delta:
+        pg-staging-data: {}
+        maria-staging-data: {}
+  compose-worker-prod:
+    volumes:
+      delta:
+        worker-data: {}
+        redis-worker-data: {}
+composite_templates:
+  volumes:
+    docker-compose.volumes.T0:
+      elements:
+        external: 'false'

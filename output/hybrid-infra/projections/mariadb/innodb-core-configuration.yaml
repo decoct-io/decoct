@@ -1,0 +1,67 @@
+meta:
+  subject: innodb-core-configuration
+  description: Core InnoDB engine settings, including buffer pool size, 
+    transaction commit behavior, and file-per-table.
+  source_type: mariadb
+  total_instances: 5
+base_class:
+  mysqld.innodb_adaptive_hash_index: 'true'
+  mysqld.innodb_autoinc_lock_mode: '2'
+  mysqld.innodb_doublewrite: 'true'
+  mysqld.innodb_file_per_table: 'true'
+  mysqld.innodb_flush_neighbors: '0'
+  mysqld.innodb_lock_wait_timeout: '50'
+  mysqld.innodb_online_alter_log_max_size: '134217728'
+  mysqld.innodb_open_files: '4000'
+  mysqld.innodb_purge_threads: '4'
+  mysqld.innodb_sort_buffer_size: '1048576'
+  mysqld.innodb_stats_on_metadata: 'false'
+  mysqld.innodb_stats_persistent: 'true'
+  mysqld.innodb_strict_mode: 'true'
+  mysqld.innodb_thread_concurrency: '0'
+classes:
+  innodb_flush_log_at_trx_commit_1_innodb_log_buffer:
+    inherits: base
+    own_attrs:
+      mysqld.innodb_flush_log_at_trx_commit: '1'
+      mysqld.innodb_log_buffer_size: '16777216'
+      mysqld.innodb_max_dirty_pages_pct: '90'
+    instance_count_inclusive: 4
+subclasses:
+  innodb_flush_log_at_trx_commit_1_innodb_log_buffer_innodb_change_buffering_all_ma:
+    parent: innodb_flush_log_at_trx_commit_1_innodb_log_buffer
+    own_attrs:
+      mysqld.innodb_change_buffering: all
+    instance_count: 4
+class_assignments:
+  innodb_flush_log_at_trx_commit_1_innodb_log_buffer:
+    instances:
+    - maria-dev
+    - maria-legacy-billing
+    - maria-legacy-main
+    - maria-staging
+  _base_only:
+    instances:
+    - maria-galera-node
+subclass_assignments:
+  innodb_flush_log_at_trx_commit_1_innodb_log_buffer_innodb_change_buffering_all_ma:
+    parent: innodb_flush_log_at_trx_commit_1_innodb_log_buffer
+    instances:
+    - maria-dev
+    - maria-legacy-billing
+    - maria-legacy-main
+    - maria-staging
+instance_data:
+  schema:
+  - mysqld.innodb_buffer_pool_size
+  records:
+    maria-dev:
+    - 256M
+    maria-galera-node:
+    - 2G
+    maria-legacy-billing:
+    - 1G
+    maria-legacy-main:
+    - 256M
+    maria-staging:
+    - 512M

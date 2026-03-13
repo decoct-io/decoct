@@ -1,7 +1,6 @@
 meta:
   subject: service-deployment-strategy
-  description: Deployment and update specific configurations for Docker Compose 
-    services.
+  description: Deployment and restart policies for services.
   source_type: docker-compose
   total_instances: 16
 class_assignments:

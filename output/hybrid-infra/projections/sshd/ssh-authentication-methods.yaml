@@ -1,0 +1,35 @@
+meta:
+  subject: ssh-authentication-methods
+  description: Configuration for permitted authentication methods.
+  source_type: sshd
+  total_instances: 4
+base_class:
+  HostbasedAuthentication: 'false'
+  KerberosAuthentication: 'false'
+  PermitEmptyPasswords: 'false'
+  PubkeyAuthentication: 'true'
+  StrictModes: 'true'
+class_assignments:
+  _base_only:
+    instances:
+    - sshd-bastion
+    - sshd-dev
+    - sshd-prod
+    - sshd-staging
+instance_data:
+  schema:
+  - KbdInteractiveAuthentication
+  - PasswordAuthentication
+  records:
+    sshd-bastion:
+    - 'false'
+    - 'false'
+    sshd-dev:
+    - 'true'
+    - 'true'
+    sshd-prod:
+    - 'false'
+    - 'false'
+    sshd-staging:
+    - 'true'
+    - 'true'

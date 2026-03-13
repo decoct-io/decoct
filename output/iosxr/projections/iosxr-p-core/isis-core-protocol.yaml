@@ -1,0 +1,40 @@
+meta:
+  subject: isis-core-protocol
+  description: Global ISIS configuration parameters for the CORE instance.
+  source_type: iosxr-p-core
+  total_instances: 6
+base_class:
+  router.isis.CORE.address-family.ipv4-unicast.metric-style: wide
+  router.isis.CORE.address-family.ipv4-unicast.mpls.traffic-eng.level-2-only: 'true'
+  router.isis.CORE.address-family.ipv4-unicast.mpls.traffic-eng.router-id: 
+    Loopback0
+  router.isis.CORE.address-family.ipv4-unicast.router-id: Loopback0
+  router.isis.CORE.address-family.ipv4-unicast.segment-routing: mpls sr-prefer
+  router.isis.CORE.address-family.ipv6-unicast.metric-style: wide
+  router.isis.CORE.address-family.ipv6-unicast.segment-routing: mpls sr-prefer
+  router.isis.CORE.is-type: level-2-only
+  router.isis.CORE.log: adjacency changes
+  router.isis.CORE.lsp-lifetime: '1200'
+  router.isis.CORE.lsp-mtu: '1497'
+  router.isis.CORE.lsp-refresh-interval: '900'
+  router.isis.CORE.set-overload-bit: on-startup 600
+class_assignments:
+  _base_only:
+    instances:
+    - P-CORE-01..P-CORE-06
+instance_data:
+  schema:
+  - hostname
+  records:
+    P-CORE-01:
+    - P-CORE-01
+    P-CORE-02:
+    - P-CORE-02
+    P-CORE-03:
+    - P-CORE-03
+    P-CORE-04:
+    - P-CORE-04
+    P-CORE-05:
+    - P-CORE-05
+    P-CORE-06:
+    - P-CORE-06

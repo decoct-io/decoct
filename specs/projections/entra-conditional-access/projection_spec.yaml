@@ -1,0 +1,99 @@
+version: 1
+source_type: entra-conditional-access
+generated_by: decoct-infer
+subjects:
+- name: identity-and-metadata
+  description: Core identification and metadata for conditional access policies.
+  include_paths:
+  - _uuid
+  - displayName
+  - _metadata.clientSecret
+  - _metadata.policyVersion
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What are the display names and UUIDs for all conditional access policies?
+  - Which policies have specific client secrets or policy versions configured?
+  - How do the policy versions compare across different policies?
+- name: application-conditions
+  description: Conditions related to which applications a conditional access 
+    policy applies to.
+  include_paths:
+  - conditions.applications.includeApplications
+  - conditions.applications.excludeApplications
+  - conditions.clientAppTypes
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which conditional access policies include or exclude specific applications?
+  - What client application types are targeted by each policy?
+  - Are there any policies that apply to all applications but exclude certain 
+    types?
+- name: user-conditions
+  description: Conditions related to which users or groups a conditional access 
+    policy applies to.
+  include_paths:
+  - conditions.users.includeUsers
+  - conditions.users.excludeGroups
+  - conditions.users.excludeUsers
+  - conditions.users.includeGroups
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which policies apply to all users versus specific groups?
+  - Are there any policies that exclude certain users or groups?
+  - How do user inclusion/exclusion settings vary across different policies?
+- name: location-and-risk-conditions
+  description: Conditions based on user location and sign-in/user risk levels.
+  include_paths:
+  - conditions.locations.includeLocations
+  - conditions.platforms.includePlatforms
+  - conditions.signInRiskLevels
+  - conditions.userRiskLevels
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which policies are enforced based on specific geographic locations or 
+    platforms?
+  - How are policies configured to respond to different sign-in or user risk 
+    levels?
+  - Are there policies that include specific locations and platforms?
+- name: grant-controls-and-state
+  description: Defines the access controls applied when conditions are met and 
+    the policy state.
+  include_paths:
+  - grantControls.builtInControls
+  - grantControls.operator
+  - state
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - What built-in controls (e.g., MFA, block) are enforced by each policy?
+  - Are the grant controls applied with an 'AND' or 'OR' operator?
+  - Which conditional access policies are currently enabled or in report-only 
+    mode?
+- name: session-controls
+  description: Granular controls over user sessions, including persistent 
+    browser and sign-in frequency.
+  include_paths:
+  - sessionControls.disableResilienceDefaults
+  - sessionControls.persistentBrowser.isEnabled
+  - sessionControls.persistentBrowser.mode
+  - sessionControls.signInFrequency.authenticationType
+  - sessionControls.signInFrequency.frequencyInterval
+  - sessionControls.signInFrequency.isEnabled
+  - sessionControls.signInFrequency.type
+  - sessionControls.signInFrequency.value
+  related_paths:
+  - path: hostname
+    reason: Device identity
+  example_questions:
+  - Which policies utilize persistent browser settings and what are their modes?
+  - What are the sign-in frequency requirements across different policies?
+  - Are there differences in how resilience defaults are handled by various 
+    policies?

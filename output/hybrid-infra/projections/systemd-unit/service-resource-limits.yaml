@@ -1,0 +1,43 @@
+meta:
+  subject: service-resource-limits
+  description: Resource limitations and user/group settings for service units.
+  source_type: systemd-unit
+  total_instances: 10
+classes:
+  wantedby_multi_user_target_environment__REDACTED:
+    inherits: base
+    own_attrs:
+      Service.limitnofile: '65535'
+    instance_count_inclusive: 7
+subclasses:
+  wantedby_multi_user_target_environment__REDACTED_group_ridgeline_limitnproc_409:
+    parent: wantedby_multi_user_target_environment__REDACTED
+    own_attrs:
+      Service.group: ridgeline
+      Service.limitnproc: '4096'
+      Service.user: ridgeline
+    instance_count: 5
+class_assignments:
+  wantedby_multi_user_target_environment__REDACTED:
+    instances:
+    - systemd-analytics-worker
+    - systemd-auth-service
+    - systemd-backup-svc
+    - systemd-billing-api
+    - systemd-core-api
+    - systemd-legacy-dashboard
+    - systemd-report-gen-svc
+  _base_only:
+    instances:
+    - systemd-backup-timer
+    - systemd-report-gen-timer
+    - systemd-web-app
+subclass_assignments:
+  wantedby_multi_user_target_environment__REDACTED_group_ridgeline_limitnproc_409:
+    parent: wantedby_multi_user_target_environment__REDACTED
+    instances:
+    - systemd-auth-service
+    - systemd-billing-api
+    - systemd-core-api
+    - systemd-legacy-dashboard
+    - systemd-report-gen-svc

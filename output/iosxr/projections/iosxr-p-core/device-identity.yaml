@@ -1,0 +1,43 @@
+meta:
+  subject: device-identity
+  description: Core identification and location details.
+  source_type: iosxr-p-core
+  total_instances: 6
+base_class:
+  domain.lookup: disable
+  domain.name: lab.example.com
+  snmp-server.contact: noc@example.com
+class_assignments:
+  _base_only:
+    instances:
+    - P-CORE-01..P-CORE-06
+instance_data:
+  schema:
+  - hostname
+  - router.isis.CORE.net
+  - snmp-server.location
+  records:
+    P-CORE-01:
+    - P-CORE-01
+    - 49.0001.0100.0000.0001.00
+    - P-CORE-01-RACK
+    P-CORE-02:
+    - P-CORE-02
+    - 49.0001.0100.0000.0002.00
+    - P-CORE-02-RACK
+    P-CORE-03:
+    - P-CORE-03
+    - 49.0001.0100.0000.0003.00
+    - P-CORE-03-RACK
+    P-CORE-04:
+    - P-CORE-04
+    - 49.0001.0100.0000.0004.00
+    - P-CORE-04-RACK
+    P-CORE-05:
+    - P-CORE-05
+    - 49.0001.0100.0000.0005.00
+    - P-CORE-05-RACK
+    P-CORE-06:
+    - P-CORE-06
+    - 49.0001.0100.0000.0006.00
+    - P-CORE-06-RACK

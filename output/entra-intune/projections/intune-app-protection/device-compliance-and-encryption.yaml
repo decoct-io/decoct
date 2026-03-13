@@ -1,0 +1,15 @@
+meta:
+  subject: device-compliance-and-encryption
+  description: Settings for device compliance, app encryption, and screen 
+    capture.
+  source_type: intune-app-protection
+  total_instances: 4
+base_class:
+  deviceComplianceRequired: 'true'
+class_assignments:
+  _base_only:
+    instances:
+    - AP-Android-Standard
+    - AP-Android-Strict
+    - AP-iOS-Standard
+    - AP-iOS-Strict

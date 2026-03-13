@@ -1,0 +1,24 @@
+meta:
+  subject: logging-setup
+  description: Configuration for application logging.
+  source_type: app-config-json
+  total_instances: 3
+base_class:
+  logging.format: json
+  logging.output: stdout
+class_assignments:
+  _base_only:
+    instances:
+    - app-config-auth-jwt
+    - app-config-billing
+    - app-config-search
+instance_data:
+  schema:
+  - logging.level
+  records:
+    app-config-auth-jwt:
+    - info
+    app-config-billing:
+    - info
+    app-config-search:
+    - warning

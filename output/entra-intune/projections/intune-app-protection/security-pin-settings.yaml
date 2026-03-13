@@ -1,0 +1,39 @@
+meta:
+  subject: security-pin-settings
+  description: Configuration related to PIN requirements and behavior for app 
+    access.
+  source_type: intune-app-protection
+  total_instances: 4
+base_class:
+  disableAppPinIfDevicePinIsSet: 'false'
+  periodBeforePinReset: PT0S
+  pinRequired: 'true'
+class_assignments:
+  _base_only:
+    instances:
+    - AP-Android-Standard
+    - AP-Android-Strict
+    - AP-iOS-Standard
+    - AP-iOS-Strict
+instance_data:
+  schema:
+  - fingerprintBlocked
+  - minimumPinLength
+  - simplePinBlocked
+  records:
+    AP-Android-Standard:
+    - 'false'
+    - '4'
+    - 'false'
+    AP-Android-Strict:
+    - 'true'
+    - '6'
+    - 'true'
+    AP-iOS-Standard:
+    - 'false'
+    - '4'
+    - 'false'
+    AP-iOS-Strict:
+    - 'true'
+    - '6'
+    - 'true'

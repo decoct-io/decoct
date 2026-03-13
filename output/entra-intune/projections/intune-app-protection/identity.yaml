@@ -1,0 +1,38 @@
+meta:
+  subject: identity
+  description: App protection policy identity including display name and 
+    description
+  source_type: intune-app-protection
+  total_instances: 4
+base_class:
+  roleScopeTagIds: '0'
+  version: '1'
+class_assignments:
+  _base_only:
+    instances:
+    - AP-Android-Standard
+    - AP-Android-Strict
+    - AP-iOS-Standard
+    - AP-iOS-Strict
+instance_data:
+  schema:
+  - _uuid
+  - description
+  - displayName
+  records:
+    AP-Android-Standard:
+    - b70e00b6-bfc8-5a4d-8fba-e33bfaa2a156
+    - Standard Android app protection policy
+    - AP-Android-Standard
+    AP-Android-Strict:
+    - 38de7010-ac82-52ab-9f6e-43c47208dab8
+    - Strict Android app protection with all restrictions
+    - AP-Android-Strict
+    AP-iOS-Standard:
+    - 20907902-749d-53dd-b5ad-e5f0e65130f5
+    - Standard iOS app protection policy
+    - AP-iOS-Standard
+    AP-iOS-Strict:
+    - f76d23c9-e4e4-5a7c-9822-5f7d468a90ec
+    - Strict iOS app protection with all restrictions
+    - AP-iOS-Strict

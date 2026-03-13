@@ -1,0 +1,142 @@
+meta:
+  subject: interface-addressing
+  description: IP address configurations for various interfaces, including VRF 
+    assignments.
+  source_type: iosxr-services-pe
+  total_instances: 8
+base_class:
+  interface.Loopback0.shutdown: 'false'
+  interface.Loopback1.shutdown: 'false'
+  interface.Loopback2.shutdown: 'false'
+  interface.Loopback3.shutdown: 'false'
+  interface.MgmtEth0/RP0/CPU0/0.shutdown: 'false'
+  interface.TenGigE0/0/0/0.arp: timeout 14400
+  interface.TenGigE0/0/0/0.bandwidth: '100000'
+  interface.TenGigE0/0/0/0.carrier-delay.down: '0'
+  interface.TenGigE0/0/0/0.carrier-delay.up: '0'
+  interface.TenGigE0/0/0/0.cdp: 'true'
+  interface.TenGigE0/0/0/0.load-interval: '300'
+  interface.TenGigE0/0/0/0.mtu: '9216'
+  interface.TenGigE0/0/0/0.shutdown: 'false'
+  interface.TenGigE0/0/0/1.arp: timeout 14400
+  interface.TenGigE0/0/0/1.bandwidth: '100000'
+  interface.TenGigE0/0/0/1.carrier-delay.down: '0'
+  interface.TenGigE0/0/0/1.carrier-delay.up: '0'
+  interface.TenGigE0/0/0/1.cdp: 'true'
+  interface.TenGigE0/0/0/1.load-interval: '300'
+  interface.TenGigE0/0/0/1.mtu: '9216'
+  interface.TenGigE0/0/0/1.shutdown: 'false'
+class_assignments:
+  _base_only:
+    instances:
+    - SVC-PE-01..SVC-PE-08
+instance_data:
+  schema:
+  - hostname
+  - interface.Loopback0.ipv4
+  - interface.Loopback1.ipv4
+  - interface.Loopback1.vrf
+  - interface.Loopback2.ipv4
+  - interface.Loopback2.vrf
+  - interface.Loopback3.ipv4
+  - interface.Loopback3.vrf
+  - interface.MgmtEth0/RP0/CPU0/0.ipv4
+  - interface.TenGigE0/0/0/0.ipv4
+  - interface.TenGigE0/0/0/1.ipv4
+  records:
+    SVC-PE-01:
+    - SVC-PE-01
+    - address 10.0.3.1 255.255.255.255
+    - address 10.100.0.254 255.255.255.255
+    - VRF-ENTERPRISE-A
+    - address 10.101.0.254 255.255.255.255
+    - VRF-ENTERPRISE-B
+    - address 10.200.0.254 255.255.255.255
+    - VRF-CLOUD-GW
+    - address 192.168.103.1 255.255.255.0
+    - address 10.10.300.0 255.255.255.254
+    - address 10.10.300.2 255.255.255.254
+    SVC-PE-02:
+    - SVC-PE-02
+    - address 10.0.3.2 255.255.255.255
+    - address 10.100.0.254 255.255.255.255
+    - VRF-ENTERPRISE-A
+    - address 10.102.0.254 255.255.255.255
+    - VRF-ENTERPRISE-C
+    - address 10.200.0.254 255.255.255.255
+    - VRF-CLOUD-GW
+    - address 192.168.103.2 255.255.255.0
+    - address 10.10.300.4 255.255.255.254
+    - address 10.10.300.6 255.255.255.254
+    SVC-PE-03:
+    - SVC-PE-03
+    - address 10.0.3.3 255.255.255.255
+    - address 10.150.0.254 255.255.255.255
+    - VRF-CDN
+    - address 10.201.0.254 255.255.255.255
+    - VRF-CLOUD-AWS
+    - address 10.250.0.254 255.255.255.255
+    - VRF-MGMT
+    - address 192.168.103.3 255.255.255.0
+    - address 10.10.300.8 255.255.255.254
+    - address 10.10.300.10 255.255.255.254
+    SVC-PE-04:
+    - SVC-PE-04
+    - address 10.0.3.4 255.255.255.255
+    - address 10.150.0.254 255.255.255.255
+    - VRF-CDN
+    - address 10.202.0.254 255.255.255.255
+    - VRF-CLOUD-AZURE
+    - address 10.250.0.254 255.255.255.255
+    - VRF-MGMT
+    - address 192.168.103.4 255.255.255.0
+    - address 10.10.300.12 255.255.255.254
+    - address 10.10.300.14 255.255.255.254
+    SVC-PE-05:
+    - SVC-PE-05
+    - address 10.0.3.5 255.255.255.255
+    - address 10.160.0.254 255.255.255.255
+    - VRF-IX-1
+    - address 10.161.0.254 255.255.255.255
+    - VRF-IX-2
+    - address 10.103.0.254 255.255.255.255
+    - VRF-ENTERPRISE-D
+    - address 192.168.103.5 255.255.255.0
+    - address 10.10.300.16 255.255.255.254
+    - address 10.10.300.18 255.255.255.254
+    SVC-PE-06:
+    - SVC-PE-06
+    - address 10.0.3.6 255.255.255.255
+    - address 10.160.0.254 255.255.255.255
+    - VRF-IX-1
+    - address 10.170.0.254 255.255.255.255
+    - VRF-TRANSIT
+    - address 10.104.0.254 255.255.255.255
+    - VRF-ENTERPRISE-E
+    - address 192.168.103.6 255.255.255.0
+    - address 10.10.300.20 255.255.255.254
+    - address 10.10.300.22 255.255.255.254
+    SVC-PE-07:
+    - SVC-PE-07
+    - address 10.0.3.7 255.255.255.255
+    - address 10.180.0.254 255.255.255.255
+    - VRF-MOBILE-CORE
+    - address 10.181.0.254 255.255.255.255
+    - VRF-MOBILE-RAN
+    - address 10.105.0.254 255.255.255.255
+    - VRF-ENTERPRISE-F
+    - address 192.168.103.7 255.255.255.0
+    - address 10.10.300.24 255.255.255.254
+    - address 10.10.300.26 255.255.255.254
+    SVC-PE-08:
+    - SVC-PE-08
+    - address 10.0.3.8 255.255.255.255
+    - address 10.180.0.254 255.255.255.255
+    - VRF-MOBILE-CORE
+    - address 10.190.0.254 255.255.255.255
+    - VRF-DC-INTER
+    - address 10.106.0.254 255.255.255.255
+    - VRF-ENTERPRISE-G
+    - address 192.168.103.8 255.255.255.0
+    - address 10.10.300.28 255.255.255.254
+    - address 10.10.300.30 255.255.255.254

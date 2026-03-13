@@ -1,0 +1,28 @@
+meta:
+  subject: static-routes
+  description: Static routing and segment routing global configuration
+  source_type: iosxr-rr
+  total_instances: 4
+base_class:
+  control-plane.management-plane.inband.interface.all.allow.SNMP: 'true'
+  control-plane.management-plane.inband.interface.all.allow.SSH: 'true'
+  router.static.address-family.ipv4-unicast.0.0.0.0/0: MgmtEth0/RP0/CPU0/0 
+    192.168.100.254
+  segment-routing.global-block: 16000 23999
+  segment-routing.local-block: 15000 15999
+class_assignments:
+  _base_only:
+    instances:
+    - RR-01..RR-04
+instance_data:
+  schema:
+  - hostname
+  records:
+    RR-01:
+    - RR-01
+    RR-02:
+    - RR-02
+    RR-03:
+    - RR-03
+    RR-04:
+    - RR-04

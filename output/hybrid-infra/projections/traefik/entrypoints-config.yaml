@@ -1,0 +1,123 @@
+meta:
+  subject: entrypoints-config
+  description: Configuration for Traefik entrypoints.
+  source_type: traefik
+  total_instances: 4
+class_assignments:
+  _base_only:
+    instances:
+    - traefik-dev
+    - traefik-prod-dynamic
+    - traefik-prod-static
+    - traefik-staging
+instance_attrs:
+  traefik-dev:
+    entryPoints:
+      web:
+        address: :80
+        transport.lifeCycle.requestAcceptGraceTimeout: 0s
+        transport.lifeCycle.graceTimeOut: 10s
+        transport.respondingTimeouts.readTimeout: 60s
+        transport.respondingTimeouts.writeTimeout: 0s
+        transport.respondingTimeouts.idleTimeout: 180s
+        forwardedHeaders.insecure: 'false'
+        proxyProtocol.insecure: 'false'
+        http2.maxConcurrentStreams: '250'
+        allowACMEByPass: 'false'
+        reusePort: 'false'
+        asDefault: 'false'
+      traefik:
+        address: :8080
+        transport.lifeCycle.requestAcceptGraceTimeout: 0s
+        transport.lifeCycle.graceTimeOut: 10s
+        transport.respondingTimeouts.readTimeout: 60s
+        transport.respondingTimeouts.writeTimeout: 0s
+        transport.respondingTimeouts.idleTimeout: 180s
+        forwardedHeaders.insecure: 'false'
+        proxyProtocol.insecure: 'false'
+        http2.maxConcurrentStreams: '250'
+        allowACMEByPass: 'false'
+        reusePort: 'false'
+        asDefault: 'false'
+  traefik-prod-static:
+    entryPoints:
+      web:
+        address: :80
+        transport.lifeCycle.requestAcceptGraceTimeout: 0s
+        transport.lifeCycle.graceTimeOut: 10s
+        transport.respondingTimeouts.readTimeout: 60s
+        transport.respondingTimeouts.writeTimeout: 0s
+        transport.respondingTimeouts.idleTimeout: 180s
+        forwardedHeaders.insecure: 'false'
+        proxyProtocol.insecure: 'false'
+        http2.maxConcurrentStreams: '250'
+        allowACMEByPass: 'false'
+        reusePort: 'false'
+        asDefault: 'false'
+      websecure:
+        address: :443
+        transport.lifeCycle.requestAcceptGraceTimeout: 0s
+        transport.lifeCycle.graceTimeOut: 10s
+        transport.respondingTimeouts.readTimeout: 60s
+        transport.respondingTimeouts.writeTimeout: 0s
+        transport.respondingTimeouts.idleTimeout: 180s
+        forwardedHeaders.insecure: 'false'
+        proxyProtocol.insecure: 'false'
+        http2.maxConcurrentStreams: '250'
+        allowACMEByPass: 'false'
+        reusePort: 'false'
+        asDefault: 'false'
+      traefik:
+        address: :8080
+        transport.lifeCycle.requestAcceptGraceTimeout: 0s
+        transport.lifeCycle.graceTimeOut: 10s
+        transport.respondingTimeouts.readTimeout: 60s
+        transport.respondingTimeouts.writeTimeout: 0s
+        transport.respondingTimeouts.idleTimeout: 180s
+        forwardedHeaders.insecure: 'false'
+        proxyProtocol.insecure: 'false'
+        http2.maxConcurrentStreams: '250'
+        allowACMEByPass: 'false'
+        reusePort: 'false'
+        asDefault: 'false'
+  traefik-staging:
+    entryPoints:
+      web:
+        address: :80
+        transport.lifeCycle.requestAcceptGraceTimeout: 0s
+        transport.lifeCycle.graceTimeOut: 10s
+        transport.respondingTimeouts.readTimeout: 60s
+        transport.respondingTimeouts.writeTimeout: 0s
+        transport.respondingTimeouts.idleTimeout: 180s
+        forwardedHeaders.insecure: 'false'
+        proxyProtocol.insecure: 'false'
+        http2.maxConcurrentStreams: '250'
+        allowACMEByPass: 'false'
+        reusePort: 'false'
+        asDefault: 'false'
+      websecure:
+        address: :443
+        transport.lifeCycle.requestAcceptGraceTimeout: 0s
+        transport.lifeCycle.graceTimeOut: 10s
+        transport.respondingTimeouts.readTimeout: 60s
+        transport.respondingTimeouts.writeTimeout: 0s
+        transport.respondingTimeouts.idleTimeout: 180s
+        forwardedHeaders.insecure: 'false'
+        proxyProtocol.insecure: 'false'
+        http2.maxConcurrentStreams: '250'
+        allowACMEByPass: 'false'
+        reusePort: 'false'
+        asDefault: 'false'
+      traefik:
+        address: :8080
+        transport.lifeCycle.requestAcceptGraceTimeout: 0s
+        transport.lifeCycle.graceTimeOut: 10s
+        transport.respondingTimeouts.readTimeout: 60s
+        transport.respondingTimeouts.writeTimeout: 0s
+        transport.respondingTimeouts.idleTimeout: 180s
+        forwardedHeaders.insecure: 'false'
+        proxyProtocol.insecure: 'false'
+        http2.maxConcurrentStreams: '250'
+        allowACMEByPass: 'false'
+        reusePort: 'false'
+        asDefault: 'false'

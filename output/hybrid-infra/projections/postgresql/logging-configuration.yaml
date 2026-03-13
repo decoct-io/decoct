@@ -1,7 +1,7 @@
 meta:
   subject: logging-configuration
-  description: Parameters related to PostgreSQL server logging behavior and 
-    output.
+  description: Configuration parameters related to logging behavior and 
+    destinations.
   source_type: postgresql
   total_instances: 6
 base_class:
@@ -10,7 +10,6 @@ base_class:
   log_destination: "'stderr'"
   log_duration: 'false'
   log_error_verbosity: DEFAULT
-  log_file_mode: '600'
   log_hostname: 'false'
   log_min_duration_sample: '-1'
   log_min_error_statement: ERROR
@@ -39,3 +38,40 @@ class_assignments:
     - pg-prod-primary
     - pg-prod-replica
     - pg-staging
+instance_data:
+  schema:
+  - log_connections
+  - log_disconnections
+  - log_timezone
+  - logging_collector
+  records:
+    pg-dev:
+    - 'true'
+    - 'true'
+    - "'UTC'"
+    - 'true'
+    pg-migration:
+    - 'true'
+    - 'true'
+    - "'UTC'"
+    - 'true'
+    pg-prod-analytics:
+    - 'false'
+    - 'false'
+    - "'UTC'"
+    - 'true'
+    pg-prod-primary:
+    - 'true'
+    - 'true'
+    - "'America/New_York'"
+    - 'true'
+    pg-prod-replica:
+    - 'false'
+    - 'false'
+    - "'GMT'"
+    - 'false'
+    pg-staging:
+    - 'false'
+    - 'false'
+    - "'GMT'"
+    - 'false'

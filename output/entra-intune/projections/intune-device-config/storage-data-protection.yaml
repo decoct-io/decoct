@@ -1,0 +1,42 @@
+meta:
+  subject: storage-data-protection
+  description: Configuration settings related to device storage, data backup, 
+    and encryption.
+  source_type: intune-device-config
+  total_instances: 8
+base_class:
+  diagnosticDataBlockSubmission: 'false'
+  storageBlockGoogleBackup: 'false'
+  storageBlockRemovableStorage: 'false'
+  storageRequireRemovableStorageEncryption: 'false'
+class_assignments:
+  _base_only:
+    instances:
+    - DC-Android-BYOD
+    - DC-Android-Contractor
+    - DC-Android-Corporate-Lockdown
+    - DC-Android-Executive
+    - DC-Android-Field-Workers
+    - DC-Android-Kiosk
+    - DC-Android-Lab-Devices
+    - DC-Android-Standard
+instance_data:
+  schema:
+  - storageRequireDeviceEncryption
+  records:
+    DC-Android-BYOD:
+    - 'false'
+    DC-Android-Contractor:
+    - 'false'
+    DC-Android-Corporate-Lockdown:
+    - 'true'
+    DC-Android-Executive:
+    - 'true'
+    DC-Android-Field-Workers:
+    - 'true'
+    DC-Android-Kiosk:
+    - 'true'
+    DC-Android-Lab-Devices:
+    - 'false'
+    DC-Android-Standard:
+    - 'false'

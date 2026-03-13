@@ -1,0 +1,107 @@
+meta:
+  subject: networking
+  description: Network definitions, driver settings, and service network 
+    attachments
+  source_type: docker-compose
+  total_instances: 16
+base_class:
+  networks: docker-compose.networks.T0
+class_assignments:
+  _base_only:
+    instances:
+    - compose-app-prod-01..compose-app-prod-03
+    - compose-billing-prod
+    - compose-ci
+    - compose-cron-prod
+    - compose-dev
+    - compose-dr
+    - compose-edge-prod
+    - compose-load-test
+    - compose-monitoring-prod
+    - compose-notification-prod
+    - compose-report-prod
+    - compose-search-prod
+    - compose-staging
+    - compose-worker-prod
+b_composite_deltas:
+  compose-app-prod-01:
+    networks:
+      delta:
+        app-network: {}
+        monitoring: {}
+  compose-app-prod-02:
+    networks:
+      delta:
+        app-network: {}
+        monitoring: {}
+  compose-app-prod-03:
+    networks:
+      delta:
+        app-network: {}
+  compose-billing-prod:
+    networks:
+      delta:
+        app-network: {}
+        monitoring: {}
+  compose-ci:
+    networks:
+      delta:
+        ci-network: {}
+  compose-cron-prod:
+    networks:
+      delta:
+        app-network: {}
+  compose-dev:
+    networks:
+      delta:
+        dev-network: {}
+  compose-dr:
+    networks:
+      delta:
+        dr-network: {}
+  compose-edge-prod:
+    networks:
+      delta:
+        edge-network: {}
+        app-network: {}
+  compose-load-test:
+    networks:
+      delta:
+        test-network: {}
+  compose-monitoring-prod:
+    networks:
+      delta:
+        monitoring: {}
+        edge-network: {}
+  compose-notification-prod:
+    networks:
+      delta:
+        app-network: {}
+        monitoring: {}
+  compose-report-prod:
+    networks:
+      delta:
+        app-network: {}
+  compose-search-prod:
+    networks:
+      delta:
+        app-network: {}
+        monitoring: {}
+  compose-staging:
+    networks:
+      delta:
+        staging-network: {}
+  compose-worker-prod:
+    networks:
+      delta:
+        app-network: {}
+        monitoring: {}
+composite_templates:
+  networks:
+    docker-compose.networks.T0:
+      elements:
+        attachable: 'false'
+        driver: bridge
+        enable_ipv6: 'false'
+        external: 'false'
+        internal: 'false'
