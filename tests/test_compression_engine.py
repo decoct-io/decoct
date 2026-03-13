@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pytest
 
-from decoct.compression import CompressionEngine, GreedyBundleEngine, get_engine, registry
+from decoct.compression import ArchetypalEngine, CompressionEngine, GreedyBundleEngine, get_engine, registry
 from decoct.core.config import EntityGraphConfig
 from decoct.core.entity_graph import EntityGraph
 from decoct.core.types import AttributeProfile, ClassHierarchy, Entity
@@ -12,8 +12,17 @@ from decoct.core.types import AttributeProfile, ClassHierarchy, Entity
 # ── Registry tests ───────────────────────────────────────────────────
 
 
+def test_archetypal_is_registered_by_default() -> None:
+    assert "archetypal" in registry.available()
+
+
 def test_greedy_bundle_is_registered_by_default() -> None:
     assert "greedy-bundle" in registry.available()
+
+
+def test_get_engine_returns_archetypal() -> None:
+    engine = get_engine("archetypal")
+    assert isinstance(engine, ArchetypalEngine)
 
 
 def test_get_engine_returns_greedy_bundle() -> None:
@@ -102,6 +111,19 @@ def test_available_returns_sorted_names() -> None:
     assert reg.available() == ["a-engine", "z-engine"]
 
 
+# ── ArchetypalEngine tests ──────────────────────────────────────────
+
+
+def test_archetypal_engine_name() -> None:
+    engine = ArchetypalEngine()
+    assert engine.name() == "archetypal"
+
+
+def test_archetypal_engine_is_compression_engine() -> None:
+    engine = ArchetypalEngine()
+    assert isinstance(engine, CompressionEngine)
+
+
 # ── GreedyBundleEngine tests ────────────────────────────────────────
 
 
@@ -120,4 +142,4 @@ def test_greedy_bundle_engine_is_compression_engine() -> None:
 
 def test_config_default_compression_engine() -> None:
     config = EntityGraphConfig()
-    assert config.compression_engine == "greedy-bundle"
+    assert config.compression_engine == "archetypal"

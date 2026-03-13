@@ -2,12 +2,31 @@
 
 Compresses fleets of infrastructure configs into classes (Tier B)
 and per-host deltas (Tier C) for LLM-readable output.
+
+Also provides :class:`ArchetypalEngine`, a :class:`CompressionEngine`
+subclass that adapts the archetypal grouping logic for the entity-graph
+pipeline (Phase 4 + Phase 5).
 """
 
 from __future__ import annotations
 
 import copy
 from typing import Any
+
+from decoct.compression.class_extractor import _derive_class_name
+from decoct.compression.delta import compute_delta_restricted, delta_compress
+from decoct.compression.engine import CompressionEngine, registry
+from decoct.core.canonical import VALUE_KEY
+from decoct.core.config import EntityGraphConfig
+from decoct.core.entity_graph import EntityGraph
+from decoct.core.types import (
+    AttributeProfile,
+    BaseClass,
+    ClassDef,
+    ClassHierarchy,
+    Entity,
+    FinalRole,
+)
 
 
 def archetypal_compress(
@@ -399,3 +418,127 @@ def _compress_list_section(
             instances.append(delta)
 
         tier_c[host][section] = {"_class": class_name, "instances": instances}
+
+
+# ---------------------------------------------------------------------------
+# ArchetypalEngine — CompressionEngine adapter for entity-graph pipeline
+# ---------------------------------------------------------------------------
+
+
+class ArchetypalEngine(CompressionEngine):
+    """Compression engine using archetypal grouping for class extraction.
+
+    Adapts the archetypal grouping logic (``_find_groups``,
+    ``_choose_reference``, etc.) to the entity-graph pipeline's
+    :class:`CompressionEngine` interface, operating on ``Entity`` objects
+    and producing ``ClassHierarchy`` output.
+    """
+
+    def compress(
+        self,
+        type_map: dict[str, list[Entity]],
+        graph: EntityGraph,
+        profiles: dict[str, dict[str, AttributeProfile]],
+        config: EntityGraphConfig,
+    ) -> dict[str, ClassHierarchy]:
+        """Run archetypal class extraction then delta compression."""
+        hierarchies: dict[str, ClassHierarchy] = {}
+
+        for type_id in sorted(type_map.keys()):
+            entities = type_map[type_id]
+            type_profiles = profiles[type_id]
+
+            a_base_paths = sorted(
+                p for p, prof in type_profiles.items() if prof.final_role == FinalRole.A_BASE
+            )
+            tier_b_paths = sorted(
+                p for p, prof in type_profiles.items() if prof.final_role == FinalRole.B
+            )
+
+            # --- Base class: A_BASE + universal B attrs ---
+            base_attrs: dict[str, Any] = {}
+            for p in a_base_paths:
+                base_attrs[p] = copy.deepcopy(entities[0].attributes[p].value)
+
+            for p in tier_b_paths:
+                values = [e.attributes[p].value for e in entities if p in e.attributes]
+                if len(values) == len(entities) and len({VALUE_KEY(v) for v in values}) == 1:
+                    base_attrs[p] = copy.deepcopy(values[0])
+
+            residual_b_paths = [p for p in tier_b_paths if p not in base_attrs]
+            eligible_paths = set(residual_b_paths)
+
+            # --- Build flat B-role dicts per entity ---
+            flat: dict[str, dict[str, Any]] = {}
+            for e in entities:
+                d: dict[str, Any] = {}
+                for p in residual_b_paths:
+                    if p in e.attributes:
+                        d[p] = e.attributes[p].value
+                flat[e.id] = d
+
+            hosts = sorted(flat.keys())
+            groups = _find_groups(flat, hosts)
+
+            classes: dict[str, ClassDef] = {}
+            existing_names: set[str] = set()
+            assigned: set[str] = set()
+
+            for group_hosts in groups:
+                if not _is_compressible(flat, group_hosts):
+                    continue
+
+                identity = _find_identity_fields(flat, group_hosts)
+                ref = _choose_reference(flat, group_hosts, identity)
+
+                # Template = reference attrs minus identity fields
+                template_attrs = {k: copy.deepcopy(v) for k, v in flat[ref].items() if k not in identity}
+
+                class_name = _derive_class_name(template_attrs, type_id, existing_names)
+                existing_names.add(class_name)
+
+                # Compute per-entity overrides via compute_delta_restricted
+                overrides: dict[str, dict[str, Any]] = {}
+                for eid in group_hosts:
+                    delta = compute_delta_restricted(
+                        entity_attrs={p: flat[eid][p] for p in flat[eid] if p not in identity},
+                        template=template_attrs,
+                        eligible_paths=eligible_paths - identity,
+                    )
+                    if delta:
+                        overrides[eid] = delta
+
+                classes[class_name] = ClassDef(
+                    name=class_name,
+                    inherits="base",
+                    own_attrs=template_attrs,
+                    entity_ids=sorted(group_hosts),
+                    overrides=overrides,
+                )
+                assigned.update(group_hosts)
+
+            # Unassigned entities go into _base_only
+            unassigned = [h for h in hosts if h not in assigned]
+            if unassigned:
+                classes["_base_only"] = ClassDef(
+                    name="_base_only",
+                    inherits="base",
+                    own_attrs={},
+                    entity_ids=sorted(unassigned),
+                    overrides={},
+                )
+
+            hierarchies[type_id] = ClassHierarchy(
+                base_class=BaseClass(attrs=base_attrs),
+                classes=classes,
+                subclasses={},
+            )
+
+        # Chain delta compression for subclass extraction
+        return delta_compress(hierarchies, graph, profiles, config)
+
+    def name(self) -> str:
+        return "archetypal"
+
+
+registry.register(ArchetypalEngine)

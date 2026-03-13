@@ -170,7 +170,7 @@ Input files (.cfg, .yaml, .json, .ini, .conf)
 [Phase 3.5] Composite Decomposition ─── shadow map + template extraction
   │
   ▼
-[Phase 4+5] Compression Engine ─── pluggable engine (default: greedy-bundle)
+[Phase 4+5] Compression Engine ─── pluggable engine (default: archetypal)
   │                               class extraction + delta compression
   │
   ▼
@@ -462,9 +462,9 @@ Template IDs follow the format `{type_id}.{path}.T{index}`.
 
 ### 3.4 Phase 4+5: Compression Engine
 
-**Modules:** `src/decoct/compression/engine.py`, `src/decoct/compression/greedy_bundle.py`
+**Modules:** `src/decoct/compression/engine.py`, `src/decoct/compression/archetypal.py`, `src/decoct/compression/greedy_bundle.py`
 
-Phase 4 (class extraction) and Phase 5 (delta compression) are executed by a pluggable `CompressionEngine`. The engine is selected via `EntityGraphConfig.compression_engine` (default: `"greedy-bundle"`) or the `--compression-engine` CLI flag on the `entity-graph` command group.
+Phase 4 (class extraction) and Phase 5 (delta compression) are executed by a pluggable `CompressionEngine`. The engine is selected via `EntityGraphConfig.compression_engine` (default: `"archetypal"`) or the `--compression-engine` CLI flag on the `entity-graph` command group.
 
 ```python
 from decoct.compression import CompressionEngine, get_engine, registry
@@ -502,11 +502,17 @@ engine = get_engine(config.compression_engine)
 hierarchies = engine.compress(type_map, graph, profiles, config)
 ```
 
-#### Default Engine: Greedy Bundle
+#### Default Engine: Archetypal
+
+**Module:** `src/decoct/compression/archetypal.py`
+
+`ArchetypalEngine` uses archetypal grouping (structural similarity via `_find_groups`) for class extraction, then chains `delta_compress()` for subclass extraction. It is auto-registered as `"archetypal"` on import.
+
+#### Alternative Engine: Greedy Bundle
 
 **Module:** `src/decoct/compression/greedy_bundle.py`
 
-`GreedyBundleEngine` wraps the existing `extract_classes()` (Phase 4) and `delta_compress()` (Phase 5) functions. It is auto-registered as `"greedy-bundle"` on import.
+`GreedyBundleEngine` wraps `extract_classes()` (Phase 4) and `delta_compress()` (Phase 5) functions. It is auto-registered as `"greedy-bundle"` on import.
 
 #### Phase 4: Class Extraction
 
@@ -686,7 +692,7 @@ Per-type instance file. Uses **ID range compression** (`compress_id_ranges()`) t
 | `fk_type_compat_threshold` | 0.3 | 6 | FK detection (v1 stub, unused) |
 | `max_bootstrap_iterations` | 5 | 2+3 | Max refinement iterations before forced convergence |
 | `token_cost_class_ref` | 4 | 4 | Estimated token cost of a class reference per entity |
-| `compression_engine` | `"greedy-bundle"` | 4+5 | Selects the compression engine (class extraction + delta compression) |
+| `compression_engine` | `"archetypal"` | 4+5 | Selects the compression engine (class extraction + delta compression) |
 | `secrets_entropy_threshold_b64` | 4.5 | 0 | Shannon entropy threshold for base64 secret candidates |
 | `secrets_entropy_threshold_hex` | 3.0 | 0 | Shannon entropy threshold for hex secret candidates |
 | `secrets_min_entropy_length` | 16 | 0 | Minimum string length for entropy-based detection |
@@ -872,7 +878,7 @@ Intentionally simple implementations that produce correct output but leave room 
 
 ### 7.12 Swappable Compression Engine
 
-Phase 4 (class extraction) and Phase 5 (delta compression) were originally hardcoded as direct function calls in the pipeline orchestrator. To enable experimentation with alternative compression algorithms, these phases are now dispatched through a `CompressionEngine` ABC with a registry pattern (`src/decoct/compression/engine.py`). The default `GreedyBundleEngine` wraps the existing `extract_classes()` + `delta_compress()` calls unchanged. New engines can be added by subclassing `CompressionEngine`, implementing `compress()` and `name()`, and registering with `registry.register()`. The engine is selected via `EntityGraphConfig.compression_engine` or the `--compression-engine` CLI flag.
+Phase 4 (class extraction) and Phase 5 (delta compression) were originally hardcoded as direct function calls in the pipeline orchestrator. To enable experimentation with alternative compression algorithms, these phases are now dispatched through a `CompressionEngine` ABC with a registry pattern (`src/decoct/compression/engine.py`). The default `ArchetypalEngine` uses archetypal grouping for class extraction then chains `delta_compress()` for subclass extraction. The previous default `GreedyBundleEngine` remains available as `"greedy-bundle"`. New engines can be added by subclassing `CompressionEngine`, implementing `compress()` and `name()`, and registering with `registry.register()`. The engine is selected via `EntityGraphConfig.compression_engine` or the `--compression-engine` CLI flag.
 
 ---
 
@@ -962,7 +968,8 @@ src/decoct/
 
   compression/
     engine.py                    — CompressionEngine ABC + _EngineRegistry + get_engine()
-    greedy_bundle.py             — GreedyBundleEngine (default: wraps extract_classes + delta_compress)
+    archetypal.py                — ArchetypalEngine (default: archetypal grouping + delta_compress)
+    greedy_bundle.py             — GreedyBundleEngine (wraps extract_classes + delta_compress)
     class_extractor.py    245 lines — Greedy frequent-bundle class extraction
     delta.py              281 lines — Delta compression + subclass promotion
     normalisation.py      144 lines — Tier C construction
@@ -1159,7 +1166,7 @@ e7a0114 Regenerate hybrid-infra output with map decomposition and Jaccard cluste
 - Statistics CLI with markdown/JSON output
 - QA comprehension harness with 6 question categories
 - Subject projections: deterministic generator + LLM-assisted spec inference (R3 complete), validated E2E on all three corpora — IOS-XR (hand-authored spec), Entra-Intune (3 types), Hybrid-Infra (4 types including 137-param PostgreSQL)
-- Swappable compression engine: `CompressionEngine` ABC + registry pattern for Phase 4+5. Default `GreedyBundleEngine` wraps existing algorithms. Selectable via `EntityGraphConfig.compression_engine` or `--compression-engine` CLI flag
+- Swappable compression engine: `CompressionEngine` ABC + registry pattern for Phase 4+5. Default `ArchetypalEngine` uses archetypal grouping; `GreedyBundleEngine` available as alternative. Selectable via `EntityGraphConfig.compression_engine` or `--compression-engine` CLI flag
 - Comprehensive test suite (716+ tests)
 
 ### Compression Results

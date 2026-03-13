@@ -41,7 +41,7 @@ class EntityGraphConfig:
     source_fidelity_mode: str = "error"  # "error", "warn", or "skip"
 
     # Compression engine
-    compression_engine: str = "greedy-bundle"
+    compression_engine: str = "archetypal"
 
     # Secrets masking (Phase 0)
     secrets_entropy_threshold_b64: float = 4.5

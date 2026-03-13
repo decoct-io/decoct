@@ -1,4 +1,4 @@
-"""Greedy-bundle compression engine — the default algorithm.
+"""Greedy-bundle compression engine.
 
 Wraps the existing ``extract_classes()`` (Phase 4) and ``delta_compress()``
 (Phase 5) functions as a :class:`CompressionEngine`.
