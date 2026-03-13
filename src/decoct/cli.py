@@ -36,8 +36,13 @@ def serve(output_dir: str, host: str, port: int, use_reload: bool) -> None:
 
 
 @cli.group(name="entity-graph")
-def entity_graph() -> None:
+@click.option("--compression-engine", default="greedy-bundle", show_default=True,
+              help="Compression engine to use for class extraction + delta compression.")
+@click.pass_context
+def entity_graph(ctx: click.Context, compression_engine: str) -> None:
     """Entity-graph pipeline commands."""
+    ctx.ensure_object(dict)
+    ctx.obj["compression_engine"] = compression_engine
 
 
 @entity_graph.command()

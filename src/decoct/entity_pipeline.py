@@ -21,8 +21,7 @@ from typing import Any
 from decoct.adapters.base import BaseAdapter
 from decoct.adapters.iosxr import IosxrConfigTree
 from decoct.assembly.tier_builder import build_tier_a, build_tier_b, build_tier_c_yaml
-from decoct.compression.class_extractor import extract_classes
-from decoct.compression.delta import delta_compress
+from decoct.compression import get_engine
 from decoct.compression.normalisation import build_tier_c
 from decoct.core.config import EntityGraphConfig
 from decoct.core.entity_graph import EntityGraph
@@ -209,11 +208,9 @@ def run_entity_graph_pipeline(
         profiles,
     ) = decompose_composites(graph, type_map, profiles, config)
 
-    # Phase 4: Class extraction
-    hierarchies = extract_classes(type_map, graph, profiles, config)
-
-    # Phase 5: Delta compression
-    hierarchies = delta_compress(hierarchies, graph, profiles, config)
+    # Phase 4+5: Class extraction + delta compression
+    engine = get_engine(config.compression_engine)
+    hierarchies = engine.compress(type_map, graph, profiles, config)
 
     # Phase 6: Normalisation (Tier C construction)
     tier_c_files: dict[str, TierC] = {}
