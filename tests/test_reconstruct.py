@@ -1,8 +1,6 @@
-"""Tests for decoct.reconstruct module."""
+"""Tests for decoct.reconstruct — reconstruction and validation."""
 
-from __future__ import annotations
-
-from typing import Any
+import pytest
 
 from decoct.reconstruct import (
     deep_delete,
@@ -12,214 +10,211 @@ from decoct.reconstruct import (
     reconstruct_host,
     reconstruct_instances,
     reconstruct_section,
-    validate_round_trip,
+    unflatten_collapsed,
+    validate_reconstruction,
 )
 
-# ---------------------------------------------------------------------------
-# deep_set / deep_delete / deep_get
-# ---------------------------------------------------------------------------
+
+class TestDeepSet:
+    def test_simple_key(self) -> None:
+        d: dict = {}
+        deep_set(d, "a", 1)
+        assert d == {"a": 1}
+
+    def test_nested_key(self) -> None:
+        d: dict = {}
+        deep_set(d, "a.b.c", 42)
+        assert d == {"a": {"b": {"c": 42}}}
+
+    def test_overwrite(self) -> None:
+        d = {"a": {"b": 1}}
+        deep_set(d, "a.b", 2)
+        assert d == {"a": {"b": 2}}
 
 
-def test_deep_set_flat() -> None:
-    d: dict[str, Any] = {"a": 1}
-    deep_set(d, "b", 2)
-    assert d == {"a": 1, "b": 2}
+class TestDeepDelete:
+    def test_simple_delete(self) -> None:
+        d = {"a": 1, "b": 2}
+        assert deep_delete(d, "a") is True
+        assert d == {"b": 2}
+
+    def test_nested_delete(self) -> None:
+        d = {"a": {"b": {"c": 1, "d": 2}}}
+        assert deep_delete(d, "a.b.c") is True
+        assert d == {"a": {"b": {"d": 2}}}
+
+    def test_missing_key(self) -> None:
+        d = {"a": 1}
+        assert deep_delete(d, "b") is False
+
+    def test_missing_nested(self) -> None:
+        d = {"a": 1}
+        assert deep_delete(d, "a.b.c") is False
 
 
-def test_deep_set_nested() -> None:
-    d: dict[str, Any] = {}
-    deep_set(d, "a.b.c", 42)
-    assert d == {"a": {"b": {"c": 42}}}
+class TestDeepGet:
+    def test_simple_get(self) -> None:
+        assert deep_get({"a": 1}, "a") == 1
+
+    def test_nested_get(self) -> None:
+        assert deep_get({"a": {"b": {"c": 42}}}, "a.b.c") == 42
+
+    def test_missing_raises(self) -> None:
+        with pytest.raises(KeyError):
+            deep_get({"a": 1}, "b")
+
+    def test_default(self) -> None:
+        assert deep_get({"a": 1}, "b", default=99) == 99
 
 
-def test_deep_delete_flat() -> None:
-    d: dict[str, Any] = {"a": 1, "b": 2}
-    assert deep_delete(d, "a") is True
-    assert d == {"b": 2}
+class TestNormalize:
+    def test_sort_dict_keys(self) -> None:
+        assert normalize({"b": 1, "a": 2}) == {"a": 2, "b": 1}
+
+    def test_nested(self) -> None:
+        result = normalize({"z": {"b": 1, "a": 2}, "a": 3})
+        assert list(result.keys()) == ["a", "z"]
+
+    def test_list_preserved(self) -> None:
+        assert normalize([3, 1, 2]) == [3, 1, 2]
+
+    def test_scalar_passthrough(self) -> None:
+        assert normalize(42) == 42
 
 
-def test_deep_delete_nested() -> None:
-    d: dict[str, Any] = {"a": {"b": 1, "c": 2}}
-    assert deep_delete(d, "a.b") is True
-    assert d == {"a": {"c": 2}}
+class TestReconstructSection:
+    def test_no_class_passthrough(self) -> None:
+        result = reconstruct_section({}, {"key": "value"})
+        assert result == {"key": "value"}
+
+    def test_class_with_override(self) -> None:
+        tier_b = {"MyClass": {"a": 1, "b": 2, "c": 3, "_identity": ["name"]}}
+        tc = {"_class": "MyClass", "name": "host1", "b": 99}
+        result = reconstruct_section(tier_b, tc)
+        assert result == {"a": 1, "b": 99, "c": 3, "name": "host1"}
+
+    def test_class_additive_only(self) -> None:
+        """Reconstruction is purely additive: class body + delta additions."""
+        tier_b = {"MyClass": {"a": 1, "c": 3}}
+        tc = {"_class": "MyClass", "b": 99}
+        result = reconstruct_section(tier_b, tc)
+        assert result == {"a": 1, "b": 99, "c": 3}
+
+    def test_class_with_dot_override(self) -> None:
+        tier_b = {"MyClass": {"nested": {"x": 1, "y": 2}}}
+        tc = {"_class": "MyClass", "nested.x": 99}
+        result = reconstruct_section(tier_b, tc)
+        assert result == {"nested": {"x": 99, "y": 2}}
+
+    def test_missing_class_raises(self) -> None:
+        with pytest.raises(ValueError, match="not found"):
+            reconstruct_section({}, {"_class": "Missing"})
 
 
-def test_deep_delete_missing_returns_false() -> None:
-    d: dict[str, Any] = {"a": 1}
-    assert deep_delete(d, "b") is False
-    assert deep_delete(d, "x.y") is False
+class TestReconstructInstances:
+    def test_basic_instances(self) -> None:
+        tier_b = {"Iface": {"mtu": 1500, "speed": "1G", "_identity": ["name"]}}
+        tc = {
+            "_class": "Iface",
+            "instances": [
+                {"name": "eth0"},
+                {"name": "eth1", "mtu": 9000},
+            ],
+        }
+        result = reconstruct_instances(tier_b, tc)
+        assert len(result) == 2
+        assert result[0] == {"name": "eth0", "mtu": 1500, "speed": "1G"}
+        assert result[1] == {"name": "eth1", "mtu": 9000, "speed": "1G"}
+
+    def test_instance_additive_only(self) -> None:
+        """Instance reconstruction is purely additive."""
+        tier_b = {"Cls": {"a": 1, "c": 3}}
+        tc = {
+            "_class": "Cls",
+            "instances": [{"b": 99}],
+        }
+        result = reconstruct_instances(tier_b, tc)
+        assert result == [{"a": 1, "b": 99, "c": 3}]
 
 
-def test_deep_get_flat() -> None:
-    d: dict[str, Any] = {"a": 1}
-    assert deep_get(d, "a") == 1
+class TestReconstructHost:
+    def test_mixed_sections(self) -> None:
+        tier_b = {"Base": {"ntp": "10.1.1.1", "log": "10.2.2.2", "snmp": "pub", "_identity": ["hostname"]}}
+        tier_c_host = {
+            "base": {"_class": "Base", "hostname": "rtr-00"},
+            "version": "1.0",
+        }
+        result = reconstruct_host(tier_b, tier_c_host)
+        assert result["base"]["hostname"] == "rtr-00"
+        assert result["base"]["ntp"] == "10.1.1.1"
+        assert result["version"] == "1.0"
 
 
-def test_deep_get_nested() -> None:
-    d: dict[str, Any] = {"a": {"b": {"c": 42}}}
-    assert deep_get(d, "a.b.c") == 42
+class TestValidateReconstruction:
+    def test_valid_reconstruction(self) -> None:
+        from decoct.compress import compress
+
+        inputs = {
+            f"rtr-{i:02d}": {"section": {"a": 1, "b": 2, "c": 3, "name": f"rtr-{i:02d}"}}
+            for i in range(3)
+        }
+        tier_b, tier_c = compress(inputs)
+        ok, errors = validate_reconstruction(inputs, tier_b, tier_c)
+        assert ok is True
+        assert errors == []
+
+    def test_invalid_reconstruction_detected(self) -> None:
+        inputs = {"rtr-00": {"section": {"a": 1}}}
+        tier_b: dict = {}
+        tier_c = {"rtr-00": {"section": {"a": 999}}}  # wrong value
+        ok, errors = validate_reconstruction(inputs, tier_b, tier_c)
+        assert ok is False
+        assert len(errors) > 0
+
+    def test_missing_host_detected(self) -> None:
+        inputs = {"rtr-00": {"section": {"a": 1}}}
+        ok, errors = validate_reconstruction(inputs, {}, {})
+        assert ok is False
+        assert any("missing" in e for e in errors)
 
 
-def test_deep_get_default() -> None:
-    d: dict[str, Any] = {"a": 1}
-    assert deep_get(d, "b", "missing") == "missing"
+class TestUnflattenCollapsed:
+    def test_no_dots_passthrough(self) -> None:
+        data = {"a": 1, "b": {"c": 2}}
+        assert unflatten_collapsed(data) == data
 
+    def test_simple_dotted_key(self) -> None:
+        data = {"a.b.c": 1}
+        assert unflatten_collapsed(data) == {"a": {"b": {"c": 1}}}
 
-def test_deep_get_raises_on_missing() -> None:
-    d: dict[str, Any] = {"a": 1}
-    try:
-        deep_get(d, "b")
-        assert False, "Expected KeyError"
-    except KeyError:
-        pass
+    def test_shared_prefix(self) -> None:
+        data = {"a.b": 1, "a.c": 2}
+        assert unflatten_collapsed(data) == {"a": {"b": 1, "c": 2}}
 
+    def test_mixed_dotted_and_plain(self) -> None:
+        data = {"a.b": 1, "c": 2}
+        assert unflatten_collapsed(data) == {"a": {"b": 1}, "c": 2}
 
-# ---------------------------------------------------------------------------
-# normalize
-# ---------------------------------------------------------------------------
+    def test_nested_dict_with_dots(self) -> None:
+        """Dots inside nested dicts are also unflattened."""
+        data = {"outer": {"x.y": 1}}
+        assert unflatten_collapsed(data) == {"outer": {"x": {"y": 1}}}
 
+    def test_list_of_dicts(self) -> None:
+        data = [{"a.b": 1}, {"c.d": 2}]
+        assert unflatten_collapsed(data) == [{"a": {"b": 1}}, {"c": {"d": 2}}]
 
-def test_normalize_sorts_keys_recursively() -> None:
-    data = {"z": {"b": 1, "a": 2}, "a": 3}
-    result = normalize(data)
-    assert list(result.keys()) == ["a", "z"]
-    assert list(result["z"].keys()) == ["a", "b"]
+    def test_scalar_passthrough(self) -> None:
+        assert unflatten_collapsed(42) == 42
+        assert unflatten_collapsed("hello") == "hello"
 
+    def test_deep_merge(self) -> None:
+        """Two dotted keys that share a deep prefix merge correctly."""
+        data = {"a.b.c": 1, "a.b.d": 2}
+        assert unflatten_collapsed(data) == {"a": {"b": {"c": 1, "d": 2}}}
 
-def test_normalize_handles_lists() -> None:
-    data = [{"b": 1, "a": 2}]
-    result = normalize(data)
-    assert list(result[0].keys()) == ["a", "b"]
-
-
-def test_normalize_scalars_pass_through() -> None:
-    assert normalize(42) == 42
-    assert normalize("hello") == "hello"
-    assert normalize(True) is True
-
-
-# ---------------------------------------------------------------------------
-# reconstruct_section
-# ---------------------------------------------------------------------------
-
-
-def test_reconstruct_section_applies_overrides() -> None:
-    tier_b: dict[str, Any] = {
-        "MyClass": {"ip": "10.0.0.1", "mask": "255.255.255.0", "mtu": 1500, "_identity": ["ip"]},
-    }
-    tier_c_section: dict[str, Any] = {
-        "_class": "MyClass",
-        "ip": "10.0.0.2",
-        "mtu": 9000,
-    }
-    result = reconstruct_section(tier_b, tier_c_section)
-    assert result["ip"] == "10.0.0.2"
-    assert result["mask"] == "255.255.255.0"
-    assert result["mtu"] == 9000
-    assert "_identity" not in result
-
-
-def test_reconstruct_section_handles_removals() -> None:
-    tier_b: dict[str, Any] = {
-        "MyClass": {"a": 1, "b": 2, "c": 3},
-    }
-    tier_c_section: dict[str, Any] = {
-        "_class": "MyClass",
-        "_remove": ["b"],
-    }
-    result = reconstruct_section(tier_b, tier_c_section)
-    assert result == {"a": 1, "c": 3}
-
-
-def test_reconstruct_section_dot_notation_override() -> None:
-    tier_b: dict[str, Any] = {
-        "MyClass": {"nested": {"a": 1, "b": 2}},
-    }
-    tier_c_section: dict[str, Any] = {
-        "_class": "MyClass",
-        "nested.a": 99,
-    }
-    result = reconstruct_section(tier_b, tier_c_section)
-    assert result["nested"]["a"] == 99
-    assert result["nested"]["b"] == 2
-
-
-def test_reconstruct_section_raw_passthrough() -> None:
-    section: dict[str, Any] = {"key": "val", "num": 42}
-    result = reconstruct_section({}, section)
-    assert result == {"key": "val", "num": 42}
-
-
-# ---------------------------------------------------------------------------
-# reconstruct_instances
-# ---------------------------------------------------------------------------
-
-
-def test_reconstruct_instances_rebuilds_list() -> None:
-    tier_b: dict[str, Any] = {
-        "IfClass": {"speed": "1G", "enabled": True, "_identity": ["name"]},
-    }
-    tier_c_section: dict[str, Any] = {
-        "_class": "IfClass",
-        "instances": [
-            {"name": "eth0"},
-            {"name": "eth1", "speed": "10G"},
-            {"name": "eth2", "_remove": ["enabled"]},
-        ],
-    }
-    result = reconstruct_instances(tier_b, tier_c_section)
-    assert len(result) == 3
-    assert result[0] == {"name": "eth0", "speed": "1G", "enabled": True}
-    assert result[1] == {"name": "eth1", "speed": "10G", "enabled": True}
-    assert result[2] == {"name": "eth2", "speed": "1G"}
-
-
-# ---------------------------------------------------------------------------
-# reconstruct_host
-# ---------------------------------------------------------------------------
-
-
-def test_reconstruct_host_handles_mixed_sections() -> None:
-    tier_b: dict[str, Any] = {
-        "NetClass": {"mask": "255.255.255.0", "gw": "10.0.0.254", "_identity": ["ip"]},
-        "IfClass": {"speed": "1G", "enabled": True, "_identity": ["name"]},
-    }
-    tier_c_host: dict[str, Any] = {
-        "network": {"_class": "NetClass", "ip": "10.0.0.1"},
-        "interfaces": {
-            "_class": "IfClass",
-            "instances": [{"name": "eth0"}, {"name": "eth1"}],
-        },
-        "raw_section": {"key": "val"},
-    }
-    result = reconstruct_host(tier_b, tier_c_host)
-    assert result["network"] == {"mask": "255.255.255.0", "gw": "10.0.0.254", "ip": "10.0.0.1"}
-    assert len(result["interfaces"]) == 2
-    assert result["raw_section"] == {"key": "val"}
-
-
-# ---------------------------------------------------------------------------
-# validate_round_trip
-# ---------------------------------------------------------------------------
-
-
-def test_validate_round_trip_returns_empty_on_success() -> None:
-    corpus: dict[str, dict[str, Any]] = {
-        "host-a": {"section": {"a": 1, "b": 2}},
-    }
-    tier_b: dict[str, Any] = {}
-    tier_c: dict[str, dict[str, Any]] = {
-        "host-a": {"section": {"a": 1, "b": 2}},
-    }
-    assert validate_round_trip(corpus, tier_b, tier_c) == []
-
-
-def test_validate_round_trip_detects_mismatch() -> None:
-    corpus: dict[str, dict[str, Any]] = {
-        "host-a": {"section": {"a": 1, "b": 2}},
-    }
-    tier_b: dict[str, Any] = {}
-    tier_c: dict[str, dict[str, Any]] = {
-        "host-a": {"section": {"a": 1, "b": 999}},
-    }
-    assert validate_round_trip(corpus, tier_b, tier_c) == ["host-a"]
+    def test_plain_key_merges_with_dotted(self) -> None:
+        """A plain key 'a' with dict value merges with 'a.x' expansions."""
+        data = {"a": {"z": 3}, "a.x": 1}
+        result = unflatten_collapsed(data)
+        assert result == {"a": {"z": 3, "x": 1}}
