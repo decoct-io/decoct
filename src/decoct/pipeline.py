@@ -7,6 +7,7 @@ Runs the full compression pipeline: parse -> section -> secrets -> compress
 from __future__ import annotations
 
 import json
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -15,6 +16,7 @@ import yaml
 
 from decoct.compress import compress
 from decoct.formats import detect_format
+from decoct.passes.dissolve import ClassProfitability
 from decoct.reconstruct import validate_reconstruction
 from decoct.secrets.detection import AuditEntry
 
@@ -26,6 +28,11 @@ class PipelineConfig:
     secrets: bool = True
     validate: bool = True
     xml_validate: bool = True
+    dissolve: bool = True
+    threshold: float = 100.0
+    max_delta_pct: float = 20.0
+    min_group_size: int = 3
+    workers: int | None = None
 
 
 @dataclass
@@ -39,6 +46,7 @@ class PipelineResult:
     secrets_audit: list[AuditEntry] = field(default_factory=list)
     validation_ok: bool = True
     validation_errors: list[str] = field(default_factory=list)
+    class_profitability: list[ClassProfitability] = field(default_factory=list)
 
 
 def _load_file(path: Path) -> tuple[dict[str, Any], str]:
@@ -93,6 +101,9 @@ def _input_extensions() -> set[str]:
 def run_pipeline(
     sources: str | Path,
     config: PipelineConfig | None = None,
+    *,
+    on_host: Callable[[int, int], None] | None = None,
+    on_section: Callable[[str, str], None] | None = None,
 ) -> PipelineResult:
     """Run the compression pipeline.
 
@@ -143,9 +154,22 @@ def run_pipeline(
     result.inputs = inputs
 
     # 3. Compress
-    tier_b, tier_c = compress(inputs)
+    tier_b, tier_c = compress(
+        inputs, threshold=config.threshold,
+        max_delta_pct=config.max_delta_pct,
+        min_group_size=config.min_group_size,
+        on_host=on_host,
+        on_section=on_section,
+        workers=config.workers,
+    )
     result.tier_b = tier_b
     result.tier_c = tier_c
+
+    # 3b. Dissolve unprofitable classes
+    if config.dissolve:
+        from decoct.passes.dissolve import dissolve_unprofitable
+
+        result.class_profitability = dissolve_unprofitable(tier_b, tier_c)
 
     # 4. Validate reconstruction (before list class embedding)
     if config.validate:
